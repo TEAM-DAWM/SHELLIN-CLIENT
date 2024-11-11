@@ -1,9 +1,11 @@
 import button from './buttonTheme';
+import color from './color';
 import fontTheme from './fontTheme';
 import palette from './palette';
 import textButton from './textButtonTheme';
 
 export const theme = {
+	color,
 	textButton,
 	button,
 	palette,
