@@ -84,21 +84,21 @@ const font = {
 		letterSpacing: -4,
 	}),
 
-	lebel03: FONT({
+	label03: FONT({
 		family: fonts.PretendardSemiBold,
 		size: 1.6,
 		height: 100,
 		letterSpacing: 0,
 	}),
 
-	lebel04: FONT({
+	label04: FONT({
 		family: fonts.PretendardSemiBold,
 		size: 1.5,
 		height: 100,
 		letterSpacing: 0,
 	}),
 
-	lebel05: FONT({
+	label05: FONT({
 		family: fonts.PretendardSemiBold,
 		size: 1.4,
 		height: 100,
