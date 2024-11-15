@@ -97,7 +97,7 @@ function Button({ type, size, disabled, leftIcon, rightIcon, label, onClick }: B
 		'text-assistive': getButtonStateStyles(color.Grey.Grey6, 'transparent', color.Grey.Grey2, color.Grey.Grey3, false),
 	};
 
-	const ButtonLayout = styled.button`
+	const ButtonLayout = styled.div`
 		display: flex;
 		gap: 0.8rem;
 		align-items: center;
