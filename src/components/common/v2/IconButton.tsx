@@ -37,11 +37,16 @@ function IconButton({ type, size, disabled, Icon, onClick }: IconButtonProps) {
 		border: boolean
 	) => {
 		if (disabled) {
+			if (type === 'solid')
+				return css`
+					background-color: ${color.Blue.Blue2};
+				`;
 			return css`
-				color: ${color.Grey.Grey4};
 				${border &&
 				css`
-					border: solid 1px ${color.Grey.Grey4};
+					box-sizing: border-box;
+
+					border: solid 1px ${color.Grey.Grey3};
 				`}
 			`;
 		}
@@ -50,8 +55,11 @@ function IconButton({ type, size, disabled, Icon, onClick }: IconButtonProps) {
 
 			${border &&
 			css`
+				box-sizing: border-box;
+
 				border: solid 1px ${strokeColor};
 			`}
+
 			:hover {
 				background-color: ${hoverBG};
 			}
@@ -64,7 +72,7 @@ function IconButton({ type, size, disabled, Icon, onClick }: IconButtonProps) {
 	const buttonStyles: Record<IconBtnType, SerializedStyles> = {
 		solid: getIconBtnStyles(color.Grey.White, color.Blue.Blue6, color.Blue.Blue7, color.Blue.Blue8, false),
 		normal: getIconBtnStyles(color.Grey.Grey5, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3, false),
-		outlined: getIconBtnStyles(color.Grey.White, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3, true),
+		outlined: getIconBtnStyles(color.Grey.Grey4, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3, true),
 	};
 
 	// 아이콘 색상 설정
