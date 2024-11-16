@@ -69,10 +69,10 @@ const createStyledIcon = (IconComponent: React.FunctionComponent<React.SVGProps<
 	color: ${({ theme, $iscurrent }) => ($iscurrent ? theme.palette.Primary : theme.palette.Grey.Grey5)};
 `;
 
-const TodayIcon = createStyledIcon(Icons.Navbar.Icn_nav_today);
-const DashboardIcon = createStyledIcon(Icons.Navbar.Icn_nav_dashboard);
-const CalendarIcon = createStyledIcon(Icons.Navbar.Icn_nav_calendar);
-const SettingIcon = createStyledIcon(Icons.Navbar.Icn_nav_setting);
+const TodayIcon = createStyledIcon(Icons.Navbar.IcnNavToday);
+const DashboardIcon = createStyledIcon(Icons.Navbar.IcnNavDashboard);
+const CalendarIcon = createStyledIcon(Icons.Navbar.IcnNavCalendar);
+const SettingIcon = createStyledIcon(Icons.Navbar.IcnNavSetting);
 
 const Caption = styled.p<{ $iscurrent: boolean }>`
 	${({ theme }) => theme.fontTheme.CAPTION_02};
