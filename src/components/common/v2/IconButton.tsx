@@ -16,6 +16,7 @@ type IconButtonProps = {
 };
 
 function IconButton({ type, size, disabled, Icon, onClick }: IconButtonProps) {
+	// 사이즈별 분기
 	const buttonSizes: Record<SizeType, SerializedStyles> = {
 		big: css`
 			width: 4rem;
@@ -27,6 +28,7 @@ function IconButton({ type, size, disabled, Icon, onClick }: IconButtonProps) {
 		`,
 	};
 
+	// 아이콘 배경 색상 및 테두리
 	const getIconBtnStyles = (
 		strokeColor: string,
 		defaultBG: string,
@@ -65,6 +67,17 @@ function IconButton({ type, size, disabled, Icon, onClick }: IconButtonProps) {
 		outlined: getIconBtnStyles(color.Grey.White, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3, true),
 	};
 
+	// 아이콘 색상 설정
+	const getIconColor = () => {
+		const iconColors = {
+			solid: theme.color.Grey.White,
+			normal: disabled ? theme.color.Grey.Grey4 : theme.color.Grey.Grey5,
+			outlined: disabled ? theme.color.Grey.Grey4 : theme.color.Grey.Grey5,
+		};
+		return iconColors[type];
+	};
+	const ColoredIcon = cloneElement(Icon, { color: getIconColor() });
+
 	const IconBtnContainer = styled.div`
 		display: flex;
 		${buttonSizes[size]}
@@ -75,28 +88,7 @@ function IconButton({ type, size, disabled, Icon, onClick }: IconButtonProps) {
 		${buttonStyles[type]}
 	`;
 
-	const getIconColor = () => {
-		switch (type) {
-			case 'solid':
-				return theme.color.Grey.White;
-
-			case 'normal':
-			case 'outlined':
-				if (disabled) {
-					return theme.color.Grey.Grey4;
-				}
-				return theme.color.Grey.Grey5;
-
-			default:
-				return theme.color.Grey.Grey4;
-		}
-	};
-
-	return (
-		<IconBtnContainer onClick={disabled ? () => {} : onClick}>
-			{cloneElement(Icon, { color: getIconColor() })}
-		</IconBtnContainer>
-	);
+	return <IconBtnContainer onClick={disabled ? () => {} : onClick}>{ColoredIcon}</IconBtnContainer>;
 }
 
 export default IconButton;
