@@ -16,7 +16,7 @@ type ButtonProps = {
 	onClick: () => void;
 };
 
-function Button({ type, size, disabled, leftIcon, rightIcon, label, onClick }: ButtonProps) {
+function Button({ type, size = 'medium', disabled = false, leftIcon, rightIcon, label, onClick }: ButtonProps) {
 	const theme = useTheme();
 	// 크기별 사이즈
 	const buttonSizes: Record<SizeType, SerializedStyles> = {
