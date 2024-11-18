@@ -1,6 +1,6 @@
 import { css, SerializedStyles, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 
 // 이후 타입 여러군데에서 필요하면 빼서 export
 type SizeType = 'small' | 'medium' | 'large';
@@ -10,8 +10,8 @@ type ButtonProps = {
 	type: ButtonType;
 	size: SizeType;
 	disabled: boolean;
-	leftIcon?: ReactNode;
-	rightIcon?: ReactNode;
+	leftIcon?: ReactElement;
+	rightIcon?: ReactElement;
 	label: string;
 	onClick: () => void;
 };
@@ -110,7 +110,6 @@ function Button({ type, size = 'medium', disabled = false, leftIcon, rightIcon, 
 		${buttonTypeStyle[type]}
 		border-radius: 8px;
 	`;
-
 	return (
 		<ButtonLayout onClick={disabled ? () => {} : onClick}>
 			{leftIcon && leftIcon}
