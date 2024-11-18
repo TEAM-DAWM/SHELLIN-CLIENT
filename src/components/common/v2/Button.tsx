@@ -49,6 +49,8 @@ function Button({ type, size = 'medium', disabled = false, leftIcon, rightIcon, 
 				background-color: transparent;
 				${border &&
 				css`
+					box-sizing: border-box;
+
 					border: solid 1px ${color.Grey.Grey4};
 				`}
 			`;
@@ -59,6 +61,8 @@ function Button({ type, size = 'medium', disabled = false, leftIcon, rightIcon, 
 			background-color: ${bgColor};
 			${border &&
 			css`
+				box-sizing: border-box;
+
 				border: solid 1px ${baseColor};
 			`}
 
