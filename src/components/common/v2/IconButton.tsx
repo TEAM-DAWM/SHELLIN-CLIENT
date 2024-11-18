@@ -12,7 +12,7 @@ type IconButtonProps = {
 	onClick: () => void;
 };
 
-function IconButton({ type, size, disabled, Icon, onClick }: IconButtonProps) {
+function IconButton({ type, size = 'small', disabled = false, Icon, onClick }: IconButtonProps) {
 	const theme = useTheme();
 	// 사이즈별 분기
 	const buttonSizes: Record<SizeType, SerializedStyles> = {
