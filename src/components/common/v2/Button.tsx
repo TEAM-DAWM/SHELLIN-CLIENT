@@ -1,9 +1,6 @@
-import { css, SerializedStyles } from '@emotion/react';
+import { css, SerializedStyles, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
-
-import color from '@/styles/color';
-import font from '@/styles/font';
 
 // 이후 타입 여러군데에서 필요하면 빼서 export
 type SizeType = 'small' | 'medium' | 'large';
@@ -20,19 +17,20 @@ type ButtonProps = {
 };
 
 function Button({ type, size, disabled, leftIcon, rightIcon, label, onClick }: ButtonProps) {
+	const theme = useTheme();
 	// 크기별 사이즈
 	const buttonSizes: Record<SizeType, SerializedStyles> = {
 		small: css`
 			height: 2.4rem;
-			${font.label05}
+			${theme.font.label05}
 		`,
 		medium: css`
 			height: 3.2rem;
-			${font.label04}
+			${theme.font.label04}
 		`,
 		large: css`
 			height: 4rem;
-			${font.label03}
+			${theme.font.label03}
 		`,
 	};
 
@@ -46,12 +44,12 @@ function Button({ type, size, disabled, leftIcon, rightIcon, label, onClick }: B
 	) => {
 		if (disabled) {
 			return css`
-				color: ${color.Grey.Grey4};
+				color: ${theme.color.Grey.Grey4};
 
 				background-color: transparent;
 				${border &&
 				css`
-					border: solid 1px ${color.Grey.Grey4};
+					border: solid 1px ${theme.color.Grey.Grey4};
 				`}
 			`;
 		}
@@ -76,25 +74,47 @@ function Button({ type, size, disabled, leftIcon, rightIcon, label, onClick }: B
 
 	const buttonTypeStyle: Record<ButtonType, SerializedStyles> = {
 		solid: css`
-			color: ${disabled ? color.Grey.Grey4 : color.Grey.White};
+			color: ${disabled ? theme.color.Grey.Grey4 : theme.color.Grey.White};
 
-			background-color: ${disabled ? color.Grey.Grey3 : color.Blue.Blue6};
+			background-color: ${disabled ? theme.color.Grey.Grey3 : theme.color.Blue.Blue6};
 
 			${!disabled &&
 			css`
 				:hover {
-					background-color: ${color.Blue.Blue7};
+					background-color: ${theme.color.Blue.Blue7};
 				}
 
 				:active {
-					background-color: ${color.Blue.Blue8};
+					background-color: ${theme.color.Blue.Blue8};
 				}
 			`}
 		`,
-		'outlined-primary': getButtonStateStyles(color.Blue.Blue7, color.Grey.White, color.Blue.Blue2, color.Blue.Blue3),
-		'outlined-assistive': getButtonStateStyles(color.Grey.Grey6, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3),
-		'text-primary': getButtonStateStyles(color.Blue.Blue7, 'transparent', color.Blue.Blue2, color.Blue.Blue3, false),
-		'text-assistive': getButtonStateStyles(color.Grey.Grey6, 'transparent', color.Grey.Grey2, color.Grey.Grey3, false),
+		'outlined-primary': getButtonStateStyles(
+			theme.color.Blue.Blue7,
+			theme.color.Grey.White,
+			theme.color.Blue.Blue2,
+			theme.color.Blue.Blue3
+		),
+		'outlined-assistive': getButtonStateStyles(
+			theme.color.Grey.Grey6,
+			theme.color.Grey.White,
+			theme.color.Grey.Grey2,
+			theme.color.Grey.Grey3
+		),
+		'text-primary': getButtonStateStyles(
+			theme.color.Blue.Blue7,
+			'transparent',
+			theme.color.Blue.Blue2,
+			theme.color.Blue.Blue3,
+			false
+		),
+		'text-assistive': getButtonStateStyles(
+			theme.color.Grey.Grey6,
+			'transparent',
+			theme.color.Grey.Grey2,
+			theme.color.Grey.Grey3,
+			false
+		),
 	};
 
 	const ButtonLayout = styled.div`
