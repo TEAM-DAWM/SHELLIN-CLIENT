@@ -1,6 +1,6 @@
 import { css, SerializedStyles, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { cloneElement, ReactElement } from 'react';
+import { ReactElement } from 'react';
 
 type SizeType = 'small' | 'big';
 type IconBtnType = 'solid' | 'normal' | 'outlined';
@@ -37,25 +37,30 @@ function IconButton({ type, size = 'small', disabled = false, Icon, onClick }: I
 		if (disabled) {
 			if (type === 'solid')
 				return css`
+					color: ${color.Grey.White};
+
 					background-color: ${color.Blue.Blue2};
 				`;
 			return css`
+				color: ${color.Grey.Grey4};
 				${border &&
 				css`
 					box-sizing: border-box;
 
 					border: solid 1px ${color.Grey.Grey3};
-				`}
+				`};
 			`;
 		}
 		return css`
+			color: ${strokeColor};
+
 			background-color: ${defaultBG};
 
 			${border &&
 			css`
 				box-sizing: border-box;
 
-				border: solid 1px ${strokeColor};
+				border: solid 1px ${color.Grey.Grey4};
 			`}
 
 			:hover {
@@ -70,19 +75,8 @@ function IconButton({ type, size = 'small', disabled = false, Icon, onClick }: I
 	const buttonStyles: Record<IconBtnType, SerializedStyles> = {
 		solid: getIconBtnStyles(color.Grey.White, color.Blue.Blue6, color.Blue.Blue7, color.Blue.Blue8, false),
 		normal: getIconBtnStyles(color.Grey.Grey5, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3, false),
-		outlined: getIconBtnStyles(color.Grey.Grey4, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3, true),
+		outlined: getIconBtnStyles(color.Grey.Grey5, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3, true),
 	};
-
-	// 아이콘 색상 설정
-	const getIconColor = () => {
-		const iconColors = {
-			solid: color.Grey.White,
-			normal: disabled ? color.Grey.Grey4 : color.Grey.Grey5,
-			outlined: disabled ? color.Grey.Grey4 : color.Grey.Grey5,
-		};
-		return iconColors[type];
-	};
-	const ColoredIcon = cloneElement(Icon, { color: getIconColor() });
 
 	const IconBtnContainer = styled.div`
 		display: flex;
@@ -94,7 +88,7 @@ function IconButton({ type, size = 'small', disabled = false, Icon, onClick }: I
 		${buttonStyles[type]}
 	`;
 
-	return <IconBtnContainer onClick={disabled ? () => {} : onClick}>{ColoredIcon}</IconBtnContainer>;
+	return <IconBtnContainer onClick={disabled ? () => {} : onClick}>{Icon}</IconBtnContainer>;
 }
 
 export default IconButton;
