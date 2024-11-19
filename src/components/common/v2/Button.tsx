@@ -13,7 +13,7 @@ type ButtonProps = {
 	leftIcon?: ReactElement;
 	rightIcon?: ReactElement;
 	label: string;
-	onClick: () => void;
+	onClick?: () => void;
 };
 
 function Button({ type, size = 'medium', disabled = false, leftIcon, rightIcon, label, onClick }: ButtonProps) {
