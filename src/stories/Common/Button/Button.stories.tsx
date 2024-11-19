@@ -5,7 +5,7 @@ import Icons from '@/assets/svg/index';
 import Button from '@/components/common/v2/Button';
 
 const meta = {
-	title: 'Common/Button',
+	title: 'Common/Button/Button',
 	component: Button,
 	parameters: {
 		layout: 'centered',

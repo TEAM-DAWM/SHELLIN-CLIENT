@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import ToggleSwitchButton from '@/components/common/v2/ToggleSwitchButton';
 
 const meta = {
-	title: 'Common/ToggleSwitchButton',
+	title: 'Common/Button/ToggleSwitchButton',
 	component: ToggleSwitchButton,
 	parameters: {
 		layout: 'centered',
