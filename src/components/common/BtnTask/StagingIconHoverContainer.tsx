@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import useIconHoverUtil from './useIconHoverUtil';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import StatusStagingBtn from '@/components/common/button/statusBtn/StatusStagingBtn';
 
 type Props = {

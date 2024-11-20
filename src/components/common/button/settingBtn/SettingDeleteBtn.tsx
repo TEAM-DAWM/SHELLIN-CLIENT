@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import { smallIcon, bigIcon, SettingCss, smallSize, bigSize } from './settingBtnStyle';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 
 interface SettingDeleteBtnProps {
 	size: 'small' | 'big';

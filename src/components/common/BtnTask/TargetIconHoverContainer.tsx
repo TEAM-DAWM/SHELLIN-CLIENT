@@ -6,7 +6,7 @@ import TodayPlusBtn from '../button/TodayPlusBtn';
 
 import useIconHoverUtil from './useIconHoverUtil';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import StatusDoneBtn from '@/components/common/button/statusBtn/StatusDoneBtn';
 import StatusInProgressBtn from '@/components/common/button/statusBtn/StatusInProgressBtn';
 import StatusTodoBtn from '@/components/common/button/statusBtn/StatusTodoBtn';

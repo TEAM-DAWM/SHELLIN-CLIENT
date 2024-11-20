@@ -3,7 +3,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 
 import useAccountAdd from '@/apis/calendar/addCalendar/query';
 import Images from '@/assets/images';
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 
 function GoogleCalendarBtn() {
 	const { mutate } = useAccountAdd();

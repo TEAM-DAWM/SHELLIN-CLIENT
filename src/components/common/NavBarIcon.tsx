@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useLocation } from 'react-router-dom';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import { PAGE_ROUTE } from '@/constants/pages';
 
 interface NavBarIconProps {

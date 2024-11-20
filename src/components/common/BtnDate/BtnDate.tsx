@@ -7,7 +7,7 @@ import ModalBackdrop from '../modal/ModalBackdrop';
 
 import BtnDateText, { TextWrapper } from './BtnDateText';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import MODAL from '@/constants/modalLocation';
 import { SizeType } from '@/types/textInputType';
 import parseDate from '@/utils/parseDate';
