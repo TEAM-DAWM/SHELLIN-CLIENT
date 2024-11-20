@@ -13,10 +13,20 @@ type ButtonProps = {
 	leftIcon?: ReactElement;
 	rightIcon?: ReactElement;
 	label: string;
+	additionalCss?: SerializedStyles;
 	onClick?: () => void;
 };
 
-function Button({ type, size = 'medium', disabled = false, leftIcon, rightIcon, label, onClick }: ButtonProps) {
+function Button({
+	type,
+	size = 'medium',
+	disabled = false,
+	leftIcon,
+	rightIcon,
+	label,
+	additionalCss,
+	onClick,
+}: ButtonProps) {
 	const { font, color } = useTheme();
 	// 크기별 사이즈
 	const buttonSizes: Record<SizeType, SerializedStyles> = {
@@ -49,8 +59,6 @@ function Button({ type, size = 'medium', disabled = false, leftIcon, rightIcon, 
 				background-color: transparent;
 				${border &&
 				css`
-					box-sizing: border-box;
-
 					border: solid 1px ${color.Grey.Grey4};
 				`}
 			`;
@@ -61,8 +69,6 @@ function Button({ type, size = 'medium', disabled = false, leftIcon, rightIcon, 
 			background-color: ${bgColor};
 			${border &&
 			css`
-				box-sizing: border-box;
-
 				border: solid 1px ${baseColor};
 			`}
 
@@ -103,12 +109,15 @@ function Button({ type, size = 'medium', disabled = false, leftIcon, rightIcon, 
 		display: flex;
 		gap: 0.8rem;
 		align-items: center;
+		box-sizing: border-box;
 		${buttonSizes[size]};
 		padding-right: 1.6rem;
 		padding-left: 1.6rem;
 
 		${buttonTypeStyle[type]}
 		border-radius: 8px;
+
+		${additionalCss}
 	`;
 	return (
 		<ButtonLayout onClick={disabled ? () => {} : onClick}>
