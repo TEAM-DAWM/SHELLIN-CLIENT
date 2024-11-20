@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
-import CheckButton from '@/components/common/v2/CheckButton';
+import CheckButton from '@/components/common/v2/control/CheckButton';
 
 const meta = {
 	title: 'Common/Button/CheckButton',

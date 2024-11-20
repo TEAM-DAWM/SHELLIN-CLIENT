@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import Button from './Button';
+import Button from './button/Button';
 
 import Icons from '@/assets/svg/index';
 

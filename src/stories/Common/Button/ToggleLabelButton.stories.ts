@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
-import ToggleLabelButton from '@/components/common/v2/ToggleLabelButton';
+import ToggleLabelButton from '@/components/common/v2/control/ToggleLabelButton';
 
 const meta = {
 	title: 'Common/Button/ToggleLabelButton',

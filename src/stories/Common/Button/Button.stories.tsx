@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
 import Icons from '@/assets/svg/index';
-import Button from '@/components/common/v2/Button';
+import Button from '@/components/common/v2/button/Button';
 
 const meta = {
 	title: 'Common/Button/Button',

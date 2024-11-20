@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import DropdownButton from '@/components/common/v2/DropdownButton';
+import DropdownButton from '@/components/common/v2/control/DropdownButton';
 
 const meta = {
 	title: 'Common/Button/DropdownButton',
