@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import ToggleLabelButton from '@/components/common/v2/control/ToggleLabelButton';
 
 const meta = {
-	title: 'Common/Button/ToggleLabelButton',
+	title: 'Common/Control/ToggleLabelButton',
 	component: ToggleLabelButton,
 	parameters: {
 		layout: 'centered',
