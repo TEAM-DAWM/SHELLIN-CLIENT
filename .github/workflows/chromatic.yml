@@ -6,6 +6,10 @@ on:
       branches:
         - develop
 
+permissions:
+  pull-requests: write
+  contents: read 
+
 # List of jobs
 jobs:
   chromatic:
