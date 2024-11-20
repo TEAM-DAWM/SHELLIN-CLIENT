@@ -34,4 +34,6 @@ jobs:
         env:
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-           message: "🚀 Storybook 확인하기 🚀 : ${{steps.chromatic.outputs.storybookUrl}}"
+           message: |
+            🚀 Storybook 🚀
+            - ${{ steps.chromatic.outputs.storybookUrl }}
