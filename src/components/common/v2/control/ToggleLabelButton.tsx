@@ -1,4 +1,7 @@
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+
+import Button from '../button/Button';
 
 type ToggleLabelButtonProps = {
 	active: boolean;
@@ -8,10 +11,31 @@ type ToggleLabelButtonProps = {
 };
 
 function ToggleLabelButton({ active, firstLabel, secondLabel, onClick }: ToggleLabelButtonProps) {
+	const { color } = useTheme();
+	const toggleBtnCss = css`
+		justify-content: center;
+		width: 100%;
+	`;
+	const disabledButtonCss = css`
+		${toggleBtnCss}
+		background-color: ${color.Grey.Grey3};
+	`;
 	return (
 		<ToggleLabelButtonContainer onClick={onClick}>
-			<ToggleBtn active={active}>{firstLabel}</ToggleBtn>
-			<ToggleBtn active={!active}>{secondLabel}</ToggleBtn>
+			<Button
+				disabled={false}
+				label={firstLabel}
+				size="medium"
+				type="text-assistive"
+				additionalCss={active ? toggleBtnCss : disabledButtonCss}
+			/>
+			<Button
+				disabled={false}
+				label={secondLabel}
+				size="medium"
+				type="text-assistive"
+				additionalCss={!active ? toggleBtnCss : disabledButtonCss}
+			/>
 		</ToggleLabelButtonContainer>
 	);
 }
@@ -25,16 +49,4 @@ const ToggleLabelButtonContainer = styled.div`
 	border-radius: 8px;
 `;
 
-const ToggleBtn = styled.div<{ active: boolean }>`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-
-	color: ${({ theme }) => theme.color.Grey.Grey7};
-
-	background-color: ${({ active, theme }) => (active ? theme.color.Grey.White : theme.color.Grey.Grey3)};
-	border-radius: 8px;
-	${({ theme }) => theme.font.label04};
-`;
 export default ToggleLabelButton;
