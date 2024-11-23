@@ -60,7 +60,7 @@ const CalendarText = styled.p`
 	${({ theme }) => theme.fontTheme.BODY_02};
 `;
 
-const IconBox = styled(Icons.plus_circle)`
+const IconBox = styled(Icons.PlusCircle)`
 	box-sizing: border-box;
 	width: 2.4rem;
 	height: 2.4rem;
