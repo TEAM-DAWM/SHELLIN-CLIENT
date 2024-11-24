@@ -30,31 +30,21 @@ import IcnUp from '@/assets/svg/V2/IcnUp.svg';
 import IcnX from '@/assets/svg/V2/IcnX.svg';
 
 const Icn = {
-	AngleIcons: {
-		IcnDown,
-		IcnLeft,
-		IcnRight,
-		IcnUp,
-	},
-	ArrowIcons: {
-		IcnArrowDown,
-		IcnArrowUp,
-	},
-	CheckboxIcons: {
-		IcnCheckboxOff,
-		IcnCheckboxOn,
-	},
-	NavbarIcons: {
-		IcnCalendar,
-		IcnDashboard,
-		IcnQuestion,
-		IcnSetting,
-		IcnTodolist,
-	},
-	RadioIcons: {
-		IcnRadioOff,
-		IcnRadioOn,
-	},
+	IcnDown,
+	IcnLeft,
+	IcnRight,
+	IcnUp,
+	IcnArrowDown,
+	IcnArrowUp,
+	IcnCheckboxOff,
+	IcnCheckboxOn,
+	IcnCalendar,
+	IcnDashboard,
+	IcnQuestion,
+	IcnSetting,
+	IcnTodolist,
+	IcnRadioOff,
+	IcnRadioOn,
 	IcnAlert,
 	IcnBlank,
 	IcnCheck,
