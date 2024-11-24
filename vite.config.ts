@@ -12,7 +12,6 @@ export default defineConfig({
 				icon: true,
 				memo: true,
 			},
-			include: '**/*.svg',
 		}),
 	],
 	resolve: {
