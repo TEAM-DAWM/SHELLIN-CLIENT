@@ -9,7 +9,7 @@ type CheckButtonProps = {
 	onClick: () => void;
 };
 
-function CheckButton({ label, size, checked, onClick }: CheckButtonProps) {
+function CheckButton({ label, size = 'small', checked = false, onClick }: CheckButtonProps) {
 	return (
 		<Button
 			type={checked ? 'text-primary' : 'text-assistive'}
