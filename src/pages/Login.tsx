@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import Images from '@/assets/images';
+import MainDate from '@/components/common/v2/TextBox/MainDate';
 import GoogleLoginBtn from '@/components/loginPage/GoogleLoginBtn';
 
 function Login() {
@@ -11,6 +12,8 @@ function Login() {
 		<GoogleOAuthProvider clientId={LOGIN_CLIENT_ID}>
 			<LoginLayout>
 				<LeftSection>
+					<MainDate year={2024} month={11} day={27} />
+
 					<LogoTitleImg src={Images.titleIcon} />
 					<LoginBtn>
 						<GoogleLoginBtn />
