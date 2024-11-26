@@ -10,11 +10,13 @@ import Today from '../pages/Today';
 
 import PrivateRoute from './PrivateRoute';
 
+import DumpingArea from '@/components/common/v2/TextBox/DumpingArea';
+
 function Router() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path="/" element={<Login />} />
+				<Route path="/" element={<DumpingArea />} />
 				<Route element={<PrivateRoute />}>
 					<Route element={<MainLayout />}>
 						<Route path="/today" element={<Today />} />
