@@ -3,6 +3,7 @@ import color from './color';
 import font from './font';
 import fontTheme from './fontTheme';
 import palette from './palette';
+import shadow from './shadow';
 import textButton from './textButtonTheme';
 
 export const theme = {
@@ -12,6 +13,7 @@ export const theme = {
 	button,
 	palette,
 	fontTheme,
+	shadow,
 };
 
 export type ThemeType = typeof theme;
