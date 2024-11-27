@@ -1,6 +1,6 @@
 import Button from '../button/Button';
 
-import Icons from '@/assets/svg/index';
+import Icn from '@/assets/svg/V2';
 
 type CheckButtonProps = {
 	label: string;
@@ -15,7 +15,7 @@ function CheckButton({ label, size = 'small', checked = false, onClick }: CheckB
 			type={checked ? 'text-primary' : 'text-assistive'}
 			size={size}
 			// TODO: 체크 아이콘으로 바꾸기
-			leftIcon={checked ? <Icons.Navbar.IcnNavDashboard /> : <Icons.Navbar.IcnNavSetting />}
+			leftIcon={checked ? <Icn.IcnAlert /> : <Icn.IcnAlert />}
 			disabled={false}
 			label={label}
 			onClick={onClick}
