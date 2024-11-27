@@ -68,7 +68,9 @@ export const SolidWithRightIcon: Story = {
 		type: 'solid',
 		size: 'medium',
 		disabled: false,
+
 		rightIcon: <Icn.IcnModify />,
+
 		label: 'Label',
 		onClick: fn(),
 	},
