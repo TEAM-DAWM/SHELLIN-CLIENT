@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
-import Icons from '@/assets/svg/index';
+import Icn from '@/assets/svg/V2';
 import Button from '@/components/common/v2/Button';
 
 const meta = {
@@ -68,7 +68,7 @@ export const SolidWithRightIcon: Story = {
 		type: 'solid',
 		size: 'medium',
 		disabled: false,
-		rightIcon: <Icons.Navbar.IcnNavDashboard />,
+		rightIcon: <Icn.IcnAlert />,
 		label: 'Label',
 		onClick: fn(),
 	},
@@ -78,7 +78,7 @@ export const SolidWithLeftIcon: Story = {
 		type: 'solid',
 		size: 'medium',
 		disabled: false,
-		leftIcon: <Icons.Navbar.IcnNavDashboard />,
+		leftIcon: <Icn.IcnAlert />,
 		label: 'Label',
 		onClick: fn(),
 	},
@@ -88,8 +88,8 @@ export const SolidWithBothIcon: Story = {
 		type: 'solid',
 		size: 'medium',
 		disabled: false,
-		leftIcon: <Icons.Navbar.IcnNavDashboard />,
-		rightIcon: <Icons.Navbar.IcnNavDashboard />,
+		leftIcon: <Icn.IcnAlert />,
+		rightIcon: <Icn.IcnAlert />,
 		label: 'Label',
 		onClick: fn(),
 	},
