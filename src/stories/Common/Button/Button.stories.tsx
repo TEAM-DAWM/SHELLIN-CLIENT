@@ -5,7 +5,7 @@ import Icn from '@/assets/svg/V2';
 import Button from '@/components/common/v2/Button';
 
 const meta = {
-	title: 'Common/Button',
+	title: 'Common/Button/Button',
 	component: Button,
 	parameters: {
 		layout: 'centered',
