@@ -47,23 +47,10 @@ const Icons = {
 	Icn_hover_indicator,
 	IcnFile,
 	Navbar: {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c15942e (fix: 제발)
 		Icn_nav_calendar,
 		Icn_nav_dashboard,
 		Icn_nav_setting,
 		Icn_nav_today,
-<<<<<<< HEAD
-=======
-		IcnNavCalendar,
-		IcnNavDashboard,
-		IcnNavSetting,
-		IcnNavToday,
->>>>>>> ba8a5fa (기존 아이콘 V1 파일 분리)
-=======
->>>>>>> c15942e (fix: 제발)
 	},
 	ArrangeBtn: {
 		IcnArrangeRight,
