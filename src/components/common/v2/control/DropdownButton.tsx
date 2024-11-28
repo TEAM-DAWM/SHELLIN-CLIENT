@@ -1,9 +1,8 @@
 import { css, useTheme } from '@emotion/react';
 import { useState } from 'react';
 
+import Icon from '../../Icon';
 import Button from '../button/Button';
-
-import Icn from '@/assets/svg/V2';
 
 // 추후 type 로 빼기
 type TaskStatus = '미완료' | '진행중' | '완료';
@@ -42,13 +41,14 @@ function DropdownButton({ status }: DropdownButtonProps) {
 		${isOpen && shadow.FloatingAction1}
 	`;
 
+	const iconType = isOpen ? 'IcnUp' : 'IcnDown';
 	return (
 		<Button
 			type={getDropdownBtnType()}
 			label={status}
 			size="medium"
 			disabled={false}
-			rightIcon={isOpen ? <Icn.IcnAlert /> : <Icn.IcnAlert />}
+			rightIcon={<Icon name={iconType} size="small" />}
 			additionalCss={customStyle}
 			onClick={handleOpen}
 		/>
