@@ -36,6 +36,7 @@ function DropdownButton({ status }: DropdownButtonProps) {
 	};
 
 	const customStyle = css`
+		gap: 0;
 		justify-content: space-between;
 		width: 9.6rem;
 		${isOpen && shadow.FloatingAction1}
