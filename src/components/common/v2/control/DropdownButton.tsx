@@ -1,7 +1,6 @@
 import { css, useTheme } from '@emotion/react';
 import { useState } from 'react';
 
-import Icon from '../../Icon';
 import Button from '../button/Button';
 
 // 추후 type 로 빼기
@@ -49,7 +48,7 @@ function DropdownButton({ status }: DropdownButtonProps) {
 			label={status}
 			size="medium"
 			disabled={false}
-			rightIcon={<Icon name={iconType} size="small" />}
+			rightIcon={iconType}
 			additionalCss={customStyle}
 			onClick={handleOpen}
 		/>
