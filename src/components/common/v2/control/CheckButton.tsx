@@ -1,6 +1,5 @@
+import Icon from '../../Icon';
 import Button from '../button/Button';
-
-import Icn from '@/assets/svg/V2';
 
 type CheckButtonProps = {
 	label: string;
@@ -10,12 +9,13 @@ type CheckButtonProps = {
 };
 
 function CheckButton({ label, size = 'small', checked = false, onClick }: CheckButtonProps) {
+	const iconSize = size === 'small' ? 'tiny' : 'medium';
+	const iconType = checked ? 'IcnCheck' : 'IcnSquare';
 	return (
 		<Button
 			type={checked ? 'text-primary' : 'text-assistive'}
 			size={size}
-			// TODO: 체크 아이콘으로 바꾸기
-			leftIcon={checked ? <Icn.IcnAlert /> : <Icn.IcnAlert />}
+			leftIcon={<Icon name={iconType} size={iconSize} />}
 			disabled={false}
 			label={label}
 			onClick={onClick}
