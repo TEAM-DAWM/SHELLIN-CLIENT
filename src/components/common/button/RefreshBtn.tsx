@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import useSyncGoogleTimeBlock from '@/apis/timeBlocks/googleTimeBlock/query';
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import LoadingSpinner from '@/components/common/spinner/Spinner';
 
 interface RefreshProps {

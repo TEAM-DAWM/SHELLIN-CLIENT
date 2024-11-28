@@ -6,7 +6,7 @@ import Modal from '../modal/Modal';
 
 import BtnTaskIconRender from './BtnTaskIconRender';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import BtnDate from '@/components/common/BtnDate/BtnDate';
 import MODAL from '@/constants/modalLocation';
 import { theme } from '@/styles/theme';

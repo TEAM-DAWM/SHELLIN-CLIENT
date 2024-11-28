@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useLocation } from 'react-router-dom';
 
-import Icons from '@/assets/svg/index';
+import Icn from '@/assets/svg/V2';
 import { PAGE_ROUTE } from '@/constants/pages';
 
 interface NavBarIconProps {
@@ -69,10 +69,10 @@ const createStyledIcon = (IconComponent: React.FunctionComponent<React.SVGProps<
 	color: ${({ theme, $iscurrent }) => ($iscurrent ? theme.palette.Primary : theme.palette.Grey.Grey5)};
 `;
 
-const TodayIcon = createStyledIcon(Icons.Navbar.IcnNavToday);
-const DashboardIcon = createStyledIcon(Icons.Navbar.IcnNavDashboard);
-const CalendarIcon = createStyledIcon(Icons.Navbar.IcnNavCalendar);
-const SettingIcon = createStyledIcon(Icons.Navbar.IcnNavSetting);
+const TodayIcon = createStyledIcon(Icn.IcnAlert);
+const DashboardIcon = createStyledIcon(Icn.IcnAlert);
+const CalendarIcon = createStyledIcon(Icn.IcnAlert);
+const SettingIcon = createStyledIcon(Icn.IcnAlert);
 
 const Caption = styled.p<{ $iscurrent: boolean }>`
 	${({ theme }) => theme.fontTheme.CAPTION_02};

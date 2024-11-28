@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 
 interface EnterBtnProps {
 	isDisabled?: boolean;

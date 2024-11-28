@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 
 interface CategoryCheckBoxProps {
 	category: string;

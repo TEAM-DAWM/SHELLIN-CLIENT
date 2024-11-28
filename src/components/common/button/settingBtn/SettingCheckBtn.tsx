@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { FunctionComponent, SVGProps } from 'react';
 
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import { SettingLayout, smallIcon, bigIcon } from '@/components/common/button/settingBtn/settingBtnStyle';
 
 const settingIconMap: Record<string, FunctionComponent<SVGProps<SVGSVGElement>>> = {
