@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
+import Icn from '@/assets/svg/V2';
 import IconButton from '@/components/common/v2/IconButton';
 
 const meta = {
@@ -11,6 +12,12 @@ const meta = {
 	},
 	tags: ['autodocs'],
 	args: { onClick: fn() },
+	argTypes: {
+		iconName: {
+			control: { type: 'select' },
+			options: Object.keys(Icn),
+		},
+	},
 } satisfies Meta<typeof IconButton>;
 
 export default meta;
