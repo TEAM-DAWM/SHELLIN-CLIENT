@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
-import Icn from '@/assets/svg/V2';
 import IconButton from '@/components/common/v2/IconButton';
 
 const meta = {
@@ -23,7 +22,7 @@ export const Solid: Story = {
 		type: 'solid',
 		size: 'big',
 		disabled: false,
-		Icon: <Icn.IcnAlert />,
+		iconName: 'IcnAlert',
 		onClick: fn(),
 	},
 };
@@ -32,7 +31,7 @@ export const Normal: Story = {
 		type: 'normal',
 		size: 'big',
 		disabled: false,
-		Icon: <Icn.IcnAlert />,
+		iconName: 'IcnAlert',
 		onClick: fn(),
 	},
 };
@@ -41,7 +40,7 @@ export const Outlined: Story = {
 		type: 'outlined',
 		size: 'big',
 		disabled: false,
-		Icon: <Icn.IcnAlert />,
+		iconName: 'IcnAlert',
 		onClick: fn(),
 	},
 };
