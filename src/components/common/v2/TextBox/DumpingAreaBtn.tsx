@@ -2,7 +2,9 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import Icon from '../../Icon';
+import Button from '../button/Button';
 
+import Icn from '@/assets/svg/V2';
 import { theme } from '@/styles/theme';
 
 const STATE = {
@@ -13,7 +15,7 @@ const STATE = {
 	FIELD: 'field',
 } as const;
 
-function DumpingArea() {
+function DumpingAreaBtn() {
 	const [state, setState] = useState<(typeof STATE)[keyof typeof STATE]>(STATE.DEFAULT);
 
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -51,17 +53,8 @@ function DumpingArea() {
 	};
 
 	return (
-		<div
-			style={{
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'center',
-				background: 'white',
-				width: '500px',
-				height: '500px',
-			}}
-		>
-			<DumpingAreaContainer state={state} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+		<DumpingAreaContainer>
+			<DumpingAreaWrapper state={state} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
 				<DumpingInput
 					state={state}
 					placeholder="해야 할 일을 여기에 쏟아내세요"
@@ -74,14 +67,35 @@ function DumpingArea() {
 						<Icon name="IcnEnter" />
 					</div>
 				</div>
-			</DumpingAreaContainer>
-		</div>
+			</DumpingAreaWrapper>
+			{(state === STATE.TYPING || state === STATE.FIELD) && (
+				<Button
+					type="outlined-primary"
+					size="small"
+					disabled={false}
+					label="마감 기간/시간"
+					leftIcon={<Icn.IcnPlus />}
+				/>
+			)}
+		</DumpingAreaContainer>
 	);
 }
 
-export default DumpingArea;
+export default DumpingAreaBtn;
 
-const DumpingAreaContainer = styled.div<{ state: (typeof STATE)[keyof typeof STATE] }>`
+const DumpingAreaContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: flex-start;
+	justify-content: center;
+	width: 50rem;
+	height: 50rem;
+
+	background: #fff;
+`;
+
+const DumpingAreaWrapper = styled.div<{ state: (typeof STATE)[keyof typeof STATE] }>`
 	display: flex;
 	align-items: center;
 	box-sizing: border-box;
