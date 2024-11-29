@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
+import Icon from '../../Icon';
+
 import { theme } from '@/styles/theme';
 
 const STATE = {
@@ -49,18 +51,31 @@ function DumpingArea() {
 	};
 
 	return (
-		<DumpingAreaContainer state={state} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-			<DumpingInput
-				state={state}
-				placeholder="해야 할 일을 여기에 쏟아내세요"
-				onFocus={handleFocus}
-				onBlur={handleBlur}
-				onChange={handleChange}
-			/>
-			<div className="icon-touch-area">
-				<img src="https://via.placeholder.com/32" alt="temporaryImg" />
-			</div>
-		</DumpingAreaContainer>
+		<div
+			style={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+				background: 'white',
+				width: '500px',
+				height: '500px',
+			}}
+		>
+			<DumpingAreaContainer state={state} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+				<DumpingInput
+					state={state}
+					placeholder="해야 할 일을 여기에 쏟아내세요"
+					onFocus={handleFocus}
+					onBlur={handleBlur}
+					onChange={handleChange}
+				/>
+				<div className="icon-touch-area">
+					<div className="icon-background">
+						<Icon name="IcnEnter" />
+					</div>
+				</div>
+			</DumpingAreaContainer>
+		</div>
 	);
 }
 
@@ -69,6 +84,7 @@ export default DumpingArea;
 const DumpingAreaContainer = styled.div<{ state: (typeof STATE)[keyof typeof STATE] }>`
 	display: flex;
 	align-items: center;
+	box-sizing: border-box;
 	width: 43.2rem;
 	height: 4.8rem;
 	padding-left: 1.6rem;
@@ -76,9 +92,6 @@ const DumpingAreaContainer = styled.div<{ state: (typeof STATE)[keyof typeof STA
 	background: ${theme.color.Blue.Blue1};
 	border-radius: 16px;
 
-	/** 
-  @todo STATE.HOVER 시 아이콘 밖으로 밀림 이슈
-   */
 	${({ state }) => {
 		switch (state) {
 			case STATE.DEFAULT:
@@ -88,8 +101,7 @@ const DumpingAreaContainer = styled.div<{ state: (typeof STATE)[keyof typeof STA
 			case STATE.HOVER:
 				return `
           border: 2px solid ${theme.color.Blue.Blue7};
-          ${theme.shadow.FloatingAction1}; 
-          
+					box-shadow: inset 0 0 4px rgb(0 0 0 / 12%);
         `;
 			case STATE.TYPING:
 			case STATE.FIELD:
@@ -108,6 +120,21 @@ const DumpingAreaContainer = styled.div<{ state: (typeof STATE)[keyof typeof STA
 		gap: 8px;
 		align-items: center;
 		padding: 8px 8px 8px 16px;
+
+		cursor: pointer;
+
+		.icon-background {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 3.2rem;
+			height: 3.2rem;
+
+			color: ${theme.colorToken.Icon.inverse};
+
+			background: ${theme.colorToken.Primary.normal};
+			border-radius: 8px;
+		}
 	}
 `;
 
@@ -127,7 +154,6 @@ const DumpingInput = styled.input<{ state: (typeof STATE)[keyof typeof STATE] }>
 				return theme.color.Blue.Blue7;
 		}
 	}};
-	font-weight: 600;
 
 	background: transparent;
 	outline: none;
@@ -140,21 +166,3 @@ const DumpingInput = styled.input<{ state: (typeof STATE)[keyof typeof STATE] }>
 		color: ${({ state }) => (state === STATE.PLACEHOLDER ? theme.color.Blue.Blue3 : theme.color.Blue.Blue7)};
 	}
 `;
-
-// STATE.DEFAULT {
-// 	border: 1px solid ${theme.color.Blue.Blue7};
-//   color: ${theme.color.Blue.Blue7};
-// }
-// STATE.HOVER {
-// 	border: 2px solid ${theme.color.Blue.Blue7};
-// 	${theme.shadow.FloatingAction1}
-//   color: ${theme.color.Blue.Blue7};
-// }
-// STATE.HOVER {
-// 	border: 1px solid ${theme.color.Blue.Blue7};
-//   color: ${theme.color.Blue.Blue3};
-// }
-// STATE.TYPING {
-// 	border: 1px solid ${theme.color.Blue.Blue7};
-//   color: ${theme.color.Grey.Grey8};
-// }
