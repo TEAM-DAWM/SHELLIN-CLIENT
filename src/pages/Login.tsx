@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import Images from '@/assets/images';
-import PopUp from '@/components/common/v2/TextBox/PopUp';
 import GoogleLoginBtn from '@/components/loginPage/GoogleLoginBtn';
 
 function Login() {
@@ -12,7 +11,6 @@ function Login() {
 		<GoogleOAuthProvider clientId={LOGIN_CLIENT_ID}>
 			<LoginLayout>
 				<LeftSection>
-					<PopUp type="title" />
 					<LogoTitleImg src={Images.titleIcon} />
 					<LoginBtn>
 						<GoogleLoginBtn />

@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
+import Icon from '../../Icon';
+
 import { theme } from '@/styles/theme';
 
 const TYPE = {
@@ -15,11 +17,11 @@ const STATE = {
 	FIELD: 'field',
 } as const;
 
-type Props = {
+type PopUpProps = {
 	type: (typeof TYPE)[keyof typeof TYPE];
 };
 
-function PopUp({ type = 'title' }: Props) {
+function PopUp({ type }: PopUpProps) {
 	const [state, setState] = useState<(typeof STATE)[keyof typeof STATE]>(STATE.DEFAULT);
 
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -43,21 +45,28 @@ function PopUp({ type = 'title' }: Props) {
 	};
 
 	return (
-		/**
-		 * @todo type === TYPE.DESC && state === STATE.DEFAULT 일때만 아이콘 뜨도록
-		 */
-		<StyledInput
-			type={type}
-			state={state}
-			placeholder="제목을 입력하세요"
-			onFocus={handleFocus}
-			onBlur={handleBlur}
-			onChange={handleChange}
-		/>
+		<PopUpContainer>
+			{type === TYPE.DESC && state === STATE.DEFAULT && <Icon name="IcnDescription" size="tiny" />}
+			<StyledInput
+				type={type}
+				state={state}
+				placeholder="제목을 입력하세요"
+				onFocus={handleFocus}
+				onBlur={handleBlur}
+				onChange={handleChange}
+			/>
+		</PopUpContainer>
 	);
 }
 
 export default PopUp;
+
+const PopUpContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+	align-items: center;
+`;
 
 const StyledInput = styled.input<{ type: Props['type']; state: (typeof STATE)[keyof typeof STATE] }>`
 	${({ type }) => (type === TYPE.TITLE ? theme.font.title02 : theme.font.body03)};
@@ -76,7 +85,6 @@ const StyledInput = styled.input<{ type: Props['type']; state: (typeof STATE)[ke
 				return theme.color.Grey.Grey6;
 		}
 	}};
-	font-weight: 600; /* 수정필요 */
 
 	outline: none;
 	border-width: 0;
@@ -85,39 +93,3 @@ const StyledInput = styled.input<{ type: Props['type']; state: (typeof STATE)[ke
 		color: ${({ state }) => (state === STATE.DEFAULT ? theme.color.Grey.Grey6 : theme.color.Grey.Grey4)};
 	}
 `;
-
-// TYPE.TITLE: {
-// 	${theme.font.title02};
-// 	caret-color: ${theme.color.Blue.Blue7}
-
-// 	STATE.DEFAULT: css`
-// 		color: ${theme.color.Grey.Grey6};
-// 	`
-// 	STATE.PLACEHOLDER: css`
-// 		color: ${theme.color.Grey.Grey4};
-// 	`
-// 	STATE.TYPING: css`
-// 		color: ${theme.color.Grey.Grey8};
-// 	`
-// 	STATE.FIELD: css`
-// 		color: ${theme.color.Grey.Grey8};
-// 	`
-// }
-
-// TYPE.DESC: {
-// 	${theme.font.body03};
-// 	caret-color: ${theme.color.Blue.Blue7}
-
-// 	STATE.DEFAULT: css`
-// 		color: ${theme.color.Grey.Grey6};
-// 	`
-// 	STATE.PLACEHOLDER: css`
-// 		color: ${theme.color.Grey.Grey4};
-// 	`
-// 	STATE.TYPING: css`
-// 		color: ${theme.color.Grey.Grey8};
-// 	`
-// 	STATE.FIELD: css`
-// 		color: ${theme.color.Grey.Grey8};
-// 	`
-// }
