@@ -68,7 +68,7 @@ const PopUpContainer = styled.div`
 	align-items: center;
 `;
 
-const StyledInput = styled.input<{ type: Props['type']; state: (typeof STATE)[keyof typeof STATE] }>`
+const StyledInput = styled.input<{ type: PopUpProps['type']; state: (typeof STATE)[keyof typeof STATE] }>`
 	${({ type }) => (type === TYPE.TITLE ? theme.font.title02 : theme.font.body03)};
 	caret-color: ${theme.color.Blue.Blue7};
 
