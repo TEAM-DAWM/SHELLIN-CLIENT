@@ -3,7 +3,7 @@ import { fn } from '@storybook/test';
 
 import CheckButton from '@/components/common/v2/control/CheckButton';
 
-const meta = {
+const meta: Meta<typeof CheckButton> = {
 	title: 'Common/Control/CheckButton',
 	component: CheckButton,
 	parameters: {

@@ -3,7 +3,7 @@ import { fn } from '@storybook/test';
 
 import Button from './Button';
 
-const meta = {
+const meta: Meta<typeof Button> = {
 	title: 'Example/Button', // 스토리북에 올릴 component폴더 계층 구조,
 	component: Button, // 스토리를 만들 컴포넌트 이름
 	parameters: {

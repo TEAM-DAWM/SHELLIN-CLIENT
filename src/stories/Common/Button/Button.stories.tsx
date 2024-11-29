@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import Icn from '@/assets/svg/V2';
 import Button from '@/components/common/v2/button/Button';
 
-const meta = {
+const meta: Meta<typeof Button> = {
 	title: 'Common/Button/Button',
 	component: Button,
 	parameters: {
