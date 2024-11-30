@@ -47,11 +47,11 @@ function DumpingAreaBtn() {
 					onBlur={handleBlur}
 					onChange={handleChange}
 				/>
-				<div className="icon-touch-area">
+				<IconTouchArea>
 					<div className="icon-background">
 						<Icon name="IcnEnter" />
 					</div>
-				</div>
+				</IconTouchArea>
 			</DumpingAreaWrapper>
 			{(state === STATE.TYPING || state === STATE.FIELD) && (
 				<Button type="outlined-primary" size="small" disabled={false} label="마감 기간/시간" leftIcon="IcnPlus" />
@@ -103,31 +103,31 @@ const DumpingAreaWrapper = styled.div<{ state: (typeof STATE)[keyof typeof STATE
 		}
 	}}
 
-	.icon-touch-area {
-		display: flex;
-		gap: 8px;
-		align-items: center;
-		padding: 8px 8px 8px 16px;
-
-		cursor: pointer;
-
-		.icon-background {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 3.2rem;
-			height: 3.2rem;
-
-			color: ${({ theme }) => theme.colorToken.Icon.inverse};
-
-			background: ${({ theme }) => theme.colorToken.Primary.normal};
-			border-radius: 8px;
-		}
-	}
-
 	&:hover {
 		box-shadow: inset 0 0 4px rgb(0 0 0 / 12%);
 		border: 2px solid ${({ theme }) => theme.color.Blue.Blue7};
+	}
+`;
+
+const IconTouchArea = styled.div`
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	padding: 8px 8px 8px 16px;
+
+	cursor: pointer;
+
+	.icon-background {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 3.2rem;
+		height: 3.2rem;
+
+		color: ${({ theme }) => theme.colorToken.Icon.inverse};
+
+		background: ${({ theme }) => theme.colorToken.Primary.normal};
+		border-radius: 8px;
 	}
 `;
 
