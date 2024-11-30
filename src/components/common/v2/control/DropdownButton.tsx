@@ -3,8 +3,6 @@ import { useState } from 'react';
 
 import Button from '../button/Button';
 
-import Icn from '@/assets/svg/V2';
-
 // 추후 type 로 빼기
 type TaskStatus = '미완료' | '진행중' | '완료';
 type DropdownButtonProps = {
@@ -37,18 +35,20 @@ function DropdownButton({ status }: DropdownButtonProps) {
 	};
 
 	const customStyle = css`
+		gap: 0;
 		justify-content: space-between;
 		width: 9.6rem;
 		${isOpen && shadow.FloatingAction1}
 	`;
 
+	const iconType = isOpen ? 'IcnUp' : 'IcnDown';
 	return (
 		<Button
 			type={getDropdownBtnType()}
 			label={status}
 			size="medium"
 			disabled={false}
-			rightIcon={isOpen ? <Icn.IcnAlert /> : <Icn.IcnAlert />}
+			rightIcon={iconType}
 			additionalCss={customStyle}
 			onClick={handleOpen}
 		/>

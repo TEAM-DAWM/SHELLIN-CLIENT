@@ -12,6 +12,16 @@ const meta = {
 	},
 	tags: ['autodocs'],
 	args: { onClick: fn() },
+	argTypes: {
+		leftIcon: {
+			control: { type: 'select' },
+			options: Object.keys(Icn),
+		},
+		rightIcon: {
+			control: { type: 'select' },
+			options: Object.keys(Icn),
+		},
+	},
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -68,9 +78,7 @@ export const SolidWithRightIcon: Story = {
 		type: 'solid',
 		size: 'medium',
 		disabled: false,
-
-		rightIcon: <Icn.IcnModify />,
-
+		rightIcon: 'IcnCheck',
 		label: 'Label',
 		onClick: fn(),
 	},
@@ -80,7 +88,7 @@ export const SolidWithLeftIcon: Story = {
 		type: 'solid',
 		size: 'medium',
 		disabled: false,
-		leftIcon: <Icn.IcnAlert />,
+		leftIcon: 'IcnCheck',
 		label: 'Label',
 		onClick: fn(),
 	},
@@ -90,8 +98,8 @@ export const SolidWithBothIcon: Story = {
 		type: 'solid',
 		size: 'medium',
 		disabled: false,
-		leftIcon: <Icn.IcnModify />,
-		rightIcon: <Icn.IcnModify />,
+		leftIcon: 'IcnCheck',
+		rightIcon: 'IcnCheck',
 		label: 'Label',
 		onClick: fn(),
 	},

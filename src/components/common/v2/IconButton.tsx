@@ -1,6 +1,9 @@
 import { css, SerializedStyles, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ReactElement } from 'react';
+
+import Icon from '../Icon';
+
+import Icn from '@/assets/svg/V2';
 
 type SizeType = 'small' | 'big';
 type IconBtnType = 'solid' | 'normal' | 'outlined';
@@ -8,11 +11,11 @@ type IconButtonProps = {
 	type: IconBtnType;
 	size: SizeType;
 	disabled: boolean;
-	Icon: ReactElement;
+	iconName: keyof typeof Icn;
 	onClick: () => void;
 };
 
-function IconButton({ type, size = 'small', disabled = false, Icon, onClick }: IconButtonProps) {
+function IconButton({ type, size = 'small', disabled = false, iconName, onClick }: IconButtonProps) {
 	const { color } = useTheme();
 	// 사이즈별 분기
 	const buttonSizes: Record<SizeType, SerializedStyles> = {
@@ -88,7 +91,12 @@ function IconButton({ type, size = 'small', disabled = false, Icon, onClick }: I
 		${buttonStyles[type]}
 	`;
 
-	return <IconBtnContainer onClick={disabled ? () => {} : onClick}>{Icon}</IconBtnContainer>;
+	const iconSize = size === 'big' ? 'large' : 'medium';
+	return (
+		<IconBtnContainer onClick={disabled ? () => {} : onClick}>
+			<Icon name={iconName} size={iconSize} />
+		</IconBtnContainer>
+	);
 }
 
 export default IconButton;
