@@ -37,21 +37,9 @@ function DumpingAreaBtn() {
 		}
 	};
 
-	const handleMouseEnter = () => {
-		if (state === STATE.DEFAULT) {
-			setState(STATE.HOVER);
-		}
-	};
-
-	const handleMouseLeave = () => {
-		if (state === STATE.HOVER) {
-			setState(STATE.DEFAULT);
-		}
-	};
-
 	return (
 		<DumpingAreaContainer>
-			<DumpingAreaWrapper state={state} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+			<DumpingAreaWrapper state={state}>
 				<DumpingInput
 					state={state}
 					placeholder="해야 할 일을 여기에 쏟아내세요"
@@ -135,6 +123,11 @@ const DumpingAreaWrapper = styled.div<{ state: (typeof STATE)[keyof typeof STATE
 			background: ${({ theme }) => theme.colorToken.Primary.normal};
 			border-radius: 8px;
 		}
+	}
+
+	&:hover {
+		box-shadow: inset 0 0 4px rgb(0 0 0 / 12%);
+		border: 2px solid ${({ theme }) => theme.color.Blue.Blue7};
 	}
 `;
 
