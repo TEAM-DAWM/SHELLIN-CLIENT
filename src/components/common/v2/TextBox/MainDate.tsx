@@ -44,9 +44,6 @@ const { year: TodayYear, month: TodayMonth, date: TodayDay } = getToday();
 function MainDate({ year, month, day }: MainDateProps) {
 	const [isToday, setIsToday] = useState(false);
 
-	// console.log('todayDate', TodayYear, TodayMonth, TodayDay);
-	// console.log('inputDate', year, month, day);
-
 	useEffect(() => {
 		if ((year === undefined || TodayYear === year) && TodayMonth === month && TodayDay === day) {
 			setIsToday(true);
@@ -97,14 +94,3 @@ const MainDateContainer = styled.div`
 		border-radius: 4px;
 	}
 `;
-
-// 년/월/일 -> 오늘 on/off
-// 년/월 -> 오늘 off
-// 월/일 -> (항상 올해라고 가정하고) 오늘 on/off
-// 년/일 -> 이런 거 없음 (?)
-
-// 최종
-// 년은 입력 없으면 디폴트로 올해라고 가정.
-// 일 안들어오면 '오늘' off
-// 월은 무조건 들어와야함.
-// 월, 일 들어오면 비교
