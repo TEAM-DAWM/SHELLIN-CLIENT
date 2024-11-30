@@ -105,5 +105,27 @@ const SubDateContainer = styled.div<{
 			color: ${textStyles[type].weekDay};
 			${theme.font.body04};
 		}
+
+		${type === TYPE.SECONDARY &&
+		css`
+			${underlineStyle}
+		`}
 	`}
+`;
+
+const underlineStyle = css`
+	position: relative;
+
+	&::after {
+		position: absolute;
+		bottom: 2px;
+		left: 50%;
+		width: 3.2rem;
+		height: 0.1rem;
+
+		background-color: ${theme.colorToken.Text.primary};
+		transform: translateX(-50%);
+
+		content: '';
+	}
 `;

@@ -2,8 +2,6 @@ import styled from '@emotion/styled';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import Images from '@/assets/images';
-import MainDate from '@/components/common/v2/TextBox/MainDate';
-import SubDate from '@/components/common/v2/TextBox/SubDate';
 import GoogleLoginBtn from '@/components/loginPage/GoogleLoginBtn';
 
 function Login() {
@@ -13,20 +11,6 @@ function Login() {
 		<GoogleOAuthProvider clientId={LOGIN_CLIENT_ID}>
 			<LoginLayout>
 				<LeftSection>
-					<MainDate year={2024} month={11} day={27} />
-
-					{/* <SubDate day="23" weekDay="화" type="Teritary" state="Default" />
-					<SubDate day="23" weekDay="화" type="Teritary" state="Hover" />
-					<SubDate day="23" weekDay="화" type="Teritary" state="Pressed" />
-
-					<SubDate day="23" weekDay="화" type="Secondary" state="Default" />
-					<SubDate day="23" weekDay="화" type="Secondary" state="Hover" />
-					<SubDate day="23" weekDay="화" type="Secondary" state="Pressed" /> */}
-
-					<SubDate day="23" weekDay="화" type="Primary" state="Default" />
-					<SubDate day="23" weekDay="화" type="Primary" state="Hover" />
-					<SubDate day="23" weekDay="화" type="Primary" state="Pressed" />
-
 					<LogoTitleImg src={Images.titleIcon} />
 					<LoginBtn>
 						<GoogleLoginBtn />
