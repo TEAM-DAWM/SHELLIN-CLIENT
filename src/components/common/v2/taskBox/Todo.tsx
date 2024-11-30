@@ -20,8 +20,10 @@ type TodoProps = {
 };
 
 function Todo({ title, deadline, status }: TodoProps) {
+	const isCompleted = status === STATUS.COMPLETE;
+
 	return (
-		<TodoContainer status={status}>
+		<TodoContainer isCompleted={isCompleted}>
 			<TodoWrapper>
 				<span className="todo-title">{title}</span>
 				<span className="todo-deadline">{deadline}</span>
@@ -47,29 +49,26 @@ const baseStyles = css`
 	border-radius: 12px;
 `;
 
-const statusStyles = ({ status }: { status: StatusType }) => {
-	const isComplete = status === STATUS.COMPLETE;
-	return css`
-		border: 1px solid ${isComplete ? theme.colorToken.Outline.neutralNormal : theme.colorToken.Outline.neutralStrong};
+const statusStyles = ({ isCompleted }: { isCompleted: boolean }) => css`
+	border: 1px solid ${isCompleted ? theme.colorToken.Outline.neutralNormal : theme.colorToken.Outline.neutralStrong};
 
-		.todo-title {
-			color: ${isComplete ? theme.colorToken.Text.assistive : theme.colorToken.Text.neutralLight};
-			${isComplete ? theme.font.body02 : theme.font.body01};
-			${isComplete && 'text-decoration: line-through;'}
-		}
+	.todo-title {
+		color: ${isCompleted ? theme.colorToken.Text.assistive : theme.colorToken.Text.neutralLight};
+		${isCompleted ? theme.font.body02 : theme.font.body01};
+		${isCompleted && 'text-decoration: line-through;'}
+	}
 
-		.todo-deadline {
-			color: ${isComplete ? theme.colorToken.Text.disable : theme.colorToken.Text.assistive};
-			${isComplete ? theme.font.caption03 : theme.font.caption02};
-			${isComplete && 'text-decoration: line-through;'}
-		}
-	`;
-};
+	.todo-deadline {
+		color: ${isCompleted ? theme.colorToken.Text.disable : theme.colorToken.Text.assistive};
+		${isCompleted ? theme.font.caption03 : theme.font.caption02};
+		${isCompleted && 'text-decoration: line-through;'}
+	}
+`;
 
 const stateStyles = {
-	hover: (status: StatusType) => css`
+	hover: (isCompleted: boolean) => css`
 		border-color: ${theme.colorToken.Outline.primaryStrong};
-		border-width: ${status === STATUS.COMPLETE ? '1px' : '2px'};
+		border-width: ${isCompleted ? '1px' : '2px'};
 	`,
 	pressed: css`
 		background-color: ${theme.colorToken.Component.strong};
@@ -85,12 +84,12 @@ const stateStyles = {
 	`,
 };
 
-const TodoContainer = styled.div<{ status: StatusType }>`
+const TodoContainer = styled.div<{ isCompleted: boolean }>`
 	${baseStyles}
 	${statusStyles}
 
 	&:hover {
-		${({ status }) => stateStyles.hover(status)};
+		${({ isCompleted }) => stateStyles.hover(isCompleted)};
 	}
 
 	&:active {
