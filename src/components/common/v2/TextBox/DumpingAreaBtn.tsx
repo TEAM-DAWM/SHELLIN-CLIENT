@@ -4,8 +4,6 @@ import { useState } from 'react';
 import Icon from '../../Icon';
 import Button from '../button/Button';
 
-import { theme } from '@/styles/theme';
-
 const STATE = {
 	PLACEHOLDER: 'placeholder',
 	DEFAULT: 'default',
@@ -96,10 +94,10 @@ const DumpingAreaWrapper = styled.div<{ state: (typeof STATE)[keyof typeof STATE
 	height: 4.8rem;
 	padding-left: 1.6rem;
 
-	background: ${theme.color.Blue.Blue1};
+	background: ${({ theme }) => theme.color.Blue.Blue1};
 	border-radius: 16px;
 
-	${({ state }) => {
+	${({ state, theme }) => {
 		switch (state) {
 			case STATE.DEFAULT:
 				return `
@@ -137,9 +135,9 @@ const DumpingAreaWrapper = styled.div<{ state: (typeof STATE)[keyof typeof STATE
 			width: 3.2rem;
 			height: 3.2rem;
 
-			color: ${theme.colorToken.Icon.inverse};
+			color: ${({ theme }) => theme.colorToken.Icon.inverse};
 
-			background: ${theme.colorToken.Primary.normal};
+			background: ${({ theme }) => theme.colorToken.Primary.normal};
 			border-radius: 8px;
 		}
 	}
@@ -148,7 +146,7 @@ const DumpingAreaWrapper = styled.div<{ state: (typeof STATE)[keyof typeof STATE
 const DumpingInput = styled.input<{ state: (typeof STATE)[keyof typeof STATE] }>`
 	flex: 1;
 
-	color: ${({ state }) => {
+	color: ${({ state, theme }) => {
 		switch (state) {
 			case STATE.DEFAULT:
 				return theme.color.Blue.Blue7;
@@ -165,11 +163,11 @@ const DumpingInput = styled.input<{ state: (typeof STATE)[keyof typeof STATE] }>
 	background: transparent;
 	outline: none;
 	border: 0;
-	caret-color: ${theme.color.Blue.Blue7};
+	caret-color: ${({ theme }) => theme.color.Blue.Blue7};
 
-	${theme.font.label05};
+	${({ theme }) => theme.font.label05};
 
 	&::placeholder {
-		color: ${({ state }) => (state === STATE.PLACEHOLDER ? theme.color.Blue.Blue3 : theme.color.Blue.Blue7)};
+		color: ${({ state, theme }) => (state === STATE.PLACEHOLDER ? theme.color.Blue.Blue3 : theme.color.Blue.Blue7)};
 	}
 `;
