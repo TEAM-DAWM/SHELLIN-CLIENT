@@ -10,32 +10,12 @@ type MainDateProps = {
 	day?: number;
 };
 
-const TextContainer = styled.div`
-	display: flex;
-	gap: 1px;
-	align-items: flex-end;
-
-	.value-text {
-		${theme.font.title01};
-		color: ${theme.color.Grey.Grey8};
-		font-weight: 500;
-	}
-
-	.text {
-		${theme.font.label03};
-		padding-bottom: 0.3rem;
-
-		color: ${theme.color.Grey.Grey6};
-		font-weight: 600;
-	}
-`;
-
 function Date({ value, text }: { value?: number; text: string }) {
 	return value ? (
-		<TextContainer>
+		<DateContainer>
 			<span className="value-text">{value}</span>
 			<span className="text">{text}</span>
-		</TextContainer>
+		</DateContainer>
 	) : null;
 }
 
@@ -70,6 +50,24 @@ function MainDate({ year, month, day }: MainDateProps) {
 
 export default MainDate;
 
+const DateContainer = styled.div`
+	display: flex;
+	gap: 1px;
+	align-items: flex-end;
+
+	.value-text {
+		${theme.font.title01};
+		color: ${theme.color.Grey.Grey8};
+	}
+
+	.text {
+		${theme.font.label03};
+		padding-bottom: 0.3rem;
+
+		color: ${theme.color.Grey.Grey6};
+	}
+`;
+
 const MainDateContainer = styled.div`
 	display: flex;
 	gap: 0.8rem;
@@ -87,7 +85,6 @@ const MainDateContainer = styled.div`
 		${theme.font.body03}
 
 		color: ${theme.color.Grey.White};
-		font-weight: 600;
 		text-align: center;
 
 		background: ${theme.color.Blue.Blue6};
