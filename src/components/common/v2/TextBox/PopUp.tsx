@@ -3,8 +3,6 @@ import { useState } from 'react';
 
 import Icon from '../../Icon';
 
-import { theme } from '@/styles/theme';
-
 const TYPE = {
 	TITLE: 'title',
 	DESC: 'description',
@@ -69,10 +67,10 @@ const PopUpContainer = styled.div`
 `;
 
 const StyledInput = styled.input<{ type: PopUpProps['type']; state: (typeof STATE)[keyof typeof STATE] }>`
-	${({ type }) => (type === TYPE.TITLE ? theme.font.title02 : theme.font.body03)};
-	caret-color: ${theme.color.Blue.Blue7};
+	${({ type, theme }) => (type === TYPE.TITLE ? theme.font.title02 : theme.font.body03)};
+	caret-color: ${({ theme }) => theme.color.Blue.Blue7};
 
-	color: ${({ state }) => {
+	color: ${({ state, theme }) => {
 		switch (state) {
 			case STATE.DEFAULT:
 				return theme.color.Grey.Grey6;
@@ -90,6 +88,6 @@ const StyledInput = styled.input<{ type: PopUpProps['type']; state: (typeof STAT
 	border-width: 0;
 
 	&::placeholder {
-		color: ${({ state }) => (state === STATE.DEFAULT ? theme.color.Grey.Grey6 : theme.color.Grey.Grey4)};
+		color: ${({ state, theme }) => (state === STATE.DEFAULT ? theme.color.Grey.Grey6 : theme.color.Grey.Grey4)};
 	}
 `;
