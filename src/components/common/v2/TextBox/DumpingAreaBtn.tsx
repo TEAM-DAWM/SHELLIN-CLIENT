@@ -1,45 +1,17 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
 import Icon from '../../Icon';
 import Button from '../button/Button';
 
-const STATE = {
-	PLACEHOLDER: 'placeholder',
-	DEFAULT: 'default',
-	HOVER: 'hover',
-	TYPING: 'typing',
-	FIELD: 'field',
-} as const;
+import useInputHandler from '@/hooks/useInputHandler';
+import { INPUT_STATE, InputState } from '@/types/inputStateType';
 
 function DumpingAreaBtn() {
-	const [state, setState] = useState<(typeof STATE)[keyof typeof STATE]>(STATE.DEFAULT);
-
-	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-		if (!e.target.value) {
-			setState(STATE.PLACEHOLDER);
-		}
-	};
-
-	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-		if (e.target.value) {
-			setState(STATE.FIELD);
-		} else {
-			setState(STATE.DEFAULT);
-		}
-	};
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.value) {
-			setState(STATE.TYPING);
-		} else {
-			setState(STATE.PLACEHOLDER);
-		}
-	};
+	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave } = useInputHandler();
 
 	return (
 		<DumpingAreaContainer>
-			<DumpingAreaWrapper state={state}>
+			<DumpingAreaWrapper state={state} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
 				<DumpingInput
 					state={state}
 					placeholder="해야 할 일을 여기에 쏟아내세요"
@@ -53,7 +25,7 @@ function DumpingAreaBtn() {
 					</div>
 				</IconTouchArea>
 			</DumpingAreaWrapper>
-			{(state === STATE.TYPING || state === STATE.FIELD) && (
+			{(state === INPUT_STATE.TYPING || state === INPUT_STATE.FIELD) && (
 				<Button type="outlined-primary" size="small" disabled={false} label="마감 기간/시간" leftIcon="IcnPlus" />
 			)}
 		</DumpingAreaContainer>
@@ -69,7 +41,7 @@ const DumpingAreaContainer = styled.div`
 	align-items: flex-start;
 `;
 
-const DumpingAreaWrapper = styled.div<{ state: (typeof STATE)[keyof typeof STATE] }>`
+const DumpingAreaWrapper = styled.div<{ state: InputState }>`
 	display: flex;
 	align-items: center;
 	box-sizing: border-box;
@@ -82,17 +54,17 @@ const DumpingAreaWrapper = styled.div<{ state: (typeof STATE)[keyof typeof STATE
 
 	${({ state, theme }) => {
 		switch (state) {
-			case STATE.DEFAULT:
+			case INPUT_STATE.DEFAULT:
 				return `
           border: 1px solid ${theme.color.Blue.Blue7};
         `;
-			case STATE.HOVER:
+			case INPUT_STATE.HOVER:
 				return `
           border: 2px solid ${theme.color.Blue.Blue7};
 					box-shadow: inset 0 0 4px rgb(0 0 0 / 12%);
         `;
-			case STATE.TYPING:
-			case STATE.FIELD:
+			case INPUT_STATE.TYPING:
+			case INPUT_STATE.FIELD:
 				return `
           border: 1px solid ${theme.color.Blue.Blue7};
         `;
@@ -102,11 +74,6 @@ const DumpingAreaWrapper = styled.div<{ state: (typeof STATE)[keyof typeof STATE
         `;
 		}
 	}}
-
-	&:hover {
-		box-shadow: inset 0 0 4px rgb(0 0 0 / 12%);
-		border: 2px solid ${({ theme }) => theme.color.Blue.Blue7};
-	}
 `;
 
 const IconTouchArea = styled.div`
@@ -131,17 +98,17 @@ const IconTouchArea = styled.div`
 	}
 `;
 
-const DumpingInput = styled.input<{ state: (typeof STATE)[keyof typeof STATE] }>`
+const DumpingInput = styled.input<{ state: InputState }>`
 	flex: 1;
 
 	color: ${({ state, theme }) => {
 		switch (state) {
-			case STATE.DEFAULT:
+			case INPUT_STATE.DEFAULT:
 				return theme.color.Blue.Blue7;
-			case STATE.HOVER:
+			case INPUT_STATE.HOVER:
 				return theme.color.Blue.Blue3;
-			case STATE.TYPING:
-			case STATE.FIELD:
+			case INPUT_STATE.TYPING:
+			case INPUT_STATE.FIELD:
 				return theme.color.Grey.Grey8;
 			default:
 				return theme.color.Blue.Blue7;
@@ -156,6 +123,7 @@ const DumpingInput = styled.input<{ state: (typeof STATE)[keyof typeof STATE] }>
 	${({ theme }) => theme.font.label05};
 
 	&::placeholder {
-		color: ${({ state, theme }) => (state === STATE.PLACEHOLDER ? theme.color.Blue.Blue3 : theme.color.Blue.Blue7)};
+		color: ${({ state, theme }) =>
+			state === INPUT_STATE.PLACEHOLDER ? theme.color.Blue.Blue3 : theme.color.Blue.Blue7};
 	}
 `;
