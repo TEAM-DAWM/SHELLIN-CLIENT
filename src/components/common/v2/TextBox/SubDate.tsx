@@ -106,10 +106,7 @@ const SubDateContainer = styled.div<{
 			${theme.font.body04};
 		}
 
-		${type === TYPE.SECONDARY &&
-		css`
-			${underlineStyle}
-		`}
+		${type === TYPE.SECONDARY && underlineStyle}
 	`}
 `;
 
