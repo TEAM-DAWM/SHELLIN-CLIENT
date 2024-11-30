@@ -20,6 +20,7 @@ const colorToken = {
 		neutralDark: color.Grey.White,
 		neutralLight: color.Grey.Grey8,
 		assistive: color.Grey.Grey6,
+		assistiveLight: color.Grey.Grey5,
 		disable: color.Grey.Grey4,
 	},
 	Outline: {
