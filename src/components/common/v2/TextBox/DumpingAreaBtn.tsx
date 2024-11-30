@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Icon from '../../Icon';
 import Button from '../button/Button';
 
-import Icn from '@/assets/svg/V2';
 import { theme } from '@/styles/theme';
 
 const STATE = {
@@ -69,13 +68,7 @@ function DumpingAreaBtn() {
 				</div>
 			</DumpingAreaWrapper>
 			{(state === STATE.TYPING || state === STATE.FIELD) && (
-				<Button
-					type="outlined-primary"
-					size="small"
-					disabled={false}
-					label="마감 기간/시간"
-					leftIcon={<Icn.IcnPlus />}
-				/>
+				<Button type="outlined-primary" size="small" disabled={false} label="마감 기간/시간" leftIcon="IcnPlus" />
 			)}
 		</DumpingAreaContainer>
 	);
