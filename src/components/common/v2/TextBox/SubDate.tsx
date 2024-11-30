@@ -1,18 +1,45 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 import { theme } from '@/styles/theme';
+
+const TYPE = {
+	TERITARY: 'Teritary',
+	SECONDARY: 'Secondary',
+	PRIMARY: 'Primary',
+} as const;
+
+const STATE = {
+	DEFAULT: 'Default',
+	HOVER: 'Hover',
+	PRESSED: 'Pressed',
+} as const;
+
+type StateType = (typeof STATE)[keyof typeof STATE];
 
 interface SubDateProps {
 	day: string;
 	weekDay: string;
-	type: 'Teritary' | 'Secondary' | 'Primary';
-	state: 'Default' | 'Hover' | 'Pressed';
+	type: (typeof TYPE)[keyof typeof TYPE];
 }
 
-function SubDate({ day, weekDay, type, state }: SubDateProps) {
+function SubDate({ day, weekDay, type }: SubDateProps) {
+	const [state, setState] = useState<StateType>(STATE.DEFAULT);
+
+	const handleStateChange = (newState: StateType) => () => {
+		setState(newState);
+	};
+
 	return (
-		<SubDateContainer type={type} state={state}>
+		<SubDateContainer
+			type={type}
+			state={state}
+			onMouseEnter={handleStateChange(STATE.HOVER)}
+			onMouseLeave={handleStateChange(STATE.DEFAULT)}
+			onMouseDown={handleStateChange(STATE.PRESSED)}
+			onMouseUp={handleStateChange(STATE.DEFAULT)}
+		>
 			<span className="day">{day}</span>
 			<span className="week-day">{weekDay}</span>
 		</SubDateContainer>
