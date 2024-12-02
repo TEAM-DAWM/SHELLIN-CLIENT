@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-import Icons from '@/assets/svg/index';
+import Icn from '@/assets/svg/V2';
 
 function DeadlineCategory() {
 	const [isSettingActive, SetIsSettingActive] = useState(false);
@@ -15,7 +15,6 @@ function DeadlineCategory() {
 			<DeadlineBtnLayout>
 				<CategoryTitleStyle>마감 기간</CategoryTitleStyle>
 				{isSettingActive ? <XIconBox onClick={handleIconClick} /> : <IconBox onClick={handleIconClick} />}
-				{/* 아이콘 임시 설정 */}
 			</DeadlineBtnLayout>
 		</DeadlineCategoryContainer>
 	);
@@ -28,6 +27,8 @@ const DeadlineCategoryContainer = styled.div`
 	box-sizing: border-box;
 	width: 37rem;
 	height: 5.6rem;
+
+	color: ${({ theme }) => theme.colorToken.Text.assistive};
 
 	border-top: 1px solid ${({ theme }) => theme.color.Grey.Grey3};
 	border-bottom: 1px solid ${({ theme }) => theme.color.Grey.Grey3};
@@ -48,11 +49,17 @@ const CategoryTitleStyle = styled.div`
 	${({ theme }) => theme.font.label05};
 `;
 
-const IconBox = styled(Icons.PlusCircle)`
+const IconBox = styled(Icn.IcnPlus)`
+	width: 1.6rem;
+	height: 1.6rem;
+
 	cursor: pointer;
 `;
 
-const XIconBox = styled(Icons.IcnXCricle)`
+const XIconBox = styled(Icn.IcnX)`
+	width: 1.6rem;
+	height: 1.6rem;
+
 	cursor: pointer;
 `;
 export default DeadlineCategory;
