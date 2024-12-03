@@ -1,29 +1,60 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Icn from '@/assets/svg/V2';
 import DateTimeBtn from '@/components/common/v2/category/DateTimeBtn';
 import CheckButton from '@/components/common/v2/control/CheckButton';
 
 function DeadlineCategory() {
-	const [isSettingActive, SetIsSettingActive] = useState(false);
+	const [isSettingActive, setIsSettingActive] = useState(false);
+	const [isClicked, setIsClicked] = useState(false);
+	const [isAllday, setIsAllday] = useState(false);
+
+	const containerRef = useRef(null);
 
 	const handleIconClick = () => {
-		SetIsSettingActive((prev) => !prev);
+		setIsClicked((prev) => !prev);
 	};
 
-	const handleCheckBtnClidk = () => {};
+	const handleCheckBtnClick = () => {
+		setIsAllday((prev) => !prev);
+	};
+
+	const handleXBtnClick = () => {
+		setIsSettingActive(false);
+		setIsClicked(false);
+		setIsAllday(false);
+	};
+
+	const handleClickOutside = (event: MouseEvent) => {
+		if (
+			containerRef.current &&
+			event.target instanceof Node &&
+			(containerRef.current as HTMLDivElement).contains(event.target) === false
+		) {
+			setIsSettingActive(true);
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
 
 	return (
-		<DeadlineCategoryContainer>
+		<DeadlineCategoryContainer ref={containerRef}>
 			<DeadlineBtnLayout>
 				<CategoryTitleStyle>마감 기간</CategoryTitleStyle>
-				{isSettingActive ? <XIconBox onClick={handleIconClick} /> : <IconBox onClick={handleIconClick} />}
+				{isClicked ? <XIconBox onClick={handleXBtnClick} /> : <IconBox onClick={handleIconClick} />}
 			</DeadlineBtnLayout>
-			{isSettingActive && (
+			{isClicked && (
 				<>
-					<DateTimeBtn date="2025/03/25 (월요일)" endTime="00:00pm" isSetDate={false} />
-					<CheckButton label="하루종일" size="small" checked onClick={handleCheckBtnClidk} />
+					<DateTimeBtn date="2025/03/25 (월요일)" endTime="00:00pm" isSetDate={isSettingActive} isAllday={isAllday} />
+					{!isSettingActive && (
+						<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />
+					)}
 				</>
 			)}
 		</DeadlineCategoryContainer>
@@ -52,12 +83,11 @@ const DeadlineBtnLayout = styled.div`
 	align-items: center;
 	width: 100%;
 	height: 2.4rem;
-	padding: 0 0.4rem;
 `;
 
 const CategoryTitleStyle = styled.div`
 	height: 1.3rem;
-	padding: 0 1.2rem;
+	padding: 0 0 0 1.2rem;
 
 	${({ theme }) => theme.font.label05};
 `;
