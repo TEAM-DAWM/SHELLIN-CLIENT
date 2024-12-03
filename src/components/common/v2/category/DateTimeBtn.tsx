@@ -8,24 +8,36 @@ interface DateTimeBtnProps {
 	startTime?: string;
 	endTime: string;
 	isSetDate: boolean;
+	isAllday?: boolean;
 }
 
-function DateTimeBtn({ date, startTime, endTime, isSetDate = false }: DateTimeBtnProps) {
+function DateTimeBtn({ date, startTime, endTime, isSetDate = false, isAllday = false }: DateTimeBtnProps) {
+	const renderTimeText = () => {
+		if (isAllday) return null;
+		if (startTime && endTime) {
+			return `${startTime} - ${endTime}`;
+		}
+		if (endTime) {
+			return `${endTime} 까지`;
+		}
+		return null;
+	};
+
 	return isSetDate ? (
 		<DateTimeBtnLayout>
-			<IconStyle />
+			<ModifyIcn />
 			<TextBox>
-				{date} {startTime}
-				{endTime}
+				{date} {renderTimeText()}
 			</TextBox>
 		</DateTimeBtnLayout>
 	) : (
 		<DateTimeBtnContainer>
 			<DateTimeBtnLayout>
-				<IconStyle />
+				<CalendarIcn />
 				<TextBox>{date}</TextBox>
 			</DateTimeBtnLayout>
-			<TimeBtn time={endTime} /> 까지
+			{!isAllday && <TimeBtn time={endTime} />}
+			까지
 		</DateTimeBtnContainer>
 	);
 }
@@ -34,7 +46,6 @@ const DateTimeBtnContainer = styled.div`
 	display: flex;
 	gap: 0.8rem;
 	align-items: center;
-	margin: 0 0.8rem;
 
 	color: ${({ theme }) => theme.colorToken.Text.disable};
 	font-weight: 600;
@@ -47,6 +58,7 @@ const DateTimeBtnLayout = styled.button`
 	align-items: center;
 	width: auto;
 	height: 3.2rem;
+	margin: 0 0 0 0.8rem;
 	padding: 0 1.6rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
@@ -54,7 +66,14 @@ const DateTimeBtnLayout = styled.button`
 	border-radius: 8px;
 `;
 
-const IconStyle = styled(Icn.IcnModify)`
+const ModifyIcn = styled(Icn.IcnModify)`
+	width: 1.6rem;
+	height: 1.6rem;
+
+	color: ${({ theme }) => theme.colorToken.Icon.normal};
+`;
+
+const CalendarIcn = styled(Icn.IcnCalendar)`
 	width: 1.6rem;
 	height: 1.6rem;
 
