@@ -44,6 +44,10 @@ function DeadlineBox({ date, startTime, endTime, label }: DeadlineBoxProps) {
 		}
 	};
 
+	const handleClickModify = () => {
+		setIsSettingActive(false);
+	};
+
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => {
@@ -65,6 +69,7 @@ function DeadlineBox({ date, startTime, endTime, label }: DeadlineBoxProps) {
 						endTime={endTime}
 						isSetDate={isSettingActive}
 						isAllday={isAllday}
+						onClick={handleClickModify}
 					/>
 					{!isSettingActive && (
 						<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />

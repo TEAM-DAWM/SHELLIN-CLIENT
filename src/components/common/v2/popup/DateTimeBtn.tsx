@@ -9,9 +9,10 @@ interface DateTimeBtnProps {
 	endTime: string;
 	isSetDate: boolean;
 	isAllday?: boolean;
+	onClick: () => void;
 }
 
-function DateTimeBtn({ date, startTime, endTime, isSetDate = false, isAllday = false }: DateTimeBtnProps) {
+function DateTimeBtn({ date, startTime, endTime, isSetDate = false, isAllday = false, onClick }: DateTimeBtnProps) {
 	const renderTimeText = () => {
 		if (isAllday) return null;
 		if (startTime && endTime) {
@@ -24,7 +25,7 @@ function DateTimeBtn({ date, startTime, endTime, isSetDate = false, isAllday = f
 	};
 
 	return isSetDate ? (
-		<DateTimeBtnContainer>
+		<DateTimeBtnContainer onClick={onClick}>
 			<DateTimeBtnLayout>
 				<ModifyIcn />
 				<TextBox>
@@ -66,6 +67,7 @@ const DateTimeBtnLayout = styled.button`
 	display: flex;
 	gap: 0.8rem;
 	align-items: center;
+	justify-content: center;
 	width: auto;
 	height: 3.2rem;
 	padding: 0 1.6rem;
