@@ -15,7 +15,7 @@ function DateTimeBtn({ date, startTime, endTime, isSetDate = false, isAllday = f
 	const renderTimeText = () => {
 		if (isAllday) return null;
 		if (startTime && endTime) {
-			return `${startTime} - ${endTime}`;
+			return `${startTime}-${endTime}`;
 		}
 		if (endTime) {
 			return `${endTime} 까지`;
@@ -24,32 +24,42 @@ function DateTimeBtn({ date, startTime, endTime, isSetDate = false, isAllday = f
 	};
 
 	return isSetDate ? (
-		<DateTimeBtnLayout>
-			<ModifyIcn />
-			<TextBox>
-				{date} {renderTimeText()}
-			</TextBox>
-		</DateTimeBtnLayout>
-	) : (
 		<DateTimeBtnContainer>
+			<DateTimeBtnLayout>
+				<ModifyIcn />
+				<TextBox>
+					{date} {renderTimeText()}
+				</TextBox>
+			</DateTimeBtnLayout>
+		</DateTimeBtnContainer>
+	) : (
+		<DateTimeBtnContainer isSingle={!startTime}>
 			<DateTimeBtnLayout>
 				<CalendarIcn />
 				<TextBox>{date}</TextBox>
 			</DateTimeBtnLayout>
-			{!isAllday && <TimeBtn time={endTime} />}
-			까지
+			{!isAllday && (
+				<TimeBtnContainer>
+					{startTime && (
+						<>
+							<TimeBtn time={startTime} />
+							<GrayText>부터</GrayText>
+						</>
+					)}
+					<TimeBtn time={endTime} />
+					<GrayText>까지</GrayText>
+				</TimeBtnContainer>
+			)}
 		</DateTimeBtnContainer>
 	);
 }
 
-const DateTimeBtnContainer = styled.div`
+const DateTimeBtnContainer = styled.div<{ isSingle?: boolean }>`
 	display: flex;
+	flex-direction: ${({ isSingle = true }) => (isSingle ? 'row' : 'column')};
 	gap: 0.8rem;
-	align-items: center;
-
-	color: ${({ theme }) => theme.colorToken.Text.disable};
-	font-weight: 600;
-	font-size: 1.4rem;
+	align-items: flex-start;
+	margin: 0 0 0 0.8rem;
 `;
 
 const DateTimeBtnLayout = styled.button`
@@ -58,7 +68,6 @@ const DateTimeBtnLayout = styled.button`
 	align-items: center;
 	width: auto;
 	height: 3.2rem;
-	margin: 0 0 0 0.8rem;
 	padding: 0 1.6rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
@@ -87,5 +96,21 @@ const TextBox = styled.p`
 	color: ${({ theme }) => theme.colorToken.Text.assistive};
 	${({ theme }) => theme.font.label05};
 	font-weight: 500;
+`;
+
+const GrayText = styled.p`
+	align-content: center;
+	height: 3.2rem;
+
+	color: ${({ theme }) => theme.colorToken.Text.disable};
+	font-weight: 600;
+	font-size: 1.4rem;
+`;
+
+const TimeBtnContainer = styled.div`
+	display: flex;
+	gap: 0.8rem;
+	align-content: center;
+	height: 3.2rem;
 `;
 export default DateTimeBtn;
