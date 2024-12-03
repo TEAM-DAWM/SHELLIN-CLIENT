@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import Icn from '@/assets/svg/V2';
-import TimeBtn from '@/components/common/v2/category/TimeBtn';
+import TimeBtn from '@/components/common/v2/popup/TimeBtn';
 
 interface DateTimeBtnProps {
 	date: string;

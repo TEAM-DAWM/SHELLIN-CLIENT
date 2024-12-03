@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 
 import Icn from '@/assets/svg/V2';
-import DateTimeBtn from '@/components/common/v2/category/DateTimeBtn';
 import CheckButton from '@/components/common/v2/control/CheckButton';
+import DateTimeBtn from '@/components/common/v2/popup/DateTimeBtn';
 
 interface DeadlineBoxProps {
 	date: string;
