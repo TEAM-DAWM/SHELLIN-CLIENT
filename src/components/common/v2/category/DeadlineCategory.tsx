@@ -5,7 +5,14 @@ import Icn from '@/assets/svg/V2';
 import DateTimeBtn from '@/components/common/v2/category/DateTimeBtn';
 import CheckButton from '@/components/common/v2/control/CheckButton';
 
-function DeadlineCategory() {
+interface DeadlineCategoryProps {
+	date: string;
+	startTime?: string;
+	endTime: string;
+	lable: string;
+}
+
+function DeadlineCategory({ date, startTime, endTime, lable }: DeadlineCategoryProps) {
 	const [isSettingActive, setIsSettingActive] = useState(false);
 	const [isClicked, setIsClicked] = useState(false);
 	const [isAllday, setIsAllday] = useState(false);
@@ -46,12 +53,18 @@ function DeadlineCategory() {
 	return (
 		<DeadlineCategoryContainer ref={containerRef}>
 			<DeadlineBtnLayout>
-				<CategoryTitleStyle>마감 기간</CategoryTitleStyle>
+				<CategoryTitleStyle>{lable}</CategoryTitleStyle>
 				{isClicked ? <XIconBox onClick={handleXBtnClick} /> : <IconBox onClick={handleIconClick} />}
 			</DeadlineBtnLayout>
 			{isClicked && (
 				<>
-					<DateTimeBtn date="2025/03/25 (월요일)" endTime="00:00pm" isSetDate={isSettingActive} isAllday={isAllday} />
+					<DateTimeBtn
+						date={date}
+						startTime={startTime}
+						endTime={endTime}
+						isSetDate={isSettingActive}
+						isAllday={isAllday}
+					/>
 					{!isSettingActive && (
 						<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />
 					)}
