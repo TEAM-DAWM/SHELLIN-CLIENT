@@ -5,14 +5,14 @@ import Icn from '@/assets/svg/V2';
 import DateTimeBtn from '@/components/common/v2/category/DateTimeBtn';
 import CheckButton from '@/components/common/v2/control/CheckButton';
 
-interface DeadlineCategoryProps {
+interface DeadlineBoxProps {
 	date: string;
 	startTime?: string;
 	endTime: string;
 	lable: string;
 }
 
-function DeadlineCategory({ date, startTime, endTime, lable }: DeadlineCategoryProps) {
+function DeadlineBox({ date, startTime, endTime, lable }: DeadlineBoxProps) {
 	const [isSettingActive, setIsSettingActive] = useState(false);
 	const [isClicked, setIsClicked] = useState(false);
 	const [isAllday, setIsAllday] = useState(false);
@@ -51,7 +51,7 @@ function DeadlineCategory({ date, startTime, endTime, lable }: DeadlineCategoryP
 	}, []);
 
 	return (
-		<DeadlineCategoryContainer ref={containerRef}>
+		<DeadlineBoxContainer ref={containerRef}>
 			<DeadlineBtnLayout>
 				<CategoryTitleStyle>{lable}</CategoryTitleStyle>
 				{isClicked ? <XIconBox onClick={handleXBtnClick} /> : <IconBox onClick={handleIconClick} />}
@@ -70,11 +70,11 @@ function DeadlineCategory({ date, startTime, endTime, lable }: DeadlineCategoryP
 					)}
 				</>
 			)}
-		</DeadlineCategoryContainer>
+		</DeadlineBoxContainer>
 	);
 }
 
-const DeadlineCategoryContainer = styled.div`
+const DeadlineBoxContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.8rem;
@@ -118,4 +118,4 @@ const XIconBox = styled(Icn.IcnX)`
 
 	cursor: pointer;
 `;
-export default DeadlineCategory;
+export default DeadlineBox;
