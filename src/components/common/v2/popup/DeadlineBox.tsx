@@ -9,18 +9,19 @@ interface DeadlineBoxProps {
 	date: string;
 	startTime?: string;
 	endTime: string;
-	lable: string;
+	label: string;
 }
 
-function DeadlineBox({ date, startTime, endTime, lable }: DeadlineBoxProps) {
+function DeadlineBox({ date, startTime, endTime, label }: DeadlineBoxProps) {
 	const [isSettingActive, setIsSettingActive] = useState(false);
 	const [isClicked, setIsClicked] = useState(false);
 	const [isAllday, setIsAllday] = useState(false);
 
 	const containerRef = useRef(null);
 
-	const handleIconClick = () => {
+	const handlePlusBtnClick = () => {
 		setIsClicked((prev) => !prev);
+		setIsSettingActive(false);
 	};
 
 	const handleCheckBtnClick = () => {
@@ -29,7 +30,7 @@ function DeadlineBox({ date, startTime, endTime, lable }: DeadlineBoxProps) {
 
 	const handleXBtnClick = () => {
 		setIsSettingActive(false);
-		setIsClicked(false);
+		setIsClicked((prev) => !prev);
 		setIsAllday(false);
 	};
 
@@ -53,8 +54,8 @@ function DeadlineBox({ date, startTime, endTime, lable }: DeadlineBoxProps) {
 	return (
 		<DeadlineBoxContainer ref={containerRef}>
 			<DeadlineBtnLayout>
-				<CategoryTitleStyle>{lable}</CategoryTitleStyle>
-				{isClicked ? <XIconBox onClick={handleXBtnClick} /> : <IconBox onClick={handleIconClick} />}
+				<CategoryTitleStyle>{label}</CategoryTitleStyle>
+				{isClicked ? <XIconBox onClick={handleXBtnClick} /> : <IconBox onClick={handlePlusBtnClick} />}
 			</DeadlineBtnLayout>
 			{isClicked && (
 				<>
