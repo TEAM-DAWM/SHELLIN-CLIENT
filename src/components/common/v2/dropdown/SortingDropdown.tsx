@@ -33,7 +33,7 @@ const Divider = styled.div`
 	height: 0;
 	margin: 1.6rem 0;
 
-	border: 1px solid ${({ theme }) => theme.colorToken.Divider.neutral};
+	border: 1px solid ${({ theme }) => theme.colorToken.Neutral.strong};
 `;
 
 export default SortingDropdown;
