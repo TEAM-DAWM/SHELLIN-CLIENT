@@ -30,7 +30,7 @@ const TimeDropdownContainer = styled.div`
 
 	/* 스크롤 바의 막대 */
 	::-webkit-scrollbar-thumb {
-		height: 40%;
+		height: 45%;
 
 		background-color: ${({ theme }) => theme.colorToken.Neutral.strong};
 		background-clip: padding-box;
