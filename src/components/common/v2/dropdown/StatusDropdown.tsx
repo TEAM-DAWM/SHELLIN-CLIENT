@@ -1,12 +1,7 @@
 import styled from '@emotion/styled';
 
 import Button from '@/components/common/v2/button/Button';
-
-const STATUSES = {
-	INCOMPLETE: '미완료',
-	IN_PROGRESS: '진행중',
-	COMPLETED: '완료',
-};
+import { STATUSES } from '@/constants/statuses';
 
 interface StatusDropdownProps {
 	currentStatus: string;
