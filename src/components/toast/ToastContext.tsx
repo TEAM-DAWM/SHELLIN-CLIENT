@@ -5,11 +5,12 @@ import ToastContainer from '@/components/toast/ToastContainer';
 interface ToastItem {
 	id: number;
 	message: string;
+	code: string;
 }
 
 interface ToastContextProps {
 	toasts: ToastItem[];
-	addToast: (message: string) => void;
+	addToast: (message: string, code: string) => void;
 	removeToast: (id: number) => void;
 }
 
@@ -26,9 +27,9 @@ export const useToast = () => {
 export function ToastProvider({ children }: { children: ReactNode }) {
 	const [toasts, setToasts] = useState<ToastItem[]>([]);
 
-	const addToast = (message: string) => {
+	const addToast = (message: string, code: string) => {
 		const id = new Date().getTime();
-		setToasts((prevToasts) => [...prevToasts, { id, message }]);
+		setToasts((prevToasts) => [...prevToasts, { id, message, code }]);
 	};
 
 	const removeToast = (id: number) => {

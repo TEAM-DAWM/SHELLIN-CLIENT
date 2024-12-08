@@ -9,7 +9,7 @@ function ToastContainer() {
 	return (
 		<Container>
 			{toasts.map((toast) => (
-				<Toast key={toast.id} message={toast.message} onClose={() => removeToast(toast.id)} />
+				<Toast key={toast.id} message={toast.message} code={toast.code} onClose={() => removeToast(toast.id)} />
 			))}
 		</Container>
 	);
