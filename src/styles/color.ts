@@ -18,6 +18,9 @@ const color = {
 		Grey7: '#626273',
 		Grey8: '#34343C',
 	},
+	Orange: {
+		Orange5: '#FF8A65',
+	},
 };
 
 export default color;
