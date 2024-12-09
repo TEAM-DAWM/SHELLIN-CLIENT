@@ -44,6 +44,11 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	align-items: flex-start;
 	box-sizing: border-box;
 
+	/* 감싸는 컨테이너의 길이에 따라 유연하게 변경됨. 경우에 따라 min, max width값 조정 가능 */
+	width: auto;
+	min-width: 43.2rem;
+	max-width: 47.2rem;
+
 	background-color: ${theme.colorToken.Component.normal};
 	border-radius: 12px;
 `;
