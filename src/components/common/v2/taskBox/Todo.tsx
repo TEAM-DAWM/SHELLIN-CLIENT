@@ -25,7 +25,7 @@ function Todo({ title, deadline, status, isStatusVisible = true }: TodoProps) {
 		<TodoContainer isCompleted={isCompleted}>
 			<TodoWrapper>
 				<span className="todo-title">{title}</span>
-				<span className="todo-deadline">{deadline}</span>
+				{deadline && <span className="todo-deadline">{deadline}</span>}
 			</TodoWrapper>
 			{isStatusVisible && (
 				<DropdownWrapper>
@@ -43,7 +43,6 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	flex-direction: row;
 	align-items: flex-start;
 	box-sizing: border-box;
-	width: 45.6rem;
 
 	background-color: ${theme.colorToken.Component.normal};
 	border-radius: 12px;
@@ -53,6 +52,12 @@ const statusStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boole
 	border: 1px solid ${isCompleted ? theme.colorToken.Outline.neutralNormal : theme.colorToken.Outline.neutralStrong};
 
 	.todo-title {
+		display: -webkit-box;
+
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+
 		color: ${isCompleted ? theme.colorToken.Text.assistive : theme.colorToken.Text.neutralLight};
 		text-overflow: ellipsis;
 		word-break: break-all;
