@@ -1,9 +1,7 @@
-import { css } from '@emotion/react';
+import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import DropdownButton from '../control/DropdownButton';
-
-import { theme } from '@/styles/theme';
 
 const STATUS = {
 	NOT_DONE: '미완료',
@@ -37,7 +35,7 @@ function Todo({ title, deadline, status }: TodoProps) {
 
 export default Todo;
 
-const baseStyles = css`
+const baseStyles = ({ theme }: { theme: Theme }) => css`
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
@@ -49,7 +47,7 @@ const baseStyles = css`
 	border-radius: 12px;
 `;
 
-const statusStyles = ({ isCompleted }: { isCompleted: boolean }) => css`
+const statusStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boolean }) => css`
 	border: 1px solid ${isCompleted ? theme.colorToken.Outline.neutralNormal : theme.colorToken.Outline.neutralStrong};
 
 	.todo-title {
@@ -65,39 +63,33 @@ const statusStyles = ({ isCompleted }: { isCompleted: boolean }) => css`
 	}
 `;
 
-const stateStyles = {
-	hover: (isCompleted: boolean) => css`
-		border-color: ${theme.colorToken.Outline.primaryStrong};
-		border-width: ${isCompleted ? '1px' : '2px'};
-	`,
-	pressed: css`
-		background-color: ${theme.colorToken.Component.strong};
-		border-color: ${theme.colorToken.Outline.primaryStrong};
-	`,
-	floated: css`
-		background-color: ${theme.colorToken.Component.strong};
-		box-shadow:
-			0 16px 20px rgb(0 0 0 / 12%),
-			0 8px 16px rgb(0 0 0 / 8%),
-			0 0 8px rgb(0 0 0 / 8%);
-		border-color: ${theme.colorToken.Outline.primaryStrong};
-	`,
-};
-
 const TodoContainer = styled.div<{ isCompleted: boolean }>`
-	${baseStyles}
-	${statusStyles}
+	${({ theme }) => baseStyles({ theme })}
+	${({ theme, isCompleted }) => statusStyles({ theme, isCompleted })}
 
-	&:hover {
-		${({ isCompleted }) => stateStyles.hover(isCompleted)};
+  &:hover {
+		${({ theme, isCompleted }) => css`
+			border-color: ${theme.colorToken.Outline.primaryStrong};
+			border-width: ${isCompleted ? '1px' : '2px'};
+		`};
 	}
 
 	&:active {
-		${stateStyles.pressed};
+		${({ theme }) => css`
+			background-color: ${theme.colorToken.Component.strong};
+			border-color: ${theme.colorToken.Outline.primaryStrong};
+		`};
 	}
 
 	&:focus {
-		${stateStyles.floated};
+		${({ theme }) => css`
+			background-color: ${theme.colorToken.Component.strong};
+			box-shadow:
+				0 16px 20px rgb(0 0 0 / 12%),
+				0 8px 16px rgb(0 0 0 / 8%),
+				0 0 8px rgb(0 0 0 / 8%);
+			border-color: ${theme.colorToken.Outline.primaryStrong};
+		`};
 	}
 `;
 
