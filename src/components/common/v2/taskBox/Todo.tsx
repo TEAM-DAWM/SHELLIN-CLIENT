@@ -15,9 +15,10 @@ type TodoProps = {
 	title: string;
 	deadline?: string;
 	status: StatusType;
+	isStatusVisible?: boolean;
 };
 
-function Todo({ title, deadline, status }: TodoProps) {
+function Todo({ title, deadline, status, isStatusVisible = true }: TodoProps) {
 	const isCompleted = status === STATUS.COMPLETE;
 
 	return (
@@ -26,9 +27,11 @@ function Todo({ title, deadline, status }: TodoProps) {
 				<span className="todo-title">{title}</span>
 				<span className="todo-deadline">{deadline}</span>
 			</TodoWrapper>
-			<DropdownWrapper>
-				<DropdownButton status={status} />
-			</DropdownWrapper>
+			{isStatusVisible && (
+				<DropdownWrapper>
+					<DropdownButton status={status} />
+				</DropdownWrapper>
+			)}
 		</TodoContainer>
 	);
 }
@@ -41,7 +44,6 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: 45.6rem;
-	padding-left: 2.4rem;
 
 	background-color: ${theme.colorToken.Component.normal};
 	border-radius: 12px;
@@ -52,6 +54,8 @@ const statusStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boole
 
 	.todo-title {
 		color: ${isCompleted ? theme.colorToken.Text.assistive : theme.colorToken.Text.neutralLight};
+		text-overflow: ellipsis;
+		word-break: break-all;
 		${isCompleted ? theme.font.body02 : theme.font.body01};
 		${isCompleted && 'text-decoration: line-through;'}
 	}
@@ -99,7 +103,7 @@ const TodoWrapper = styled.div`
 	flex-direction: column;
 	gap: 4px;
 	align-items: flex-start;
-	padding: 1rem 2.4rem 1.4rem 0;
+	padding: 1rem 2.4rem 1.4rem;
 `;
 
 const DropdownWrapper = styled.div`
@@ -110,5 +114,5 @@ const DropdownWrapper = styled.div`
 	justify-content: center;
 	box-sizing: border-box;
 	height: 6.4rem;
-	padding: 0.8rem 0.8rem 2.4rem 0;
+	padding: 8px 8px 24px 0;
 `;
