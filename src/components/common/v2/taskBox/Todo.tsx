@@ -3,6 +3,17 @@ import styled from '@emotion/styled';
 
 import DropdownButton from '../control/DropdownButton';
 
+import useTodoEventHandler from '@/hooks/useTodoEventHandler';
+
+const TODO_EVENT_STATE = {
+	DEFAULT: 'default',
+	HOVER: 'hover',
+	PRESSED: 'pressed',
+	FLOATED: 'floated',
+} as const;
+
+type TodoEventState = (typeof TODO_EVENT_STATE)[keyof typeof TODO_EVENT_STATE];
+
 const STATUS = {
 	NOT_DONE: '미완료',
 	IN_PROGRESS: '진행중',
@@ -19,10 +30,23 @@ type TodoProps = {
 };
 
 function Todo({ title, deadline, status, isStatusVisible = true }: TodoProps) {
+	const { state, handleMouseEnter, handleMouseLeave, handleMouseDown, handleMouseUp, handleDragStart, handleDragEnd } =
+		useTodoEventHandler();
+
 	const isCompleted = status === STATUS.COMPLETE;
 
 	return (
-		<TodoContainer isCompleted={isCompleted}>
+		<TodoContainer
+			isCompleted={isCompleted}
+			state={state}
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
+			onMouseDown={handleMouseDown}
+			onMouseUp={handleMouseUp}
+			onDragStart={handleDragStart}
+			onDragEnd={handleDragEnd}
+			draggable
+		>
 			<TodoWrapper>
 				<span className="todo-title">{title}</span>
 				{deadline && <span className="todo-deadline">{deadline}</span>}
@@ -43,8 +67,6 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	flex-direction: row;
 	align-items: flex-start;
 	box-sizing: border-box;
-
-	/* 감싸는 컨테이너의 길이에 따라 유연하게 변경됨. 경우에 따라 min, max width값 조정 가능 */
 	width: auto;
 	min-width: 43.2rem;
 	max-width: 47.2rem;
@@ -53,9 +75,31 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	border-radius: 12px;
 `;
 
-const statusStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boolean }) => css`
-	border: 1px solid ${isCompleted ? theme.colorToken.Outline.neutralNormal : theme.colorToken.Outline.neutralStrong};
+const stateStyles = ({ theme, state, isCompleted }: { theme: Theme; state: TodoEventState; isCompleted: boolean }) => {
+	switch (state) {
+		case TODO_EVENT_STATE.PRESSED:
+			return css`
+				background-color: ${theme.colorToken.Component.strong};
+				border-color: ${theme.colorToken.Outline.primaryStrong};
+			`;
+		case TODO_EVENT_STATE.FLOATED:
+			return css`
+				background-color: ${theme.colorToken.Component.strong};
+				box-shadow:
+					0 16px 20px rgb(0 0 0 / 12%),
+					0 8px 16px rgb(0 0 0 / 8%),
+					0 0 8px rgb(0 0 0 / 8%);
+				border-color: ${theme.colorToken.Outline.primaryStrong};
+			`;
+		default:
+			return css`
+				border: 1px solid
+					${isCompleted ? theme.colorToken.Outline.neutralNormal : theme.colorToken.Outline.neutralStrong};
+			`;
+	}
+};
 
+const textStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boolean }) => css`
 	.todo-title {
 		display: -webkit-box;
 
@@ -67,43 +111,24 @@ const statusStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boole
 		text-overflow: ellipsis;
 		word-break: break-all;
 		${isCompleted ? theme.font.body02 : theme.font.body01};
-		${isCompleted && 'text-decoration: line-through;'}
+		${isCompleted && 'text-decoration: line-through;'};
 	}
 
 	.todo-deadline {
 		color: ${isCompleted ? theme.colorToken.Text.disable : theme.colorToken.Text.assistive};
 		${isCompleted ? theme.font.caption03 : theme.font.caption02};
-		${isCompleted && 'text-decoration: line-through;'}
+		${isCompleted && 'text-decoration: line-through;'};
 	}
 `;
 
-const TodoContainer = styled.div<{ isCompleted: boolean }>`
+const TodoContainer = styled.div<{ isCompleted: boolean; state: TodoEventState }>`
 	${({ theme }) => baseStyles({ theme })}
-	${({ theme, isCompleted }) => statusStyles({ theme, isCompleted })}
+	${({ theme, isCompleted }) => textStyles({ theme, isCompleted })}
+	${({ theme, state, isCompleted }) => stateStyles({ theme, state, isCompleted })}
 
-  &:hover {
-		${({ theme, isCompleted }) => css`
-			border-color: ${theme.colorToken.Outline.primaryStrong};
-			border-width: ${isCompleted ? '1px' : '2px'};
-		`};
-	}
-
-	&:active {
-		${({ theme }) => css`
-			background-color: ${theme.colorToken.Component.strong};
-			border-color: ${theme.colorToken.Outline.primaryStrong};
-		`};
-	}
-
-	&:focus {
-		${({ theme }) => css`
-			background-color: ${theme.colorToken.Component.strong};
-			box-shadow:
-				0 16px 20px rgb(0 0 0 / 12%),
-				0 8px 16px rgb(0 0 0 / 8%),
-				0 0 8px rgb(0 0 0 / 8%);
-			border-color: ${theme.colorToken.Outline.primaryStrong};
-		`};
+	&:hover {
+		border-color: ${({ theme }) => theme.colorToken.Outline.primaryStrong};
+		border-width: ${({ isCompleted }) => (isCompleted ? '1px' : '2px')};
 	}
 `;
 
