@@ -3,7 +3,7 @@ import { fn } from '@storybook/test';
 
 import ToggleSwitchButton from '@/components/common/v2/control/ToggleSwitchButton';
 
-const meta = {
+const meta: Meta<typeof ToggleSwitchButton> = {
 	title: 'Common/Control/ToggleSwitchButton',
 	component: ToggleSwitchButton,
 	parameters: {
