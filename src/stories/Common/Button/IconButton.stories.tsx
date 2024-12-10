@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import Icn from '@/assets/svg/V2';
 import IconButton from '@/components/common/v2/IconButton';
 
-const meta = {
+const meta: Meta<typeof IconButton> = {
 	title: 'Common/IconButton',
 	component: IconButton,
 	parameters: {
@@ -12,6 +12,12 @@ const meta = {
 	},
 	tags: ['autodocs'],
 	args: { onClick: fn() },
+	argTypes: {
+		iconName: {
+			control: { type: 'select' },
+			options: Object.keys(Icn),
+		},
+	},
 } satisfies Meta<typeof IconButton>;
 
 export default meta;
@@ -23,7 +29,7 @@ export const Solid: Story = {
 		type: 'solid',
 		size: 'big',
 		disabled: false,
-		Icon: <Icn.IcnAlert />,
+		iconName: 'IcnAlert',
 		onClick: fn(),
 	},
 };
@@ -32,7 +38,7 @@ export const Normal: Story = {
 		type: 'normal',
 		size: 'big',
 		disabled: false,
-		Icon: <Icn.IcnAlert />,
+		iconName: 'IcnAlert',
 		onClick: fn(),
 	},
 };
@@ -41,7 +47,7 @@ export const Outlined: Story = {
 		type: 'outlined',
 		size: 'big',
 		disabled: false,
-		Icon: <Icn.IcnAlert />,
+		iconName: 'IcnAlert',
 		onClick: fn(),
 	},
 };

@@ -1,6 +1,9 @@
 import { css, SerializedStyles, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ReactElement } from 'react';
+
+import Icon from '../../Icon';
+
+import Icn from '@/assets/svg/V2';
 
 // 이후 타입 여러군데에서 필요하면 빼서 export
 type SizeType = 'small' | 'medium' | 'large';
@@ -10,8 +13,8 @@ type ButtonProps = {
 	type: ButtonType;
 	size: SizeType;
 	disabled: boolean;
-	leftIcon?: ReactElement;
-	rightIcon?: ReactElement;
+	leftIcon?: keyof typeof Icn;
+	rightIcon?: keyof typeof Icn;
 	label: string;
 	additionalCss?: SerializedStyles;
 	onClick?: () => void;
@@ -119,11 +122,19 @@ function Button({
 
 		${additionalCss}
 	`;
+
+	/** Button 사이즈에 따라 아이콘 사이즈 결정 */
+	const iconSize: Record<SizeType, 'tiny' | 'small' | 'medium'> = {
+		small: 'tiny',
+		medium: 'small',
+		large: 'medium',
+	};
+
 	return (
 		<ButtonLayout onClick={disabled ? () => {} : onClick}>
-			{leftIcon && leftIcon}
+			{leftIcon && <Icon name={leftIcon} size={iconSize[size]} />}
 			{label}
-			{rightIcon && rightIcon}
+			{rightIcon && <Icon name={rightIcon} size={iconSize[size]} />}
 		</ButtonLayout>
 	);
 }
