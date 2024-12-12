@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 
-import Icn from '@/assets/svg/V2';
+import Icon from '@/components/common/Icon';
 import Button from '@/components/common/v2/button/Button';
 import CategoryBtn from '@/components/common/v2/popup/CategoryBtn';
 
@@ -45,7 +45,11 @@ function ClassificationBox({ categoryName, label }: ClassificationBoxProps) {
 		<ClassificationBoxContainer ref={containerRef}>
 			<ClassificationBtnLayout>
 				<CategoryTitleStyle>{label}</CategoryTitleStyle>
-				{isClicked ? <XIconBox onClick={handleIconClick} /> : <PlusIconBox onClick={handleIconClick} />}
+				{isClicked ? (
+					<Icon name="IcnX" size="tiny" color="strong" onClick={handleIconClick} isCusor />
+				) : (
+					<Icon name="IcnPlus" size="tiny" color="strong" onClick={handleIconClick} isCusor />
+				)}
 			</ClassificationBtnLayout>
 			{isClicked && (
 				<BtnLayout>
@@ -95,20 +99,6 @@ const CategoryTitleStyle = styled.div`
 	padding: 0 0 0 1.2rem;
 
 	${({ theme }) => theme.font.label05};
-`;
-
-const PlusIconBox = styled(Icn.IcnPlus)`
-	width: 1.6rem;
-	height: 1.6rem;
-
-	cursor: pointer;
-`;
-
-const XIconBox = styled(Icn.IcnX)`
-	width: 1.6rem;
-	height: 1.6rem;
-
-	cursor: pointer;
 `;
 
 const BtnLayout = styled.div`
