@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import Icn from '@/assets/svg/V2';
+import Icon from '@/components/common/Icon';
 
 interface TimeBtnProps {
 	time: string;
@@ -10,7 +10,7 @@ function TimeBtn({ time }: TimeBtnProps) {
 	return (
 		<TimeBtnLayout>
 			<TextBox>{time}</TextBox>
-			<IconStyle />
+			<Icon name="IcnDown" size="tiny" color="nomal" />
 		</TimeBtnLayout>
 	);
 }
@@ -37,11 +37,4 @@ const TextBox = styled.p`
 	color: ${({ theme }) => theme.colorToken.Text.assistive};
 	${({ theme }) => theme.font.label05};
 	font-weight: 500;
-`;
-
-const IconStyle = styled(Icn.IcnDown)`
-	width: 1.6rem;
-	height: 1.6rem;
-
-	color: ${({ theme }) => theme.colorToken.Icon.normal};
 `;

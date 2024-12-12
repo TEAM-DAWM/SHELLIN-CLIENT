@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 
-import Icn from '@/assets/svg/V2';
+import Icon from '@/components/common/Icon';
 import CheckButton from '@/components/common/v2/control/CheckButton';
 import DateTimeBtn from '@/components/common/v2/popup/DateTimeBtn';
 
@@ -59,7 +59,11 @@ function DeadlineBox({ date, startTime, endTime, label }: DeadlineBoxProps) {
 		<DeadlineBoxContainer ref={containerRef}>
 			<DeadlineBtnLayout>
 				<CategoryTitleStyle>{label}</CategoryTitleStyle>
-				{isClicked ? <XIconBox onClick={handleXBtnClick} /> : <IconBox onClick={handlePlusBtnClick} />}
+				{isClicked ? (
+					<Icon name="IcnX" size="tiny" color="strong" onClick={handleXBtnClick} isCusor />
+				) : (
+					<Icon name="IcnPlus" size="tiny" color="strong" onClick={handlePlusBtnClick} isCusor />
+				)}
 			</DeadlineBtnLayout>
 			{isClicked && (
 				<>
@@ -111,17 +115,4 @@ const CategoryTitleStyle = styled.div`
 	${({ theme }) => theme.font.label05};
 `;
 
-const IconBox = styled(Icn.IcnPlus)`
-	width: 1.6rem;
-	height: 1.6rem;
-
-	cursor: pointer;
-`;
-
-const XIconBox = styled(Icn.IcnX)`
-	width: 1.6rem;
-	height: 1.6rem;
-
-	cursor: pointer;
-`;
 export default DeadlineBox;
