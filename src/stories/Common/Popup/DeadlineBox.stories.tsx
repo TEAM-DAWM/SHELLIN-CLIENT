@@ -23,14 +23,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		date: '2025/03/25 (월요일)',
+		date: new Date(),
 		endTime: '05:00pm',
 		label: '마감 기한',
 	},
 };
 export const ProgressPeriodBox: Story = {
 	args: {
-		date: '2025/03/26 (화요일)',
+		date: new Date(),
 		startTime: '11:00am',
 		endTime: '06:00pm',
 		label: '진행 기간',
