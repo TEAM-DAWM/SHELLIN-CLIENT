@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import Icn from '@/assets/svg/V2';
+import Icon from '@/components/common/Icon';
 import TimeBtn from '@/components/common/v2/popup/TimeBtn';
 
 interface DateTimeBtnProps {
@@ -27,7 +27,7 @@ function DateTimeBtn({ date, startTime, endTime, isSetDate = false, isAllday = f
 	return isSetDate ? (
 		<DateTimeBtnContainer onClick={onClick}>
 			<DateTimeBtnLayout>
-				<ModifyIcn />
+				<Icon name="IcnModify" size="tiny" color="nomal" />
 				<TextBox>
 					{date} {renderTimeText()}
 				</TextBox>
@@ -36,7 +36,7 @@ function DateTimeBtn({ date, startTime, endTime, isSetDate = false, isAllday = f
 	) : (
 		<DateTimeBtnContainer isSingle={!startTime}>
 			<DateTimeBtnLayout>
-				<CalendarIcn />
+				<Icon name="IcnCalendar" size="tiny" color="nomal" />
 				<TextBox>{date}</TextBox>
 			</DateTimeBtnLayout>
 			{!isAllday && (
@@ -75,20 +75,6 @@ const DateTimeBtnLayout = styled.button`
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
 	border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 	border-radius: 8px;
-`;
-
-const ModifyIcn = styled(Icn.IcnModify)`
-	width: 1.6rem;
-	height: 1.6rem;
-
-	color: ${({ theme }) => theme.colorToken.Icon.normal};
-`;
-
-const CalendarIcn = styled(Icn.IcnCalendar)`
-	width: 1.6rem;
-	height: 1.6rem;
-
-	color: ${({ theme }) => theme.colorToken.Icon.normal};
 `;
 
 const TextBox = styled.p`
