@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 
-import ArrangeBtn from '../arrangeBtn/ArrangeBtn';
-import TextboxInput from '../textbox/TextboxInput';
-
-import formatDatetoString from '@/utils/formatDatetoString';
+import Button from '../v2/button/Button';
+import IconButton from '../v2/IconButton';
+import MainDate from '../v2/TextBox/MainDate';
 
 interface CustomHeaderProps {
-	prevDate: Date | null;
+	selected: Date | null;
 	decreaseMonth: () => void;
 	increaseMonth: () => void;
 	prevMonthButtonDisabled: boolean;
@@ -16,7 +15,7 @@ interface CustomHeaderProps {
 }
 
 function CorrectionCustomHeader({
-	prevDate,
+	selected,
 	decreaseMonth,
 	increaseMonth,
 	prevMonthButtonDisabled,
@@ -24,52 +23,65 @@ function CorrectionCustomHeader({
 	onChange,
 	dateTextRef,
 }: CustomHeaderProps) {
+	const selectedDate = selected || new Date();
+	const today = new Date();
 	return (
-		<div className="react-datepicker__header-custom">
-			<InfoBox>
-				<TextboxInput
-					variant="date"
-					placeholder={formatDatetoString(prevDate)}
-					onDateChange={onChange}
-					dateTextRef={dateTextRef}
+		<HeaderLayout className="react-datepicker__header-custom">
+			<IconButton iconName="IcnX" size="small" type="normal" disabled={false} onClick={() => {}} />
+			<DateWrapper>
+				<MainDate
+					month={selectedDate.getUTCMonth() + 1}
+					day={selectedDate.getUTCDate()}
+					year={selectedDate.getUTCFullYear()}
 				/>
-				<div className="react-datepicker__navigation-wrapper">
-					<BtnWrapper className="react-datepicker__navigation-container">
-						<ArrangeBtn
-							color="WHITE"
-							mode="DEFAULT"
-							size="small"
-							type="left"
-							className="react-datepicker__navigation react-datepicker__navigation--previous"
-							onClick={decreaseMonth}
-							disabled={prevMonthButtonDisabled}
-							aria-label="Previous Month"
-						/>
-						<ArrangeBtn
-							color="WHITE"
-							mode="DEFAULT"
-							size="small"
-							type="right"
-							className="react-datepicker__navigation react-datepicker__navigation--next"
-							onClick={increaseMonth}
-							disabled={nextMonthButtonDisabled}
-							aria-label="Next Month"
-						/>
-					</BtnWrapper>
-				</div>
-			</InfoBox>
-		</div>
+			</DateWrapper>
+			<div className="react-datepicker__navigation-wrapper">
+				<BtnWrapper className="react-datepicker__navigation-container">
+					<Button
+						leftIcon="IcnCalendar"
+						disabled={false}
+						label="오늘"
+						size="medium"
+						type="outlined-assistive"
+						onClick={() => onChange(today)}
+					/>
+					<IconButton
+						iconName="IcnLeft"
+						size="small"
+						type="outlined"
+						onClick={decreaseMonth}
+						disabled={prevMonthButtonDisabled}
+						aria-label="Previous Month"
+						// className="react-datepicker__navigation react-datepicker__navigation--previous"
+					/>
+					<IconButton
+						iconName="IcnRight"
+						size="small"
+						type="outlined"
+						onClick={increaseMonth}
+						disabled={nextMonthButtonDisabled}
+						aria-label="Next Month"
+						// className="react-datepicker__navigation react-datepicker__navigation--next"
+					/>
+				</BtnWrapper>
+			</div>
+		</HeaderLayout>
 	);
 }
+const HeaderLayout = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	width: 100%;
+`;
+const DateWrapper = styled.div`
+	align-self: flex-start;
+	padding: 1.6rem 0 0.8rem;
+`;
 const BtnWrapper = styled.div`
 	display: flex;
+	gap: 0.8rem;
 	justify-content: flex-end;
 `;
-const InfoBox = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: 20.4rem;
-	padding-bottom: 0.6rem;
-`;
+
 export default CorrectionCustomHeader;
