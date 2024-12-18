@@ -33,9 +33,13 @@ function DateCorrectionModal({ top = 0, left = 0, date, onClick, handleCurrentDa
 			blurRef(dateTextRef);
 		}
 	};
-	/** 모달 확인, 닫기버튼 */
+	/** 모달 확인버튼 */
 	const onSave = () => {
 		if (handleCurrentDate && currentDate) handleCurrentDate(currentDate);
+		onClick();
+	};
+	/** 모달 닫기 */
+	const onClose = () => {
 		onClick();
 	};
 	return (
@@ -46,7 +50,9 @@ function DateCorrectionModal({ top = 0, left = 0, date, onClick, handleCurrentDa
 				onChange={onChange}
 				inline
 				calendarContainer={CalendarStyle}
-				renderCustomHeader={(props) => <CorrectionCustomHeader {...props} selected={currentDate} onChange={onChange} />}
+				renderCustomHeader={(props) => (
+					<CorrectionCustomHeader {...props} selected={currentDate} onChange={onChange} onClose={onClose} />
+				)}
 			>
 				<BottomBtnWrapper>
 					<Button label="확인" disabled={false} size="medium" type="solid" onClick={onSave} />

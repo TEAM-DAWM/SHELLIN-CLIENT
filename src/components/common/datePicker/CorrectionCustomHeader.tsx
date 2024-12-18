@@ -11,6 +11,7 @@ interface CustomHeaderProps {
 	prevMonthButtonDisabled: boolean;
 	nextMonthButtonDisabled: boolean;
 	onChange: (date: Date | null) => void;
+	onClose: () => void;
 }
 
 function CorrectionCustomHeader({
@@ -20,12 +21,13 @@ function CorrectionCustomHeader({
 	prevMonthButtonDisabled,
 	nextMonthButtonDisabled,
 	onChange,
+	onClose,
 }: CustomHeaderProps) {
 	const selectedDate = selected || new Date();
 	const today = new Date();
 	return (
 		<HeaderLayout className="react-datepicker__header-custom">
-			<IconButton iconName="IcnX" size="small" type="normal" disabled={false} onClick={() => {}} />
+			<IconButton iconName="IcnX" size="small" type="normal" disabled={false} onClick={onClose} />
 			<DateWrapper>
 				<MainDate
 					month={selectedDate.getUTCMonth() + 1}
