@@ -11,7 +11,6 @@ interface CustomHeaderProps {
 	prevMonthButtonDisabled: boolean;
 	nextMonthButtonDisabled: boolean;
 	onChange: (date: Date | null) => void;
-	dateTextRef: React.RefObject<HTMLInputElement>;
 }
 
 function CorrectionCustomHeader({
@@ -21,7 +20,6 @@ function CorrectionCustomHeader({
 	prevMonthButtonDisabled,
 	nextMonthButtonDisabled,
 	onChange,
-	dateTextRef,
 }: CustomHeaderProps) {
 	const selectedDate = selected || new Date();
 	const today = new Date();
