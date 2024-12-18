@@ -5,6 +5,7 @@ import Icon from './Icon';
 import ToggleSwitchButton from './v2/control/ToggleSwitchButton';
 
 import useGetUserInfo from '@/apis/user/query';
+import Images from '@/assets/images';
 import LoadingSpinner from '@/components/common/spinner/Spinner';
 
 function NavBar() {
@@ -18,7 +19,7 @@ function NavBar() {
 	}
 	return (
 		<NavBarLayout>
-			<ProfileImg src={userInfo?.data.image} alt="프로필" onClick={moveToSetting} />
+			<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
 			<ControllContainer>
 				<ToggleWrapper>
 					<ToggleSwitchButton active onClick={() => {}} />
