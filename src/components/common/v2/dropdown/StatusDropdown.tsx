@@ -22,7 +22,6 @@ function StatusDropdown({ currentStatus }: StatusDropdownProps) {
 					onClick={() => {}}
 					size="large"
 					type={status === STATUSES.COMPLETED ? 'text-primary' : 'text-assistive'}
-					disabled={false}
 				/>
 			))}
 		</StatusDropdownContainer>
