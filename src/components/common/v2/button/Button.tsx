@@ -12,7 +12,7 @@ type ButtonType = 'solid' | 'outlined-primary' | 'outlined-assistive' | 'text-pr
 type ButtonProps = {
 	type: ButtonType;
 	size: SizeType;
-	disabled: boolean;
+	disabled?: boolean;
 	leftIcon?: keyof typeof Icn;
 	rightIcon?: keyof typeof Icn;
 	label: string;

@@ -7,7 +7,7 @@ function TimeDropdown() {
 	return (
 		<TimeDropdownContainer>
 			{quarterTimes.map((time) => (
-				<Button key={time} label={time} onClick={() => {}} size="large" type="text-assistive" disabled={false} />
+				<Button key={time} label={time} onClick={() => {}} size="large" type="text-assistive" />
 			))}
 		</TimeDropdownContainer>
 	);
