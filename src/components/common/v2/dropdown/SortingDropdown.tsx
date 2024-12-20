@@ -1,17 +1,17 @@
 import styled from '@emotion/styled';
 
 import Button from '@/components/common/v2/button/Button';
+import SORT_BY from '@/constants/sortType';
 
 function SortingDropdown() {
 	return (
 		<SortingDropdownContainer>
-			<Button label="사용자 설정순" onClick={() => {}} size="large" type="text-assistive" disabled={false} />
-			<Divider />
-			<Button label="최신 등록순" onClick={() => {}} size="large" type="text-assistive" disabled={false} />
-			<Button label="오래된 등록순" onClick={() => {}} size="large" type="text-assistive" disabled={false} />
-			<Divider />
-			<Button label="가까운 마감기한순" onClick={() => {}} size="large" type="text-assistive" disabled={false} />
-			<Button label="먼 마감기한순" onClick={() => {}} size="large" type="text-assistive" disabled={false} />
+			{Object.values(SORT_BY).map((label, index) => (
+				<div key={label}>
+					<Button label={label} onClick={() => {}} size="large" type="text-assistive" />
+					{(index === 0 || index === 2) && <Divider />}
+				</div>
+			))}
 		</SortingDropdownContainer>
 	);
 }
