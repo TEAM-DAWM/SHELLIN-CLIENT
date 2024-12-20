@@ -17,7 +17,7 @@ type ButtonProps = {
 	rightIcon?: keyof typeof Icn;
 	label: string;
 	additionalCss?: SerializedStyles;
-	onClick?: () => void;
+	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 function Button({
@@ -108,7 +108,7 @@ function Button({
 		'text-assistive': getButtonStateStyles(color.Grey.Grey6, 'transparent', color.Grey.Grey2, color.Grey.Grey3, false),
 	};
 
-	const ButtonLayout = styled.div`
+	const ButtonLayout = styled.button`
 		display: flex;
 		gap: 0.8rem;
 		align-items: center;
