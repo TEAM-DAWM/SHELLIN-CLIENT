@@ -1,3 +1,4 @@
+import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Icn from '@/assets/svg/V2';
@@ -5,12 +6,15 @@ import Icn from '@/assets/svg/V2';
 type IconProps = {
 	name: keyof typeof Icn;
 	size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge';
+	color?: 'nomal' | 'strong' | 'heavy' | 'primary' | 'inverse';
+	onClick?: () => void;
+	isCusor?: boolean;
 };
 
-function Icon({ name, size = 'medium' }: IconProps) {
+function Icon({ name, size = 'medium', color, onClick, isCusor }: IconProps) {
 	const SelectedIcon = Icn[name];
 	return (
-		<StyledIconWrapper size={size}>
+		<StyledIconWrapper size={size} color={color} onClick={onClick} isCusor={isCusor}>
 			<SelectedIcon />
 		</StyledIconWrapper>
 	);
@@ -25,15 +29,32 @@ const sizeMap = {
 	large: '3.2rem',
 	xlarge: '4rem',
 };
-const StyledIconWrapper = styled.div<{ size: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge' }>`
+
+const getColorMap = (theme: Theme) => ({
+	nomal: theme.colorToken.Icon.normal,
+	strong: theme.colorToken.Icon.strong,
+	heavy: theme.colorToken.Icon.heavy,
+	primary: theme.colorToken.Icon.heavy,
+	inverse: theme.colorToken.Icon.inverse,
+});
+
+const StyledIconWrapper = styled.div<{
+	size: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge';
+	color?: 'nomal' | 'strong' | 'heavy' | 'primary' | 'inverse';
+	isCusor?: boolean;
+}>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: ${({ size }) => sizeMap[size]};
 	height: ${({ size }) => sizeMap[size]};
 
+	${({ isCusor }) => isCusor && `cursor: pointer;`}
+
 	svg {
 		width: 100%;
 		height: 100%;
+
+		${({ theme, color }) => color && `color: ${getColorMap(theme)[color]};`}
 	}
 `;
