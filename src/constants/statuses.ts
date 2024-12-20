@@ -2,7 +2,7 @@ export const STATUSES = {
 	INCOMPLETE: '미완료',
 	IN_PROGRESS: '진행중',
 	COMPLETED: '완료',
-};
+} as const;
 
 export const STATUS_OPTIONS = [
 	{ label: STATUSES.INCOMPLETE, value: 'INCOMPLETE' },

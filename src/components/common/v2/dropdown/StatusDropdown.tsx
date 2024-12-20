@@ -3,8 +3,10 @@ import styled from '@emotion/styled';
 import Button from '@/components/common/v2/button/Button';
 import { STATUSES } from '@/constants/statuses';
 
+type Status = (typeof STATUSES)[keyof typeof STATUSES];
+
 interface StatusDropdownProps {
-	currentStatus: string;
+	currentStatus: Status;
 }
 
 function StatusDropdown({ currentStatus }: StatusDropdownProps) {
