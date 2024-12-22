@@ -89,8 +89,12 @@ const CalendarStyle = styled.div`
 		height: 4rem;
 		margin: 0;
 
-		border-radius: 0;
+		border-radius: 6px;
+
 		${({ theme }) => theme.font.label03};
+		:hover {
+			background-color: ${({ theme }) => theme.colorToken.Primary.strongVariant};
+		}
 	}
 
 	.react-datepicker__day--keyboard-selected {
@@ -108,6 +112,10 @@ const CalendarStyle = styled.div`
 
 		background-color: ${({ theme }) => theme.colorToken.Primary.normal};
 		border-radius: 6px;
+
+		:hover {
+			background-color: ${({ theme }) => theme.colorToken.Primary.strong};
+		}
 	}
 
 	.react-datepicker__day--in-selecting-range {
