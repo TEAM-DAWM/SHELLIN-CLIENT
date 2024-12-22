@@ -1,16 +1,17 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
-import NavBarIcon from './NavBarIcon';
+import Icon from './Icon';
+import ToggleSwitchButton from './v2/control/ToggleSwitchButton';
 
 import useGetUserInfo from '@/apis/user/query';
+import Images from '@/assets/images';
 import LoadingSpinner from '@/components/common/spinner/Spinner';
-import { PAGE_ROUTE, PageRouteValues } from '@/constants/pages';
 
 function NavBar() {
 	const navigate = useNavigate();
-	const moveToPage = (type: string) => {
-		navigate(`/${type}`);
+	const moveToSetting = () => {
+		navigate('/setting');
 	};
 	const { data: userInfo, isLoading } = useGetUserInfo();
 	if (isLoading) {
@@ -18,17 +19,20 @@ function NavBar() {
 	}
 	return (
 		<NavBarLayout>
-			<ProfileImg src={userInfo?.data.image} alt="프로필" />
-			<IconContainer>
-				{Object.entries(PAGE_ROUTE).map(([type, path]) => (
-					<NavBarIcon
-						key={path as PageRouteValues}
-						name={path as PageRouteValues}
-						type={type as PageRouteValues}
-						onClick={() => moveToPage(type)}
-					/>
-				))}
-			</IconContainer>
+			<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
+			<ControllContainer>
+				<ToggleWrapper>
+					<ToggleSwitchButton active onClick={() => {}} />
+					<ToggleDesc>쏟아내기</ToggleDesc>
+				</ToggleWrapper>
+				<Divider />
+				<IconContainer>
+					<SettingTouchArea onClick={moveToSetting}>
+						<Icon name="IcnSetting" size="large" />
+					</SettingTouchArea>
+					<Icon name="IcnQuestion" size="large" />
+				</IconContainer>
+			</ControllContainer>
 		</NavBarLayout>
 	);
 }
@@ -38,19 +42,41 @@ const NavBarLayout = styled.div`
 	z-index: 2;
 	display: flex;
 	flex-direction: column;
-	gap: 12rem;
 	align-items: center;
+	justify-content: space-between;
 	width: 7.2rem;
-	height: 76.8rem;
+	height: 100%;
 
 	background-color: ${({ theme }) => theme.palette.Grey.White};
 	border-right: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
 	border-radius: 8px 0 0 8px;
 `;
-const ProfileImg = styled.img`
+const ControllContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+const ToggleWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+`;
+const ToggleDesc = styled.p`
+	${({ theme }) => theme.font.label05};
+	color: ${({ theme }) => theme.colorToken.Text.assistive};
+`;
+const Divider = styled.div`
 	width: 4.4rem;
-	height: 4.4rem;
-	margin-top: 2.5rem;
+	height: 0.1rem;
+	margin-top: 3.2rem;
+	margin-bottom: 6rem;
+
+	background-color: ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+`;
+const ProfileImg = styled.img`
+	width: 4.8rem;
+	height: 4.8rem;
+	margin-top: 5.6rem;
 
 	background-color: #dfe9fc;
 	border-radius: 50%;
@@ -58,6 +84,12 @@ const ProfileImg = styled.img`
 const IconContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 1.2rem;
+	gap: 1.6rem;
+	margin-bottom: 19.2rem;
+
+	color: ${({ theme }) => theme.colorToken.Icon.normal};
+`;
+const SettingTouchArea = styled.div`
+	display: block;
 `;
 export default NavBar;
