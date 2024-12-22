@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
 
-import Icn from '@/assets/svg/V2';
+import Icon from '@/components/common/Icon';
 
 interface ToastProps {
 	message: string;
@@ -18,13 +18,13 @@ function Toast({ message, onClose, code }: ToastProps) {
 	const getIcon = () => {
 		switch (code) {
 			case 'success':
-				return <Icn.IcnReturnCheck />;
+				return <Icon name="IcnReturnCheck" />;
 			case 'conflict':
-				return <Icn.IcnDelete />;
+				return <Icon name="IcnDelete" />;
 			case 'info':
-				return <Icn.IcnAlert />;
+				return <Icon name="IcnAlert" />;
 			default:
-				return <Icn.IcnReturnCheck />;
+				return <Icon name="IcnReturnCheck" />;
 		}
 	};
 
@@ -36,7 +36,7 @@ function Toast({ message, onClose, code }: ToastProps) {
 			</TextLayout>
 			<RevertBox>
 				<RevertText>되돌리기</RevertText>
-				<Icn.IcnX />
+				<Icon name="IcnX" />
 			</RevertBox>
 		</ToastMessage>
 	);
