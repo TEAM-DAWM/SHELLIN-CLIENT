@@ -60,6 +60,7 @@ const CalendarStyle = styled.div`
 		width: 5.2rem;
 		height: 4rem;
 		margin: 0;
+		margin-bottom: 0.8rem;
 
 		color: ${({ theme }) => theme.palette.Grey.Grey5};
 		${({ theme }) => theme.font.label03};
