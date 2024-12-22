@@ -31,7 +31,6 @@ function CorrectionCustomHeader({
 			<DateWrapper>
 				<MainDate
 					month={selectedDate.getUTCMonth() + 1}
-					day={selectedDate.getUTCDate()}
 					year={selectedDate.getUTCFullYear()}
 				/>
 			</DateWrapper>
