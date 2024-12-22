@@ -1,3 +1,4 @@
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Button from '../v2/button/Button';
@@ -25,14 +26,27 @@ function CorrectionCustomHeader({
 }: CustomHeaderProps) {
 	const selectedDate = selected || new Date();
 	const today = new Date();
+	const { colorToken, color } = useTheme();
+	const ButtonColorCss = css`
+		color: ${color.Grey.Grey5};
+
+		border: solid 1px ${colorToken.Outline.neutralNormal};
+	`;
+	const IconButtonColorCss = css`
+		color: ${color.Grey.Grey4};
+	`;
 	return (
 		<HeaderLayout className="react-datepicker__header-custom">
-			<IconButton iconName="IcnX" size="small" type="normal" disabled={false} onClick={onClose} />
+			<IconButton
+				iconName="IcnX"
+				size="small"
+				type="normal"
+				disabled={false}
+				onClick={onClose}
+				additionalCss={IconButtonColorCss}
+			/>
 			<DateWrapper>
-				<MainDate
-					month={selectedDate.getUTCMonth() + 1}
-					year={selectedDate.getUTCFullYear()}
-				/>
+				<MainDate month={selectedDate.getUTCMonth() + 1} year={selectedDate.getUTCFullYear()} />
 			</DateWrapper>
 			<div className="react-datepicker__navigation-wrapper">
 				<BtnWrapper className="react-datepicker__navigation-container">
@@ -43,6 +57,7 @@ function CorrectionCustomHeader({
 						size="medium"
 						type="outlined-assistive"
 						onClick={() => onChange(today)}
+						additionalCss={ButtonColorCss}
 					/>
 					<IconButton
 						iconName="IcnLeft"
@@ -67,6 +82,7 @@ function CorrectionCustomHeader({
 		</HeaderLayout>
 	);
 }
+
 const HeaderLayout = styled.div`
 	display: flex;
 	flex-direction: column;
