@@ -25,11 +25,11 @@ export const SuccessToast: Story = {
 	},
 };
 
-export const ConflictToast: Story = {
+export const ErrorToast: Story = {
 	args: {
 		message: '할 일을 완료했어요',
 		onClose: fn(),
-		code: 'conflict',
+		code: 'error',
 	},
 };
 

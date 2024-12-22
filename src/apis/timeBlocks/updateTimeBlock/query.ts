@@ -12,9 +12,9 @@ const usePatchTimeBlock = () => {
 	const mutation = useMutation({
 		mutationFn: async ({ taskId, timeBlockId, startTime, endTime }: PatchTimeBlokType) => {
 			const response = await PatchTimeBlock({ taskId, timeBlockId, startTime, endTime });
-			if (response && response.code === 'conflict') {
+			if (response && response.code === 'error') {
 				addToast(response.message, response.code);
-				throw new Error('conflict');
+				throw new Error('error');
 			}
 			return response;
 		},

@@ -2,11 +2,24 @@ import styled from '@emotion/styled';
 import { useEffect } from 'react';
 
 import Icon from '@/components/common/Icon';
+import { ToastType } from '@/types/toastType';
+
+const toastIcon: Record<ToastType, { icon: JSX.Element }> = {
+	success: {
+		icon: <Icon name="IcnReturnCheck" />,
+	},
+	error: {
+		icon: <Icon name="IcnDelete" />,
+	},
+	info: {
+		icon: <Icon name="IcnAlert" />,
+	},
+};
 
 interface ToastProps {
 	message: string;
 	onClose: () => void;
-	code: string; // success, conflict, info;
+	code: ToastType;
 }
 
 function Toast({ message, onClose, code }: ToastProps) {
@@ -15,23 +28,12 @@ function Toast({ message, onClose, code }: ToastProps) {
 		return () => clearTimeout(timer);
 	}, [onClose]);
 
-	const getIcon = () => {
-		switch (code) {
-			case 'success':
-				return <Icon name="IcnReturnCheck" />;
-			case 'conflict':
-				return <Icon name="IcnDelete" />;
-			case 'info':
-				return <Icon name="IcnAlert" />;
-			default:
-				return <Icon name="IcnReturnCheck" />;
-		}
-	};
+	const { icon } = toastIcon[code];
 
 	return (
 		<ToastMessage code={code}>
 			<TextLayout>
-				{getIcon()}
+				{icon}
 				{message}
 			</TextLayout>
 			<RevertBox>
@@ -57,7 +59,7 @@ const ToastMessage = styled.div<{ code: string }>`
 		switch (code) {
 			case 'success':
 				return theme.colorToken.Primary.normal;
-			case 'conflict':
+			case 'error':
 				return theme.color.Orange.Orange5;
 			case 'info':
 				return theme.color.Grey.Grey7;

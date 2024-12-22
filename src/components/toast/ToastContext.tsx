@@ -1,16 +1,17 @@
 import { createContext, useContext, useState, useMemo, ReactNode } from 'react';
 
 import ToastContainer from '@/components/toast/ToastContainer';
+import { ToastType } from '@/types/toastType';
 
 interface ToastItem {
 	id: number;
 	message: string;
-	code: string;
+	code: ToastType;
 }
 
 interface ToastContextProps {
 	toasts: ToastItem[];
-	addToast: (message: string, code: string) => void;
+	addToast: (message: string, code: ToastType) => void;
 	removeToast: (id: number) => void;
 }
 
@@ -27,7 +28,7 @@ export const useToast = () => {
 export function ToastProvider({ children }: { children: ReactNode }) {
 	const [toasts, setToasts] = useState<ToastItem[]>([]);
 
-	const addToast = (message: string, code: string) => {
+	const addToast = (message: string, code: ToastType) => {
 		const id = new Date().getTime();
 		setToasts((prevToasts) => [...prevToasts, { id, message, code }]);
 	};
