@@ -8,8 +8,8 @@ function ToastContainer() {
 
 	return (
 		<Container>
-			{toasts.map((toast) => (
-				<Toast key={toast.id} message={toast.message} onClose={() => removeToast(toast.id)} />
+			{toasts.map(({ id, message, code }) => (
+				<Toast key={id} message={message} code={code} onClose={() => removeToast(id)} />
 			))}
 		</Container>
 	);
