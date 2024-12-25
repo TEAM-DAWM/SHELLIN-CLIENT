@@ -20,7 +20,7 @@ const STATUS = {
 	COMPLETE: '완료',
 } as const;
 
-type StatusType = (typeof STATUS)[keyof typeof STATUS];
+export type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
 type TodoProps = {
 	title: string;
