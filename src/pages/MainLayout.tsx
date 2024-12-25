@@ -17,7 +17,7 @@ const MainLayOutContainer = styled.div`
 	height: 108rem;
 	padding-left: 7.2rem;
 
-	background-color: ${({ theme }) => theme.palette.Grey.White};
+	background-color: ${({ theme }) => theme.colorToken.Component.strong};
 	border-radius: 8px;
 `;
 
