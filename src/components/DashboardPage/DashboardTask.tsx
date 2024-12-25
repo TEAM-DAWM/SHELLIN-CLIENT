@@ -52,7 +52,6 @@ function DashboardTask({ text, taskStatus, emptyStatus, emptyImg }: DashboardTas
 									<BtnTask
 										location="dashboard"
 										key={task.id + task.name}
-										hasDescription={task.hasDescription}
 										id={task.id}
 										name={task.name}
 										status={task.status}
