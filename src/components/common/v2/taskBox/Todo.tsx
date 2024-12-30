@@ -1,5 +1,6 @@
 import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 import DropdownButton from '../control/DropdownButton';
 
@@ -24,16 +25,22 @@ type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
 type TodoProps = {
 	title: string;
-	deadline?: string;
+	deadlineDate?: string;
+	deadlineTime?: string;
 	status: StatusType;
 	isStatusVisible?: boolean;
 };
 
-function Todo({ title, deadline, status, isStatusVisible = true }: TodoProps) {
+function Todo({ title, deadlineDate, status: initStatus, isStatusVisible = true, deadlineTime }: TodoProps) {
 	const { state, handleMouseEnter, handleMouseLeave, handleMouseDown, handleMouseUp, handleDragStart, handleDragEnd } =
 		useTodoEventHandler();
 
+	const [status, setStatus] = useState<StatusType>(initStatus);
 	const isCompleted = status === STATUS.COMPLETE;
+
+	const handleStatusChange = (newStatus: StatusType) => {
+		setStatus(newStatus);
+	};
 
 	return (
 		<TodoContainer
@@ -49,11 +56,15 @@ function Todo({ title, deadline, status, isStatusVisible = true }: TodoProps) {
 		>
 			<TodoWrapper>
 				<span className="todo-title">{title}</span>
-				{deadline && <span className="todo-deadline">{deadline}</span>}
+				{deadlineDate && (
+					<span className="todo-deadline">
+						{deadlineDate} / {deadlineTime}
+					</span>
+				)}
 			</TodoWrapper>
 			{isStatusVisible && (
 				<DropdownWrapper>
-					<DropdownButton status={status} />
+					<DropdownButton status={status} handleStatusChange={handleStatusChange} />
 				</DropdownWrapper>
 			)}
 		</TodoContainer>
@@ -68,8 +79,7 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: auto;
-	min-width: 43.2rem;
-	max-width: 47.2rem;
+	width: 45.6rem;
 
 	background-color: ${theme.colorToken.Component.normal};
 	border-radius: 12px;
