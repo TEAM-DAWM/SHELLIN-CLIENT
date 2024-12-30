@@ -5,6 +5,7 @@ import { useState } from 'react';
 import DropdownButton from '../control/DropdownButton';
 
 import useTodoEventHandler from '@/hooks/useTodoEventHandler';
+import { STATUS } from '@/types/tasks/taskType';
 
 const TODO_EVENT_STATE = {
 	DEFAULT: 'default',
@@ -14,12 +15,6 @@ const TODO_EVENT_STATE = {
 } as const;
 
 type TodoEventState = (typeof TODO_EVENT_STATE)[keyof typeof TODO_EVENT_STATE];
-
-const STATUS = {
-	NOT_DONE: '미완료',
-	IN_PROGRESS: '진행중',
-	COMPLETE: '완료',
-} as const;
 
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
