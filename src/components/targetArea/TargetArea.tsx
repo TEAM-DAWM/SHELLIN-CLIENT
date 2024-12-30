@@ -62,9 +62,10 @@ const TargetAreaLayout = styled.section`
 	flex-direction: column;
 	flex-shrink: 0;
 	align-items: flex-start;
+	box-sizing: border-box;
 	width: 47.2rem;
-	margin: 0.8;
-	padding: 0 0.1rem 0 0.7rem;
+	margin: 0.8rem;
+	padding: 0 0.8rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
 	border: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
@@ -73,7 +74,7 @@ const TargetAreaLayout = styled.section`
 
 // 변화 가능성 있어 우선 wrapper로 컴포넌트에 간접적으로 간격 조정함
 const DateWrapper = styled.div`
-	padding: 1.8rem 0 2rem;
+	padding: 5.6rem 0 1.6rem 1.6rem;
 `;
 
 export default TargetArea;
