@@ -62,13 +62,13 @@ const TargetAreaLayout = styled.section`
 	flex-direction: column;
 	flex-shrink: 0;
 	align-items: flex-start;
-	width: 31.8rem;
-	height: 74.8rem;
-	margin: 1rem;
+	width: 47.2rem;
+	margin: 0.8;
 	padding: 0 0.1rem 0 0.7rem;
 
+	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
 	border: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
-	border-radius: 12px;
+	border-radius: 20px;
 `;
 
 // 변화 가능성 있어 우선 wrapper로 컴포넌트에 간접적으로 간격 조정함

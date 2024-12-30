@@ -153,6 +153,7 @@ export default Today;
 
 const TodayLayout = styled.div`
 	display: flex;
+	height: 100%;
 `;
 
 const CalendarWrapper = styled.div`
