@@ -96,6 +96,10 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		${({ theme }) => theme.font.label04}
 	}
 
+	.fc-toolbar-chunk .fc-today-button:active {
+		border: none;
+	}
+
 	/* 좌우 버튼 스타일 */
 	.fc-toolbar-chunk .fc-prev-button,
 	.fc-toolbar-chunk .fc-next-button {

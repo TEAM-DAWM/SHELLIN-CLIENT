@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -7,10 +6,9 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { DateSelectArg, EventResizeDoneArg } from 'fullcalendar/index.js';
 import { useState, useRef, useEffect } from 'react';
 
-import Icon from '../Icon';
 import ModalDeleteDetail from '../modal/ModalDeleteDetail';
-import MainDate from '../v2/TextBox/MainDate';
 
+import CalendarHeader from './CalendarHeader';
 import processEvents from './processEvents';
 
 import useDeleteTimeBlock from '@/apis/timeBlocks/deleteTimeBlock/query';
@@ -191,13 +189,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 
 	return (
 		<FullCalendarLayout size={size}>
-			<CustomComponentContainer size={size}>
-				<MainDate year={date.year} month={date.month} />
-				<CustomComponentWrapper>
-					<Icon name="IcnCalendar" />
-					<Icon name="IcnFilter" />
-				</CustomComponentWrapper>
-			</CustomComponentContainer>
+			<CalendarHeader size={size} date={date} />
 			<FullCalendar
 				ref={calendarRef}
 				initialView="timeGridWeek"
@@ -251,25 +243,5 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		</FullCalendarLayout>
 	);
 }
-
-const CustomComponentContainer = styled.div<{ size: string }>`
-	position: absolute;
-	top: 56px;
-	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
-	box-sizing: border-box;
-	width: 100%;
-	height: auto;
-	padding: ${({ size }) => (size === 'big' ? '0 2.4rem;' : '0 1.6rem 0 2.4rem;')};
-`;
-
-const CustomComponentWrapper = styled.div`
-	display: flex;
-	gap: 194px;
-	margin-top: 0.4rem;
-
-	color: ${({ theme }) => theme.colorToken.Icon.normal};
-`;
 
 export default FullCalendarBox;
