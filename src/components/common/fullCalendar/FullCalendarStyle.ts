@@ -20,10 +20,9 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 8rem;
+		${({ theme }) => theme.font.label04}
 		height: 3.2rem;
 		padding: 0 1.6rem;
-		${({ theme }) => theme.font.label04}
 
 		background: ${({ theme }) => theme.color.Grey.White};
 		border: none;
@@ -44,6 +43,10 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		transform: translateX(-50%);
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 		border-radius: 8px;
+	}
+
+	.fc-button-group > button {
+		width: 8rem;
 	}
 
 	/** .fc-button-primary: .fc-button-group 중 선택된 버튼 */
@@ -73,6 +76,7 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		display: flex;
 		gap: 8px;
 		align-items: center;
+		margin-right: 7.2rem;
 	}
 
 	/* 오늘 버튼 */
@@ -81,9 +85,7 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		gap: 8px;
 		align-items: center;
 		justify-content: center;
-		height: 3.2rem;
 		margin: 3.4rem 0 0;
-		padding: 0 1.6rem;
 
 		color: ${({ theme }) => theme.color.Grey.Grey5};
 
@@ -94,14 +96,6 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		${({ theme }) => theme.font.label04}
 	}
 
-	.fc-toolbar-chunk .fc-today-button:hover {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey7};
-	}
-
-	.fc-toolbar-chunk .fc-today-button:active {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey8};
-	}
-
 	/* 좌우 버튼 스타일 */
 	.fc-toolbar-chunk .fc-prev-button,
 	.fc-toolbar-chunk .fc-next-button {
@@ -109,17 +103,12 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		align-items: center;
 		justify-content: center;
 		width: 3.2rem;
-		height: 3.2rem;
 		margin: 3.4rem 0 0;
 
 		color: ${({ theme }) => theme.color.Grey.Grey5};
 
 		background-color: ${({ theme }) => theme.color.Grey.White};
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
-	}
-
-	.fc-toolbar-chunk .fc-next-button {
-		margin-right: 7.2rem;
 	}
 
 	.fc-toolbar-chunk .fc-prev-button:active,

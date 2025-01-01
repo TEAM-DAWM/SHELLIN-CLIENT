@@ -8,13 +8,13 @@ type IconProps = {
 	size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge';
 	color?: 'nomal' | 'strong' | 'heavy' | 'primary' | 'inverse';
 	onClick?: () => void;
-	isCusor?: boolean;
+	isCursor?: boolean;
 };
 
-function Icon({ name, size = 'medium', color, onClick, isCusor }: IconProps) {
+function Icon({ name, size = 'medium', color, onClick, isCursor }: IconProps) {
 	const SelectedIcon = Icn[name];
 	return (
-		<StyledIconWrapper size={size} color={color} onClick={onClick} isCusor={isCusor}>
+		<StyledIconWrapper size={size} color={color} onClick={onClick} isCursor={isCursor}>
 			<SelectedIcon />
 		</StyledIconWrapper>
 	);
@@ -41,7 +41,7 @@ const getColorMap = (theme: Theme) => ({
 const StyledIconWrapper = styled.div<{
 	size: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge';
 	color?: 'nomal' | 'strong' | 'heavy' | 'primary' | 'inverse';
-	isCusor?: boolean;
+	isCursor?: boolean;
 }>`
 	display: flex;
 	align-items: center;
@@ -49,7 +49,7 @@ const StyledIconWrapper = styled.div<{
 	width: ${({ size }) => sizeMap[size]};
 	height: ${({ size }) => sizeMap[size]};
 
-	${({ isCusor }) => isCusor && `cursor: pointer;`}
+	${({ isCursor }) => isCursor && `cursor: pointer;`}
 
 	svg {
 		width: 100%;
