@@ -8,7 +8,7 @@ interface DayHeaderContentProps {
 	arg: DayHeaderContentArg;
 	currentView: string;
 	today: string;
-	selectDate: string;
+	selectDate?: string;
 }
 
 function DayHeaderContent({ arg, currentView, today, selectDate }: DayHeaderContentProps) {

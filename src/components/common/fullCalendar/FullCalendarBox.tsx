@@ -199,7 +199,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 					center: 'timeGridWeek,dayGridMonth',
 					right: 'today prev next',
 				}}
-				slotDuration="00:30:00"
 				editable
 				selectable={isSelectable}
 				nowIndicator
@@ -212,6 +211,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				}}
 				allDayText="종일"
 				locale="ko"
+				slotDuration="00:15:00"
+				slotLabelInterval="01:00:00"
 				slotLabelFormat={{
 					hour: 'numeric',
 					minute: '2-digit',
@@ -221,7 +222,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				slotLabelContent={customSlotLabelContent}
 				/* eslint-disable */
 				dayHeaderContent={(arg) => (
-					<DayHeaderContent arg={arg} currentView={currentView} today={today.toDateString()} />
+					<DayHeaderContent
+						arg={arg}
+						currentView={currentView}
+						today={today.toDateString()}
+						selectDate={selectDate?.toString()}
+					/>
 				)}
 				viewDidMount={handleViewChange}
 				datesSet={handleDatesSet}

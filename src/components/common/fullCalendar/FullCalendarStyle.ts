@@ -120,6 +120,8 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		border: none;
 	}
 
+	/* ---- 여기까지 toolbar (캘린더 헤더) */
+
 	.fc .fc-timegrid-slot-label-cushion {
 		padding: 0 1.2rem 0 0;
 	}
@@ -155,6 +157,12 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 
 	.schedule .fc-event-main {
 		background-color: ${({ theme }) => theme.palette.Grey.Grey2};
+	}
+
+	/* 종일 텍스트 */
+	.fc-scrollgrid-shrink-frame .fc-scrollgrid-sync-inner {
+		${({ theme }) => theme.font.caption02}
+		color: ${({ theme }) => theme.colorToken.Text.disable};
 	}
 
 	/* 종일 이벤트 테두리 */
@@ -222,13 +230,14 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		${({ theme }) => theme.fontTheme.CAPTION_01};
 	}
 
-	/* 타임 그리드 30분당 일정 */
+	/** .fc-timegrid-slot-label: 시간 라벨 */
+
+	/* 타임 그리드 15분당 일정 */
 	.fc .fc-timegrid-slot-label {
-		width: 5.7rem;
-		height: 2.4rem;
+		color: ${(color) => color.theme.palette.Grey.Grey5};
+		text-transform: lowercase;
 
-		color: ${(color) => color.theme.palette.Grey.Grey6};
-
+		${({ theme }) => theme.font.caption01}
 		border-bottom: none;
 	}
 
@@ -250,9 +259,9 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		border-bottom: 1px solid ${({ theme }) => theme.palette.Grey.Grey9};
 	}
 
-	/* 30분 줄선 지우기 */
+	/* 15분 줄선 테두리 */
 	.fc .fc-timegrid-slot-minor {
-		border-top-style: none;
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 	}
 
 	/* 요일 헤더 높이 조정 */
@@ -272,12 +281,6 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		background: none;
 	}
 
-	/* 주말 색 다르게 */
-	.fc .fc-day-sun,
-	.fc .fc-day-sat {
-		background: ${({ theme }) => theme.palette.Blue.Blue1};
-	}
-
 	/* 스타일링 현재 시간 표시 */
 	.fc .fc-timegrid-now-indicator-line {
 		height: 0.2rem;
@@ -288,9 +291,7 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 
 	/* 시간 세로줄 테두리 없애기 */
 	.fc-timegrid-axis {
-		color: ${({ theme }) => theme.palette.Grey.Grey6};
-
-		border: none;
+		border: 100px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 	}
 
 	.fc-timegrid-event {
