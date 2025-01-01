@@ -166,34 +166,50 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		background: ${({ theme }) => theme.palette.Blue.Blue1};
 	}
 
-	.fc .fc-button-primary:not(:disabled).fc-button-active {
-		background: ${({ theme }) => theme.palette.Primary};
-	}
-
 	.fc .fc-button-primary:focus {
 		box-shadow: none;
 	}
 
+	.fc .fc-button-group {
+		background: ${({ theme }) => theme.color.Grey.White};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+		border-radius: 8px;
+	}
+
 	/* Custom button styles */
 	.fc-toolbar-chunk .fc-button {
-		width: 4.5rem;
-		height: 2.6rem;
-		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 8rem;
+		height: 3.2rem;
+		padding: 0 1.6rem;
+		${({ theme }) => theme.font.label04}
 
-		background-color: ${({ theme }) => theme.palette.Blue.Blue3};
+		background: ${({ theme }) => theme.color.Grey.White};
 		border: none;
 		border-radius: 8px;
 	}
 
+	.fc-toolbar-chunk .fc-button:hover {
+		background: none;
+	}
+
 	.fc-toolbar-chunk .fc-button:active {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue3};
+		background: none;
 	}
 
 	/* Override the button group border-radius styles */
 	.fc-direction-ltr .fc-button-group > .fc-button {
-		margin-right: 0.4rem;
-		margin-left: 0;
+		display: flex;
+		align-items: center;
 
+		color: ${({ theme }) => theme.colorToken.Text.assistive};
+	}
+
+	.fc .fc-button-primary:not(:disabled).fc-button-active {
+		background: ${({ theme }) => theme.colorToken.Neutral.heavy};
+		border: none;
 		border-radius: 8px;
 	}
 
@@ -237,10 +253,6 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		background-color: ${({ theme }) => theme.palette.Grey.Black};
 	}
 
-	.fc-toolbar-chunk .fc-button:hover {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue8};
-	}
-
 	.fc-toolbar-chunk .fc-prev-button:hover,
 	.fc-toolbar-chunk .fc-next-button:hover {
 		background-color: ${({ theme }) => theme.palette.Grey.Grey7};
@@ -271,10 +283,6 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 
 	.fc-toolbar-chunk .fc-today-button:active {
 		background-color: ${({ theme }) => theme.palette.Grey.Grey8};
-	}
-
-	.fc .fc-button-group {
-		margin-left: 5.4rem;
 	}
 
 	.fc .fc-custom-button {

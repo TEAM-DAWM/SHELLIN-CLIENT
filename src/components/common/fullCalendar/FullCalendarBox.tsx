@@ -79,9 +79,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 			case 'timeGridWeek':
 				setRange(7);
 				break;
-			case 'timeGridDay':
-				setRange(1);
-				break;
 			default:
 				setRange(7);
 		}
@@ -195,13 +192,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				initialView="timeGridWeek"
 				plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
 				headerToolbar={{
-					left: 'title today prev next timeGridDay,timeGridWeek,dayGridMonth',
+					left: 'title today prev next timeGridWeek,dayGridMonth',
 					right: '',
 				}}
 				views={{
-					timeGridDay: {
-						titleFormat: { year: 'numeric', month: 'short' },
-					},
 					timeGridWeek: {
 						titleFormat(date) {
 							return `${date.date.year}년 ${date.date.month + 1}월`;
@@ -218,10 +212,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				dayMaxEvents
 				events={calendarEvents}
 				buttonText={{
-					today: '오늘',
-					month: '월간',
-					week: '주간',
-					day: '일간',
+					month: '월',
+					week: '주',
 				}}
 				allDayText="종일"
 				locale="ko"
