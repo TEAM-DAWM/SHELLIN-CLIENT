@@ -8,6 +8,7 @@ import { DateSelectArg, EventResizeDoneArg } from 'fullcalendar/index.js';
 import { useState, useRef, useEffect } from 'react';
 
 import ModalDeleteDetail from '../modal/ModalDeleteDetail';
+import MainDate from '../v2/TextBox/MainDate';
 
 import processEvents from './processEvents';
 
@@ -15,7 +16,6 @@ import useDeleteTimeBlock from '@/apis/timeBlocks/deleteTimeBlock/query';
 import useGetTimeBlock from '@/apis/timeBlocks/getTimeBlock/query';
 import usePostTimeBlock from '@/apis/timeBlocks/postTimeBlock/query';
 import useUpdateTimeBlock from '@/apis/timeBlocks/updateTimeBlock/query';
-import RefreshBtn from '@/components/common/button/RefreshBtn';
 import DayHeaderContent from '@/components/common/fullCalendar/DayHeaderContent';
 import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarStyle';
 import { customDayCellContent, customSlotLabelContent } from '@/components/common/fullCalendar/fullCalendarUtils';
@@ -29,8 +29,8 @@ interface FullCalendarBoxProps {
 }
 
 function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxProps) {
-	const today = new Date().toDateString();
-	const todayDate = new Date().toISOString().split('T')[0];
+	const today = new Date();
+	const todayDate = today.toISOString().split('T')[0];
 	const [currentView, setCurrentView] = useState('timeGridWeek');
 	const [range, setRange] = useState(7);
 	const [startDate, setStartDate] = useState<string>(todayDate);
@@ -39,6 +39,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 	const [left, setLeft] = useState(0);
 	const [modalTaskId, setModalTaskId] = useState<number | null>(null);
 	const [modalTimeBlockId, setModalTimeBlockId] = useState<number | null>(null);
+	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -63,12 +64,17 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 	const handleDatesSet = (dateInfo: DatesSetArg) => {
 		const currentViewType = dateInfo.view.type;
 		const newStartDate = new Date(dateInfo.start);
-		newStartDate.setDate(newStartDate.getDate() + 1);
+		const endDate = new Date(dateInfo.end);
+		const centerDate = new Date((newStartDate.getTime() + endDate.getTime()) / 2);
 		const formattedStartDate = newStartDate.toISOString().split('T')[0];
 
 		setCurrentView(dateInfo.view.type);
 		setStartDate(formattedStartDate);
 		updateRange(currentViewType);
+		setDate({
+			year: centerDate.getFullYear(),
+			month: centerDate.getMonth() + 1,
+		});
 	};
 
 	const updateRange = (viewType: string) => {
@@ -184,26 +190,16 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 
 	return (
 		<FullCalendarLayout size={size}>
-			<CustomButtonContainer>
-				<RefreshBtn isDisabled={false} />
-			</CustomButtonContainer>
+			<MainDate year={date.year} month={date.month} />
+
 			<FullCalendar
 				ref={calendarRef}
 				initialView="timeGridWeek"
 				plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
 				headerToolbar={{
-					left: 'title today prev next timeGridWeek,dayGridMonth',
-					right: '',
-				}}
-				views={{
-					timeGridWeek: {
-						titleFormat(date) {
-							return `${date.date.year}년 ${date.date.month + 1}월`;
-						},
-					},
-					dayGridMonth: {
-						titleFormat: { year: 'numeric', month: 'short' },
-					},
+					left: '',
+					center: 'timeGridWeek,dayGridMonth',
+					right: 'today prev next',
 				}}
 				slotDuration="00:30:00"
 				editable
@@ -214,6 +210,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				buttonText={{
 					month: '월',
 					week: '주',
+					today: '오늘',
 				}}
 				allDayText="종일"
 				locale="ko"
@@ -225,7 +222,9 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				}}
 				slotLabelContent={customSlotLabelContent}
 				/* eslint-disable */
-				dayHeaderContent={(arg) => <DayHeaderContent arg={arg} currentView={currentView} today={today} />}
+				dayHeaderContent={(arg) => (
+					<DayHeaderContent arg={arg} currentView={currentView} today={today.toDateString()} />
+				)}
 				viewDidMount={handleViewChange}
 				datesSet={handleDatesSet}
 				dayCellContent={customDayCellContent}
@@ -246,15 +245,5 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		</FullCalendarLayout>
 	);
 }
-
-const CustomButtonContainer = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	box-sizing: border-box;
-	width: 100%;
-	margin-bottom: -2.6rem;
-	padding-right: 1rem;
-`;
 
 export default FullCalendarBox;
