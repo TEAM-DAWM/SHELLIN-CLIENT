@@ -1,11 +1,130 @@
 import styled from '@emotion/styled';
 
 const FullCalendarLayout = styled.div<{ size: string }>`
-	width: ${({ size }) => (size === 'big' ? '91rem' : '58rem')};
-	height: 70rem;
+	position: relative;
+	width: ${({ size }) => (size === 'big' ? '132rem' : '88.8rem')};
+	height: 106.4rem;
 
 	.fc .fc-toolbar.fc-header-toolbar {
-		margin-bottom: 1.8rem;
+		display: flex;
+		align-items: flex-start;
+		margin: 2.4rem 0 0;
+	}
+
+	.fc-toolbar {
+		position: relative;
+	}
+
+	/* Custom button styles */
+	.fc-toolbar-chunk .fc-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 8rem;
+		height: 3.2rem;
+		padding: 0 1.6rem;
+		${({ theme }) => theme.font.label04}
+
+		background: ${({ theme }) => theme.color.Grey.White};
+		border: none;
+		border-radius: 8px;
+	}
+
+	.fc-toolbar-chunk .fc-button:hover,
+	.fc-toolbar-chunk .fc-button:active {
+		background: none;
+	}
+
+	/** .fc-button-group: 주/월 토글 */
+	.fc .fc-button-group {
+		position: absolute;
+		left: 50%;
+
+		background: ${({ theme }) => theme.color.Grey.White};
+		transform: translateX(-50%);
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+		border-radius: 8px;
+	}
+
+	/** .fc-button-primary: .fc-button-group 중 선택된 버튼 */
+	.fc .fc-button-primary:focus {
+		box-shadow: none;
+	}
+
+	.fc .fc-button-primary:not(:disabled).fc-button-active {
+		background: ${({ theme }) => theme.colorToken.Neutral.heavy};
+		border: none;
+		border-radius: 8px;
+	}
+
+	/* Override the button group border-radius styles */
+	.fc-direction-ltr .fc-button-group > .fc-button {
+		display: flex;
+		align-items: center;
+
+		color: ${({ theme }) => theme.colorToken.Text.assistive};
+	}
+
+	.fc-button-active:focus {
+		box-shadow: none;
+	}
+
+	.fc-toolbar-chunk {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+	}
+
+	/* 오늘 버튼 */
+	.fc-toolbar-chunk .fc-today-button {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		justify-content: center;
+		height: 3.2rem;
+		margin: 3.4rem 0 0;
+		padding: 0 1.6rem;
+
+		color: ${({ theme }) => theme.color.Grey.Grey5};
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
+		opacity: 1;
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+
+		${({ theme }) => theme.font.label04}
+	}
+
+	.fc-toolbar-chunk .fc-today-button:hover {
+		background-color: ${({ theme }) => theme.palette.Grey.Grey7};
+	}
+
+	.fc-toolbar-chunk .fc-today-button:active {
+		background-color: ${({ theme }) => theme.palette.Grey.Grey8};
+	}
+
+	/* 좌우 버튼 스타일 */
+	.fc-toolbar-chunk .fc-prev-button,
+	.fc-toolbar-chunk .fc-next-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 3.2rem;
+		height: 3.2rem;
+		margin: 3.4rem 0 0;
+
+		color: ${({ theme }) => theme.color.Grey.Grey5};
+
+		background-color: ${({ theme }) => theme.color.Grey.White};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+	}
+
+	.fc-toolbar-chunk .fc-next-button {
+		margin-right: 7.2rem;
+	}
+
+	.fc-toolbar-chunk .fc-prev-button:active,
+	.fc-toolbar-chunk .fc-next-button:active {
+		border: none;
 	}
 
 	.fc .fc-timegrid-slot-label-cushion {
@@ -166,53 +285,6 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		background: ${({ theme }) => theme.palette.Blue.Blue1};
 	}
 
-	.fc .fc-button-primary:focus {
-		box-shadow: none;
-	}
-
-	.fc .fc-button-group {
-		background: ${({ theme }) => theme.color.Grey.White};
-		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
-		border-radius: 8px;
-	}
-
-	/* Custom button styles */
-	.fc-toolbar-chunk .fc-button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 8rem;
-		height: 3.2rem;
-		padding: 0 1.6rem;
-		${({ theme }) => theme.font.label04}
-
-		background: ${({ theme }) => theme.color.Grey.White};
-		border: none;
-		border-radius: 8px;
-	}
-
-	.fc-toolbar-chunk .fc-button:hover {
-		background: none;
-	}
-
-	.fc-toolbar-chunk .fc-button:active {
-		background: none;
-	}
-
-	/* Override the button group border-radius styles */
-	.fc-direction-ltr .fc-button-group > .fc-button {
-		display: flex;
-		align-items: center;
-
-		color: ${({ theme }) => theme.colorToken.Text.assistive};
-	}
-
-	.fc .fc-button-primary:not(:disabled).fc-button-active {
-		background: ${({ theme }) => theme.colorToken.Neutral.heavy};
-		border: none;
-		border-radius: 8px;
-	}
-
 	/* 스타일링 현재 시간 표시 */
 	.fc .fc-timegrid-now-indicator-line {
 		height: 0.2rem;
@@ -241,63 +313,6 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 	/* event inset 적용 */
 	.fc-timegrid-event-harness > .fc-timegrid-event {
 		inset: 0.1rem;
-	}
-
-	/* 좌우 버튼 스타일 */
-	.fc-toolbar-chunk .fc-prev-button,
-	.fc-toolbar-chunk .fc-next-button {
-		width: 2.6rem;
-		height: 2.6rem;
-		padding: 0;
-
-		background-color: ${({ theme }) => theme.palette.Grey.Black};
-	}
-
-	.fc-toolbar-chunk .fc-prev-button:hover,
-	.fc-toolbar-chunk .fc-next-button:hover {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey7};
-	}
-
-	.fc-direction-ltr .fc-toolbar > * > :not(:first-of-type) {
-		margin-left: 0.4rem;
-	}
-
-	.fc-button-active:focus {
-		box-shadow: none;
-	}
-
-	.fc-toolbar-chunk {
-		display: flex;
-		align-items: center;
-	}
-
-	/* 오늘 버튼 */
-	.fc-toolbar-chunk .fc-today-button {
-		background-color: ${({ theme }) => theme.palette.Grey.Black};
-		opacity: 1;
-	}
-
-	.fc-toolbar-chunk .fc-today-button:hover {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey7};
-	}
-
-	.fc-toolbar-chunk .fc-today-button:active {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey8};
-	}
-
-	.fc .fc-custom-button {
-		background-color: ${({ theme }) => theme.palette.Grey.Black};
-	}
-
-	.fc .fc-custom-button:hover {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey7};
-	}
-
-	/* 오늘 버튼 마진 */
-	.fc .fc-toolbar-title {
-		margin-right: 0.75rem;
-		padding: 0 1rem;
-		${({ theme }) => theme.fontTheme.HEADLINE_02};
 	}
 
 	.fc .fc-daygrid-event-harness {

@@ -190,8 +190,9 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 
 	return (
 		<FullCalendarLayout size={size}>
-			<MainDate year={date.year} month={date.month} />
-
+			<CustomComponentContainer>
+				<MainDate year={date.year} month={date.month} />
+			</CustomComponentContainer>
 			<FullCalendar
 				ref={calendarRef}
 				initialView="timeGridWeek"
@@ -245,5 +246,14 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		</FullCalendarLayout>
 	);
 }
+
+const CustomComponentContainer = styled.div`
+	position: absolute;
+	top: 56px;
+	box-sizing: border-box;
+	width: 100%;
+	height: auto;
+	padding: 0 1.6rem 0 2.4rem;
+`;
 
 export default FullCalendarBox;
