@@ -204,12 +204,10 @@ const CalendarWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	box-sizing: border-box;
 	width: fit-content;
-	height: 72.8rem;
 	margin: 1rem 0;
-	padding: 1.8rem 0.7rem 0 2.3rem;
 
 	background-color: ${({ theme }) => theme.color.Grey.White};
 	border: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
-	border-radius: 12px;
 `;

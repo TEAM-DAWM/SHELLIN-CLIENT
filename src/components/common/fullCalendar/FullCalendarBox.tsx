@@ -191,12 +191,19 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		<FullCalendarLayout size={size} currentView={currentView}>
 			<CalendarHeader size={size} date={date} />
 			<FullCalendar
+				height="100%"
 				ref={calendarRef}
-				initialView="timeGridWeek"
+				initialView="timeGridWeekCustom"
 				plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
+				views={{
+					timeGridWeekCustom: {
+						type: 'timeGrid',
+						duration: { days: size === 'big' ? 7 : 5 },
+					},
+				}}
 				headerToolbar={{
 					left: '',
-					center: 'timeGridWeek,dayGridMonth',
+					center: 'timeGridWeekCustom,dayGridMonth',
 					right: 'today prev next',
 				}}
 				editable
@@ -206,7 +213,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				events={calendarEvents}
 				buttonText={{
 					month: '월',
-					week: '주',
+					timeGridWeekCustom: '주',
 					today: '오늘',
 				}}
 				allDayText="종일"

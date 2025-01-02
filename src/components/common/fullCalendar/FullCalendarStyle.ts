@@ -2,8 +2,14 @@ import styled from '@emotion/styled';
 
 const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	position: relative;
+
+	box-sizing: border-box;
 	width: ${({ size }) => (size === 'big' ? '132rem' : '88.8rem')};
 	height: 106.4rem;
+	overflow: hidden;
+
+	border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+	border-radius: 20px;
 
 	.fc .fc-toolbar.fc-header-toolbar {
 		display: flex;
@@ -37,6 +43,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/** .fc-button-group: 주/월 토글 */
 	.fc .fc-button-group {
 		position: absolute;
+		top: 0;
 		left: 50%;
 
 		background: ${({ theme }) => theme.color.Grey.White};
@@ -122,18 +129,68 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	/* ---- 여기까지 toolbar (캘린더 헤더) */
 
+	.fc-event-allday {
+		height: 2rem;
+	}
+
 	.fc .fc-col-header-cell {
 		height: 2.4rem;
 		padding: 2.4rem 0.8rem 0;
 
 		border-right: none;
 		border-left: none;
-		border-radius: 8px 8px 0 0;
 	}
 
-	.fc .fc-timegrid-slot-label-cushion {
-		padding: 0 1.2rem 0 0;
+	/* 종일  - 타임그리드 셀 크기 고정 */
+	.fc-scrollgrid-sync-table > colgroup > col {
+		width: 3rem !important;
 	}
+
+	.fc-timegrid-axis .fc-scrollgrid-shrink {
+		width: fit-content;
+	}
+
+	.fc-timegrid-body .fc-timegrid-slots > colgroup > col {
+		width: 3rem;
+	}
+
+	/* 전체 캘린더(주간) */
+	.fc-scrollgrid.fc-scrollgrid-liquid {
+		padding: 0 8px 0 0;
+	}
+
+	/* fc-daygrid-day-events: 종일 행(개별) */
+	.fc-daygrid-day-frame .fc-scrollgrid-sync-inner,
+	.fc-daygrid-day-events {
+		width: ${({ size }) => (size === 'big' ? '17.6rem' : '16.8rem')};
+		height: 4.4rem;
+	}
+
+	.fc-timegrid-slot .fc-timegrid-slot-label .fc-scrollgrid-shrink {
+		width: 4rem;
+	}
+
+	.fc-timegrid-allday {
+		display: flex;
+		align-items: center;
+		height: 4.4rem;
+		overflow: hidden;
+	}
+
+	.fc-timegrid-allday-bg {
+		height: 4.4rem;
+
+		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+	}
+
+	/* 타임그리드 테두리 */
+	.fc .fc-scrollgrid-section-body table,
+	.fc .fc-scrollgrid-section-footer table {
+		border-right: 1px solid;
+		border-bottom-style: hidden;
+	}
+
+	/* 주간캘린더 */
 
 	/* 이벤트 박스 */
 	.fc-event-main {
@@ -243,6 +300,12 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	/* 타임 그리드 15분당 일정 */
 	.fc .fc-timegrid-slot-label {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		box-sizing: border-box;
+		width: 4rem;
+
 		color: ${(color) => color.theme.palette.Grey.Grey5};
 		text-transform: lowercase;
 
@@ -273,12 +336,16 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 	}
 
+	.fc-scrollgrid .fc-scrollgrid-liquid {
+		height: 100%;
+	}
+
 	/* 요일 헤더 높이 조정 */
 
 	/** .fc-daygrid-day: 각 날짜 별 박스 */
 	.fc-daygrid-day {
-		width: ${({ size }) => (size === 'big' ? '18.4rem' : '12.4rem')};
-		height: ${({ currentView }) => (currentView === 'timeGridWeek' ? '0' : '15.2rem')};
+		width: ${({ size }) => (size === 'big' ? '13.2rem' : '12.4rem')};
+		height: ${({ currentView }) => (currentView === 'timeGridWeekCustom' ? '0' : '15.2rem')};
 	}
 
 	.fc-daygrid-day-number {
@@ -379,7 +446,8 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.fc .fc-timegrid-axis-frame {
-		justify-content: flex-start;
+		justify-content: center;
+		width: 4rem;
 	}
 
 	/* 시간 왼쪽에 붙이기 */
@@ -400,7 +468,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	/* 바깥 테두리 없애기 */
 	.fc .fc-scrollgrid-liquid {
-		height: 65.5rem;
+		height: 100%;
 		overflow: auto;
 
 		border: none;
