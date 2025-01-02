@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { Droppable } from 'react-beautiful-dnd';
 
-import TargetAreaDate from './TargetAreaDate';
 import TargetControlSection from './TargetControlSection';
 import TargetTaskSection from './TargetTaskSection';
 
+import MainDate from '@/components/common/v2/TextBox/MainDate';
 import { TaskType } from '@/types/tasks/taskType';
 import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
 import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
@@ -25,11 +25,14 @@ function TargetArea({
 	onClickDatePicker,
 	targetDate,
 }: TargetAreaProps) {
+	const dateTypeDate = new Date(targetDate);
+	const month = dateTypeDate.getMonth() + 1;
+	const day = dateTypeDate.getDate();
 	return (
 		<TargetAreaLayout>
 			{/* 날짜 */}
 			<DateWrapper>
-				<TargetAreaDate targetDate={targetDate} />
+				<MainDate month={month} day={day} />
 			</DateWrapper>
 
 			{/* 버튼 */}
