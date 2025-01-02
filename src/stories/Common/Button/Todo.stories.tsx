@@ -11,7 +11,8 @@ const meta = {
 	tags: ['autodocs'],
 	argTypes: {
 		title: { control: 'text', description: '할 일 제목' },
-		deadline: { control: 'text', description: '할 일의 마감기한' },
+		deadlineDate: { control: 'text', description: '할 일의 마감날짜' },
+		deadlineTime: { control: 'text', description: '할 일의 마감시간' },
 		status: {
 			control: 'radio',
 			options: ['미완료', '진행중', '완료'],
@@ -27,7 +28,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
 	args: {
 		title: '할 일 제목',
-		deadline: '2024-12-31',
+		deadlineDate: '2024년 12월 31일',
+		deadlineTime: '오후 6시 40분 까지',
 		status: '미완료',
 	},
 };

@@ -120,7 +120,7 @@ function BtnTask(props: BtnTaskProps) {
 						date={deadLine?.date || null}
 						time={deadLine?.time || null}
 						size={{ type: 'short' }}
-						isDelayed={status === '지연'}
+						// isDelayed={status === '지연'}
 					/>
 				</BtnTaskContainer>
 				<BtnTaskIconRender
