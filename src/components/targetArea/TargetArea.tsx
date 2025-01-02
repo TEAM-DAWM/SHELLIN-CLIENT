@@ -5,6 +5,7 @@ import TargetControlSection from './TargetControlSection';
 import TargetTaskSection from './TargetTaskSection';
 
 import MainDate from '@/components/common/v2/TextBox/MainDate';
+import TargetFilterSection from '@/components/targetArea/TargetFilterSection';
 import { TaskType } from '@/types/tasks/taskType';
 import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
 import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
@@ -43,6 +44,8 @@ function TargetArea({
 				onClickDatePicker={onClickDatePicker}
 				targetDate={targetDate}
 			/>
+			{/* 정렬 버튼 */}
+			<TargetFilterSection />
 			{/* 태스크 목록 */}
 			<Droppable droppableId="target">
 				{(provided) => (
@@ -68,7 +71,6 @@ const TargetAreaLayout = styled.section`
 	box-sizing: border-box;
 	width: 47.2rem;
 	margin: 0.8rem;
-	padding: 0 0.8rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
 	border: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
@@ -77,7 +79,7 @@ const TargetAreaLayout = styled.section`
 
 // 변화 가능성 있어 우선 wrapper로 컴포넌트에 간접적으로 간격 조정함
 const DateWrapper = styled.div`
-	padding: 5.6rem 0 1.6rem 1.6rem;
+	padding: 5.6rem 0 1.6rem 2.4rem;
 `;
 
 export default TargetArea;
