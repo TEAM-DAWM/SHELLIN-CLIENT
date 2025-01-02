@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { Draggable } from 'react-beautiful-dnd';
 
-import BtnTask from '../common/BtnTask/BtnTask';
 import BtnTaskContainer from '../common/BtnTaskContainer';
 import EmptyContainer from '../common/EmptyContainer';
 
+import Todo from '@/components/common/v2/taskBox/Todo';
 import { TaskType } from '@/types/tasks/taskType';
+import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
 
 interface TargetTaskSectionProps {
 	handleSelectedTarget: (task: TaskType | null) => void;
@@ -13,9 +14,9 @@ interface TargetTaskSectionProps {
 	tasks: TaskType[];
 	targetDate: string;
 }
-function TargetTaskSection(props: TargetTaskSectionProps) {
-	const { handleSelectedTarget, selectedTarget, tasks, targetDate } = props;
-
+function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, targetDate }: TargetTaskSectionProps) {
+	// TODO: 추후에 해당 로직을 연결해야 합니다.
+	console.log(handleSelectedTarget, selectedTarget, targetDate);
 	return (
 		<BtnTaskContainer type="target">
 			{tasks.length === 0 ? (
@@ -26,28 +27,26 @@ function TargetTaskSection(props: TargetTaskSectionProps) {
 				<>
 					{tasks.map((task: TaskType, index: number) => (
 						<Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-							{(provided, snapshot) => (
+							{(provided) => (
 								<div
 									ref={provided.innerRef}
 									{...provided.draggableProps}
 									{...provided.dragHandleProps}
-									style={{ userSelect: 'none', ...provided.draggableProps.style }}
+									style={provided.draggableProps.style}
 								>
-									<BtnTask
-										location="target"
+									<Todo
+										// location="target"
 										key={task.id}
-										hasDescription={task.hasDescription}
-										name={task.name}
-										deadLine={task.deadLine}
-										btnStatus={task.status}
+										title={task.name}
+										deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
+										deadlineTime={task.deadLine?.time || undefined}
 										status={task.status}
-										id={task.id}
-										handleSelectedTarget={handleSelectedTarget}
-										selectedTarget={selectedTarget}
-										isDragging={snapshot.isDragging}
-										targetDate={targetDate}
-										dashBoardInprogress={false}
-										modalSize={{ type: 'long' }}
+										// id={task.id}
+										// handleSelectedTarget={handleSelectedTarget}
+										// selectedTarget={selectedTarget}
+										// isDragging={snapshot.isDragging}
+										// targetDate={targetDate}
+										// dashBoardInprogress={false}
 									/>
 								</div>
 							)}
@@ -66,5 +65,4 @@ const EmptyLayout = styled.div`
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	height: 90%;
 `;

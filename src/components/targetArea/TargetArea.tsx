@@ -49,7 +49,7 @@ function TargetArea({
 			{/* 태스크 목록 */}
 			<Droppable droppableId="target">
 				{(provided) => (
-					<div ref={provided.innerRef} {...provided.droppableProps}>
+					<DroppableWrapper ref={provided.innerRef} {...provided.droppableProps}>
 						<TargetTaskSection
 							handleSelectedTarget={handleSelectedTarget}
 							selectedTarget={selectedTarget}
@@ -57,7 +57,7 @@ function TargetArea({
 							targetDate={formatDatetoLocalDate(targetDate)}
 						/>
 						{provided.placeholder}
-					</div>
+					</DroppableWrapper>
 				)}
 			</Droppable>
 		</TargetAreaLayout>
@@ -82,4 +82,7 @@ const DateWrapper = styled.div`
 	padding: 5.6rem 0 1.6rem 2.4rem;
 `;
 
+const DroppableWrapper = styled.div`
+	width: 100%;
+`;
 export default TargetArea;
