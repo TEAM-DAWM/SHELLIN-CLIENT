@@ -188,7 +188,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 	};
 
 	return (
-		<FullCalendarLayout size={size}>
+		<FullCalendarLayout size={size} currentView={currentView}>
 			<CalendarHeader size={size} date={date} />
 			<FullCalendar
 				ref={calendarRef}

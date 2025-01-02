@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const FullCalendarLayout = styled.div<{ size: string }>`
+const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	position: relative;
 	width: ${({ size }) => (size === 'big' ? '132rem' : '88.8rem')};
 	height: 106.4rem;
@@ -121,6 +121,15 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 	}
 
 	/* ---- 여기까지 toolbar (캘린더 헤더) */
+
+	.fc .fc-col-header-cell {
+		height: 2.4rem;
+		padding: 2.4rem 0.8rem 0;
+
+		border-right: none;
+		border-left: none;
+		border-radius: 8px 8px 0 0;
+	}
 
 	.fc .fc-timegrid-slot-label-cushion {
 		padding: 0 1.2rem 0 0;
@@ -266,14 +275,15 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 
 	/* 요일 헤더 높이 조정 */
 
-	.fc .fc-col-header-cell {
-		box-sizing: border-box;
-		height: 5.5rem;
-		padding: 0.4rem 0.8rem 0.6rem;
+	/** .fc-daygrid-day: 각 날짜 별 박스 */
+	.fc-daygrid-day {
+		width: ${({ size }) => (size === 'big' ? '18.4rem' : '12.4rem')};
+		height: ${({ currentView }) => (currentView === 'timeGridWeek' ? '0' : '15.2rem')};
+	}
 
-		border-right: none;
-		border-left: none;
-		border-radius: 8px 8px 0 0;
+	.fc-daygrid-day-number {
+		${({ theme }) => theme.font.label03}
+		color: ${({ theme }) => theme.colorToken.Text.neutralLight};
 	}
 
 	/* 오늘 배경색 없애기 */
