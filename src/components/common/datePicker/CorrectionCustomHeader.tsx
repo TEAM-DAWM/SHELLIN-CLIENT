@@ -6,7 +6,7 @@ import IconButton from '../v2/IconButton';
 import MainDate from '../v2/TextBox/MainDate';
 
 interface CustomHeaderProps {
-	selected: Date | null;
+	date: Date;
 	decreaseMonth: () => void;
 	increaseMonth: () => void;
 	prevMonthButtonDisabled: boolean;
@@ -16,7 +16,7 @@ interface CustomHeaderProps {
 }
 
 function CorrectionCustomHeader({
-	selected,
+	date,
 	decreaseMonth,
 	increaseMonth,
 	prevMonthButtonDisabled,
@@ -24,7 +24,6 @@ function CorrectionCustomHeader({
 	onChange,
 	onClose,
 }: CustomHeaderProps) {
-	const selectedDate = selected || new Date();
 	const today = new Date();
 	const { colorToken, color } = useTheme();
 	const ButtonColorCss = css`
@@ -46,7 +45,7 @@ function CorrectionCustomHeader({
 				additionalCss={IconButtonColorCss}
 			/>
 			<DateWrapper>
-				<MainDate month={selectedDate.getUTCMonth() + 1} year={selectedDate.getUTCFullYear()} />
+				<MainDate month={date.getUTCMonth() + 1} year={date.getUTCFullYear()} />
 			</DateWrapper>
 			<div className="react-datepicker__navigation-wrapper">
 				<BtnWrapper className="react-datepicker__navigation-container">

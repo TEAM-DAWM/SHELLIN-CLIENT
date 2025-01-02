@@ -50,9 +50,7 @@ function DateCorrectionModal({ top = 0, left = 0, date, onClick, handleCurrentDa
 				onChange={onChange}
 				inline
 				calendarContainer={CalendarStyle}
-				renderCustomHeader={(props) => (
-					<CorrectionCustomHeader {...props} selected={currentDate} onChange={onChange} onClose={onClose} />
-				)}
+				renderCustomHeader={(props) => <CorrectionCustomHeader {...props} onChange={onChange} onClose={onClose} />}
 			>
 				<BottomBtnWrapper>
 					<Button label="확인" disabled={false} size="medium" type="solid" onClick={onSave} />
