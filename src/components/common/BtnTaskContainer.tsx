@@ -7,8 +7,11 @@ const BtnTaskContainer = styled.div<{ type: string }>`
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+	align-items: center;
+	box-sizing: border-box;
 	width: 100%;
-	height: ${({ type }) => (type === 'staging' ? '56rem' : '61rem')};
+	height: 54rem;
+	padding-left: 0.8rem;
 	overflow: auto;
 	overflow-y: scroll;
 
@@ -17,12 +20,14 @@ const BtnTaskContainer = styled.div<{ type: string }>`
 	}
 
 	::-webkit-scrollbar-thumb {
-		background-color: ${theme.palette.Grey.Grey6};
+		height: 45%;
+
 		visibility: hidden;
-		border-radius: 3px;
+		border-radius: 6px;
 	}
 
 	&:hover::-webkit-scrollbar-thumb {
+		background-color: ${theme.colorToken.Neutral.accent};
 		visibility: visible;
 	}
 `;
