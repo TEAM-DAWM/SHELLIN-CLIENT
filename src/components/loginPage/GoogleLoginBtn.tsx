@@ -29,26 +29,27 @@ function GoogleLoginBtn() {
 	return (
 		<GoogleBtn onClick={googleSocialLogin}>
 			<GoogleImg src={Images.googleIcon} />
-			구글 계정으로 시작하기
+			구글 로그인
 		</GoogleBtn>
 	);
 }
 const GoogleBtn = styled.button`
 	display: flex;
-	gap: 0.9rem;
+	gap: 1.12rem;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	height: 4.3rem;
+	height: 5.6rem;
+	padding-right: 10.32rem;
 
 	color: ${({ theme }) => theme.palette.Grey.White};
 
-	background-color: ${({ theme }) => theme.palette.Grey.Black};
-	border-radius: 12px;
-	${({ theme }) => theme.fontTheme.LABEL_03};
+	background-color: ${({ theme }) => theme.color.Grey.Black};
+	border-radius: 16.8px;
+	${({ theme }) => theme.font.title02};
 `;
 const GoogleImg = styled.img`
-	width: 1.8rem;
-	height: 1.8rem;
+	width: 2.4rem;
+	height: 2.4rem;
 `;
 export default GoogleLoginBtn;
