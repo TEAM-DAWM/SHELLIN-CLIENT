@@ -39,8 +39,7 @@ const GoogleBtn = styled.button`
 	justify-content: center;
 	width: 100%;
 	height: 5.6rem;
-	padding-right: 10.32rem;
-	padding-left: 9rem;
+	padding: 0 35px 0 22.4px;
 
 	color: ${({ theme }) => theme.palette.Grey.White};
 
