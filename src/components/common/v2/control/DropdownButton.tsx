@@ -1,15 +1,19 @@
 import { css, useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
 import React, { useState } from 'react';
 
 import Button from '../button/Button';
+
+import StatusDropdown from '@/components/common/v2/dropdown/StatusDropdown';
 
 // 추후 type 로 빼기
 type TaskStatus = '미완료' | '진행중' | '완료';
 type DropdownButtonProps = {
 	status: TaskStatus;
+	handleStatusChange: (newStatus: TaskStatus) => void;
 };
 
-function DropdownButton({ status }: DropdownButtonProps) {
+function DropdownButton({ status, handleStatusChange }: DropdownButtonProps) {
 	const { shadow } = useTheme();
 
 	/** 임시 state */
@@ -25,6 +29,11 @@ function DropdownButton({ status }: DropdownButtonProps) {
 		setOpen((prev) => !prev);
 	};
 	/** 임시 state */
+
+	const handleStatus = (newStatus: TaskStatus) => {
+		handleStatusChange(newStatus);
+		setOpen(false);
+	};
 
 	/** status에 따른 버튼 스타일 타입 설정 */
 	const getDropdownBtnType = () => {
@@ -50,18 +59,26 @@ function DropdownButton({ status }: DropdownButtonProps) {
 
 	const iconType = isOpen ? 'IcnUp' : 'IcnDown';
 	return (
-		<button type="button" onMouseDown={handleMouseDown}>
-			<Button
-				type={getDropdownBtnType()}
-				label={status}
-				size="medium"
-				disabled={false}
-				rightIcon={iconType}
-				additionalCss={customStyle}
-				onClick={handleOpen}
-			/>
-		</button>
+		<DropdownWrapper>
+			<button type="button" onMouseDown={handleMouseDown}>
+				<Button
+					type={getDropdownBtnType()}
+					label={status}
+					size="medium"
+					disabled={false}
+					rightIcon={iconType}
+					additionalCss={customStyle}
+					onClick={handleOpen}
+				/>
+				{isOpen && <StatusDropdown currentStatus={status} handleStatusChange={handleStatus} />}
+			</button>
+		</DropdownWrapper>
 	);
 }
+
+const DropdownWrapper = styled.div`
+	position: relative;
+	display: inline-block;
+`;
 
 export default DropdownButton;

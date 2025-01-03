@@ -64,7 +64,7 @@ const DateContainer = styled.div`
 		${theme.font.label03};
 		padding-bottom: 0.3rem;
 
-		color: ${theme.color.Grey.Grey6};
+		color: ${theme.color.Grey.Grey5};
 	}
 `;
 

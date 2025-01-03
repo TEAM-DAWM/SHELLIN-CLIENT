@@ -1,3 +1,10 @@
+export const STATUS = {
+	NOT_DONE: '미완료',
+	IN_PROGRESS: '진행중',
+	COMPLETE: '완료',
+} as const;
+
+export type StatusType = (typeof STATUS)[keyof typeof STATUS];
 export interface TaskType {
 	id: number;
 	name: string;
@@ -5,5 +12,5 @@ export interface TaskType {
 		date?: string | null;
 		time?: string | null;
 	};
-	status: '진행중' | '미완료' | '완료' | '지연';
+	status: StatusType;
 }
