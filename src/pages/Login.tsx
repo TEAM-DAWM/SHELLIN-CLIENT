@@ -62,14 +62,15 @@ const LeftSection = styled.section`
 	justify-content: center;
 	width: 32rem;
 	height: 100%;
+	margin-left: 20rem;
 `;
 
 const Divider = styled.div`
-	width: 0;
+	width: 0.1rem;
 	height: 17.95rem;
+	margin: 0 2.4rem;
 
-	border-color: ${({ theme }) => theme.color.Grey.Grey4};
-	stroke-width: 0.2rem;
+	background-color: ${({ theme }) => theme.color.Grey.Grey4};
 `;
 
 const LoginBtn = styled.div`
@@ -77,12 +78,14 @@ const LoginBtn = styled.div`
 	flex-direction: column;
 	gap: 1.2rem;
 	align-items: center;
+	justify-content: space-between;
 	width: 32rem;
 	height: 10.8rem;
 `;
 
 const SignDescription = styled.p`
-	width: 23.5rem;
+	width: 24rem;
+	height: 4rem;
 
 	color: ${({ theme }) => theme.color.Grey.Grey5};
 	text-align: center;
@@ -94,9 +97,6 @@ const SignDescription = styled.p`
 `;
 
 const LoginImg = styled.img`
-	/* width: 100%;
-	height: 100%; */
-
 	border-radius: 0 8px 8px 0;
 `;
 export default Login;

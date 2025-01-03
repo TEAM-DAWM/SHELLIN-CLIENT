@@ -20,7 +20,7 @@ const LoginWrapper = styled.div`
 	gap: 1.6rem;
 	align-items: start;
 	justify-content: start;
-	width: 22.8rem;
+	width: 25rem;
 	height: 16.2rem;
 `;
 
