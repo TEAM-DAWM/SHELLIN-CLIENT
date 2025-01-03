@@ -43,7 +43,7 @@ const TextBox = styled.div`
 
 const MainTitle = styled.p`
 	color: ${({ theme }) => theme.color.Grey.Black};
-	${({ theme }) => theme.font.title01};
+	${({ theme }) => theme.font.display01};
 `;
 
 const SubTitle = styled.p`

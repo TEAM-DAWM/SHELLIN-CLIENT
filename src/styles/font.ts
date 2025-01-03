@@ -145,7 +145,7 @@ const font = {
 		textDecoration: 'line-through',
 	}),
 
-	display1: FONT({
+	display01: FONT({
 		family: fonts.PretendardBold,
 		size: 3.2,
 		height: 130,
