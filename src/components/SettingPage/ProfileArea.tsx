@@ -34,6 +34,9 @@ const ProfileAreaLayout = styled.div`
 
 	${({ theme }) => theme.font.title02};
 	color: ${({ theme }) => theme.colorToken.Neutral.light};
+
+	border-color: ${({ theme }) => theme.color.Grey.Grey3};
+	border-bottom: 1px solid;
 `;
 
 const ProfileWrapper = styled.div`
