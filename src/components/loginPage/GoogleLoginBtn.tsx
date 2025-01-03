@@ -35,11 +35,12 @@ function GoogleLoginBtn() {
 }
 const GoogleBtn = styled.button`
 	display: flex;
-	gap: 1.12rem;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
 	height: 5.6rem;
+	padding-right: 10.32rem;
+	padding-left: 9rem;
 
 	color: ${({ theme }) => theme.palette.Grey.White};
 
@@ -50,5 +51,6 @@ const GoogleBtn = styled.button`
 const GoogleImg = styled.img`
 	width: 2.4rem;
 	height: 2.4rem;
+	margin-right: 1.12rem;
 `;
 export default GoogleLoginBtn;
