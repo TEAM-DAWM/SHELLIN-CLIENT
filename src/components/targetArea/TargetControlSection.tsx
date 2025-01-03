@@ -31,7 +31,7 @@ function TargetControlSection({
 		<>
 			<TargetControlSectionLayout>
 				<ModalLayout>
-					<Icon name="IcnCalendar" color="nomal" onClick={handleArrangeBtnClick} isCusor />
+					<Icon name="IcnCalendar" color="nomal" onClick={handleArrangeBtnClick} isCursor />
 					{isModalOpen && (
 						<DateCorrectionModal
 							top={MODAL.DATE_CORRECTION.TARGET.top}

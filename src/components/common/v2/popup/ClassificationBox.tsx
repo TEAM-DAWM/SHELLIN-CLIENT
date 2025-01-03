@@ -46,9 +46,9 @@ function ClassificationBox({ categoryName, label }: ClassificationBoxProps) {
 			<ClassificationBtnLayout>
 				<CategoryTitleStyle>{label}</CategoryTitleStyle>
 				{isClicked ? (
-					<Icon name="IcnX" size="tiny" color="strong" onClick={handleIconClick} isCusor />
+					<Icon name="IcnX" size="tiny" color="strong" onClick={handleIconClick} isCursor />
 				) : (
-					<Icon name="IcnPlus" size="tiny" color="strong" onClick={handleIconClick} isCusor />
+					<Icon name="IcnPlus" size="tiny" color="strong" onClick={handleIconClick} isCursor />
 				)}
 			</ClassificationBtnLayout>
 			{isClicked && (
