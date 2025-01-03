@@ -10,6 +10,7 @@ const color = {
 	},
 	Grey: {
 		White: '#FFFFFF',
+		Black: '#212121',
 		Grey2: '#F0F0F5',
 		Grey3: '#E9E9EE',
 		Grey4: '#C6C6D0',
