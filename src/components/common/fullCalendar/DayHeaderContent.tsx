@@ -13,7 +13,10 @@ interface DayHeaderContentProps {
 }
 
 function DayHeaderContent({ arg, currentView, today, selectDate, size }: DayHeaderContentProps) {
-	const adjustDay = size === 'big' ? 3 : 2;
+	let adjustDay = size === 'big' ? 3 : 2;
+	if (currentView === 'dayGridMonth') {
+		adjustDay = 0;
+	}
 	const adjustedDate = new Date(arg.date);
 	adjustedDate.setDate(adjustedDate.getDate() - adjustDay);
 
