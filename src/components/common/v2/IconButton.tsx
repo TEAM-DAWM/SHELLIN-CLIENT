@@ -59,6 +59,7 @@ function IconButton({ type, size = 'small', disabled = false, iconName, onClick,
 			color: ${strokeColor};
 
 			background-color: ${defaultBG};
+			cursor: pointer;
 
 			${border &&
 			css`
@@ -90,7 +91,6 @@ function IconButton({ type, size = 'small', disabled = false, iconName, onClick,
 
 		border-radius: 8px;
 		${buttonStyles[type]}
-
 		${additionalCss}
 	`;
 
