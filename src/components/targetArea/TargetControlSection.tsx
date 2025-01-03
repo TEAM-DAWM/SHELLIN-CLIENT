@@ -5,6 +5,7 @@ import DateCorrectionModal from '@/components/common/datePicker/DateCorrectionMo
 import Icon from '@/components/common/Icon';
 import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
+import IconButton from '@/components/common/v2/IconButton';
 import MODAL from '@/constants/modalLocation';
 import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
 import formatDatetoString from '@/utils/formatDatetoString';
@@ -45,12 +46,8 @@ function TargetControlSection({
 				</ModalLayout>
 				<BtnWrapper>
 					<Button type="outlined-assistive" label="오늘" size="medium" onClick={onClickTodayDate} />
-					<IconLayout>
-						<Icon name="IcnLeft" color="nomal" onClick={onClickPrevDate} isCusor />
-					</IconLayout>
-					<IconLayout>
-						<Icon name="IcnRight" color="nomal" onClick={onClickNextDate} isCusor />
-					</IconLayout>
+					<IconButton type="outlined" size="small" iconName="IcnLeft" onClick={onClickPrevDate} />
+					<IconButton type="outlined" size="small" iconName="IcnRight" onClick={onClickNextDate} />
 				</BtnWrapper>
 			</TargetControlSectionLayout>
 			{isModalOpen && <ModalBackdrop onClick={handleCloseModal} />}
@@ -75,26 +72,6 @@ const BtnWrapper = styled.div`
 	display: flex;
 	gap: 0.8rem;
 	width: fit-content;
-`;
-
-const IconLayout = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 3.2rem;
-	height: 3.2rem;
-
-	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
-	border: 1px solid ${({ theme }) => theme.color.Grey.Grey6};
-	border-radius: 8px;
-
-	:hover {
-		background-color: ${({ theme }) => theme.color.Grey.Grey2};
-	}
-
-	:active {
-		background-color: ${({ theme }) => theme.color.Grey.Grey3};
-	}
 `;
 
 export default TargetControlSection;

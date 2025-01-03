@@ -10,7 +10,7 @@ type IconBtnType = 'solid' | 'normal' | 'outlined';
 type IconButtonProps = {
 	type: IconBtnType;
 	size: SizeType;
-	disabled: boolean;
+	disabled?: boolean;
 	iconName: keyof typeof Icn;
 	onClick: () => void;
 };
