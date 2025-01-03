@@ -4,8 +4,7 @@ import { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import TextBtn from '../button/textBtn/TextBtn';
-import TextboxInput from '../textbox/TextboxInput';
+import Button from '../v2/button/Button';
 
 import CorrectionCustomHeader from './CorrectionCustomHeader';
 import CalendarStyle from './DatePickerStyle';
@@ -14,31 +13,17 @@ import formatDatetoString from '@/utils/formatDatetoString';
 import { blurRef } from '@/utils/refStatus';
 
 interface DateCorrectionModalProps {
-	isDateOnly?: boolean;
 	top?: number;
 	left?: number;
 	date: string | null;
-	time: string | null;
 	onClick: () => void;
 	handleCurrentDate?: (newDate: Date) => void;
-	handleCurrentTime?: (newTime: string) => void;
 }
 
-function DateCorrectionModal({
-	isDateOnly = false,
-	top = 0,
-	left = 0,
-	date,
-	time,
-	onClick,
-	handleCurrentDate,
-	handleCurrentTime,
-}: DateCorrectionModalProps) {
+function DateCorrectionModal({ top = 0, left = 0, date, onClick, handleCurrentDate }: DateCorrectionModalProps) {
 	const prevDate = date ? new Date(date) : null;
 	const [currentDate, setCurrentDate] = useState<Date | null>(prevDate);
-	const [currentTime, setCurrentTime] = useState<string | null>(time);
 	const dateTextRef = useRef<HTMLInputElement>(null);
-	const timeTextRef = useRef<HTMLInputElement>(null);
 
 	const onChange = (newDate: Date | null) => {
 		setCurrentDate(newDate);
@@ -48,13 +33,13 @@ function DateCorrectionModal({
 			blurRef(dateTextRef);
 		}
 	};
-	const onTimeChange = (newTime: string | null) => {
-		setCurrentTime(newTime);
-	};
-	/** 모달 확인, 닫기버튼 */
+	/** 모달 확인버튼 */
 	const onSave = () => {
 		if (handleCurrentDate && currentDate) handleCurrentDate(currentDate);
-		if (handleCurrentTime && currentTime) handleCurrentTime(currentTime);
+		onClick();
+	};
+	/** 모달 닫기 */
+	const onClose = () => {
 		onClick();
 	};
 	return (
@@ -65,20 +50,10 @@ function DateCorrectionModal({
 				onChange={onChange}
 				inline
 				calendarContainer={CalendarStyle}
-				renderCustomHeader={(props) => (
-					<CorrectionCustomHeader {...props} prevDate={prevDate} dateTextRef={dateTextRef} onChange={onChange} />
-				)}
+				renderCustomHeader={(props) => <CorrectionCustomHeader {...props} onChange={onChange} onClose={onClose} />}
 			>
 				<BottomBtnWrapper>
-					{!isDateOnly && (
-						<TextboxInput
-							variant="time"
-							dateTextRef={timeTextRef}
-							onTimeChange={onTimeChange}
-							currentTime={currentTime}
-						/>
-					)}
-					<TextBtn text="확인" color="BLACK" size="small" mode="DEFAULT" isHover isPressed onClick={onSave} />
+					<Button label="확인" disabled={false} size="medium" type="solid" onClick={onSave} />
 				</BottomBtnWrapper>
 			</DatePicker>
 		</DateCorrectionModalLayout>
@@ -93,9 +68,6 @@ const DateCorrectionModalLayout = styled.div<{ top: number; left: number }>`
 `;
 
 const BottomBtnWrapper = styled.div`
-	display: flex;
-	gap: 0.5rem;
-	justify-content: flex-end;
-	width: 100%;
+	padding-top: 3.2rem;
 `;
 export default DateCorrectionModal;

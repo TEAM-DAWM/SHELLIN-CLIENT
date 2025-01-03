@@ -41,9 +41,7 @@ function TargetControlSection({
 							top={MODAL.DATE_CORRECTION.TARGET.top}
 							left={MODAL.DATE_CORRECTION.TARGET.left}
 							date={formatDatetoString(targetDate)}
-							time={null}
 							onClick={handleCloseModal}
-							isDateOnly
 							handleCurrentDate={onClickDatePicker}
 						/>
 					)}

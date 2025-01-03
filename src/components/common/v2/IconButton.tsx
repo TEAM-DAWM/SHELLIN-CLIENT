@@ -13,10 +13,11 @@ type IconButtonProps = {
 	disabled: boolean;
 	iconName: keyof typeof Icn;
 	onClick: () => void;
+	additionalCss?: SerializedStyles;
 };
 
-function IconButton({ type, size = 'small', disabled = false, iconName, onClick }: IconButtonProps) {
-	const { color } = useTheme();
+function IconButton({ type, size = 'small', disabled = false, iconName, onClick, additionalCss }: IconButtonProps) {
+	const { color, colorToken } = useTheme();
 	// 사이즈별 분기
 	const buttonSizes: Record<SizeType, SerializedStyles> = {
 		big: css`
@@ -63,7 +64,7 @@ function IconButton({ type, size = 'small', disabled = false, iconName, onClick 
 			css`
 				box-sizing: border-box;
 
-				border: solid 1px ${color.Grey.Grey4};
+				border: solid 1px ${colorToken.Outline.neutralNormal};
 			`}
 
 			:hover {
@@ -89,6 +90,8 @@ function IconButton({ type, size = 'small', disabled = false, iconName, onClick 
 
 		border-radius: 8px;
 		${buttonStyles[type]}
+
+		${additionalCss}
 	`;
 
 	const iconSize = size === 'big' ? 'large' : 'medium';
