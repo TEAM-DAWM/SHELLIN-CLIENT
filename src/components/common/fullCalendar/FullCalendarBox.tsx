@@ -57,7 +57,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 
 	const handleViewChange = (view: ViewMountArg) => {
 		setCurrentView(view.view.type);
-		updateRange(view.view.type);
+		// updateRange(view.view.type);
 	};
 
 	const handleDatesSet = (dateInfo: DatesSetArg) => {
@@ -81,7 +81,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 			case 'dayGridMonth':
 				setRange(30);
 				break;
-			case 'timeGridWeek':
+			case 'timeGridWeekCustom':
 				setRange(7);
 				break;
 			default:
@@ -234,6 +234,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 						currentView={currentView}
 						today={today.toDateString()}
 						selectDate={selectDate?.toString()}
+						size={size}
 					/>
 				)}
 				viewDidMount={handleViewChange}

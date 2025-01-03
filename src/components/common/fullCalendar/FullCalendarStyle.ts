@@ -141,6 +141,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		border-left: none;
 	}
 
+	.fc-scrollgrid-sync-table {
+		border: 1px solid;
+	}
+
 	/* 종일  - 타임그리드 셀 크기 고정 */
 	.fc-scrollgrid-sync-table > colgroup > col {
 		width: 3rem !important;
@@ -296,6 +300,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		${({ theme }) => theme.fontTheme.CAPTION_01};
 	}
 
+	.fc .fc-col-header-cell-cushion {
+		padding: 6px 4px;
+	}
+
 	/** .fc-timegrid-slot-label: 시간 라벨 */
 
 	/* 타임 그리드 15분당 일정 */
@@ -313,6 +321,13 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		border-bottom: none;
 	}
 
+	.fc-theme-standard td,
+	.fc-theme-standard th {
+		border-right: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-bottom: none;
+		border-left: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+	}
+
 	/* 요일 행 첫번째 border 없애기 */
 	.fc-theme-standard td:first-of-type,
 	.fc-theme-standard th:first-of-type {
@@ -327,13 +342,26 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 타임 그리드 종일 마진 없애기 */
 	.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
 		margin: 0;
+	}
 
-		border-bottom: 1px solid ${({ theme }) => theme.palette.Grey.Grey9};
+	.fc-daygrid-body {
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-left: hidden;
+	}
+
+	.fc-daygrid-day-frame {
+		/* border-left: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal}; */
 	}
 
 	/* 15분 줄선 테두리 */
 	.fc .fc-timegrid-slot-minor {
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+		border-right: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-left: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+	}
+
+	tr td.fc-timegrid-slot-minor[data-time$=':45:00']:nth-of-type(2) {
+		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 	}
 
 	.fc-scrollgrid .fc-scrollgrid-liquid {
