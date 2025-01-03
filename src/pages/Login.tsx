@@ -37,7 +37,7 @@ function Login() {
 						</SignDescription>
 					</LoginBtn>
 				</LeftSection>
-				<LoginImg src={Images.BG.loginBg} />
+				<LoginImg src={Images.BG.LoginBg} />
 			</LoginLayout>
 		</GoogleOAuthProvider>
 	);
@@ -94,8 +94,8 @@ const SignDescription = styled.p`
 `;
 
 const LoginImg = styled.img`
-	width: 50%;
-	height: 100%;
+	/* width: 100%;
+	height: 100%; */
 
 	border-radius: 0 8px 8px 0;
 `;
