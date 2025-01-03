@@ -9,6 +9,7 @@ import { useState, useRef, useEffect } from 'react';
 import ModalDeleteDetail from '../modal/ModalDeleteDetail';
 
 import CalendarHeader from './CalendarHeader';
+import CustomDayCellContent from './CustomDayCellContent';
 import processEvents from './processEvents';
 
 import useDeleteTimeBlock from '@/apis/timeBlocks/deleteTimeBlock/query';
@@ -17,7 +18,7 @@ import usePostTimeBlock from '@/apis/timeBlocks/postTimeBlock/query';
 import useUpdateTimeBlock from '@/apis/timeBlocks/updateTimeBlock/query';
 import DayHeaderContent from '@/components/common/fullCalendar/DayHeaderContent';
 import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarStyle';
-import { customDayCellContent, customSlotLabelContent } from '@/components/common/fullCalendar/fullCalendarUtils';
+import customSlotLabelContent from '@/components/common/fullCalendar/fullCalendarUtils';
 import MODAL from '@/constants/modalLocation';
 import { TaskType } from '@/types/tasks/taskType';
 
@@ -239,7 +240,9 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				)}
 				viewDidMount={handleViewChange}
 				datesSet={handleDatesSet}
-				dayCellContent={customDayCellContent}
+				dayCellContent={(arg) => (
+					<CustomDayCellContent arg={arg} today={today.toDateString()} selectDate={selectDate?.toString()} />
+				)}
 				eventTimeFormat={{
 					hour: 'numeric',
 					minute: '2-digit',
