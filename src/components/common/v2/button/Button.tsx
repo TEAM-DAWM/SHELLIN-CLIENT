@@ -53,7 +53,8 @@ function Button({
 		bgColor: string,
 		hoverColor: string,
 		activeColor: string,
-		border: boolean = true
+		border: boolean = true,
+		borderColor?: string
 	) => {
 		if (disabled) {
 			return css`
@@ -72,7 +73,7 @@ function Button({
 			background-color: ${bgColor};
 			${border &&
 			css`
-				border: solid 1px ${baseColor};
+				border: solid 1px ${borderColor || baseColor};
 			`}
 
 			:hover {
@@ -103,7 +104,14 @@ function Button({
 			`}
 		`,
 		'outlined-primary': getButtonStateStyles(color.Blue.Blue7, color.Grey.White, color.Blue.Blue2, color.Blue.Blue3),
-		'outlined-assistive': getButtonStateStyles(color.Grey.Grey6, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3),
+		'outlined-assistive': getButtonStateStyles(
+			color.Grey.Grey6,
+			color.Grey.White,
+			color.Grey.Grey2,
+			color.Grey.Grey3,
+			true,
+			color.Grey.Grey3
+		),
 		'text-primary': getButtonStateStyles(color.Blue.Blue7, 'transparent', color.Blue.Blue2, color.Blue.Blue3, false),
 		'text-assistive': getButtonStateStyles(color.Grey.Grey6, 'transparent', color.Grey.Grey2, color.Grey.Grey3, false),
 	};

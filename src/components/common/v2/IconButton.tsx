@@ -12,11 +12,20 @@ type IconButtonProps = {
 	size: SizeType;
 	disabled?: boolean;
 	iconName: keyof typeof Icn;
-	onClick: () => void;
+	onClick?: () => void;
 	additionalCss?: SerializedStyles;
+	dot?: boolean;
 };
 
-function IconButton({ type, size = 'small', disabled = false, iconName, onClick, additionalCss }: IconButtonProps) {
+function IconButton({
+	type,
+	size = 'small',
+	disabled = false,
+	iconName,
+	onClick,
+	additionalCss,
+	dot,
+}: IconButtonProps) {
 	const { color, colorToken } = useTheme();
 	// 사이즈별 분기
 	const buttonSizes: Record<SizeType, SerializedStyles> = {
@@ -59,6 +68,7 @@ function IconButton({ type, size = 'small', disabled = false, iconName, onClick,
 			color: ${strokeColor};
 
 			background-color: ${defaultBG};
+			cursor: pointer;
 
 			${border &&
 			css`
@@ -83,6 +93,7 @@ function IconButton({ type, size = 'small', disabled = false, iconName, onClick,
 	};
 
 	const IconBtnContainer = styled.div`
+		position: relative;
 		display: flex;
 		${buttonSizes[size]}
 		align-items: center;
@@ -90,16 +101,26 @@ function IconButton({ type, size = 'small', disabled = false, iconName, onClick,
 
 		border-radius: 8px;
 		${buttonStyles[type]}
-
 		${additionalCss}
 	`;
 
 	const iconSize = size === 'big' ? 'large' : 'medium';
 	return (
 		<IconBtnContainer onClick={disabled ? () => {} : onClick}>
+			{dot && <Dot />}
 			<Icon name={iconName} size={iconSize} />
 		</IconBtnContainer>
 	);
 }
 
+const Dot = styled.div`
+	position: absolute;
+	top: 0.2rem;
+	right: 0.2rem;
+	width: 0.4rem;
+	height: 0.4rem;
+
+	background-color: ${({ theme }) => theme.colorToken.Primary.normal};
+	border-radius: 4px;
+`;
 export default IconButton;

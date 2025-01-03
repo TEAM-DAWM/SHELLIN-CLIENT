@@ -51,3 +51,13 @@ export const Outlined: Story = {
 		onClick: fn(),
 	},
 };
+export const Dotted: Story = {
+	args: {
+		type: 'normal',
+		size: 'big',
+		disabled: false,
+		iconName: 'IcnAlert',
+		onClick: fn(),
+		dot: true,
+	},
+};
