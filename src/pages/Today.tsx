@@ -207,7 +207,4 @@ const CalendarWrapper = styled.div`
 	box-sizing: border-box;
 	width: fit-content;
 	margin: 1rem 0;
-
-	background-color: ${({ theme }) => theme.color.Grey.White};
-	border: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
 `;

@@ -6,8 +6,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	box-sizing: border-box;
 	width: ${({ size }) => (size === 'big' ? '132rem' : '88.8rem')};
 	height: 106.4rem;
+	padding: 0 10px 8px;
 	overflow: hidden;
 
+	background-color: ${({ theme }) => theme.color.Grey.White};
 	border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 	border-radius: 20px;
 
@@ -135,14 +137,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc .fc-col-header-cell {
 		height: 2.4rem;
-		padding: 2.4rem 0.8rem 0;
+		padding: 2.4rem 0.8rem 0.5rem;
 
 		border-right: none;
 		border-left: none;
-	}
-
-	.fc-scrollgrid-sync-table {
-		border: 1px solid;
 	}
 
 	/* 종일  - 타임그리드 셀 크기 고정 */
@@ -160,7 +158,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	/* 전체 캘린더(주간) */
 	.fc-scrollgrid.fc-scrollgrid-liquid {
-		padding: 0 8px 0 0;
+		/* padding: 0 8px 0 0; */
 	}
 
 	/* fc-daygrid-day-events: 종일 행(개별) */
@@ -190,7 +188,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 타임그리드 테두리 */
 	.fc .fc-scrollgrid-section-body table,
 	.fc .fc-scrollgrid-section-footer table {
-		border-right: 1px solid;
+		border-right: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 		border-bottom-style: hidden;
 	}
 
@@ -334,23 +332,29 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		border: none;
 	}
 
-	/* 타임 그리드 종일 일정 */
-	.fc-scrollgrid-shrink {
-		max-height: 2.4rem;
-	}
-
 	/* 타임 그리드 종일 마진 없애기 */
 	.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
 		margin: 0;
 	}
 
-	.fc-daygrid-body {
-		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
-		border-left: hidden;
+	.fc-scroller.fc-scroller-liquid-absolute {
+		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
+		border-radius: 12px;
 	}
 
-	.fc-daygrid-day-frame {
-		/* border-left: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal}; */
+	.fc-daygrid-body {
+		padding-right: 1rem;
+		overflow: hidden;
+
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-radius: 12px;
+
+		${({ currentView }) =>
+			currentView === 'timeGridWeekCustom' &&
+			`
+    border-left: none;
+		border-radius: 0
+  `}
 	}
 
 	/* 15분 줄선 테두리 */
@@ -529,12 +533,13 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		background: none;
 	}
 
+	/* 일요일 border 조정 */
 	.fc-dayGridMonth-view .fc-day-sun .fc-daygrid-day-frame {
-		box-shadow: 0 1px 0 0 ${({ theme }) => theme.palette.Grey.Grey9} inset;
+		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 	}
 
-	.fc .fc-dayGridMonth-view .fc-scrollgrid-section-body table {
-		border: 1px solid ${({ theme }) => theme.palette.Grey.Grey9};
+	.fc-dayGridMonth-view .fc-daygrid-body tr:last-child .fc-day-sun .fc-daygrid-day-frame {
+		border-bottom: none;
 	}
 
 	.fc .fc-timeGridDay-view .fc-col-header-cell-cushion {
