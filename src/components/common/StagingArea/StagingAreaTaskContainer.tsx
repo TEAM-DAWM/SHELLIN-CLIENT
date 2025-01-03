@@ -4,9 +4,10 @@ import { Draggable } from 'react-beautiful-dnd';
 import BtnTaskContainer from '../BtnTaskContainer';
 import EmptyContainer from '../EmptyContainer';
 import ScrollGradient from '../ScrollGradient';
-import Todo, { StatusType } from '../v2/taskBox/Todo';
+import Todo from '../v2/taskBox/Todo';
 
-import { TaskType } from '@/types/tasks/taskType';
+import { StatusType, TaskType } from '@/types/tasks/taskType';
+import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
 
 interface StagingAreaTaskContainerProps {
 	handleSelectedTarget: (task: TaskType | null) => void;
@@ -42,7 +43,8 @@ function StagingAreaTaskContainer({
 											status={task.status as StatusType}
 											title={task.name}
 											// 이후 날짜, 시간 표시 형식에 맞게 입력 / 조정
-											deadline={`${task.deadLine?.date} / ${task.deadLine?.time} 까지` || ''}
+											deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
+											deadlineTime={task.deadLine?.time || undefined}
 											isStatusVisible={false}
 										/>
 									</div>

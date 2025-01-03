@@ -147,7 +147,7 @@ function Today() {
 				date: '2024-06-30',
 				time: '12:30',
 			},
-			status: '지연',
+			status: '완료',
 		},
 	];
 

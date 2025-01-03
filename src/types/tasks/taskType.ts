@@ -12,6 +12,5 @@ export interface TaskType {
 		date?: string | null;
 		time?: string | null;
 	};
-	hasDescription: boolean;
 	status: StatusType;
 }
