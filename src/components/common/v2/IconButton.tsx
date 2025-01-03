@@ -12,7 +12,7 @@ type IconButtonProps = {
 	size: SizeType;
 	disabled?: boolean;
 	iconName: keyof typeof Icn;
-	onClick: () => void;
+	onClick?: () => void;
 	additionalCss?: SerializedStyles;
 	dot?: boolean;
 };
