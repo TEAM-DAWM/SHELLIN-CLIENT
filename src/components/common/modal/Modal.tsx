@@ -62,10 +62,6 @@ function Modal({ isOpen, sizeType, top, left, onClose, taskId, targetDate, locat
 		setDeadLineDate(newDate);
 	};
 
-	const handleTaskTimeChange = (newTime: string) => {
-		setDeadLineTime(newTime);
-	};
-
 	const [startTime, setStartTime] = useState('');
 	const [endTime, setEndTime] = useState('');
 
@@ -130,12 +126,7 @@ function Modal({ isOpen, sizeType, top, left, onClose, taskId, targetDate, locat
 		<ModalBackdrop onClick={onClose}>
 			<ModalLayout type={sizeType.type} top={top} left={left} onClick={(e) => e.stopPropagation()}>
 				<ModalHeader>
-					<BtnDate
-						date={deadLineDate}
-						time={deadLineTime}
-						handleDate={handleTaskDateChange}
-						handleTime={handleTaskTimeChange}
-					/>
+					<BtnDate date={deadLineDate} time={deadLineTime} handleDate={handleTaskDateChange} />
 					<ModalHeaderBtn type={sizeType.type} onDelete={handleDelete} taskId={taskId} targetDate={targetDate} />
 				</ModalHeader>
 				<ModalBody>

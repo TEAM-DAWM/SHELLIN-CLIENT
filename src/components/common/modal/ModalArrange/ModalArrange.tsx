@@ -29,8 +29,8 @@ export default ModalArrange;
 
 const ModalArrangeLayout = styled.div`
 	position: absolute;
-	top: 3rem;
-	left: 0;
+	top: 16rem;
+	left: 44.8rem;
 	z-index: 4;
 	display: flex;
 	flex-direction: column;

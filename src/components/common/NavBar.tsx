@@ -6,23 +6,23 @@ import ToggleSwitchButton from './v2/control/ToggleSwitchButton';
 
 import useGetUserInfo from '@/apis/user/query';
 import Images from '@/assets/images';
-import LoadingSpinner from '@/components/common/spinner/Spinner';
 
-function NavBar() {
+interface NavBarProps {
+	isOpen: boolean;
+	handleSideBar: () => void;
+}
+function NavBar({ isOpen, handleSideBar }: NavBarProps) {
 	const navigate = useNavigate();
 	const moveToSetting = () => {
 		navigate('/setting');
 	};
-	const { data: userInfo, isLoading } = useGetUserInfo();
-	if (isLoading) {
-		return <LoadingSpinner />;
-	}
+	const { data: userInfo } = useGetUserInfo();
 	return (
 		<NavBarLayout>
 			<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
 			<ControllContainer>
 				<ToggleWrapper>
-					<ToggleSwitchButton active onClick={() => {}} />
+					<ToggleSwitchButton active={isOpen} onClick={handleSideBar} />
 					<ToggleDesc>쏟아내기</ToggleDesc>
 				</ToggleWrapper>
 				<Divider />

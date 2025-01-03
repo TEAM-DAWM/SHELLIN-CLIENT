@@ -18,6 +18,7 @@ type TodoEventState = (typeof TODO_EVENT_STATE)[keyof typeof TODO_EVENT_STATE];
 
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
+
 type TodoProps = {
 	title: string;
 	deadlineDate?: string;

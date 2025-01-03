@@ -19,7 +19,6 @@ interface BtnDateProps {
 	isDelayed?: boolean;
 	isDisabled?: boolean;
 	handleDate?: (newDate: string) => void;
-	handleTime?: (newTime: string) => void;
 }
 // date, time 각각 Date|null, String|null 로 관리
 // 값이 없으면 '마감 기한' 등 텍스트 설정,
@@ -33,7 +32,6 @@ function BtnDate(props: BtnDateProps) {
 		isDelayed = false,
 		isDisabled = false,
 		handleDate,
-		handleTime,
 	} = props;
 	const [isPressed, setIsPressed] = useState(false);
 	const [isClicked, setIsClicked] = useState(false);
@@ -88,10 +86,8 @@ function BtnDate(props: BtnDateProps) {
 							size.type !== 'long' ? MODAL.DATE_CORRECTION.SET_DEADLINE.left : MODAL.DATE_CORRECTION.TASK_MODAL.left
 						}
 						date={date}
-						time={time}
 						onClick={handleMouseUp}
 						handleCurrentDate={(newDate: Date) => handleDate?.(parseDate(newDate.toString()))}
-						handleCurrentTime={handleTime}
 					/>
 					<ModalBackdrop onClick={handleMouseUp} />
 				</>

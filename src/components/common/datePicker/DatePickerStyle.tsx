@@ -6,12 +6,13 @@ const CalendarStyle = styled.div`
 	flex-direction: column;
 	flex-shrink: 0;
 	align-items: center;
-	width: 22.8rem;
-	height: 27rem;
-	padding: 1.6rem 0;
+	box-sizing: border-box;
+	width: 41.2rem;
+	height: fit-content;
+	padding: 2.4rem 2.4rem 3.2rem;
 	overflow: auto;
 
-	box-shadow: 0 3px 7px 0 rgb(0 0 0 / 38%);
+	${({ theme }) => theme.shadow.FloatingAction1};
 	border: 0;
 	border-radius: 12px;
 	/* stylelint-disable selector-class-pattern */
@@ -38,6 +39,7 @@ const CalendarStyle = styled.div`
 	}
 
 	.react-datepicker__header {
+		width: 100%;
 		padding: 0;
 
 		background-color: transparent;
@@ -45,22 +47,38 @@ const CalendarStyle = styled.div`
 	}
 
 	.react-datepicker__day-names {
-		margin-bottom: 0.7rem;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		padding-top: 1.6rem;
 	}
 
 	.react-datepicker__day-name {
-		width: 2.8rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 5.2rem;
+		height: 4rem;
 		margin: 0;
+		margin-bottom: 0.8rem;
 
 		color: ${({ theme }) => theme.palette.Grey.Grey5};
-		${({ theme }) => theme.fontTheme.CAPTION_04};
+		${({ theme }) => theme.font.label03};
+
+		:first-of-type {
+			color: ${({ theme }) => theme.palette.Orange.Orange6};
+		}
+
+		:last-of-type {
+			color: ${({ theme }) => theme.colorToken.Text.primary};
+		}
 	}
 
 	/** 주 날짜 */
 	.react-datepicker__week {
 		display: flex;
-		justify-content: center;
-		width: 22rem;
+		justify-content: space-between;
+		width: 100%;
 	}
 
 	/* 선택된 날짜 */
@@ -68,20 +86,37 @@ const CalendarStyle = styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 2.8rem;
-		height: 2.8rem;
+		width: 5.2rem;
+		height: 4rem;
 		margin: 0;
 
-		border-radius: 0;
+		border-radius: 6px;
+
+		${({ theme }) => theme.font.label03};
+		:hover {
+			background-color: ${({ theme }) => theme.colorToken.Primary.strongVariant};
+		}
 	}
 
 	.react-datepicker__day--keyboard-selected {
 		background-color: transparent;
 	}
 
+	.react-datepicker__day--today {
+		color: ${({ theme }) => theme.colorToken.Primary.normal};
+		text-decoration: underline;
+	}
+
 	.react-datepicker__day--selected {
-		background-color: ${({ theme }) => theme.palette.Primary};
+		color: ${({ theme }) => theme.color.Grey.White};
+		text-decoration: none;
+
+		background-color: ${({ theme }) => theme.colorToken.Primary.normal};
 		border-radius: 6px;
+
+		:hover {
+			background-color: ${({ theme }) => theme.colorToken.Primary.strong};
+		}
 	}
 
 	.react-datepicker__day--in-selecting-range {
@@ -107,13 +142,13 @@ const CalendarStyle = styled.div`
 
 	/* 이번 월에 포함되지 않는 날짜 */
 	.react-datepicker__day--outside-month {
-		color: ${({ theme }) => theme.palette.Grey.Grey4};
+		color: ${({ theme }) => theme.colorToken.Text.disable};
 	}
 
 	.react-datepicker__children-container {
 		display: flex;
 		justify-content: end;
-		width: 20.4rem;
+		width: 100%;
 		margin: 0;
 		padding: 0;
 	}
