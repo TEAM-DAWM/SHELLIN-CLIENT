@@ -32,8 +32,8 @@ const ProfileAreaLayout = styled.div`
 	width: 100%;
 	padding-bottom: 3.2rem;
 
-	${({ theme }) => theme.fontTheme.TITLE_02};
-	color: ${({ theme }) => theme.colorToken.Neutral.accent}; /* 띰 추가하기 */
+	${({ theme }) => theme.font.title02};
+	color: ${({ theme }) => theme.colorToken.Neutral.light};
 `;
 
 const ProfileWrapper = styled.div`
@@ -57,11 +57,11 @@ const ProfileTextBox = styled.div`
 `;
 
 const LastName = styled.p`
-	${({ theme }) => theme.fontTheme.TITLE_03}
-	color: ${({ theme }) => theme.palette.Grey.Black}
+	${({ theme }) => theme.font.title02};
+	color: ${({ theme }) => theme.colorToken.Neutral.light};
 `;
 
 const Email = styled.p`
-	${({ theme }) => theme.fontTheme.BODY_04}
-	color: ${({ theme }) => theme.palette.Grey.Black} /* 띰 추가하기 */
+	${({ theme }) => theme.font.body04};
+	color: ${({ theme }) => theme.colorToken.Neutral.light};
 `;
