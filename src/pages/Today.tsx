@@ -6,6 +6,7 @@ import useGetTasks from '@/apis/tasks/getTask/query';
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import BtnTaskContainer from '@/components/common/BtnTaskContainer';
 import FullCalendarBox from '@/components/common/fullCalendar/FullCalendarBox';
+import NavBar from '@/components/common/NavBar';
 import StagingArea from '@/components/common/StagingArea/StagingArea';
 import TargetArea from '@/components/targetArea/TargetArea';
 import { AreaType } from '@/types/area/areaType';
@@ -21,11 +22,16 @@ function Today() {
 	const isTotal = activeButton === '전체';
 	const targetDate = formatDatetoLocalDate(selectedDate);
 	const [selectedArea, setSelectedArea] = useState<AreaType>(null);
+	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
 
 	// Task 목록 Get
-	const { data: stagingData, isError: isStagingError } = useGetTasks({ isTotal, sortOrder });
+	const { data: stagingData } = useGetTasks({ isTotal, sortOrder });
 	const { data: targetData, isError: isTargetError } = useGetTasks({ targetDate });
 	const { mutate, queryClient } = useUpdateTaskStatus(null);
+
+	const handleSidebar = () => {
+		setDumpAreaOpen((prev) => !prev);
+	};
 
 	/** isTotal 핸들링 함수 */
 	const handleTextBtnClick = (button: '전체' | '지연') => {
@@ -105,23 +111,61 @@ function Today() {
 		}
 	};
 
+	/** 테스트 데이터, api 연결 후 삭제 */
+	const stagingTmpData: TaskType[] = [
+		{
+			id: 1,
+			name: '진행중',
+			deadLine: {
+				date: '2024-12-30',
+				time: '12:30',
+			},
+			status: '진행중',
+		},
+		{
+			id: 2,
+			name: '미완료',
+			deadLine: {
+				date: '2024-06-30',
+				time: '12:30',
+			},
+			status: '미완료',
+		},
+		{
+			id: 3,
+			name: '완료',
+			deadLine: {
+				date: '2024-06-30',
+				time: '12:30',
+			},
+			status: '완료',
+		},
+		{
+			id: 4,
+			name: '지연',
+			deadLine: {
+				date: '2024-06-30',
+				time: '12:30',
+			},
+			status: '지연',
+		},
+	];
+
 	return (
 		<TodayLayout>
+			<NavBar isOpen={isDumpAreaOpen} handleSideBar={handleSidebar} />
 			<DragDropContext onDragEnd={handleDragEnd}>
-				{isStagingError ? (
-					<BtnTaskContainer type="staging" />
-				) : (
-					<StagingArea
-						handleSelectedTarget={(task) => handleSelectedTarget(task, 'staging')}
-						selectedTarget={selectedTarget}
-						tasks={stagingData.data.tasks}
-						handleSortOrder={handleSortOrder}
-						handleTextBtnClick={handleTextBtnClick}
-						activeButton={activeButton}
-						sortOrder={sortOrder}
-						targetDate={targetDate}
-					/>
-				)}
+				<StagingArea
+					handleSelectedTarget={(task) => handleSelectedTarget(task, 'staging')}
+					selectedTarget={selectedTarget}
+					tasks={stagingTmpData}
+					handleSortOrder={handleSortOrder}
+					handleTextBtnClick={handleTextBtnClick}
+					activeButton={activeButton}
+					sortOrder={sortOrder}
+					targetDate={targetDate}
+					isStagingOpen={isDumpAreaOpen}
+				/>
 
 				{isTargetError ? (
 					<BtnTaskContainer type="target" />
@@ -153,6 +197,7 @@ export default Today;
 
 const TodayLayout = styled.div`
 	display: flex;
+	height: 100%;
 `;
 
 const CalendarWrapper = styled.div`
@@ -164,6 +209,7 @@ const CalendarWrapper = styled.div`
 	margin: 1rem 0;
 	padding: 1.8rem 0.7rem 0 2.3rem;
 
+	background-color: ${({ theme }) => theme.color.Grey.White};
 	border: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
 	border-radius: 12px;
 `;

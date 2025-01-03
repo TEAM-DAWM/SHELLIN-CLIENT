@@ -36,7 +36,6 @@ function TargetTaskSection(props: TargetTaskSectionProps) {
 									<BtnTask
 										location="target"
 										key={task.id}
-										hasDescription={task.hasDescription}
 										name={task.name}
 										deadLine={task.deadLine}
 										btnStatus={task.status}
