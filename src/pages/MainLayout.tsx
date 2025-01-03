@@ -13,8 +13,8 @@ function MainLayout() {
 }
 const MainLayOutContainer = styled.div`
 	position: relative;
-	width: 100vw;
-	height: 100vh;
+	width: 136.6rem;
+	height: 76.8rem;
 	padding-left: 7.2rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Component.strong};
