@@ -37,6 +37,7 @@ const CalendarHeaderContainer = styled.div<{ size: string }>`
 const CalendarHeaderWrapper = styled.div`
 	display: flex;
 	gap: 194px;
+	margin-top: 0.2rem;
 
 	color: ${({ theme }) => theme.colorToken.Icon.normal};
 `;

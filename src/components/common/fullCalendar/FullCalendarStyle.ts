@@ -106,7 +106,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.fc-toolbar-chunk .fc-today-button:active {
-		border: none;
+		color: ${({ theme }) => theme.color.Grey.Grey5};
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 	}
 
 	/* 좌우 버튼 스타일 */
@@ -126,7 +129,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-toolbar-chunk .fc-prev-button:active,
 	.fc-toolbar-chunk .fc-next-button:active {
-		border: none;
+		color: ${({ theme }) => theme.color.Grey.Grey5};
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 	}
 
 	/* ---- 여기까지 toolbar (캘린더 헤더) */
