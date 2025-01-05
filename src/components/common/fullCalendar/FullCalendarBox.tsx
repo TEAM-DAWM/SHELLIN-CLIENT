@@ -75,6 +75,14 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 			year: centerDate.getFullYear(),
 			month: centerDate.getMonth() + 1,
 		});
+
+		// 월간뷰 스크롤 제거 위해 'month-view' 클래스명 추가
+		const calendarContainer = document.querySelector('.fc');
+		if (dateInfo.view.type === 'dayGridMonth') {
+			calendarContainer?.classList.add('month-view');
+		} else {
+			calendarContainer?.classList.remove('month-view');
+		}
 	};
 
 	const updateRange = (viewType: string) => {

@@ -343,9 +343,16 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		margin: 0;
 	}
 
+	/* 월간뷰 border 위아래 짤림 커버용 */
 	.fc-scroller.fc-scroller-liquid-absolute {
+		border-top: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
 		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
 		border-radius: 12px;
+	}
+
+	/* 월간뷰 스크롤 제거 */
+	.month-view .fc-scroller {
+		overflow: hidden !important;
 	}
 
 	.fc-daygrid-body {
