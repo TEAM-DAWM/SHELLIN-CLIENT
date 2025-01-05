@@ -344,7 +344,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	/* 월간뷰 border 위아래 짤림 커버용 */
-	.fc-scroller.fc-scroller-liquid-absolute {
+	.month-view .fc-scroller.fc-scroller-liquid-absolute {
 		border-top: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
 		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
 		border-radius: 12px;
