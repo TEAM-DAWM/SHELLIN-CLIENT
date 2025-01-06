@@ -144,6 +144,14 @@ const font = {
 		fontWeight: 400,
 		textDecoration: 'line-through',
 	}),
+
+	display01: FONT({
+		family: fonts.PretendardBold,
+		size: 3.2,
+		height: 130,
+		letterSpacing: -3,
+		fontWeight: 700,
+	}),
 };
 
 export type FontsTypes = typeof font;
