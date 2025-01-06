@@ -84,13 +84,14 @@ const LoginBtn = styled.div`
 `;
 
 const SignDescription = styled.p`
-	width: 24rem;
+	width: 28rem;
 	height: 4rem;
 
 	color: ${({ theme }) => theme.color.Grey.Grey5};
 	text-align: center;
+	word-break: keep-all;
 
-	${({ theme }) => theme.font.caption02};
+	${({ theme }) => theme.font.body04};
 	a {
 		color: ${({ theme }) => theme.color.Grey.Grey5};
 	}
