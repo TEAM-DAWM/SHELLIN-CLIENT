@@ -93,6 +93,8 @@ const GrayText = styled.p`
 	color: ${({ theme }) => theme.colorToken.Text.disable};
 	font-weight: 600;
 	font-size: 1.4rem;
+
+	${({ theme }) => theme.font.label05};
 `;
 
 const TimeBtnContainer = styled.div`
