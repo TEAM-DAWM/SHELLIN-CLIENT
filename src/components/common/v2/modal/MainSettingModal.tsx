@@ -1,17 +1,25 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 import Button from '@/components/common/v2/button/Button';
 import DropdownButton from '@/components/common/v2/control/DropdownButton';
 import IconButton from '@/components/common/v2/IconButton';
 import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
 import PopUp from '@/components/common/v2/TextBox/PopUp';
+import { StatusType } from '@/types/tasks/taskType';
 
 function MainSettingModal() {
+	const [status, setStatus] = useState<StatusType>('미완료');
+
+	const handleStatusChange = (newStatus: StatusType) => {
+		setStatus(newStatus);
+	};
+
 	return (
 		<MainSettingModalLayout>
 			<MainSettingModalHeadLayout>
 				<ModalTopButtonBox>
-					<DropdownButton status="미완료" handleStatusChange={() => {}} />
+					<DropdownButton status={status} handleStatusChange={handleStatusChange} />
 					<ButtonBox>
 						<IconButton iconName="IcnDelete" type="normal" size="small" disabled />
 						<IconButton iconName="IcnX" type="normal" size="small" disabled />

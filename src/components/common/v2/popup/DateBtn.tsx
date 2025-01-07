@@ -56,13 +56,14 @@ function DateBtn({ isAllday, isSetDate, startTime, endTime, date, setDate }: Dat
 				</TextBox>
 			</DateBtnLayout>
 			{isOpen && (
-				<StyledTimeDropdown tabIndex={-1}>
+				<DropdownStyle tabIndex={-1}>
 					<DateCorrectionModal
 						date={formatDateWithDay(date)}
 						onClick={handleSelectDate}
 						handleCurrentDate={handleCurrentDate}
+						top={0.8}
 					/>
-				</StyledTimeDropdown>
+				</DropdownStyle>
 			)}
 		</DateWrapper>
 	);
@@ -99,10 +100,9 @@ const TextBox = styled.p`
 	font-weight: 500;
 `;
 
-const StyledTimeDropdown = styled.div`
+const DropdownStyle = styled.div`
 	position: absolute;
 	z-index: 3;
-	padding-top: 0.8rem;
 `;
 
 export default DateBtn;
