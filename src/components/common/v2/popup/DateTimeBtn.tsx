@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
-import Icon from '@/components/common/Icon';
+import DateBtn from '@/components/common/v2/popup/DateBtn';
 import TimeBtn from '@/components/common/v2/popup/TimeBtn';
 
 interface DateTimeBtnProps {
-	date: string;
+	date: Date;
 	startTime?: string;
 	endTime: string;
 	isSetDate: boolean;
@@ -12,42 +13,60 @@ interface DateTimeBtnProps {
 	onClick: () => void;
 }
 
-function DateTimeBtn({ date, startTime, endTime, isSetDate = false, isAllday = false, onClick }: DateTimeBtnProps) {
-	const renderTimeText = () => {
-		if (isAllday) return null;
-		if (startTime && endTime) {
-			return `${startTime}-${endTime}`;
-		}
-		if (endTime) {
-			return `${endTime} 까지`;
-		}
-		return null;
+function DateTimeBtn({
+	date: initDate,
+	startTime: initStartTime,
+	endTime: initEndTime,
+	isSetDate,
+	isAllday = false,
+	onClick,
+}: DateTimeBtnProps) {
+	const [startTime, setStartTime] = useState(initStartTime);
+	const [endTime, setEndTime] = useState(initEndTime);
+	const [date, setDate] = useState(initDate);
+
+	const updateStartTime = (newTime: string) => {
+		setStartTime(newTime);
+	};
+
+	const updateEndTime = (newTime: string) => {
+		setEndTime(newTime);
+	};
+
+	const updateDate = (newDate: Date) => {
+		setDate(newDate);
 	};
 
 	return isSetDate ? (
 		<DateTimeBtnContainer onClick={onClick}>
-			<DateTimeBtnLayout>
-				<Icon name="IcnModify" size="tiny" color="nomal" />
-				<TextBox>
-					{date} {renderTimeText()}
-				</TextBox>
-			</DateTimeBtnLayout>
+			<DateBtn
+				isAllday={isAllday}
+				isSetDate={isSetDate}
+				startTime={startTime}
+				endTime={endTime}
+				date={date}
+				setDate={updateDate}
+			/>
 		</DateTimeBtnContainer>
 	) : (
 		<DateTimeBtnContainer isSingle={!startTime}>
-			<DateTimeBtnLayout>
-				<Icon name="IcnCalendar" size="tiny" color="nomal" />
-				<TextBox>{date}</TextBox>
-			</DateTimeBtnLayout>
+			<DateBtn
+				isAllday={isAllday}
+				isSetDate={isSetDate}
+				startTime={startTime}
+				endTime={endTime}
+				date={date}
+				setDate={updateDate}
+			/>
 			{!isAllday && (
 				<TimeBtnContainer>
 					{startTime && (
 						<>
-							<TimeBtn time={startTime} />
+							<TimeBtn time={startTime} setTime={updateStartTime} />
 							<GrayText>부터</GrayText>
 						</>
 					)}
-					<TimeBtn time={endTime} />
+					<TimeBtn time={endTime} setTime={updateEndTime} />
 					<GrayText>까지</GrayText>
 				</TimeBtnContainer>
 			)}
@@ -61,29 +80,6 @@ const DateTimeBtnContainer = styled.div<{ isSingle?: boolean }>`
 	gap: 0.8rem;
 	align-items: flex-start;
 	margin: 0 0 0 0.8rem;
-`;
-
-const DateTimeBtnLayout = styled.button`
-	display: flex;
-	gap: 0.8rem;
-	align-items: center;
-	justify-content: center;
-	width: auto;
-	height: 3.2rem;
-	padding: 0 1.6rem;
-
-	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
-	border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
-	border-radius: 8px;
-`;
-
-const TextBox = styled.p`
-	width: auto;
-	height: 1.4rem;
-
-	color: ${({ theme }) => theme.colorToken.Text.assistive};
-	${({ theme }) => theme.font.label05};
-	font-weight: 500;
 `;
 
 const GrayText = styled.p`
