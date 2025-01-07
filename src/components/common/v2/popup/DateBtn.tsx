@@ -32,7 +32,7 @@ function DateBtn({ isAllday, isSetDate, startTime, endTime, date, setDate }: Dat
 		if (!isSetDate) setIsOpen((prev) => !prev);
 	};
 
-	const handleSelectDate = () => {
+	const handleModalClose = () => {
 		setIsOpen(false);
 	};
 
@@ -59,7 +59,7 @@ function DateBtn({ isAllday, isSetDate, startTime, endTime, date, setDate }: Dat
 				<DropdownStyle tabIndex={-1}>
 					<DateCorrectionModal
 						date={formatDateWithDay(date)}
-						onClick={handleSelectDate}
+						onClick={handleModalClose}
 						handleCurrentDate={handleCurrentDate}
 						top={0.8}
 					/>
