@@ -34,7 +34,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 		background: ${({ theme }) => theme.color.Grey.White};
 		border: none;
-		border-radius: 8px;
 	}
 
 	.fc-toolbar-chunk .fc-button:hover,
@@ -47,6 +46,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		position: absolute;
 		top: 0;
 		left: 50%;
+		overflow: hidden;
 
 		background: ${({ theme }) => theme.color.Grey.White};
 		transform: translateX(-50%);
@@ -56,6 +56,8 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-button-group > button {
 		width: 8rem;
+
+		border-radius: 0;
 	}
 
 	/** .fc-button-primary: .fc-button-group 중 선택된 버튼 */
@@ -66,7 +68,11 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	.fc .fc-button-primary:not(:disabled).fc-button-active {
 		background: ${({ theme }) => theme.colorToken.Neutral.heavy};
 		border: none;
-		border-radius: 8px;
+		border-radius: 0 7px 7px 0;
+	}
+
+	.fc-button-group > button:last-of-type.fc-button-primary:not(:disabled).fc-button-active {
+		border-radius: 7px 0 0 7px;
 	}
 
 	/* Override the button group border-radius styles */
@@ -74,7 +80,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		display: flex;
 		align-items: center;
 
-		color: ${({ theme }) => theme.colorToken.Text.assistive};
+		color: ${({ theme }) => theme.colorToken.Icon.strong};
 	}
 
 	.fc-button-active:focus {
@@ -101,8 +107,8 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
 		opacity: 1;
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
-
 		${({ theme }) => theme.font.label04}
+		border-radius: 8px;
 	}
 
 	.fc-toolbar-chunk .fc-today-button:active {
@@ -125,6 +131,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 		background-color: ${({ theme }) => theme.color.Grey.White};
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+		border-radius: 8px;
 	}
 
 	.fc-toolbar-chunk .fc-prev-button:active,
