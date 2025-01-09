@@ -144,6 +144,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	/* ---- 여기까지 toolbar (캘린더 헤더) */
 
+	.fc-daygrid-body {
+		width: 100% !important;
+	}
+
 	.fc-event-allday {
 		height: 2rem;
 	}
