@@ -3,12 +3,18 @@ import styled from '@emotion/styled';
 import Icon from '../../Icon';
 import Button from '../button/Button';
 
+import { CreateTaskType } from '@/apis/tasks/createTask/CreateTaskType';
+import useCreateTask from '@/apis/tasks/createTask/query';
 import useInputHandler from '@/hooks/useInputHandler';
 import { INPUT_STATE, InputState } from '@/types/inputStateType';
 
 function DumpingAreaBtn() {
 	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave } = useInputHandler();
 
+	const { mutate: createTaskMutate } = useCreateTask();
+	const createTask = (taskData: CreateTaskType) => {
+		createTaskMutate(taskData);
+	};
 	return (
 		<DumpingAreaContainer>
 			<DumpingAreaWrapper state={state} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -19,7 +25,17 @@ function DumpingAreaBtn() {
 					onBlur={handleBlur}
 					onChange={handleChange}
 				/>
-				<IconTouchArea>
+				<IconTouchArea
+					onClick={() => {
+						createTask({
+							name: 'sample',
+							deadLine: {
+								date: '2025-01-12',
+								time: '12:30',
+							},
+						});
+					}}
+				>
 					<div className="icon-background">
 						<Icon name="IcnEnter" />
 					</div>
