@@ -4,17 +4,11 @@ import getTasks from './axios';
 import { GetTasksType } from './GetTasksType';
 
 /** Task 리스트 조회 */
-const useGetTasks = ({ isTotal, sortOrder, targetDate }: GetTasksType) =>
+const useGetTasks = ({ sortOrder, targetDate }: GetTasksType) =>
 	useQuery({
-		queryKey: ['today', isTotal, sortOrder, targetDate],
-		queryFn: () => getTasks({ isTotal, sortOrder, targetDate }),
-		placeholderData: {
-			code: 'success',
-			data: {
-				tasks: [],
-			},
-			message: null,
-		},
+		queryKey: ['today', sortOrder, targetDate],
+		queryFn: () => getTasks({ sortOrder, targetDate }),
+		placeholderData: [],
 	});
 
 export default useGetTasks;
