@@ -61,9 +61,9 @@ function DeadlineBox({ date, startTime, endTime, label }: DeadlineBoxProps) {
 			<DeadlineBtnLayout>
 				<CategoryTitleStyle>{label}</CategoryTitleStyle>
 				{isClicked ? (
-					<Icon name="IcnX" size="tiny" color="strong" onClick={handleXBtnClick} isCusor />
+					<Icon name="IcnX" size="tiny" color="strong" onClick={handleXBtnClick} isCursor />
 				) : (
-					<Icon name="IcnPlus" size="tiny" color="strong" onClick={handlePlusBtnClick} isCusor />
+					<Icon name="IcnPlus" size="tiny" color="strong" onClick={handlePlusBtnClick} isCursor />
 				)}
 			</DeadlineBtnLayout>
 			{isClicked && (

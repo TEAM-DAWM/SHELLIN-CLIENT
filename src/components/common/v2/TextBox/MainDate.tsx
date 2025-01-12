@@ -72,6 +72,7 @@ const MainDateContainer = styled.div`
 	display: flex;
 	gap: 0.8rem;
 	align-items: flex-end;
+	width: fit-content;
 
 	background-color: ${theme.color.Grey.White};
 

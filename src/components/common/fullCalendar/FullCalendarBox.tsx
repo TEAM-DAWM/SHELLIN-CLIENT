@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -9,16 +8,17 @@ import { useState, useRef, useEffect } from 'react';
 
 import ModalDeleteDetail from '../modal/ModalDeleteDetail';
 
+import CalendarHeader from './CalendarHeader';
+import CustomDayCellContent from './CustomDayCellContent';
 import processEvents from './processEvents';
 
 import useDeleteTimeBlock from '@/apis/timeBlocks/deleteTimeBlock/query';
 import useGetTimeBlock from '@/apis/timeBlocks/getTimeBlock/query';
 import usePostTimeBlock from '@/apis/timeBlocks/postTimeBlock/query';
 import useUpdateTimeBlock from '@/apis/timeBlocks/updateTimeBlock/query';
-import RefreshBtn from '@/components/common/button/RefreshBtn';
 import DayHeaderContent from '@/components/common/fullCalendar/DayHeaderContent';
 import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarStyle';
-import { customDayCellContent, customSlotLabelContent } from '@/components/common/fullCalendar/fullCalendarUtils';
+import customSlotLabelContent from '@/components/common/fullCalendar/fullCalendarUtils';
 import MODAL from '@/constants/modalLocation';
 import { TaskType } from '@/types/tasks/taskType';
 
@@ -29,8 +29,8 @@ interface FullCalendarBoxProps {
 }
 
 function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxProps) {
-	const today = new Date().toDateString();
-	const todayDate = new Date().toISOString().split('T')[0];
+	const today = new Date();
+	const todayDate = today.toISOString().split('T')[0];
 	const [currentView, setCurrentView] = useState('timeGridWeek');
 	const [range, setRange] = useState(7);
 	const [startDate, setStartDate] = useState<string>(todayDate);
@@ -39,6 +39,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 	const [left, setLeft] = useState(0);
 	const [modalTaskId, setModalTaskId] = useState<number | null>(null);
 	const [modalTimeBlockId, setModalTimeBlockId] = useState<number | null>(null);
+	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -57,18 +58,31 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 
 	const handleViewChange = (view: ViewMountArg) => {
 		setCurrentView(view.view.type);
-		updateRange(view.view.type);
+		// updateRange(view.view.type);
 	};
 
 	const handleDatesSet = (dateInfo: DatesSetArg) => {
 		const currentViewType = dateInfo.view.type;
 		const newStartDate = new Date(dateInfo.start);
-		newStartDate.setDate(newStartDate.getDate() + 1);
+		const endDate = new Date(dateInfo.end);
+		const centerDate = new Date((newStartDate.getTime() + endDate.getTime()) / 2);
 		const formattedStartDate = newStartDate.toISOString().split('T')[0];
 
 		setCurrentView(dateInfo.view.type);
 		setStartDate(formattedStartDate);
 		updateRange(currentViewType);
+		setDate({
+			year: centerDate.getFullYear(),
+			month: centerDate.getMonth() + 1,
+		});
+
+		// 월간뷰 스크롤 제거 위해 'month-view' 클래스명 추가
+		const calendarContainer = document.querySelector('.fc');
+		if (dateInfo.view.type === 'dayGridMonth') {
+			calendarContainer?.classList.add('month-view');
+		} else {
+			calendarContainer?.classList.remove('month-view');
+		}
 	};
 
 	const updateRange = (viewType: string) => {
@@ -76,11 +90,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 			case 'dayGridMonth':
 				setRange(30);
 				break;
-			case 'timeGridWeek':
+			case 'timeGridWeekCustom':
 				setRange(7);
-				break;
-			case 'timeGridDay':
-				setRange(1);
 				break;
 			default:
 				setRange(7);
@@ -186,45 +197,38 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 	};
 
 	return (
-		<FullCalendarLayout size={size}>
-			<CustomButtonContainer>
-				<RefreshBtn isDisabled={false} />
-			</CustomButtonContainer>
+		<FullCalendarLayout size={size} currentView={currentView}>
+			<CalendarHeader size={size} date={date} />
 			<FullCalendar
+				height="100%"
 				ref={calendarRef}
-				initialView="timeGridWeek"
+				initialView="timeGridWeekCustom"
 				plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
-				headerToolbar={{
-					left: 'title today prev next timeGridDay,timeGridWeek,dayGridMonth',
-					right: '',
-				}}
 				views={{
-					timeGridDay: {
-						titleFormat: { year: 'numeric', month: 'short' },
-					},
-					timeGridWeek: {
-						titleFormat(date) {
-							return `${date.date.year}년 ${date.date.month + 1}월`;
-						},
-					},
-					dayGridMonth: {
-						titleFormat: { year: 'numeric', month: 'short' },
+					timeGridWeekCustom: {
+						type: 'timeGrid',
+						duration: { days: size === 'big' ? 7 : 5 },
 					},
 				}}
-				slotDuration="00:30:00"
+				headerToolbar={{
+					left: '',
+					center: 'timeGridWeekCustom,dayGridMonth',
+					right: 'today prev next',
+				}}
 				editable
 				selectable={isSelectable}
 				nowIndicator
 				dayMaxEvents
 				events={calendarEvents}
 				buttonText={{
+					month: '월',
+					timeGridWeekCustom: '주',
 					today: '오늘',
-					month: '월간',
-					week: '주간',
-					day: '일간',
 				}}
 				allDayText="종일"
 				locale="ko"
+				slotDuration="00:15:00"
+				slotLabelInterval="01:00:00"
 				slotLabelFormat={{
 					hour: 'numeric',
 					minute: '2-digit',
@@ -233,10 +237,20 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				}}
 				slotLabelContent={customSlotLabelContent}
 				/* eslint-disable */
-				dayHeaderContent={(arg) => <DayHeaderContent arg={arg} currentView={currentView} today={today} />}
+				dayHeaderContent={(arg) => (
+					<DayHeaderContent
+						arg={arg}
+						currentView={currentView}
+						today={today.toDateString()}
+						selectDate={selectDate?.toString()}
+						size={size}
+					/>
+				)}
 				viewDidMount={handleViewChange}
 				datesSet={handleDatesSet}
-				dayCellContent={customDayCellContent}
+				dayCellContent={(arg) => (
+					<CustomDayCellContent arg={arg} today={today.toDateString()} selectDate={selectDate?.toString()} />
+				)}
 				eventTimeFormat={{
 					hour: 'numeric',
 					minute: '2-digit',
@@ -254,15 +268,5 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		</FullCalendarLayout>
 	);
 }
-
-const CustomButtonContainer = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	box-sizing: border-box;
-	width: 100%;
-	margin-bottom: -2.6rem;
-	padding-right: 1rem;
-`;
 
 export default FullCalendarBox;
