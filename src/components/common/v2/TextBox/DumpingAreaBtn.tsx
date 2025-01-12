@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 import Icon from '../../Icon';
 import Button from '../button/Button';
@@ -10,11 +11,20 @@ import { INPUT_STATE, InputState } from '@/types/inputStateType';
 
 function DumpingAreaBtn() {
 	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave } = useInputHandler();
-
+	const [todoTitle, setTodoTitle] = useState('');
+	const [settingModalOpen, setSettingModalOpen] = useState(false);
 	const { mutate: createTaskMutate } = useCreateTask();
 	const createTask = (taskData: CreateTaskType) => {
 		createTaskMutate(taskData);
 	};
+	const onChange = (e: React.FocusEvent<HTMLInputElement>) => {
+		handleChange(e);
+		setTodoTitle(e.currentTarget.value);
+	};
+	const handleSettingModal = () => {
+		setSettingModalOpen((prev) => !prev);
+	};
+
 	return (
 		<DumpingAreaContainer>
 			<DumpingAreaWrapper state={state} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -23,15 +33,15 @@ function DumpingAreaBtn() {
 					placeholder="해야 할 일을 여기에 쏟아내세요"
 					onFocus={handleFocus}
 					onBlur={handleBlur}
-					onChange={handleChange}
+					onChange={onChange}
 				/>
 				<IconTouchArea
 					onClick={() => {
 						createTask({
-							name: 'sample',
+							name: todoTitle,
 							deadLine: {
-								date: '2025-01-12',
-								time: '12:30',
+								date: null,
+								time: null,
 							},
 						});
 					}}
@@ -42,8 +52,17 @@ function DumpingAreaBtn() {
 				</IconTouchArea>
 			</DumpingAreaWrapper>
 			{(state === INPUT_STATE.TYPING || state === INPUT_STATE.FIELD) && (
-				<Button type="outlined-primary" size="small" disabled={false} label="마감 기간/시간" leftIcon="IcnPlus" />
+				<Button
+					type="outlined-primary"
+					size="small"
+					disabled={false}
+					label="마감 기간/시간"
+					leftIcon="IcnPlus"
+					onClick={handleSettingModal}
+				/>
 			)}
+			{/* 세팅 모달 들어갈 자리 */}
+			{settingModalOpen && <div />}
 		</DumpingAreaContainer>
 	);
 }
