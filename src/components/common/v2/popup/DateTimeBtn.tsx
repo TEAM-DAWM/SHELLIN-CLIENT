@@ -45,7 +45,7 @@ function DateTimeBtn({
 				startTime={startTime}
 				endTime={endTime}
 				date={date}
-				setDate={updateDate}
+				handleDate={updateDate}
 			/>
 		</DateTimeBtnContainer>
 	) : (
@@ -56,7 +56,7 @@ function DateTimeBtn({
 				startTime={startTime}
 				endTime={endTime}
 				date={date}
-				setDate={updateDate}
+				handleDate={updateDate}
 			/>
 			{!isAllday && (
 				<TimeBtnContainer>

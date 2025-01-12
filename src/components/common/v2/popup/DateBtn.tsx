@@ -11,10 +11,10 @@ interface DateBtnProps {
 	startTime?: string;
 	endTime: string;
 	date: Date;
-	setDate: (newDate: Date) => void;
+	handleDate: (newDate: Date) => void;
 }
 
-function DateBtn({ isAllday, isSetDate, startTime, endTime, date, setDate }: DateBtnProps) {
+function DateBtn({ isAllday, isSetDate, startTime, endTime, date, handleDate }: DateBtnProps) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const renderTimeText = () => {
@@ -37,7 +37,7 @@ function DateBtn({ isAllday, isSetDate, startTime, endTime, date, setDate }: Dat
 	};
 
 	const handleCurrentDate = (newDate: Date) => {
-		setDate(newDate);
+		handleDate(newDate);
 		setIsOpen(false);
 	};
 
