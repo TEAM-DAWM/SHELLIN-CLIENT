@@ -3,25 +3,32 @@ import styled from '@emotion/styled';
 import Button from '@/components/common/v2/button/Button';
 import quarterTimes from '@/utils/generateQuarterTimes';
 
-function TimeDropdown() {
+interface TimeDropdownProps {
+	handleSelectTime: (time: string) => void;
+}
+
+function TimeDropdown({ handleSelectTime }: TimeDropdownProps) {
 	return (
 		<TimeDropdownContainer>
 			{quarterTimes.map((time) => (
-				<Button key={time} label={time} onClick={() => {}} size="large" type="text-assistive" />
+				<Button key={time} label={time} onClick={() => handleSelectTime(time)} size="large" type="text-assistive" />
 			))}
 		</TimeDropdownContainer>
 	);
 }
 
 const TimeDropdownContainer = styled.div`
+	box-sizing: border-box;
 	width: 16.8rem;
 	height: 30rem;
 	padding: 0.8rem;
 	overflow-y: auto;
 
+	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
 	border-radius: 12px;
 
 	${({ theme }) => theme.shadow.FloatingAction3};
+	${({ theme }) => theme.fontTheme.LABEL_03};
 
 	/* 스크롤바 전체 */
 	::-webkit-scrollbar {

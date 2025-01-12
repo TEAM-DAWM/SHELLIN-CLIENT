@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import Icon from '@/components/common/Icon';
 import CheckButton from '@/components/common/v2/control/CheckButton';
 import DateTimeBtn from '@/components/common/v2/popup/DateTimeBtn';
-import formatDateWithDay from '@/utils/formatDateWithDay';
 
 interface DeadlineBoxProps {
 	date: Date;
@@ -69,7 +68,7 @@ function DeadlineBox({ date, startTime, endTime, label }: DeadlineBoxProps) {
 			{isClicked && (
 				<>
 					<DateTimeBtn
-						date={formatDateWithDay(date)}
+						date={date}
 						startTime={startTime}
 						endTime={endTime}
 						isSetDate={isSettingActive}

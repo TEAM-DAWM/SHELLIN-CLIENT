@@ -16,6 +16,7 @@ type PopUpProps = {
 
 function PopUp({ type }: PopUpProps) {
 	const { state, handleFocus, handleBlur, handleChange } = useInputHandler();
+	const placeholder = type === TYPE.TITLE ? '제목을 입력하세요' : '설명을 추가하세요';
 
 	return (
 		<PopUpContainer>
@@ -23,7 +24,7 @@ function PopUp({ type }: PopUpProps) {
 			<StyledInput
 				type={type}
 				state={state}
-				placeholder="제목을 입력하세요"
+				placeholder={placeholder}
 				onFocus={handleFocus}
 				onBlur={handleBlur}
 				onChange={handleChange}
