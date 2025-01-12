@@ -9,22 +9,22 @@ import FullCalendarBox from '@/components/common/fullCalendar/FullCalendarBox';
 import NavBar from '@/components/common/NavBar';
 import StagingArea from '@/components/common/StagingArea/StagingArea';
 import TargetArea from '@/components/targetArea/TargetArea';
+import { SortOrderType } from '@/constants/sortType';
 import { AreaType } from '@/types/area/areaType';
-import { SortOrderType } from '@/types/sortOrderType';
 import { TaskType } from '@/types/tasks/taskType';
 import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
 
 function Today() {
 	const [selectedTarget, setSelectedTarget] = useState<TaskType | null>(null);
 	const [activeButton, setActiveButton] = useState<'전체' | '지연'>('전체');
-	const [sortOrder, setSortOrder] = useState<SortOrderType>('recent');
+	const [sortOrder, setSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
 	const [selectedDate, setTargetDate] = useState(new Date());
 	const targetDate = formatDatetoLocalDate(selectedDate);
 	const [selectedArea, setSelectedArea] = useState<AreaType>(null);
 	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
 
 	// Task 목록 Get
-	const { data: stagingData } = useGetTasks({ sortOrder, targetDate });
+	const { data: stagingData } = useGetTasks({ sortOrder });
 	const { data: targetData, isError: isTargetError } = useGetTasks({ sortOrder, targetDate });
 	const { mutate, queryClient } = useUpdateTaskStatus(null);
 	const handleSidebar = () => {
