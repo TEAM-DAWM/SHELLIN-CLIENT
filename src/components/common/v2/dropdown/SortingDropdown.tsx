@@ -2,9 +2,8 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Button from '@/components/common/v2/button/Button';
-import SORT_BY from '@/constants/sortType';
+import SORT_BY, { SortOrderType } from '@/constants/sortType';
 
-type SortOrderType = keyof typeof SORT_BY;
 interface SortingDropDownType {
 	// sortOrder: SortOrderType;
 	handleSortOrder: (order: SortOrderType) => void;
