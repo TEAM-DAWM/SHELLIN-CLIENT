@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
-import ModalArrange from '../modal/ModalArrange/ModalArrange';
 import ModalBackdrop from '../modal/ModalBackdrop';
+import SortingDropdown from '../v2/dropdown/SortingDropdown';
 import IconButton from '../v2/IconButton';
 import DumpingAreaBtn from '../v2/TextBox/DumpingAreaBtn';
 
@@ -31,7 +31,7 @@ function StagingArea(props: StagingAreaProps) {
 	const handleCloseModal = () => {
 		setIsSortModalOpen(false);
 	};
-
+	const isIconBtnDotted = sortOrder !== 'CUSTOM_ORDER';
 	return (
 		<StagingAreaLayout isOpen={isStagingOpen}>
 			<UpperContainer>
@@ -39,7 +39,13 @@ function StagingArea(props: StagingAreaProps) {
 			</UpperContainer>
 
 			<IconContainer>
-				<IconButton iconName="IcnFilter" size="small" type="normal" disabled={false} onClick={handleArrangeBtnClick} />
+				<IconButton
+					iconName="IcnFilter"
+					size="small"
+					type="normal"
+					onClick={handleArrangeBtnClick}
+					dot={isIconBtnDotted}
+				/>
 			</IconContainer>
 
 			<BottomContainer>
@@ -57,7 +63,7 @@ function StagingArea(props: StagingAreaProps) {
 					)}
 				</Droppable>
 			</BottomContainer>
-			{isSortModalOpen && <ModalArrange sortOrder={sortOrder} handleSortOrder={handleSortOrder} />}
+			{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortOrder} />}
 			{isSortModalOpen && <ModalBackdrop onClick={handleCloseModal} />}
 		</StagingAreaLayout>
 	);
