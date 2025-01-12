@@ -5,10 +5,26 @@ import { GetTasksType } from './GetTasksType';
 import { privateInstance } from '@/apis/instance';
 
 const getTasks = async ({ sortOrder, targetDate }: GetTasksType) => {
+	const getOrder = () => {
+		switch (sortOrder) {
+			case 'CUSTOM_ORDER':
+				return 'user';
+			case 'NEWEST':
+				return 'recent';
+			case 'OLDEST':
+				return 'old';
+			case 'CLOSEST':
+				return 'near';
+			case 'FARTHEST':
+				return 'far';
+			default:
+				return 'user';
+		}
+	};
 	try {
 		const { data } = await privateInstance.get('/api/tasks', {
 			params: {
-				order: sortOrder,
+				order: getOrder(),
 				targetDate,
 			},
 		});
