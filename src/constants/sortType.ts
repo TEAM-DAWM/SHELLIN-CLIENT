@@ -5,5 +5,5 @@ const SORT_BY = {
 	CLOSEST: '가까운 마감기한순',
 	FARTHEST: '먼 마감기한순',
 };
-
+export type SortOrderType = keyof typeof SORT_BY;
 export default SORT_BY;
