@@ -6,17 +6,19 @@ import USERDATA from '@/constants/settingUserData';
 function ProfileArea() {
 	return (
 		<ProfileAreaLayout>
-			프로필
-			<ProfileWrapper>
-				<ProfileImg src={Images.sampleImg} alt="프로필 이미지" />
-				<ProfileTextBox>
-					<LastName>
-						{USERDATA?.familyName}
-						{USERDATA?.givenName}
-					</LastName>
-					<Email>{USERDATA.email}</Email>
-				</ProfileTextBox>
-			</ProfileWrapper>
+			<ProfileBox>
+				프로필
+				<ProfileWrapper>
+					<ProfileImg src={Images.sampleImg} alt="프로필 이미지" />
+					<ProfileTextBox>
+						<LastName>
+							{USERDATA?.familyName}
+							{USERDATA?.givenName}
+						</LastName>
+						<Email>{USERDATA.email}</Email>
+					</ProfileTextBox>
+				</ProfileWrapper>
+			</ProfileBox>
 		</ProfileAreaLayout>
 	);
 }
@@ -24,6 +26,18 @@ function ProfileArea() {
 export default ProfileArea;
 
 const ProfileAreaLayout = styled.div`
+	display: flex;
+	flex: 1 0 0;
+	flex-direction: column;
+	align-items: flex-start;
+	align-self: stretch;
+	padding: 32px 32px 0;
+
+	background-color: ${({ theme }) => theme.color.Grey.White};
+	border-left: 1px solid ${({ theme }) => theme.colorToken.Neutral.normal};
+`;
+
+const ProfileBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1.6rem;
@@ -35,8 +49,7 @@ const ProfileAreaLayout = styled.div`
 	${({ theme }) => theme.font.title02};
 	color: ${({ theme }) => theme.colorToken.Neutral.light};
 
-	border-color: ${({ theme }) => theme.color.Grey.Grey3};
-	border-bottom: 1px solid;
+	border-bottom: 1px solid ${({ theme }) => theme.colorToken.Neutral.normal};
 `;
 
 const ProfileWrapper = styled.div`
