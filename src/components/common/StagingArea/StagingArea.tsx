@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
-import ModalArrange from '../modal/ModalArrange/ModalArrange';
 import ModalBackdrop from '../modal/ModalBackdrop';
+import SortingDropdown from '../v2/dropdown/SortingDropdown';
 import IconButton from '../v2/IconButton';
 import DumpingAreaBtn from '../v2/TextBox/DumpingAreaBtn';
 
@@ -31,7 +31,7 @@ function StagingArea(props: StagingAreaProps) {
 	const handleCloseModal = () => {
 		setIsSortModalOpen(false);
 	};
-
+	const isIconBtnDotted = sortOrder !== 'CUSTOM_ORDER';
 	return (
 		<StagingAreaLayout isOpen={isStagingOpen}>
 			<UpperContainer>
@@ -39,13 +39,19 @@ function StagingArea(props: StagingAreaProps) {
 			</UpperContainer>
 
 			<IconContainer>
-				<IconButton iconName="IcnFilter" size="small" type="normal" disabled={false} onClick={handleArrangeBtnClick} />
+				<IconButton
+					iconName="IcnFilter"
+					size="small"
+					type="normal"
+					onClick={handleArrangeBtnClick}
+					dot={isIconBtnDotted}
+				/>
 			</IconContainer>
 
 			<BottomContainer>
 				<Droppable droppableId="staging">
 					{(provided) => (
-						<div ref={provided.innerRef} {...provided.droppableProps}>
+						<SizedWrapper ref={provided.innerRef} {...provided.droppableProps}>
 							<StagingAreaTaskContainer
 								handleSelectedTarget={handleSelectedTarget}
 								selectedTarget={selectedTarget}
@@ -53,17 +59,21 @@ function StagingArea(props: StagingAreaProps) {
 								targetDate={targetDate}
 							/>
 							{provided.placeholder}
-						</div>
+						</SizedWrapper>
 					)}
 				</Droppable>
 			</BottomContainer>
-			{isSortModalOpen && <ModalArrange sortOrder={sortOrder} handleSortOrder={handleSortOrder} />}
+			{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortOrder} />}
 			{isSortModalOpen && <ModalBackdrop onClick={handleCloseModal} />}
 		</StagingAreaLayout>
 	);
 }
 
 export default StagingArea;
+
+const SizedWrapper = styled.div`
+	width: 100%;
+`;
 const slideIn = keyframes`
   from {
     transform: translateX(-100%);
@@ -119,6 +129,7 @@ const BottomContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	width: 100%;
 	height: 100%;
 	padding-bottom: 2.8rem;
 `;

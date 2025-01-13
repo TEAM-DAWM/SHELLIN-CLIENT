@@ -3,32 +3,32 @@ import { useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 import useGetTasks from '@/apis/tasks/getTask/query';
+import useOrderTask from '@/apis/tasks/orderTask/query';
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import BtnTaskContainer from '@/components/common/BtnTaskContainer';
 import FullCalendarBox from '@/components/common/fullCalendar/FullCalendarBox';
 import NavBar from '@/components/common/NavBar';
 import StagingArea from '@/components/common/StagingArea/StagingArea';
 import TargetArea from '@/components/targetArea/TargetArea';
+import { SortOrderType } from '@/constants/sortType';
 import { AreaType } from '@/types/area/areaType';
-import { SortOrderType } from '@/types/sortOrderType';
 import { TaskType } from '@/types/tasks/taskType';
 import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
 
 function Today() {
 	const [selectedTarget, setSelectedTarget] = useState<TaskType | null>(null);
 	const [activeButton, setActiveButton] = useState<'전체' | '지연'>('전체');
-	const [sortOrder, setSortOrder] = useState<SortOrderType>('recent');
+	const [sortOrder, setSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
 	const [selectedDate, setTargetDate] = useState(new Date());
-	const isTotal = activeButton === '전체';
 	const targetDate = formatDatetoLocalDate(selectedDate);
 	const [selectedArea, setSelectedArea] = useState<AreaType>(null);
 	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
 
 	// Task 목록 Get
-	const { data: stagingData } = useGetTasks({ isTotal, sortOrder });
-	const { data: targetData, isError: isTargetError } = useGetTasks({ targetDate });
+	const { data: stagingData } = useGetTasks({ sortOrder });
+	const { data: targetData, isError: isTargetError } = useGetTasks({ sortOrder, targetDate });
 	const { mutate, queryClient } = useUpdateTaskStatus(null);
-
+	const { mutate: orderTasksMutate } = useOrderTask();
 	const handleSidebar = () => {
 		setDumpAreaOpen((prev) => !prev);
 	};
@@ -73,83 +73,73 @@ function Today() {
 		// 드래그가 끝난 위치가 없으면 리턴
 		if (!destination) return;
 
-		// sourceTasks와 destinationTasks를 배열로 변환
-		const sourceTasks = source.droppableId === 'target' ? [...targetData.data.tasks] : [...stagingData.data.tasks];
-		const destinationTasks =
-			destination.droppableId === 'target' ? [...targetData.data.tasks] : [...stagingData.data.tasks];
+		const updatedTargetData: TaskType[] = [...targetData];
+		const updatedStagingData: TaskType[] = [...stagingData];
+		let movedTask: TaskType;
 
-		// 드래그된 항목을 sourceTasks에서 제거하고 destinationTasks에 추가
-		const [movedTask] = sourceTasks.splice(source.index, 1);
-		destinationTasks.splice(destination.index, 0, movedTask);
-
-		// 상태 업데이트
 		if (source.droppableId === 'target') {
-			queryClient.setQueryData(['tasks'], {
-				target: { ...targetData, data: { ...targetData.data, tasks: sourceTasks } },
-				staging: { ...stagingData, data: { ...stagingData.data, tasks: destinationTasks } },
-			});
+			[movedTask] = updatedTargetData.splice(source.index, 1);
+			if (destination.droppableId === 'target') {
+				updatedTargetData.splice(destination.index, 0, movedTask);
+			} else {
+				updatedStagingData.splice(destination.index, 0, movedTask);
+			}
 		} else {
-			queryClient.setQueryData(['tasks'], {
-				target: { ...targetData, data: { ...targetData.data, tasks: destinationTasks } },
-				staging: { ...stagingData, data: { ...stagingData.data, tasks: sourceTasks } },
-			});
+			[movedTask] = updatedStagingData.splice(source.index, 1);
+			if (destination.droppableId === 'staging') {
+				updatedStagingData.splice(destination.index, 0, movedTask);
+			} else {
+				updatedTargetData.splice(destination.index, 0, movedTask);
+			}
 		}
 
+		queryClient.setQueryData(['tasks'], {
+			target: { ...targetData, tasks: updatedTargetData },
+			staging: { ...stagingData, tasks: updatedStagingData },
+		});
+
 		// API 호출
-		if (destination.droppableId === 'target') {
+		// staging -> target area: 해당 날짜로 설정, 미완료 상태 지정
+		if (destination.droppableId === 'target' && source.droppableId === 'staging') {
 			mutate({
 				taskId: movedTask.id,
 				targetDate,
 				status: '미완료',
 			});
-		} else if (destination.droppableId === 'staging') {
+			// target -> staging area: 상태 초기화
+		} else if (destination.droppableId === 'staging' && source.droppableId === 'target') {
 			mutate({
 				taskId: movedTask.id,
 				targetDate: null,
 				status: null,
 			});
 		}
-	};
+		// staging -> staging: custom order post api 호출
+		else if (
+			destination.droppableId === 'staging' &&
+			source.droppableId === 'staging' &&
+			sortOrder === 'CUSTOM_ORDER'
+		) {
+			const newOrder = updatedStagingData.map((item) => item.id);
+			orderTasksMutate({
+				type: true,
+				taskList: newOrder,
+			});
 
-	/** 테스트 데이터, api 연결 후 삭제 */
-	const stagingTmpData: TaskType[] = [
-		{
-			id: 1,
-			name: '진행중',
-			deadLine: {
-				date: '2024-12-30',
-				time: '12:30',
-			},
-			status: '진행중',
-		},
-		{
-			id: 2,
-			name: '미완료',
-			deadLine: {
-				date: '2024-06-30',
-				time: '12:30',
-			},
-			status: '미완료',
-		},
-		{
-			id: 3,
-			name: '완료',
-			deadLine: {
-				date: '2024-06-30',
-				time: '12:30',
-			},
-			status: '완료',
-		},
-		{
-			id: 4,
-			name: '지연',
-			deadLine: {
-				date: '2024-06-30',
-				time: '12:30',
-			},
-			status: '완료',
-		},
-	];
+			// target -> target: custom order post api 호출
+		} else if (
+			destination.droppableId === 'target' &&
+			source.droppableId === 'target' &&
+			sortOrder === 'CUSTOM_ORDER'
+		) {
+			const newOrder = updatedTargetData.map((item) => item.id);
+			orderTasksMutate({
+				type: false,
+				targetDate,
+				taskList: newOrder,
+			});
+		}
+	};
 
 	return (
 		<TodayLayout>
@@ -158,7 +148,7 @@ function Today() {
 				<StagingArea
 					handleSelectedTarget={(task) => handleSelectedTarget(task, 'staging')}
 					selectedTarget={selectedTarget}
-					tasks={stagingTmpData}
+					tasks={stagingData}
 					handleSortOrder={handleSortOrder}
 					handleTextBtnClick={handleTextBtnClick}
 					activeButton={activeButton}
@@ -173,7 +163,7 @@ function Today() {
 					<TargetArea
 						handleSelectedTarget={(task) => handleSelectedTarget(task, 'target')}
 						selectedTarget={selectedTarget}
-						tasks={targetData.data.tasks}
+						tasks={targetData}
 						onClickPrevDate={handlePrevBtn}
 						onClickNextDate={handleNextBtn}
 						onClickTodayDate={handleTodayBtn}

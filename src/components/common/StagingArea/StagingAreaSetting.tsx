@@ -3,12 +3,11 @@ import { useState } from 'react';
 
 import ArrangeBtn from '../arrangeBtn/ArrangeBtn';
 import TextBtn from '../button/textBtn/TextBtn';
-import ModalArrange from '../modal/ModalArrange/ModalArrange';
 import ModalBackdrop from '../modal/ModalBackdrop';
 
 import { StagingAreaSettingProps } from '@/types/today/stagingAreaSettingProps';
 
-function StagingAreaSetting({ handleTextBtnClick, activeButton, sortOrder, handleSortOrder }: StagingAreaSettingProps) {
+function StagingAreaSetting({ handleTextBtnClick, activeButton }: StagingAreaSettingProps) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handleArrangeBtnClick = () => {
@@ -43,7 +42,8 @@ function StagingAreaSetting({ handleTextBtnClick, activeButton, sortOrder, handl
 			</TextBtnContainer>
 			<ArrangeContainer>
 				<ArrangeBtn type="set" mode="DEFAULT" color="WHITE" size="small" onClick={handleArrangeBtnClick} />
-				{isModalOpen && <ModalArrange sortOrder={sortOrder} handleSortOrder={handleSortOrder} />}
+				{/* ModalArrange 컴포넌트 삭제로 주석처리 */}
+				{/* {isModalOpen && <ModalArrange sortOrder={sortOrder} handleSortOrder={handleSortOrder} />} */}
 			</ArrangeContainer>
 			{isModalOpen && <ModalBackdrop onClick={handleCloseModal} />}
 		</StagingAreaSettingLayout>
