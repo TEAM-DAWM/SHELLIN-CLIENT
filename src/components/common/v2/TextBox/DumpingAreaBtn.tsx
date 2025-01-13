@@ -27,7 +27,7 @@ function DumpingAreaBtn() {
 
 	// 엔터 키맵핑
 	const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === 'Enter' && todoTitle.trim() !== '') {
+		if (e.key === 'Enter' && todoTitle.trim() !== '' && !e.nativeEvent.isComposing) {
 			onCreateTask();
 		}
 	};
