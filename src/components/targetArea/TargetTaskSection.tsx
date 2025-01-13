@@ -28,7 +28,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 					{tasks.map((task: TaskType, index: number) => (
 						<Draggable key={task.id} draggableId={task.id.toString()} index={index}>
 							{(provided) => (
-								<div
+								<TodoSizedWrapper
 									ref={provided.innerRef}
 									{...provided.draggableProps}
 									{...provided.dragHandleProps}
@@ -48,7 +48,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 										// targetDate={targetDate}
 										// dashBoardInprogress={false}
 									/>
-								</div>
+								</TodoSizedWrapper>
 							)}
 						</Draggable>
 					))}
@@ -59,7 +59,9 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 }
 
 export default TargetTaskSection;
-
+const TodoSizedWrapper = styled.div`
+	width: 100%;
+`;
 const EmptyLayout = styled.div`
 	display: flex;
 	align-items: center;
