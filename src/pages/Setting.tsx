@@ -5,6 +5,7 @@ import useGetUserInfo from '@/apis/user/query';
 import LoadingSpinner from '@/components/common/spinner/Spinner';
 import LogOutBtn from '@/components/SettingPage/LogOutBtn';
 import ProfileArea from '@/components/SettingPage/ProfileArea';
+import SettingMenu from '@/components/SettingPage/SettingMenu';
 
 function Setting() {
 	const { isLoading } = useGetUserInfo();
@@ -14,6 +15,7 @@ function Setting() {
 
 	return (
 		<SettingContainer>
+			<SettingMenu />
 			<Wrapper>
 				<ProfileArea />
 			</Wrapper>
