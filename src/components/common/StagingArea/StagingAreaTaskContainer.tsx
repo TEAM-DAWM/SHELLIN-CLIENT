@@ -28,7 +28,7 @@ function StagingAreaTaskContainer({
 				{tasks?.length === 0 || !tasks ? (
 					<EmptyContainer />
 				) : (
-					<>
+					<TaskWrapper>
 						{tasks &&
 							tasks.map((task: TaskType, index: number) => (
 								<Draggable key={task.id} draggableId={task.id.toString()} index={index}>
@@ -53,7 +53,7 @@ function StagingAreaTaskContainer({
 								</Draggable>
 							))}
 						<ScrollGradient />
-					</>
+					</TaskWrapper>
 				)}
 			</BtnTaskContainer>
 		</StagingAreaTaskContainerLayout>
@@ -61,7 +61,12 @@ function StagingAreaTaskContainer({
 }
 
 export default StagingAreaTaskContainer;
-
+const TaskWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	width: 100%;
+`;
 const StagingAreaTaskContainerLayout = styled.div`
 	display: flex;
 	flex-direction: column;

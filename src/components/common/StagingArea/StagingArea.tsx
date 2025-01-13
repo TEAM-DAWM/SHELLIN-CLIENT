@@ -51,7 +51,7 @@ function StagingArea(props: StagingAreaProps) {
 			<BottomContainer>
 				<Droppable droppableId="staging">
 					{(provided) => (
-						<div ref={provided.innerRef} {...provided.droppableProps}>
+						<SizedWrapper ref={provided.innerRef} {...provided.droppableProps}>
 							<StagingAreaTaskContainer
 								handleSelectedTarget={handleSelectedTarget}
 								selectedTarget={selectedTarget}
@@ -59,7 +59,7 @@ function StagingArea(props: StagingAreaProps) {
 								targetDate={targetDate}
 							/>
 							{provided.placeholder}
-						</div>
+						</SizedWrapper>
 					)}
 				</Droppable>
 			</BottomContainer>
@@ -70,6 +70,10 @@ function StagingArea(props: StagingAreaProps) {
 }
 
 export default StagingArea;
+
+const SizedWrapper = styled.div`
+	width: 100%;
+`;
 const slideIn = keyframes`
   from {
     transform: translateX(-100%);
@@ -125,6 +129,7 @@ const BottomContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	width: 100%;
 	height: 100%;
 	padding-bottom: 2.8rem;
 `;

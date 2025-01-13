@@ -18,7 +18,6 @@ type TodoEventState = (typeof TODO_EVENT_STATE)[keyof typeof TODO_EVENT_STATE];
 
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
-
 type TodoProps = {
 	title: string;
 	deadlineDate?: string;
@@ -74,8 +73,7 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	flex-direction: row;
 	align-items: flex-start;
 	box-sizing: border-box;
-	width: auto;
-	width: 45.6rem;
+	width: 100%;
 
 	background-color: ${theme.colorToken.Component.normal};
 	border-radius: 12px;
