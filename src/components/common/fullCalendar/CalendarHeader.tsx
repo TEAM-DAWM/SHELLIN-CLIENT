@@ -25,6 +25,7 @@ export default CalendarHeader;
 const CalendarHeaderContainer = styled.div<{ size: string }>`
 	position: absolute;
 	top: 56px;
+	z-index: 1;
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;

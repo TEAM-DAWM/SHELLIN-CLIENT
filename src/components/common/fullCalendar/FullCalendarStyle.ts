@@ -25,6 +25,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	/* Custom button styles */
 	.fc-toolbar-chunk .fc-button {
+		z-index: 1;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -146,6 +147,18 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-daygrid-body {
 		width: 100% !important;
+		padding-right: 1rem;
+		overflow: hidden;
+
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-radius: 12px;
+
+		${({ currentView }) =>
+			currentView === 'timeGridWeekCustom' &&
+			`
+    border-left: none;
+		border-radius: 0
+  	`}
 	}
 
 	.fc-event-allday {
@@ -364,21 +377,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 월간뷰 스크롤 제거 */
 	.month-view .fc-scroller {
 		overflow: hidden !important;
-	}
-
-	.fc-daygrid-body {
-		padding-right: 1rem;
-		overflow: hidden;
-
-		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
-		border-radius: 12px;
-
-		${({ currentView }) =>
-			currentView === 'timeGridWeekCustom' &&
-			`
-    border-left: none;
-		border-radius: 0
-  `}
 	}
 
 	/* 15분 줄선 테두리 */
