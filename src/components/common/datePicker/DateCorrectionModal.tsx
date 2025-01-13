@@ -15,12 +15,13 @@ import { blurRef } from '@/utils/refStatus';
 interface DateCorrectionModalProps {
 	top?: number;
 	left?: number;
+	right?: number;
 	date: string | null;
 	onClick: () => void;
 	handleCurrentDate?: (newDate: Date) => void;
 }
 
-function DateCorrectionModal({ top = 0, left = 0, date, onClick, handleCurrentDate }: DateCorrectionModalProps) {
+function DateCorrectionModal({ top = 0, left, right, date, onClick, handleCurrentDate }: DateCorrectionModalProps) {
 	const prevDate = date ? new Date(date) : null;
 	const [currentDate, setCurrentDate] = useState<Date | null>(prevDate);
 	const dateTextRef = useRef<HTMLInputElement>(null);
@@ -43,7 +44,7 @@ function DateCorrectionModal({ top = 0, left = 0, date, onClick, handleCurrentDa
 		onClick();
 	};
 	return (
-		<DateCorrectionModalLayout top={top} left={left} onClick={(e) => e.stopPropagation()}>
+		<DateCorrectionModalLayout top={top} left={left} right={right} onClick={(e) => e.stopPropagation()}>
 			<DatePicker
 				locale={ko}
 				selected={currentDate}
@@ -60,11 +61,20 @@ function DateCorrectionModal({ top = 0, left = 0, date, onClick, handleCurrentDa
 	);
 }
 
-const DateCorrectionModalLayout = styled.div<{ top: number; left: number }>`
+const DateCorrectionModalLayout = styled.div<{ top: number; left?: number; right?: number }>`
 	position: absolute;
 	top: ${({ top }) => top}rem;
-	left: ${({ left }) => left}rem;
 	z-index: 4;
+
+	${({ left, right }) => {
+		if (left !== undefined) {
+			return `left: ${left}rem;`;
+		}
+		if (right !== undefined) {
+			return `right: ${right}rem;`;
+		}
+		return `left: 0;`;
+	}}
 `;
 
 const BottomBtnWrapper = styled.div`
