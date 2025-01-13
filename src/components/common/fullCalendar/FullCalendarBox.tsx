@@ -6,6 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { DateSelectArg, EventResizeDoneArg } from 'fullcalendar/index.js';
 import { useState, useRef, useEffect } from 'react';
 
+import DateCorrectionModal from '../datePicker/DateCorrectionModal';
 import ModalDeleteDetail from '../modal/ModalDeleteDetail';
 
 import CalendarHeader from './CalendarHeader';
@@ -40,6 +41,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 	const [modalTaskId, setModalTaskId] = useState<number | null>(null);
 	const [modalTimeBlockId, setModalTimeBlockId] = useState<number | null>(null);
 	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
+	const [isCalendarPopupOpen, setCalendarPopupOpen] = useState(false);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -196,9 +198,18 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		setModalOpen(false);
 	};
 
+	const handleCalendarPopup = () => {
+		setCalendarPopupOpen((prev) => !prev);
+	};
+
 	return (
 		<FullCalendarLayout size={size} currentView={currentView}>
-			<CalendarHeader size={size} date={date} />
+			<CalendarHeader
+				size={size}
+				date={date}
+				isActive={isCalendarPopupOpen}
+				handleCalendarPopup={handleCalendarPopup}
+			/>
 			<FullCalendar
 				height="100%"
 				ref={calendarRef}
@@ -262,6 +273,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				eventDrop={updateEvent} // 기존 이벤트 드래그 수정 핸들러
 				eventResize={updateEvent} // 기존 이벤트 리사이즈 수정 핸들러
 			/>
+			{isCalendarPopupOpen && (
+				// Todo: date props 실제값으로 변경 필요
+				<DateCorrectionModal date={new Date().toISOString()} onClick={handleCalendarPopup} top={9.8} right={0.8} />
+			)}
 			{isModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
 				<ModalDeleteDetail top={top} left={left} onClose={closeModal} onDelete={handleDelete} />
 			)}
