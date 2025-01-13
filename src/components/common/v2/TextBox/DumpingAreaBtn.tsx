@@ -25,6 +25,25 @@ function DumpingAreaBtn() {
 		setSettingModalOpen((prev) => !prev);
 	};
 
+	// 엔터 키맵핑
+	const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter' && todoTitle.trim() !== '') {
+			onCreateTask();
+		}
+	};
+
+	/** mutate 후 인풋 비우기 */
+	const onCreateTask = () => {
+		createTask({
+			name: todoTitle,
+			deadLine: {
+				date: null,
+				time: null,
+			},
+		});
+		setTodoTitle('');
+	};
+
 	return (
 		<DumpingAreaContainer>
 			<DumpingAreaWrapper state={state} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -34,18 +53,10 @@ function DumpingAreaBtn() {
 					onFocus={handleFocus}
 					onBlur={handleBlur}
 					onChange={onChange}
+					value={todoTitle}
+					onKeyDown={handleEnter}
 				/>
-				<IconTouchArea
-					onClick={() => {
-						createTask({
-							name: todoTitle,
-							deadLine: {
-								date: null,
-								time: null,
-							},
-						});
-					}}
-				>
+				<IconTouchArea onClick={onCreateTask}>
 					<div className="icon-background">
 						<Icon name="IcnEnter" />
 					</div>
