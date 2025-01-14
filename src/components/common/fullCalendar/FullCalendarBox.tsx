@@ -8,6 +8,7 @@ import { useState, useRef, useEffect } from 'react';
 
 import DateCorrectionModal from '../datePicker/DateCorrectionModal';
 import ModalDeleteDetail from '../modal/ModalDeleteDetail';
+import CalendarSettingDropdown from '../v2/dropdown/CalendarSettingDropdown';
 
 import CalendarHeader from './CalendarHeader';
 import CustomDayCellContent from './CustomDayCellContent';
@@ -42,6 +43,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 	const [modalTimeBlockId, setModalTimeBlockId] = useState<number | null>(null);
 	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 	const [isCalendarPopupOpen, setCalendarPopupOpen] = useState(false);
+	const [isFilterPopupOpen, setFilterPopupOpen] = useState(false);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -202,6 +204,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		setCalendarPopupOpen((prev) => !prev);
 	};
 
+	const handleFilterPopup = () => {
+		setFilterPopupOpen((prev) => !prev);
+	};
+
 	return (
 		<FullCalendarLayout size={size} currentView={currentView}>
 			<CalendarHeader
@@ -209,6 +215,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				date={date}
 				isActive={isCalendarPopupOpen}
 				handleCalendarPopup={handleCalendarPopup}
+				handleFilterPopup={handleFilterPopup}
 			/>
 			<FullCalendar
 				height="100%"
@@ -277,6 +284,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				// Todo: date props 실제값으로 변경 필요
 				<DateCorrectionModal date={new Date().toISOString()} onClick={handleCalendarPopup} top={9.8} right={0.8} />
 			)}
+			{isFilterPopupOpen && <CalendarSettingDropdown top={9.8} right={0.8} />}
 			{isModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
 				<ModalDeleteDetail top={top} left={left} onClose={closeModal} onDelete={handleDelete} />
 			)}

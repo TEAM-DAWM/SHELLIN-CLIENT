@@ -9,9 +9,10 @@ type CalendarHeaderProps = {
 	date: { year: number; month: number };
 	isActive: boolean;
 	handleCalendarPopup: () => void;
+	handleFilterPopup: () => void;
 };
 
-function CalendarHeader({ size, date, isActive, handleCalendarPopup }: CalendarHeaderProps) {
+function CalendarHeader({ size, date, isActive, handleCalendarPopup, handleFilterPopup }: CalendarHeaderProps) {
 	const { color } = useTheme();
 
 	const activeButtonStyle = css`
@@ -40,7 +41,13 @@ function CalendarHeader({ size, date, isActive, handleCalendarPopup }: CalendarH
 					onClick={handleCalendarPopup}
 					additionalCss={isActive ? activeButtonStyle : undefined}
 				/>
-				<IconButton type="normal" size="small" iconName="IcnFilter" />
+				<IconButton
+					type="normal"
+					size="small"
+					iconName="IcnFilter"
+					onClick={handleFilterPopup}
+					additionalCss={isActive ? activeButtonStyle : undefined}
+				/>
 			</CalendarHeaderWrapper>
 		</CalendarHeaderContainer>
 	);
