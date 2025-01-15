@@ -22,21 +22,32 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 	const getCurrTime = () => {
 		let hours = defaultDate.getHours();
 		const minutes = defaultDate.getMinutes();
-		const period = hours >= 12 ? 'p.m' : 'a.m';
+
 		hours = hours % 12 || 12;
 		const formattedHours = hours.toString().padStart(2, '0');
 		const formattedMinutes = minutes.toString().padStart(2, '0');
+		return { hours, formattedHours, formattedMinutes };
+	};
 
+	/** hh:mm a.m, hh:mm p.m 형식 */
+	const getDisplayCurrTime = () => {
+		const { hours, formattedHours, formattedMinutes } = getCurrTime();
+		const period = hours >= 12 ? 'p.m' : 'a.m';
 		return `${formattedHours}:${formattedMinutes} ${period}`;
 	};
 
-	const [dueDateTime, setDueDateTime] = useState(todoTime || getCurrTime());
+	/** hh:mm 형식 */
+	const getFormattedCurrTime = () => {
+		const { formattedHours, formattedMinutes } = getCurrTime();
+		return `${formattedHours}:${formattedMinutes}`;
+	};
+
+	const [dueDateTime, setDueDateTime] = useState(todoTime || getFormattedCurrTime());
 	const [dueDateDate, setDueDateDate] = useState(todoDate || dateAfter14Days);
 
 	const onDueDateSubmit = () => {
 		handleTodoDate(dueDateDate);
 		handleTodoTime(dueDateTime);
-		console.log(dueDateDate, dueDateTime);
 		handleSettingModal();
 	};
 
@@ -60,7 +71,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 			<DueDateModalBodyLayout>
 				<DeadlineBox
 					date={dueDateDate}
-					endTime={dueDateTime}
+					endTime={getDisplayCurrTime()}
 					label="마감 기간"
 					isDueDate
 					handleDueDateModalTime={handleDueDateModalTime}
