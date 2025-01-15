@@ -57,7 +57,13 @@ function DumpingAreaBtn() {
 				time: todoTime || null,
 			},
 		});
+		resetInputs();
+	};
+
+	const resetInputs = () => {
 		setTodoTitle('');
+		setTodoTime('');
+		setTodoDate(undefined);
 	};
 
 	const timeDateChipLabel = () => {
@@ -94,7 +100,7 @@ function DumpingAreaBtn() {
 					size="small"
 					disabled={false}
 					label={timeDateChipLabel()}
-					leftIcon="IcnPlus"
+					leftIcon={!todoDate && todoTime ? 'IcnPlus' : 'IcnModify'}
 					onClick={handleSettingModal}
 				/>
 			)}
