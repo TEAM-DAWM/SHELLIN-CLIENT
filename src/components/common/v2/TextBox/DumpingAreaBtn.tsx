@@ -11,6 +11,7 @@ import useCreateTask from '@/apis/tasks/createTask/query';
 import useInputHandler from '@/hooks/useInputHandler';
 import { INPUT_STATE, InputState } from '@/types/inputStateType';
 import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
+import formatDateWithDay from '@/utils/formatDateWithDay';
 
 function DumpingAreaBtn() {
 	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave } = useInputHandler();
@@ -19,11 +20,8 @@ function DumpingAreaBtn() {
 	// 날짜를 별도로 설정하지 않을 경우,
 	//   마감기간/시간은 접속 날짜 기준
 	//   14일 후의 동일 시간으로 자동 지정.
-	const defaultDate = new Date();
-	const dateAfter14Days = defaultDate;
-	dateAfter14Days.setDate(defaultDate.getDate() + 14);
 
-	const [todoDate, setTodoDate] = useState(dateAfter14Days);
+	const [todoDate, setTodoDate] = useState<Date>();
 	const [todoTime, setTodoTime] = useState('');
 	const { mutate: createTaskMutate } = useCreateTask();
 	const createTask = (taskData: CreateTaskType) => {
@@ -55,11 +53,21 @@ function DumpingAreaBtn() {
 		createTask({
 			name: todoTitle,
 			deadLine: {
-				date: formatDatetoLocalDate(todoDate) || null,
+				date: todoDate ? formatDatetoLocalDate(todoDate) : null,
 				time: todoTime || null,
 			},
 		});
 		setTodoTitle('');
+	};
+
+	const timeDateChipLabel = () => {
+		if (todoDate && todoTime) {
+			return `${formatDateWithDay(todoDate)} ${todoTime} 까지`;
+		}
+		if (todoDate) {
+			return `${formatDateWithDay(todoDate)} 까지`;
+		}
+		return '마감 기간/시간';
 	};
 
 	return (
@@ -85,7 +93,7 @@ function DumpingAreaBtn() {
 					type="outlined-primary"
 					size="small"
 					disabled={false}
-					label="마감 기간/시간"
+					label={timeDateChipLabel()}
 					leftIcon="IcnPlus"
 					onClick={handleSettingModal}
 				/>
@@ -96,6 +104,7 @@ function DumpingAreaBtn() {
 					handleTodoDate={handleTodoDate}
 					todoDate={todoDate}
 					todoTime={todoTime}
+					handleSettingModal={handleSettingModal}
 				/>
 			)}
 			{settingModalOpen && <ModalBackdrop onClick={handleSettingModal} />}
