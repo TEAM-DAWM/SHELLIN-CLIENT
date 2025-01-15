@@ -10,14 +10,30 @@ import { CreateTaskType } from '@/apis/tasks/createTask/CreateTaskType';
 import useCreateTask from '@/apis/tasks/createTask/query';
 import useInputHandler from '@/hooks/useInputHandler';
 import { INPUT_STATE, InputState } from '@/types/inputStateType';
+import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
 
 function DumpingAreaBtn() {
 	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave } = useInputHandler();
 	const [todoTitle, setTodoTitle] = useState('');
 	const [settingModalOpen, setSettingModalOpen] = useState(false);
+	// 날짜를 별도로 설정하지 않을 경우,
+	//   마감기간/시간은 접속 날짜 기준
+	//   14일 후의 동일 시간으로 자동 지정.
+	const defaultDate = new Date();
+	const dateAfter14Days = defaultDate;
+	dateAfter14Days.setDate(defaultDate.getDate() + 14);
+
+	const [todoDate, setTodoDate] = useState(dateAfter14Days);
+	const [todoTime, setTodoTime] = useState('');
 	const { mutate: createTaskMutate } = useCreateTask();
 	const createTask = (taskData: CreateTaskType) => {
 		createTaskMutate(taskData);
+	};
+	const handleTodoDate = (selectedTodoDate: Date) => {
+		setTodoDate(selectedTodoDate);
+	};
+	const handleTodoTime = (selectedTodoTime: string) => {
+		setTodoTime(selectedTodoTime);
 	};
 	const onChange = (e: React.FocusEvent<HTMLInputElement>) => {
 		handleChange(e);
@@ -39,8 +55,8 @@ function DumpingAreaBtn() {
 		createTask({
 			name: todoTitle,
 			deadLine: {
-				date: null,
-				time: null,
+				date: formatDatetoLocalDate(todoDate) || null,
+				time: todoTime || null,
 			},
 		});
 		setTodoTitle('');
@@ -74,7 +90,14 @@ function DumpingAreaBtn() {
 					onClick={handleSettingModal}
 				/>
 			)}
-			{settingModalOpen && <DueDateModal />}
+			{settingModalOpen && (
+				<DueDateModal
+					handleTodoTime={handleTodoTime}
+					handleTodoDate={handleTodoDate}
+					todoDate={todoDate}
+					todoTime={todoTime}
+				/>
+			)}
 			{settingModalOpen && <ModalBackdrop onClick={handleSettingModal} />}
 		</DumpingAreaContainer>
 	);
