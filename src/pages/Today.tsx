@@ -122,7 +122,7 @@ function Today() {
 		) {
 			const newOrder = updatedStagingData.map((item) => item.id);
 			orderTasksMutate({
-				type: true,
+				type: false,
 				taskList: newOrder,
 			});
 
@@ -134,7 +134,7 @@ function Today() {
 		) {
 			const newOrder = updatedTargetData.map((item) => item.id);
 			orderTasksMutate({
-				type: false,
+				type: true,
 				targetDate,
 				taskList: newOrder,
 			});
