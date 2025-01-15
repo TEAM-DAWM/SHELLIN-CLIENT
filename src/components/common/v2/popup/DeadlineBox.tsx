@@ -10,11 +10,12 @@ interface DeadlineBoxProps {
 	startTime?: string;
 	endTime: string;
 	label: string;
+	isDueDate?: boolean;
 }
 
-function DeadlineBox({ date, startTime, endTime, label }: DeadlineBoxProps) {
+function DeadlineBox({ date, startTime, endTime, label, isDueDate = false }: DeadlineBoxProps) {
 	const [isSettingActive, setIsSettingActive] = useState(false);
-	const [isClicked, setIsClicked] = useState(false);
+	const [isClicked, setIsClicked] = useState(isDueDate);
 	const [isAllday, setIsAllday] = useState(false);
 
 	const containerRef = useRef(null);
@@ -56,31 +57,39 @@ function DeadlineBox({ date, startTime, endTime, label }: DeadlineBoxProps) {
 	}, []);
 
 	return (
-		<DeadlineBoxContainer ref={containerRef}>
-			<DeadlineBtnLayout>
-				<CategoryTitleStyle>{label}</CategoryTitleStyle>
-				{isClicked ? (
-					<Icon name="IcnX" size="tiny" color="strong" onClick={handleXBtnClick} isCursor />
-				) : (
-					<Icon name="IcnPlus" size="tiny" color="strong" onClick={handlePlusBtnClick} isCursor />
-				)}
-			</DeadlineBtnLayout>
-			{isClicked && (
-				<>
-					<DateTimeBtn
-						date={date}
-						startTime={startTime}
-						endTime={endTime}
-						isSetDate={isSettingActive}
-						isAllday={isAllday}
-						onClick={handleClickModify}
-					/>
-					{!isSettingActive && (
-						<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />
+		<>
+			{!isDueDate && <Divder />}
+			<DeadlineBoxContainer ref={containerRef}>
+				<DeadlineBtnLayout>
+					<CategoryTitleStyle>{label}</CategoryTitleStyle>
+					{!isDueDate && (
+						<div>
+							{isClicked ? (
+								<Icon name="IcnX" size="tiny" color="strong" onClick={handleXBtnClick} isCursor />
+							) : (
+								<Icon name="IcnPlus" size="tiny" color="strong" onClick={handlePlusBtnClick} isCursor />
+							)}
+						</div>
 					)}
-				</>
-			)}
-		</DeadlineBoxContainer>
+				</DeadlineBtnLayout>
+				{isClicked && (
+					<>
+						<DateTimeBtn
+							date={date}
+							startTime={startTime}
+							endTime={endTime}
+							isSetDate={isSettingActive}
+							isAllday={isAllday}
+							onClick={handleClickModify}
+						/>
+						{!isSettingActive && (
+							<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />
+						)}
+					</>
+				)}
+			</DeadlineBoxContainer>
+			{!isDueDate && <Divder />}
+		</>
 	);
 }
 
@@ -95,11 +104,13 @@ const DeadlineBoxContainer = styled.div`
 	padding: 1.6rem 0;
 
 	color: ${({ theme }) => theme.colorToken.Text.assistive};
-
-	border-top: 1px solid ${({ theme }) => theme.color.Grey.Grey3};
-	border-bottom: 1px solid ${({ theme }) => theme.color.Grey.Grey3};
 `;
+const Divder = styled.div`
+	width: 100%;
+	height: 0.1rem;
 
+	background-color: ${({ theme }) => theme.color.Grey.Grey3};
+`;
 const DeadlineBtnLayout = styled.div`
 	display: flex;
 	gap: 0.8rem;

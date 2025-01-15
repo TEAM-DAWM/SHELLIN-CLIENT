@@ -2,7 +2,9 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import Icon from '../../Icon';
+import ModalBackdrop from '../../modal/ModalBackdrop';
 import Button from '../button/Button';
+import DueDateModal from '../modal/DueDateModal';
 
 import { CreateTaskType } from '@/apis/tasks/createTask/CreateTaskType';
 import useCreateTask from '@/apis/tasks/createTask/query';
@@ -72,8 +74,8 @@ function DumpingAreaBtn() {
 					onClick={handleSettingModal}
 				/>
 			)}
-			{/* 세팅 모달 들어갈 자리 */}
-			{settingModalOpen && <div />}
+			{settingModalOpen && <DueDateModal />}
+			{settingModalOpen && <ModalBackdrop onClick={handleSettingModal} />}
 		</DumpingAreaContainer>
 	);
 }
