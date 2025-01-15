@@ -50,6 +50,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 	const { data: timeBlockData } = useGetTimeBlock({ startDate, range });
 	const { mutate: createMutate } = usePostTimeBlock();
 	const { mutate: updateMutate } = useUpdateTimeBlock();
+	const { mutate: deleteMutate } = useDeleteTimeBlock();
 
 	const calendarEvents = timeBlockData ? processEvents(timeBlockData.data.data) : [];
 
@@ -186,13 +187,11 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 
 	const isSelectable = !!selectedTarget;
 
-	const { mutate } = useDeleteTimeBlock();
-
 	const handleDelete = () => {
 		console.log('taskId, timeBlockId', modalTaskId, modalTimeBlockId);
 
 		if (modalTaskId && modalTimeBlockId) {
-			mutate({ taskId: modalTaskId, timeBlockId: modalTimeBlockId });
+			deleteMutate({ taskId: modalTaskId, timeBlockId: modalTimeBlockId });
 		} else {
 			console.error('taskId 또는 timeBlockId가 존재하지 않습니다.');
 		}
