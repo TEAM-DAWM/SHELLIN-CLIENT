@@ -7,18 +7,32 @@ import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
 
 interface DueDateModalType {
 	todoTime: string;
-	todoDate: Date;
+	todoDate?: Date;
 	handleTodoTime: (selectedTodoTime: string) => void;
 	handleTodoDate: (selectedTodoDate: Date) => void;
+	handleSettingModal: () => void;
 }
-function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime }: DueDateModalType) {
+function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, handleSettingModal }: DueDateModalType) {
 	// 모달 안 임시 state들, Button 누를시 상위 컴포넌트 state로 들어감
+	const defaultDate = new Date();
+	const dateAfter14Days = defaultDate;
+	dateAfter14Days.setDate(defaultDate.getDate() + 14);
+
 	const [dueDateTime, setDueDateTime] = useState(todoTime);
-	const [dueDateDate, setDueDateDate] = useState(todoDate);
+	const [dueDateDate, setDueDateDate] = useState(todoDate || dateAfter14Days);
 
 	const onDueDateSubmit = () => {
 		handleTodoDate(dueDateDate);
 		handleTodoTime(dueDateTime);
+		// console.log(dueDateDate, dueDateTime);
+		handleSettingModal();
+	};
+
+	const handleDueDateModalTime = (time: string) => {
+		setDueDateTime(time);
+	};
+	const handleDueDateModalDate = (date: Date) => {
+		setDueDateDate(date);
 	};
 
 	return (
@@ -33,7 +47,14 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime }: Du
 
 			<DueDateModalBodyLayout>
 				{/* TODO: endTime 형식 맞춰서 넣기 */}
-				<DeadlineBox date={dueDateDate} endTime="06:00pm" label="마감 기간" isDueDate />
+				<DeadlineBox
+					date={dueDateDate}
+					endTime="06:00pm"
+					label="마감 기간"
+					isDueDate
+					handleDueDateModalTime={handleDueDateModalTime}
+					handleDueDateModalDate={handleDueDateModalDate}
+				/>
 			</DueDateModalBodyLayout>
 
 			<DueDateModalButtonLayout>

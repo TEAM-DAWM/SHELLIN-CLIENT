@@ -11,9 +11,19 @@ interface DeadlineBoxProps {
 	endTime: string;
 	label: string;
 	isDueDate?: boolean;
+	handleDueDateModalTime?: (time: string) => void;
+	handleDueDateModalDate?: (date: Date) => void;
 }
 
-function DeadlineBox({ date, startTime, endTime, label, isDueDate = false }: DeadlineBoxProps) {
+function DeadlineBox({
+	date,
+	startTime,
+	endTime,
+	label,
+	isDueDate = false,
+	handleDueDateModalTime = () => {},
+	handleDueDateModalDate = () => {},
+}: DeadlineBoxProps) {
 	const [isSettingActive, setIsSettingActive] = useState(false);
 	const [isClicked, setIsClicked] = useState(isDueDate);
 	const [isAllday, setIsAllday] = useState(false);
@@ -24,9 +34,14 @@ function DeadlineBox({ date, startTime, endTime, label, isDueDate = false }: Dea
 		setIsClicked((prev) => !prev);
 		setIsSettingActive(false);
 	};
-
+	const removeTime = () => {
+		handleDueDateModalTime('');
+	};
 	const handleCheckBtnClick = () => {
 		setIsAllday((prev) => !prev);
+
+		// 하루종일 선택시 기존 time 제거
+		removeTime();
 	};
 
 	const handleXBtnClick = () => {
@@ -81,6 +96,7 @@ function DeadlineBox({ date, startTime, endTime, label, isDueDate = false }: Dea
 							isSetDate={isSettingActive}
 							isAllday={isAllday}
 							onClick={handleClickModify}
+							handleDueDateModalDate={handleDueDateModalDate}
 						/>
 						{!isSettingActive && (
 							<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />

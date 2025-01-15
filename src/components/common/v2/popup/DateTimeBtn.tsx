@@ -11,6 +11,7 @@ interface DateTimeBtnProps {
 	isSetDate: boolean;
 	isAllday?: boolean;
 	onClick: () => void;
+	handleDueDateModalDate?: (date: Date) => void;
 }
 
 function DateTimeBtn({
@@ -20,6 +21,7 @@ function DateTimeBtn({
 	isSetDate,
 	isAllday = false,
 	onClick,
+	handleDueDateModalDate = () => {},
 }: DateTimeBtnProps) {
 	const [startTime, setStartTime] = useState(initStartTime);
 	const [endTime, setEndTime] = useState(initEndTime);
@@ -35,6 +37,7 @@ function DateTimeBtn({
 
 	const updateDate = (newDate: Date) => {
 		setDate(newDate);
+		handleDueDateModalDate(newDate);
 	};
 
 	return isSetDate ? (
