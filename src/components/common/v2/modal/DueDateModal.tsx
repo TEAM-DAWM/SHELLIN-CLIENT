@@ -15,16 +15,28 @@ interface DueDateModalType {
 function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, handleSettingModal }: DueDateModalType) {
 	// 모달 안 임시 state들, Button 누를시 상위 컴포넌트 state로 들어감
 	const defaultDate = new Date();
+
 	const dateAfter14Days = defaultDate;
 	dateAfter14Days.setDate(defaultDate.getDate() + 14);
+	/** 현재 시각 */
+	const getCurrTime = () => {
+		let hours = defaultDate.getHours();
+		const minutes = defaultDate.getMinutes();
+		const period = hours >= 12 ? 'p.m' : 'a.m';
+		hours = hours % 12 || 12;
+		const formattedHours = hours.toString().padStart(2, '0');
+		const formattedMinutes = minutes.toString().padStart(2, '0');
 
-	const [dueDateTime, setDueDateTime] = useState(todoTime);
+		return `${formattedHours}:${formattedMinutes} ${period}`;
+	};
+
+	const [dueDateTime, setDueDateTime] = useState(todoTime || getCurrTime());
 	const [dueDateDate, setDueDateDate] = useState(todoDate || dateAfter14Days);
 
 	const onDueDateSubmit = () => {
 		handleTodoDate(dueDateDate);
 		handleTodoTime(dueDateTime);
-		// console.log(dueDateDate, dueDateTime);
+		console.log(dueDateDate, dueDateTime);
 		handleSettingModal();
 	};
 
@@ -46,10 +58,9 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 			</DueDateModalHeadLayout>
 
 			<DueDateModalBodyLayout>
-				{/* TODO: endTime 형식 맞춰서 넣기 */}
 				<DeadlineBox
 					date={dueDateDate}
-					endTime="06:00pm"
+					endTime={dueDateTime}
 					label="마감 기간"
 					isDueDate
 					handleDueDateModalTime={handleDueDateModalTime}
