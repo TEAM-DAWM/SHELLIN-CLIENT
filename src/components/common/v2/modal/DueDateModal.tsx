@@ -1,10 +1,26 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 import Button from '@/components/common/v2/button/Button';
 import IconButton from '@/components/common/v2/IconButton';
 import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
 
-function DueDateModal() {
+interface DueDateModalType {
+	todoTime: string;
+	todoDate: Date;
+	handleTodoTime: (selectedTodoTime: string) => void;
+	handleTodoDate: (selectedTodoDate: Date) => void;
+}
+function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime }: DueDateModalType) {
+	// 모달 안 임시 state들, Button 누를시 상위 컴포넌트 state로 들어감
+	const [dueDateTime, setDueDateTime] = useState(todoTime);
+	const [dueDateDate, setDueDateDate] = useState(todoDate);
+
+	const onDueDateSubmit = () => {
+		handleTodoDate(dueDateDate);
+		handleTodoTime(dueDateTime);
+	};
+
 	return (
 		<DueDateModalLayout>
 			<DueDateModalHeadLayout>
@@ -16,11 +32,12 @@ function DueDateModal() {
 			</DueDateModalHeadLayout>
 
 			<DueDateModalBodyLayout>
-				<DeadlineBox date={new Date()} endTime="06:00pm" label="마감 기간" isDueDate />
+				{/* TODO: endTime 형식 맞춰서 넣기 */}
+				<DeadlineBox date={dueDateDate} endTime="06:00pm" label="마감 기간" isDueDate />
 			</DueDateModalBodyLayout>
 
 			<DueDateModalButtonLayout>
-				<Button type="solid" size="medium" label="확인" />
+				<Button type="solid" size="medium" label="확인" onClick={onDueDateSubmit} />
 			</DueDateModalButtonLayout>
 		</DueDateModalLayout>
 	);
