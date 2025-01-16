@@ -11,6 +11,7 @@ const BtnTaskContainer = styled.div<{ type: string }>`
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
+	max-height: 82rem;
 	padding-left: 0.8rem;
 	overflow: auto;
 	overflow-y: scroll;
