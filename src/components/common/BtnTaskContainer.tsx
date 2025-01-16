@@ -10,7 +10,7 @@ const BtnTaskContainer = styled.div<{ type: string }>`
 	align-items: center;
 	box-sizing: border-box;
 	width: 100%;
-	height: 88rem;
+	height: 100%;
 	padding-left: 0.8rem;
 	overflow: auto;
 	overflow-y: scroll;

@@ -72,4 +72,5 @@ const StagingAreaTaskContainerLayout = styled.div`
 	align-items: flex-start;
 	align-self: stretch;
 	width: 100%;
+	height: 100%;
 `;
