@@ -14,7 +14,7 @@ interface DueDateModalType {
 	handleSettingModal: () => void;
 }
 function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, handleSettingModal }: DueDateModalType) {
-	// 모달 안 임시 state들, Button 누를시 상위 컴포넌트 state로 들어감
+	// 모달 내부 state들, Button 누를시 상위 컴포넌트 state로 들어감
 	const defaultDate = new Date();
 
 	const dateAfter14Days = defaultDate;
