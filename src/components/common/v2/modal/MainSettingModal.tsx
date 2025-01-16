@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import useDeleteTask from '@/apis/tasks/deleteTask/query';
+import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
 import DropdownButton from '@/components/common/v2/control/DropdownButton';
@@ -16,11 +17,22 @@ interface MainSettingModalProps {
 	left: number;
 	taskId: number;
 	onClose: () => void;
+	targetDate: string;
+	status: StatusType;
 }
 
-function MainSettingModal({ isOpen, top, left, taskId, onClose }: MainSettingModalProps) {
-	const [status, setStatus] = useState<StatusType>('미완료');
+function MainSettingModal({
+	isOpen,
+	top,
+	left,
+	taskId,
+	onClose,
+	targetDate,
+	status: initStatus,
+}: MainSettingModalProps) {
+	const [status, setStatus] = useState<StatusType>(initStatus);
 	const { mutate: deleteMutate } = useDeleteTask();
+	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
 
 	const handleStatusChange = (newStatus: StatusType) => {
 		setStatus(newStatus);
@@ -30,6 +42,12 @@ function MainSettingModal({ isOpen, top, left, taskId, onClose }: MainSettingMod
 		if (taskId) {
 			deleteMutate(taskId);
 		}
+		onClose();
+	};
+
+	const handleStatusEdit = () => {
+		updateStateMutate({ taskId, targetDate, status });
+
 		onClose();
 	};
 
@@ -56,7 +74,7 @@ function MainSettingModal({ isOpen, top, left, taskId, onClose }: MainSettingMod
 					<DeadlineBox date={new Date()} startTime="11:00am" endTime="06:00pm" label="진행 기간" />
 				</MainSettingModalBodyLayout>
 				<MainSettingModalButtonLayout>
-					<Button type="solid" size="medium" label="확인" />
+					<Button type="solid" size="medium" label="확인" onClick={handleStatusEdit} />
 				</MainSettingModalButtonLayout>
 			</MainSettingModalLayout>
 		</ModalBackdrop>

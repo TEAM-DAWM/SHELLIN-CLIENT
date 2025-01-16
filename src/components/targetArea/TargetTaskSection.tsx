@@ -42,11 +42,11 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 										deadlineTime={task.deadLine?.time || undefined}
 										status={task.status}
 										taskId={task.id}
+										targetDate={targetDate}
 										// id={task.id}
 										// handleSelectedTarget={handleSelectedTarget}
 										// selectedTarget={selectedTarget}
 										// isDragging={snapshot.isDragging}
-										// targetDate={targetDate}
 										// dashBoardInprogress={false}
 									/>
 								</TodoSizedWrapper>
