@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Button from '@/components/common/v2/button/Button';
 import IconButton from '@/components/common/v2/IconButton';
 import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
+import { getDisplayCurrTime, getFormattedCurrTime } from '@/utils/time';
 
 interface DueDateModalType {
 	todoTime: string;
@@ -18,31 +19,8 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 
 	const dateAfter14Days = defaultDate;
 	dateAfter14Days.setDate(defaultDate.getDate() + 14);
-	/** 현재 시각 */
-	const getCurrTime = () => {
-		let hours = defaultDate.getHours();
-		const minutes = defaultDate.getMinutes();
 
-		hours = hours % 12 || 12;
-		const formattedHours = hours.toString().padStart(2, '0');
-		const formattedMinutes = minutes.toString().padStart(2, '0');
-		return { hours, formattedHours, formattedMinutes };
-	};
-
-	/** hh:mm a.m, hh:mm p.m 형식 */
-	const getDisplayCurrTime = () => {
-		const { hours, formattedHours, formattedMinutes } = getCurrTime();
-		const period = hours >= 12 ? 'pm' : 'am';
-		return `${formattedHours}:${formattedMinutes}${period}`;
-	};
-
-	/** hh:mm 형식 */
-	const getFormattedCurrTime = () => {
-		const { formattedHours, formattedMinutes } = getCurrTime();
-		return `${formattedHours}:${formattedMinutes}`;
-	};
-
-	const [dueDateTime, setDueDateTime] = useState(todoTime || getFormattedCurrTime());
+	const [dueDateTime, setDueDateTime] = useState(todoTime || getFormattedCurrTime(defaultDate));
 	const [dueDateDate, setDueDateDate] = useState(todoDate || dateAfter14Days);
 
 	const onDueDateSubmit = () => {
@@ -71,7 +49,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 			<DueDateModalBodyLayout>
 				<DeadlineBox
 					date={dueDateDate}
-					endTime={getDisplayCurrTime()}
+					endTime={getDisplayCurrTime(defaultDate)}
 					label="마감 기간"
 					isDueDate
 					handleDueDateModalTime={handleDueDateModalTime}
