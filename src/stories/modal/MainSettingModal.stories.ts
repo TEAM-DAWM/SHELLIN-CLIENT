@@ -15,4 +15,14 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+	args: {
+		isOpen: true,
+		top: 10,
+		left: 10,
+		taskId: 1,
+		onClose: () => {},
+		status: '진행 중',
+		handleStatusEdit: () => {},
+	},
+};

@@ -13,6 +13,7 @@ const useUpdateTaskStatus = (handleIconMouseLeave: (() => void) | null) => {
 		mutationFn: (updateData: UpdateTaskStatusType) => updateTaskStatus(updateData),
 		onSuccess: (data, updateData) => {
 			addToast('변경사항이 적용되었어요', 'success');
+			console.log(data);
 			queryClient.invalidateQueries({ queryKey: ['today'] }).then(() => {
 				if (handleIconMouseLeave) {
 					handleIconMouseLeave();

@@ -31,5 +31,8 @@ export const Default: Story = {
 		deadlineDate: '2024년 12월 31일',
 		deadlineTime: '오후 6시 40분 까지',
 		status: '미완료',
+		isStatusVisible: true,
+		taskId: 1,
+		targetDate: '2024년 12월 31일',
 	},
 };
