@@ -32,8 +32,8 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 	/** hh:mm a.m, hh:mm p.m 형식 */
 	const getDisplayCurrTime = () => {
 		const { hours, formattedHours, formattedMinutes } = getCurrTime();
-		const period = hours >= 12 ? 'p.m' : 'a.m';
-		return `${formattedHours}:${formattedMinutes} ${period}`;
+		const period = hours >= 12 ? 'pm' : 'am';
+		return `${formattedHours}:${formattedMinutes}${period}`;
 	};
 
 	/** hh:mm 형식 */
