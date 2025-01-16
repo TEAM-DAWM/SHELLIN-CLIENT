@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import useDeleteTask from '@/apis/tasks/deleteTask/query';
-import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
 import DropdownButton from '@/components/common/v2/control/DropdownButton';
@@ -17,25 +16,17 @@ interface MainSettingModalProps {
 	left: number;
 	taskId: number;
 	onClose: () => void;
-	targetDate: string;
 	status: StatusType;
+	handleStatusEdit: (newStatus: StatusType) => void;
 }
 
-function MainSettingModal({
-	isOpen,
-	top,
-	left,
-	taskId,
-	onClose,
-	targetDate,
-	status: initStatus,
-}: MainSettingModalProps) {
-	const [status, setStatus] = useState<StatusType>(initStatus);
+function MainSettingModal({ isOpen, top, left, taskId, onClose, status, handleStatusEdit }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
-	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
+	const [taskStatus, setTaskStatus] = useState(status);
 
-	const handleStatusChange = (newStatus: StatusType) => {
-		setStatus(newStatus);
+	const handleConfirm = () => {
+		handleStatusEdit(taskStatus);
+		onClose();
 	};
 
 	const handleDelete = () => {
@@ -45,10 +36,8 @@ function MainSettingModal({
 		onClose();
 	};
 
-	const handleStatusEdit = () => {
-		updateStateMutate({ taskId, targetDate, status });
-
-		onClose();
+	const handleTaskStatusChange = (newStatus: StatusType) => {
+		setTaskStatus(newStatus);
 	};
 
 	if (!isOpen) return null;
@@ -58,7 +47,12 @@ function MainSettingModal({
 			<MainSettingModalLayout top={top} left={left} onClick={(e) => e.stopPropagation()}>
 				<MainSettingModalHeadLayout>
 					<ModalTopButtonBox>
-						<DropdownButton status={status} handleStatusChange={handleStatusChange} />
+						<DropdownButton
+							status={taskStatus}
+							handleStatusChange={handleTaskStatusChange}
+							handleStatusEdit={handleStatusEdit}
+							isModalOpen={isOpen}
+						/>
 						<ButtonBox>
 							<IconButton iconName="IcnDelete" type="normal" size="small" onClick={handleDelete} />
 							<IconButton iconName="IcnX" type="normal" size="small" onClick={onClose} />
@@ -74,7 +68,7 @@ function MainSettingModal({
 					<DeadlineBox date={new Date()} startTime="11:00am" endTime="06:00pm" label="진행 기간" />
 				</MainSettingModalBodyLayout>
 				<MainSettingModalButtonLayout>
-					<Button type="solid" size="medium" label="확인" onClick={handleStatusEdit} />
+					<Button type="solid" size="medium" label="확인" onClick={handleConfirm} />
 				</MainSettingModalButtonLayout>
 			</MainSettingModalLayout>
 		</ModalBackdrop>

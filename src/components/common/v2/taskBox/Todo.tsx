@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import DropdownButton from '../control/DropdownButton';
 
+import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
 import MODAL from '@/constants/modalLocation';
 import useTodoEventHandler from '@/hooks/useTodoEventHandler';
@@ -47,10 +48,6 @@ function Todo({
 	const [status, setStatus] = useState<StatusType>(initStatus);
 	const isCompleted = status === STATUS.COMPLETE;
 
-	const handleStatusChange = (newStatus: StatusType) => {
-		setStatus(newStatus);
-	};
-
 	const [isModalOpen, setModalOpen] = useState(false);
 
 	const [top, setTop] = useState(0);
@@ -72,6 +69,16 @@ function Todo({
 
 	const handleCloseModal = () => {
 		setModalOpen(false);
+	};
+
+	const handleStatusChange = (newStatus: StatusType) => {
+		setStatus(newStatus);
+	};
+
+	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
+
+	const handleStatusEdit = (newStatus: StatusType) => {
+		updateStateMutate({ taskId, targetDate, status: newStatus });
 	};
 
 	return (
@@ -98,7 +105,12 @@ function Todo({
 				</TodoWrapper>
 				{isStatusVisible && (
 					<DropdownWrapper>
-						<DropdownButton status={status} handleStatusChange={handleStatusChange} />
+						<DropdownButton
+							status={status}
+							handleStatusChange={handleStatusChange}
+							handleStatusEdit={handleStatusEdit}
+							isModalOpen={false}
+						/>
 					</DropdownWrapper>
 				)}
 			</TodoContainer>
@@ -108,8 +120,8 @@ function Todo({
 				left={left}
 				onClose={handleCloseModal}
 				taskId={taskId}
-				targetDate={targetDate}
 				status={status}
+				handleStatusEdit={handleStatusEdit}
 			/>
 		</>
 	);
