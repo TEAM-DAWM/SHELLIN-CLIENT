@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 import DropdownButton from '../control/DropdownButton';
 
+import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
+import MODAL from '@/constants/modalLocation';
 import useTodoEventHandler from '@/hooks/useTodoEventHandler';
 import { STATUS } from '@/types/tasks/taskType';
 
@@ -24,9 +26,19 @@ type TodoProps = {
 	deadlineTime?: string;
 	status: StatusType;
 	isStatusVisible?: boolean;
+	preventDoubleClick?: boolean;
+	taskId: number;
 };
 
-function Todo({ title, deadlineDate, status: initStatus, isStatusVisible = true, deadlineTime }: TodoProps) {
+function Todo({
+	title,
+	deadlineDate,
+	status: initStatus,
+	isStatusVisible = true,
+	deadlineTime,
+	preventDoubleClick = false,
+	taskId,
+}: TodoProps) {
 	const { state, handleMouseEnter, handleMouseLeave, handleMouseDown, handleMouseUp, handleDragStart, handleDragEnd } =
 		useTodoEventHandler();
 
@@ -37,32 +49,59 @@ function Todo({ title, deadlineDate, status: initStatus, isStatusVisible = true,
 		setStatus(newStatus);
 	};
 
+	const [isModalOpen, setModalOpen] = useState(false);
+
+	const [top, setTop] = useState(0);
+	const [left, setLeft] = useState(0);
+
+	/** 모달 띄우기 */
+	const handleDoubleClick = (e: React.MouseEvent) => {
+		if (preventDoubleClick) {
+			e.preventDefault();
+			return;
+		}
+		const rect = e.currentTarget.getBoundingClientRect();
+		const calculatedTop = rect.top;
+		const adjustedTop = Math.min(calculatedTop, MODAL.SCREEN_HEIGHT - MODAL.TASK_MODAL_HEIGHT);
+		setTop(adjustedTop);
+		setLeft(rect.right + 6);
+		setModalOpen((prev) => !prev);
+	};
+
+	const handleCloseModal = () => {
+		setModalOpen(false);
+	};
+
 	return (
-		<TodoContainer
-			isCompleted={isCompleted}
-			state={state}
-			onMouseEnter={handleMouseEnter}
-			onMouseLeave={handleMouseLeave}
-			onMouseDown={handleMouseDown}
-			onMouseUp={handleMouseUp}
-			onDragStart={handleDragStart}
-			onDragEnd={handleDragEnd}
-			draggable
-		>
-			<TodoWrapper>
-				<span className="todo-title">{title}</span>
-				{deadlineDate && (
-					<span className="todo-deadline">
-						{deadlineDate} / {deadlineTime}
-					</span>
+		<>
+			<TodoContainer
+				isCompleted={isCompleted}
+				state={state}
+				onDoubleClick={handleDoubleClick}
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
+				onMouseDown={handleMouseDown}
+				onMouseUp={handleMouseUp}
+				onDragStart={handleDragStart}
+				onDragEnd={handleDragEnd}
+				draggable
+			>
+				<TodoWrapper>
+					<span className="todo-title">{title}</span>
+					{deadlineDate && (
+						<span className="todo-deadline">
+							{deadlineDate} / {deadlineTime}
+						</span>
+					)}
+				</TodoWrapper>
+				{isStatusVisible && (
+					<DropdownWrapper>
+						<DropdownButton status={status} handleStatusChange={handleStatusChange} />
+					</DropdownWrapper>
 				)}
-			</TodoWrapper>
-			{isStatusVisible && (
-				<DropdownWrapper>
-					<DropdownButton status={status} handleStatusChange={handleStatusChange} />
-				</DropdownWrapper>
-			)}
-		</TodoContainer>
+			</TodoContainer>
+			<MainSettingModal isOpen={isModalOpen} top={top} left={left} onClose={handleCloseModal} taskId={taskId} />
+		</>
 	);
 }
 

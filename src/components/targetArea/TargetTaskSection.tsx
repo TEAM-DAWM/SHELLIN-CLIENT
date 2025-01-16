@@ -41,6 +41,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 										deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
 										deadlineTime={task.deadLine?.time || undefined}
 										status={task.status}
+										taskId={task.id}
 										// id={task.id}
 										// handleSelectedTarget={handleSelectedTarget}
 										// selectedTarget={selectedTarget}
