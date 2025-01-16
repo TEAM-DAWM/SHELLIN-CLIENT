@@ -65,6 +65,9 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 }
 
 const DueDateModalLayout = styled.article`
+	position: absolute;
+	top: 8.8rem;
+	left: 0.8rem;
 	z-index: 5;
 	display: flex;
 	flex-direction: column;
