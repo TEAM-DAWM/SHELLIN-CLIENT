@@ -3,7 +3,6 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import BtnTaskContainer from '../BtnTaskContainer';
 import EmptyContainer from '../EmptyContainer';
-import ScrollGradient from '../ScrollGradient';
 import Todo from '../v2/taskBox/Todo';
 
 import { StatusType, TaskType } from '@/types/tasks/taskType';
@@ -52,7 +51,7 @@ function StagingAreaTaskContainer({
 									)}
 								</Draggable>
 							))}
-						<ScrollGradient />
+						{/* <ScrollGradient /> */}
 					</TaskWrapper>
 				)}
 			</BtnTaskContainer>
