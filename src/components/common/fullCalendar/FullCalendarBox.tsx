@@ -4,7 +4,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { DateSelectArg, EventResizeDoneArg } from 'fullcalendar/index.js';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 
 import DateCorrectionModal from '../datePicker/DateCorrectionModal';
 import ModalDeleteDetail from '../modal/ModalDeleteDetail';
@@ -31,7 +31,7 @@ interface FullCalendarBoxProps {
 }
 
 function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxProps) {
-	const today = new Date();
+	const today = useMemo(() => new Date(), []);
 	const todayDate = today.toISOString().split('T')[0];
 	const [currentView, setCurrentView] = useState('timeGridWeek');
 	const [range, setRange] = useState(7);
@@ -66,6 +66,18 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		// updateRange(view.view.type);
 	};
 
+	useEffect(() => {
+		if (calendarRef.current) {
+			const calendarApi = calendarRef.current.getApi();
+			const adjustedDate = new Date(today);
+
+			// 오늘 날짜를 기준으로 가운데 조정
+			adjustedDate.setDate(adjustedDate.getDate() - (size === 'big' ? 3 : 2));
+
+			calendarApi.gotoDate(adjustedDate);
+		}
+	}, [today, size]);
+
 	const handleDatesSet = (dateInfo: DatesSetArg) => {
 		const currentViewType = dateInfo.view.type;
 		const newStartDate = new Date(dateInfo.start);
@@ -75,7 +87,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 
 		setCurrentView(dateInfo.view.type);
 		setStartDate(formattedStartDate);
-		updateRange(currentViewType);
+		updateRange(currentViewType, size);
 		setDate({
 			year: centerDate.getFullYear(),
 			month: centerDate.getMonth() + 1,
@@ -90,13 +102,13 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		}
 	};
 
-	const updateRange = (viewType: string) => {
+	const updateRange = (viewType: string, size: string) => {
 		switch (viewType) {
 			case 'dayGridMonth':
 				setRange(30);
 				break;
 			case 'timeGridWeekCustom':
-				setRange(7);
+				setRange(size === 'big' ? 7 : 5);
 				break;
 			default:
 				setRange(7);
@@ -260,7 +272,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 						currentView={currentView}
 						today={today.toDateString()}
 						selectDate={selectDate?.toString()}
-						size={size}
 					/>
 				)}
 				viewDidMount={handleViewChange}
@@ -278,6 +289,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				select={handleSelect} // 선택된 날짜가 변경될 때마다 호출
 				eventDrop={updateEvent} // 기존 이벤트 드래그 수정 핸들러
 				eventResize={updateEvent} // 기존 이벤트 리사이즈 수정 핸들러
+				eventReceive={(info) => {
+					// 드롭된 task 데이터 확인
+					console.log('dropped task:', info.event);
+				}}
 			/>
 			{isCalendarPopupOpen && (
 				// Todo: date props 실제값으로 변경 필요

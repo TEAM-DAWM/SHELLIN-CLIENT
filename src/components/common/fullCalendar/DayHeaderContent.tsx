@@ -9,22 +9,14 @@ interface DayHeaderContentProps {
 	currentView: string;
 	today: string;
 	selectDate?: string;
-	size: string;
 }
 
-function DayHeaderContent({ arg, currentView, today, selectDate, size }: DayHeaderContentProps) {
-	let adjustDay = size === 'big' ? 3 : 2;
-	if (currentView === 'dayGridMonth') {
-		adjustDay = 0;
-	}
-	const adjustedDate = new Date(arg.date);
-	adjustedDate.setDate(adjustedDate.getDate() - adjustDay);
+function DayHeaderContent({ arg, currentView, today, selectDate }: DayHeaderContentProps) {
+	const day = new Intl.DateTimeFormat('ko', { weekday: 'short' }).format(arg.date);
+	const date = arg.date.getDate();
 
-	const isTimeGridDay = currentView === 'timeGridDay';
-	const day = new Intl.DateTimeFormat('ko', { weekday: isTimeGridDay ? 'long' : 'short' }).format(adjustedDate);
-	const date = adjustedDate.getDate();
-	const isSelectedDate = adjustedDate.toDateString() === selectDate;
-	const isToday = adjustedDate.toDateString() === today;
+	const isSelectedDate = arg.date.toDateString() === selectDate;
+	const isToday = arg.date.toDateString() === today;
 	const isSatday = day === '토';
 	const isSunday = day === '일';
 
