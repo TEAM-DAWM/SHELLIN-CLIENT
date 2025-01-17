@@ -1,6 +1,6 @@
 import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, { EventReceiveArg } from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { DateSelectArg, EventResizeDoneArg } from 'fullcalendar/index.js';
@@ -66,12 +66,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		// updateRange(view.view.type);
 	};
 
+	// 오늘 날짜를 기준으로 가운데 조정
 	useEffect(() => {
 		if (calendarRef.current) {
 			const calendarApi = calendarRef.current.getApi();
 			const adjustedDate = new Date(today);
 
-			// 오늘 날짜를 기준으로 가운데 조정
 			adjustedDate.setDate(adjustedDate.getDate() - (size === 'big' ? 3 : 2));
 
 			calendarApi.gotoDate(adjustedDate);
@@ -137,6 +137,9 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		setModalTaskId(null);
 		setModalTimeBlockId(null);
 	};
+
+	const removeTimezone = (str: string) => str.replace(/:\d{2}[+-]\d{2}:\d{2}$/, '');
+
 	const addEventWhenDragged = (selectInfo: DateSelectArg) => {
 		if (calendarRef.current && selectedTarget && selectedTarget.id !== -1) {
 			const calendarApi = calendarRef.current.getApi();
@@ -161,8 +164,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				},
 			});
 
-			const removeTimezone = (str: string) => str.replace(/:\d{2}[+-]\d{2}:\d{2}$/, '');
-
 			const startStr = removeTimezone(selectInfo.startStr);
 			const endStr = removeTimezone(selectInfo.endStr);
 
@@ -186,8 +187,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 		const { taskId, timeBlockId } = event.extendedProps;
 
 		if (taskId && taskId !== -1) {
-			const removeTimezone = (str: string) => str.replace(/:\d{2}[+-]\d{2}:\d{2}$/, '');
-
 			const startStr = removeTimezone(event.startStr);
 			const endStr = removeTimezone(event.endStr);
 
@@ -217,6 +216,25 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 
 	const handleFilterPopup = () => {
 		setFilterPopupOpen((prev) => !prev);
+	};
+
+	const formatDateToLocal = (inputDate: Date): string => {
+		const adjustedDate = new Date(inputDate.getTime() - inputDate.getTimezoneOffset() * 60000);
+		return adjustedDate.toISOString().slice(0, 16);
+	};
+
+	// 드래그해서 timeblock 추가
+	const handleEventReceive = (info: EventReceiveArg) => {
+		if (!info.event.start) {
+			throw new Error('Invalid event start time');
+		}
+
+		const start = formatDateToLocal(info.event.start);
+		const endDate = new Date(info.event.start.getTime());
+		endDate.setHours(endDate.getHours() + 1);
+		const end = formatDateToLocal(endDate);
+
+		createMutate({ taskId: Number(info.event.id), startTime: start, endTime: end });
 	};
 
 	return (
@@ -289,10 +307,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				select={handleSelect} // 선택된 날짜가 변경될 때마다 호출
 				eventDrop={updateEvent} // 기존 이벤트 드래그 수정 핸들러
 				eventResize={updateEvent} // 기존 이벤트 리사이즈 수정 핸들러
-				eventReceive={(info) => {
-					// 드롭된 task 데이터 확인
-					console.log('dropped task:', info.event);
-				}}
+				eventReceive={(info) => handleEventReceive(info)}
 			/>
 			{isCalendarPopupOpen && (
 				// Todo: date props 실제값으로 변경 필요
