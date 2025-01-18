@@ -1,6 +1,6 @@
 import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import DropdownButton from '../control/DropdownButton';
 
@@ -53,6 +53,9 @@ function Todo({
 	const [top, setTop] = useState(0);
 	const [left, setLeft] = useState(0);
 
+	useEffect(() => {
+		setStatus(initStatus);
+	}, [initStatus]);
 	/** 모달 띄우기 */
 	const handleDoubleClick = (e: React.MouseEvent) => {
 		if (preventDoubleClick) {

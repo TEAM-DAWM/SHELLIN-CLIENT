@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import useDeleteTask from '@/apis/tasks/deleteTask/query';
 import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
@@ -23,6 +23,10 @@ interface MainSettingModalProps {
 function MainSettingModal({ isOpen, top, left, taskId, onClose, status, handleStatusEdit }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
 	const [taskStatus, setTaskStatus] = useState(status);
+
+	useEffect(() => {
+		setTaskStatus(status);
+	}, [status]);
 
 	const handleConfirm = () => {
 		handleStatusEdit(taskStatus);
