@@ -2,20 +2,36 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import Icon from '../../Icon';
+import ModalBackdrop from '../../modal/ModalBackdrop';
 import Button from '../button/Button';
+import DueDateModal from '../modal/DueDateModal';
 
 import { CreateTaskType } from '@/apis/tasks/createTask/CreateTaskType';
 import useCreateTask from '@/apis/tasks/createTask/query';
 import useInputHandler from '@/hooks/useInputHandler';
 import { INPUT_STATE, InputState } from '@/types/inputStateType';
+import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
+import formatDateWithDay from '@/utils/formatDateWithDay';
 
 function DumpingAreaBtn() {
 	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave } = useInputHandler();
 	const [todoTitle, setTodoTitle] = useState('');
 	const [settingModalOpen, setSettingModalOpen] = useState(false);
+	// 날짜를 별도로 설정하지 않을 경우,
+	//   마감기간/시간은 접속 날짜 기준
+	//   14일 후의 동일 시간으로 자동 지정.
+
+	const [todoDate, setTodoDate] = useState<Date>();
+	const [todoTime, setTodoTime] = useState('');
 	const { mutate: createTaskMutate } = useCreateTask();
 	const createTask = (taskData: CreateTaskType) => {
 		createTaskMutate(taskData);
+	};
+	const handleTodoDate = (selectedTodoDate: Date) => {
+		setTodoDate(selectedTodoDate);
+	};
+	const handleTodoTime = (selectedTodoTime: string) => {
+		setTodoTime(selectedTodoTime);
 	};
 	const onChange = (e: React.FocusEvent<HTMLInputElement>) => {
 		handleChange(e);
@@ -37,11 +53,27 @@ function DumpingAreaBtn() {
 		createTask({
 			name: todoTitle,
 			deadLine: {
-				date: null,
-				time: null,
+				date: todoDate ? formatDatetoLocalDate(todoDate) : null,
+				time: todoTime || null,
 			},
 		});
+		resetInputs();
+	};
+
+	const resetInputs = () => {
 		setTodoTitle('');
+		setTodoTime('');
+		setTodoDate(undefined);
+	};
+
+	const timeDateChipLabel = () => {
+		if (todoDate && todoTime) {
+			return `${formatDateWithDay(todoDate)} ${todoTime} 까지`;
+		}
+		if (todoDate) {
+			return `${formatDateWithDay(todoDate)} 까지`;
+		}
+		return '마감 기간/시간';
 	};
 
 	return (
@@ -67,13 +99,21 @@ function DumpingAreaBtn() {
 					type="outlined-primary"
 					size="small"
 					disabled={false}
-					label="마감 기간/시간"
-					leftIcon="IcnPlus"
+					label={timeDateChipLabel()}
+					leftIcon={!todoDate && todoTime ? 'IcnPlus' : 'IcnModify'}
 					onClick={handleSettingModal}
 				/>
 			)}
-			{/* 세팅 모달 들어갈 자리 */}
-			{settingModalOpen && <div />}
+			{settingModalOpen && (
+				<DueDateModal
+					handleTodoTime={handleTodoTime}
+					handleTodoDate={handleTodoDate}
+					todoDate={todoDate}
+					todoTime={todoTime}
+					handleSettingModal={handleSettingModal}
+				/>
+			)}
+			{settingModalOpen && <ModalBackdrop onClick={handleSettingModal} />}
 		</DumpingAreaContainer>
 	);
 }
@@ -81,6 +121,7 @@ function DumpingAreaBtn() {
 export default DumpingAreaBtn;
 
 const DumpingAreaContainer = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
