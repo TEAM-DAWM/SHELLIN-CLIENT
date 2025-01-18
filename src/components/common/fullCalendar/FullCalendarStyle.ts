@@ -482,6 +482,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		border-radius: 4px;
 	}
 
+	.fc-daygrid-event .fc-event-time {
+		display: none;
+	}
+
 	.fc .fc-daygrid-dot-event {
 		padding: 0.4rem 0.6rem;
 
@@ -494,7 +498,15 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.fc .fc-daygrid-dot-event.tasks {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue2};
+		display: flex;
+		gap: 4px;
+		align-items: center;
+		width: 12.4rem;
+		height: 2rem;
+		padding: 0 4px 0 8px;
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
+		border-radius: 4px;
 	}
 
 	/* 월간 이벤트 호버 효과 */
@@ -503,15 +515,20 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.fc .fc-daygrid-dot-event.tasks:hover {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue3};
+		background-color: ${({ theme }) => theme.colorToken.Neutral.strong};
+	}
+
+	.fc .fc-daygrid-dot-event.tasks:active {
+		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
 	}
 
 	.fc .fc-h-event {
 		border: none;
 	}
 
+	/** TODO: category 추가 시 해당 부분에서 카테고리 색 적용하면 됨 */
 	.fc-daygrid-event-dot {
-		display: none;
+		border-color: ${({ theme }) => theme.colorToken.Text.assistive};
 	}
 
 	.fc .fc-timegrid-axis-frame {
