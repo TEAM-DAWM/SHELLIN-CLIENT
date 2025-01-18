@@ -97,6 +97,7 @@ function DeadlineBox({
 							isAllday={isAllday}
 							onClick={handleClickModify}
 							handleDueDateModalDate={handleDueDateModalDate}
+							handleDueDateModalTime={handleDueDateModalTime}
 						/>
 						{!isSettingActive && (
 							<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />

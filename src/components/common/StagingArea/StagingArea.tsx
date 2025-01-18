@@ -101,7 +101,7 @@ const StagingAreaLayout = styled.div<{ isOpen: boolean }>`
 	align-items: center;
 	box-sizing: border-box;
 	width: 44.8rem;
-	height: 100%;
+	height: 108rem;
 
 	background-color: ${({ theme }) => theme.color.Grey.White};
 	border-right: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
@@ -130,6 +130,6 @@ const BottomContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	width: 100%;
-	height: 100%;
+	height: 88rem;
 	padding-bottom: 2.8rem;
 `;

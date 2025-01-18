@@ -121,6 +121,7 @@ function DumpingAreaBtn() {
 export default DumpingAreaBtn;
 
 const DumpingAreaContainer = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
