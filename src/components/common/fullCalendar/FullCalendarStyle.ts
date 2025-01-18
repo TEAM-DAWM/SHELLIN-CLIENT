@@ -147,7 +147,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-daygrid-body {
 		width: 100% !important;
-		padding-right: 1rem;
 		overflow: hidden;
 
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
@@ -165,12 +164,20 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		height: 2rem;
 	}
 
+	.fc-col-header {
+		width: 100% !important;
+	}
+
 	.fc .fc-col-header-cell {
 		height: 2.4rem;
 		padding: 2.4rem 0.8rem 0.5rem;
 
 		border-right: none;
 		border-left: none;
+	}
+
+	.fc-scrollgrid-sync-table {
+		width: 100% !important;
 	}
 
 	/* 종일  - 타임그리드 셀 크기 고정 */
@@ -189,6 +196,13 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 전체 캘린더(주간) */
 	.fc-scrollgrid.fc-scrollgrid-liquid {
 		/* padding: 0 8px 0 0; */
+	}
+
+	/* .fc-daygrid-day-frame {
+		position: relative;
+	} */
+	.fc-daygrid-day-events {
+		margin-top: 4rem;
 	}
 
 	/* fc-daygrid-day-events: 종일 행(개별) */
@@ -218,6 +232,11 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 타임그리드 테두리 */
 	.fc .fc-scrollgrid-section-body table,
 	.fc .fc-scrollgrid-section-footer table {
+		${({ currentView }) =>
+			currentView === 'dayGridMonth' &&
+			`
+			border: none
+  	`}
 		border-right: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 		border-bottom-style: hidden;
 	}
@@ -461,6 +480,8 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc .fc-daygrid-event {
 		margin: 0;
+
+		text-overflow: ellipsis;
 	}
 
 	.fc .fc-cell-shaded {
@@ -501,7 +522,8 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		display: flex;
 		gap: 4px;
 		align-items: center;
-		width: 12.4rem;
+		width: 12rem;
+		width: ${({ size }) => (size === 'big' ? '17.5rem' : '12rem')};
 		height: 2rem;
 		padding: 0 4px 0 8px;
 
