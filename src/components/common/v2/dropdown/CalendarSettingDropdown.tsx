@@ -12,6 +12,17 @@ type CalendarSettingDropdownProps = {
 function CalendarSettingDropdown({ top = 0, right = 0 }: CalendarSettingDropdownProps) {
 	const [selectedStatuses, setSelectedStatuses] = useState<(keyof typeof STATUSES)[]>([]);
 
+	/** TODO: get api 연결하면 됨. */
+	// const { mutate: getMutate } = useGetTimeBlock();
+	//
+	// useEffect(() => {
+	// 	** get api 요청 **
+	// 	useGetTimeBlock()
+	// 	if (selectedStatuses.length > 0) {
+	// 		fetchData();
+	// 	}
+	// }, [selectedStatuses]);
+
 	const handleStatusChange = (status: keyof typeof STATUSES) => {
 		setSelectedStatuses((prevStatuses) =>
 			prevStatuses.includes(status) ? prevStatuses.filter((s) => s !== status) : [...prevStatuses, status]
