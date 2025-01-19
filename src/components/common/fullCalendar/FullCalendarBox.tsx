@@ -46,8 +46,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 	const [isCalendarPopupOpen, setCalendarPopupOpen] = useState(false);
 	const [isFilterPopupOpen, setFilterPopupOpen] = useState(false);
-	const [selectedStatuses, setSelectedStatuses] = useState<(keyof typeof STATUSES)[]>(
-		Object.keys(STATUSES) as (keyof typeof STATUSES)[]
+	const [selectedStatuses, setSelectedStatuses] = useState<(typeof STATUSES)[keyof typeof STATUSES][]>(
+		Object.values(STATUSES)
 	);
 	const [isFilterPopupDot, setIsFilterPopupDot] = useState(false);
 
@@ -244,25 +244,14 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	};
 
 	// CalendarSettingDropdown handler
-	const handleStatusChange = (status: keyof typeof STATUSES) => {
+	const handleStatusChange = (status: (typeof STATUSES)[keyof typeof STATUSES]) => {
 		setSelectedStatuses((prev) => {
 			const updatedStatuses = prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status];
-			setIsFilterPopupDot(updatedStatuses.length !== Object.keys(STATUSES).length);
+			setIsFilterPopupDot(updatedStatuses.length !== Object.values(STATUSES).length);
 
 			return updatedStatuses;
 		});
 	};
-
-	/** TODO: get api 연결하면 됨. */
-	// const { mutate: getMutate } = useGetTimeBlock();
-	//
-	// useEffect(() => {
-	// 	** get api 요청 **
-	// 	useGetTimeBlock()
-	// 	if (selectedStatuses.length > 0) {
-	// 		fetchData();
-	// 	}
-	// }, [selectedStatuses]);
 
 	return (
 		<FullCalendarLayout size={size} currentView={currentView}>

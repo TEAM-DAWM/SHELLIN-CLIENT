@@ -6,8 +6,8 @@ import { STATUS_OPTIONS, STATUSES } from '@/constants/statuses';
 type CalendarSettingDropdownProps = {
 	top?: number;
 	right?: number;
-	selectedStatuses: (keyof typeof STATUSES)[];
-	handleStatusChange: (status: keyof typeof STATUSES) => void;
+	selectedStatuses: (typeof STATUSES)[keyof typeof STATUSES][];
+	handleStatusChange: (status: (typeof STATUSES)[keyof typeof STATUSES]) => void;
 };
 
 function CalendarSettingDropdown({
@@ -22,9 +22,9 @@ function CalendarSettingDropdown({
 				<CheckButton
 					key={option.value}
 					label={option.label}
-					onClick={() => handleStatusChange(option.value as keyof typeof STATUSES)}
+					onClick={() => handleStatusChange(option.label as (typeof STATUSES)[keyof typeof STATUSES])}
 					size="large"
-					checked={selectedStatuses.includes(option.value as keyof typeof STATUSES)}
+					checked={selectedStatuses.includes(option.label as (typeof STATUSES)[keyof typeof STATUSES])}
 				/>
 			))}
 		</CalendarSettingDropdownContainer>
