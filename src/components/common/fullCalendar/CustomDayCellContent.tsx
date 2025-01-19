@@ -30,7 +30,8 @@ interface CustomDayCellContentProps {
 function CustomDayCellContent({ arg, today, selectDate }: CustomDayCellContentProps) {
 	const date = new Date(arg.date);
 	const day = arg.dayNumberText.replace('일', '');
-	const isSelectedDate = date.toDateString() === selectDate;
+	const isSelectedDate = selectDate ? new Date(selectDate).toDateString() === new Date(arg.date).toDateString() : false;
+
 	const isToday = date.toDateString() === today;
 	const [state, setState] = useState<StateType>(STATE.DEFAULT);
 
@@ -116,7 +117,7 @@ const underlineStyle = css`
 		position: absolute;
 		bottom: 2px;
 		left: 50%;
-		width: 3.2rem;
+		width: 2rem;
 		height: 0.1rem;
 
 		background-color: ${theme.colorToken.Text.primary};

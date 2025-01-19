@@ -1,4 +1,4 @@
-import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg, MoreLinkContentArg } from '@fullcalendar/core';
+import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { EventReceiveArg } from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
@@ -28,9 +28,10 @@ interface FullCalendarBoxProps {
 	size: 'small' | 'big';
 	selectDate?: Date | null;
 	selectedTarget?: TaskType | null;
+	handleChangeDate: (target: Date) => void;
 }
 
-function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxProps) {
+function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }: FullCalendarBoxProps) {
 	const today = useMemo(() => new Date(), []);
 	const todayDate = today.toISOString().split('T')[0];
 	const [currentView, setCurrentView] = useState('timeGridWeek');
@@ -294,6 +295,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				)}
 				viewDidMount={handleViewChange}
 				datesSet={handleDatesSet}
+				dateClick={(arg) => handleChangeDate(arg.date)}
 				dayCellContent={(arg) => (
 					<CustomDayCellContent arg={arg} today={today.toDateString()} selectDate={selectDate?.toString()} />
 				)}

@@ -202,6 +202,11 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		margin-top: 4rem;
 	}
 
+	.month-view .fc-daygrid-day-frame:active {
+		background-color: ${({ theme }) => theme.colorToken.Component.strong};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.primaryStrong};
+	}
+
 	/* fc-daygrid-day-events: 종일 행(개별) */
 	.fc-daygrid-day-frame .fc-scrollgrid-sync-inner,
 	.fc-daygrid-day-events {
