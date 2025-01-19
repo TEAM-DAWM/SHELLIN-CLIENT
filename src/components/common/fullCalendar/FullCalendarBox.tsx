@@ -22,6 +22,7 @@ import DayHeaderContent from '@/components/common/fullCalendar/DayHeaderContent'
 import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarStyle';
 import customSlotLabelContent from '@/components/common/fullCalendar/fullCalendarUtils';
 import MODAL from '@/constants/modalLocation';
+import { STATUSES } from '@/constants/statuses';
 import { TaskType } from '@/types/tasks/taskType';
 
 interface FullCalendarBoxProps {
@@ -45,6 +46,9 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 	const [isCalendarPopupOpen, setCalendarPopupOpen] = useState(false);
 	const [isFilterPopupOpen, setFilterPopupOpen] = useState(false);
+	const [selectedStatuses, setSelectedStatuses] = useState<(keyof typeof STATUSES)[]>(
+		Object.keys(STATUSES) as (keyof typeof STATUSES)[]
+	);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -238,6 +242,25 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		createMutate({ taskId: Number(info.event.id), startTime: start, endTime: end });
 	};
 
+	// CalendarSettingDropdown handler
+	const handleStatusChange = (status: keyof typeof STATUSES) => {
+		setSelectedStatuses((prev) => {
+			const updatedStatuses = prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status];
+			return updatedStatuses;
+		});
+	};
+
+	/** TODO: get api 연결하면 됨. */
+	// const { mutate: getMutate } = useGetTimeBlock();
+	//
+	// useEffect(() => {
+	// 	** get api 요청 **
+	// 	useGetTimeBlock()
+	// 	if (selectedStatuses.length > 0) {
+	// 		fetchData();
+	// 	}
+	// }, [selectedStatuses]);
+
 	return (
 		<FullCalendarLayout size={size} currentView={currentView}>
 			<CalendarHeader
@@ -317,7 +340,14 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				// Todo: date props 실제값으로 변경 필요
 				<DateCorrectionModal date={new Date().toISOString()} onClick={handleCalendarPopup} top={9.8} right={0.8} />
 			)}
-			{isFilterPopupOpen && <CalendarSettingDropdown top={9.8} right={0.8} />}
+			{isFilterPopupOpen && (
+				<CalendarSettingDropdown
+					top={9.8}
+					right={0.8}
+					selectedStatuses={selectedStatuses}
+					handleStatusChange={handleStatusChange}
+				/>
+			)}
 			{isModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
 				<ModalDeleteDetail top={top} left={left} onClose={closeModal} onDelete={handleDelete} />
 			)}

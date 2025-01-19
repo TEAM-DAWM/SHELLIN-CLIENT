@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
 import CheckButton from '@/components/common/v2/control/CheckButton';
 import { STATUS_OPTIONS, STATUSES } from '@/constants/statuses';
@@ -7,28 +6,16 @@ import { STATUS_OPTIONS, STATUSES } from '@/constants/statuses';
 type CalendarSettingDropdownProps = {
 	top?: number;
 	right?: number;
+	selectedStatuses: (keyof typeof STATUSES)[];
+	handleStatusChange: (status: keyof typeof STATUSES) => void;
 };
 
-function CalendarSettingDropdown({ top = 0, right = 0 }: CalendarSettingDropdownProps) {
-	const [selectedStatuses, setSelectedStatuses] = useState<(keyof typeof STATUSES)[]>([]);
-
-	/** TODO: get api 연결하면 됨. */
-	// const { mutate: getMutate } = useGetTimeBlock();
-	//
-	// useEffect(() => {
-	// 	** get api 요청 **
-	// 	useGetTimeBlock()
-	// 	if (selectedStatuses.length > 0) {
-	// 		fetchData();
-	// 	}
-	// }, [selectedStatuses]);
-
-	const handleStatusChange = (status: keyof typeof STATUSES) => {
-		setSelectedStatuses((prevStatuses) =>
-			prevStatuses.includes(status) ? prevStatuses.filter((s) => s !== status) : [...prevStatuses, status]
-		);
-	};
-
+function CalendarSettingDropdown({
+	top = 0,
+	right = 0,
+	selectedStatuses,
+	handleStatusChange,
+}: CalendarSettingDropdownProps) {
 	return (
 		<CalendarSettingDropdownContainer top={top} right={right}>
 			{STATUS_OPTIONS.map((option) => (
