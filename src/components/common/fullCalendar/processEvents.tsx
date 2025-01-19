@@ -12,24 +12,26 @@ interface EventData {
 	};
 }
 
-const processEvents = (timeBlockData: TimeBlockData): EventData[] => {
+const processEvents = (timeBlockData: TimeBlockData, selectedStatuses: string[]): EventData[] => {
 	const events: EventData[] = [];
 
-	// tasks 데이터 처리
-	timeBlockData.tasks.forEach((task) => {
-		task.timeBlocks.forEach((timeBlock) => {
-			events.push({
-				title: task.name,
-				start: timeBlock.startTime,
-				end: timeBlock.endTime,
-				classNames: 'tasks',
-				extendedProps: {
-					taskId: task.id,
-					timeBlockId: timeBlock.id,
-				},
+	// tasks 데이터 처리 + 상태 필터링
+	timeBlockData.tasks
+		.filter((task) => selectedStatuses.includes(task.status))
+		.forEach((task) => {
+			task.timeBlocks.forEach((timeBlock) => {
+				events.push({
+					title: task.name,
+					start: timeBlock.startTime,
+					end: timeBlock.endTime,
+					classNames: 'tasks',
+					extendedProps: {
+						taskId: task.id,
+						timeBlockId: timeBlock.id,
+					},
+				});
 			});
 		});
-	});
 
 	/**
 	 * TODO: 구글 캘린더 추후 다시 추가 예정

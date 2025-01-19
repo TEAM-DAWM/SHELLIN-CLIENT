@@ -58,7 +58,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const { mutate: updateMutate } = useUpdateTimeBlock();
 	const { mutate: deleteMutate } = useDeleteTimeBlock();
 
-	const calendarEvents = timeBlockData ? processEvents(timeBlockData.data.data) : [];
+	const calendarEvents = timeBlockData ? processEvents(timeBlockData.data.data, selectedStatuses) : [];
 
 	useEffect(() => {
 		if (selectDate && calendarRef.current) {
