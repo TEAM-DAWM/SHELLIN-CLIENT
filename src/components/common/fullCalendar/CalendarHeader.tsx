@@ -7,7 +7,8 @@ import MainDate from '../v2/TextBox/MainDate';
 type CalendarHeaderProps = {
 	size: 'small' | 'big';
 	date: { year: number; month: number };
-	isActive: boolean;
+	isCalendarPopupActive: boolean;
+	isFilterPopupActive: boolean;
 	handleCalendarPopup: () => void;
 	handleFilterPopup: () => void;
 	isFilterPopupDot: boolean;
@@ -16,7 +17,8 @@ type CalendarHeaderProps = {
 function CalendarHeader({
 	size,
 	date,
-	isActive,
+	isCalendarPopupActive,
+	isFilterPopupActive,
 	handleCalendarPopup,
 	handleFilterPopup,
 	isFilterPopupDot,
@@ -28,7 +30,7 @@ function CalendarHeader({
 
 		background-color: ${color.Grey.Grey3};
 
-		${isActive &&
+		${(isCalendarPopupActive || isFilterPopupActive) &&
 		css`
 			:hover {
 				color: ${color.Grey.Grey5};
@@ -47,14 +49,14 @@ function CalendarHeader({
 					size="small"
 					iconName="IcnCalendar"
 					onClick={handleCalendarPopup}
-					additionalCss={isActive ? activeButtonStyle : undefined}
+					additionalCss={isCalendarPopupActive ? activeButtonStyle : undefined}
 				/>
 				<IconButton
 					type="normal"
 					size="small"
 					iconName="IcnFilter"
 					onClick={handleFilterPopup}
-					additionalCss={isActive ? activeButtonStyle : undefined}
+					additionalCss={isFilterPopupActive ? activeButtonStyle : undefined}
 					dot={isFilterPopupDot}
 				/>
 			</CalendarHeaderWrapper>

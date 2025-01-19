@@ -269,7 +269,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			<CalendarHeader
 				size={size}
 				date={date}
-				isActive={isCalendarPopupOpen}
+				isCalendarPopupActive={isCalendarPopupOpen}
+				isFilterPopupActive={isFilterPopupOpen}
 				handleCalendarPopup={handleCalendarPopup}
 				handleFilterPopup={handleFilterPopup}
 				isFilterPopupDot={isFilterPopupDot}
