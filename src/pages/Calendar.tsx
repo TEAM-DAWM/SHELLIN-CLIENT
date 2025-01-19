@@ -16,6 +16,11 @@ function Calendar() {
 	const onClickDate = (date: Date | null) => {
 		setSelectDate(date);
 	};
+
+	const handleChangeDate = (target: Date) => {
+		setSelectDate(target);
+	};
+
 	const { data, isLoading } = useGetCategory();
 	if (isLoading) {
 		return <LoadingSpinner />;
@@ -40,7 +45,7 @@ function Calendar() {
 			</LeftSection>
 			<RightSection>
 				<FullCalendarBoxWapper>
-					<FullCalendarBox size="big" selectDate={selectDate} />
+					<FullCalendarBox size="big" selectDate={selectDate} handleChangeDate={handleChangeDate} />
 				</FullCalendarBoxWapper>
 			</RightSection>
 		</CalendarLayout>

@@ -11,7 +11,6 @@ import NavBar from '@/components/common/NavBar';
 import StagingArea from '@/components/common/StagingArea/StagingArea';
 import TargetArea from '@/components/targetArea/TargetArea';
 import { SortOrderType } from '@/constants/sortType';
-import { AreaType } from '@/types/area/areaType';
 import { TaskType } from '@/types/tasks/taskType';
 import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
 
@@ -21,7 +20,6 @@ function Today() {
 	const [sortOrder, setSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
 	const [selectedDate, setTargetDate] = useState(new Date());
 	const targetDate = formatDatetoLocalDate(selectedDate);
-	const [selectedArea, setSelectedArea] = useState<AreaType>(null);
 	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
 
 	// Task 목록 Get
@@ -33,6 +31,9 @@ function Today() {
 		setDumpAreaOpen((prev) => !prev);
 	};
 
+	console.log('stagingData', stagingData);
+	console.log('targetData', targetData);
+
 	/** isTotal 핸들링 함수 */
 	const handleTextBtnClick = (button: '전체' | '지연') => {
 		setActiveButton(button);
@@ -42,9 +43,8 @@ function Today() {
 		setSortOrder(order);
 	};
 
-	const handleSelectedTarget = (task: TaskType | null, area: AreaType) => {
+	const handleSelectedTarget = (task: TaskType | null) => {
 		setSelectedTarget(task);
-		setSelectedArea(area);
 	};
 
 	const handlePrevBtn = () => {
@@ -146,7 +146,7 @@ function Today() {
 			<NavBar isOpen={isDumpAreaOpen} handleSideBar={handleSidebar} />
 			<DragDropContext onDragEnd={handleDragEnd}>
 				<StagingArea
-					handleSelectedTarget={(task) => handleSelectedTarget(task, 'staging')}
+					handleSelectedTarget={(task) => handleSelectedTarget(task)}
 					selectedTarget={selectedTarget}
 					tasks={stagingData}
 					handleSortOrder={handleSortOrder}
@@ -161,7 +161,7 @@ function Today() {
 					<BtnTaskContainer type="target" />
 				) : (
 					<TargetArea
-						handleSelectedTarget={(task) => handleSelectedTarget(task, 'target')}
+						handleSelectedTarget={(task) => handleSelectedTarget(task)}
 						selectedTarget={selectedTarget}
 						tasks={targetData}
 						onClickPrevDate={handlePrevBtn}
@@ -175,8 +175,9 @@ function Today() {
 			<CalendarWrapper>
 				<FullCalendarBox
 					size="small"
-					selectedTarget={selectedArea === 'target' ? selectedTarget : null}
+					selectedTarget={selectedTarget}
 					selectDate={selectedDate}
+					handleChangeDate={handleChangeDate}
 				/>
 			</CalendarWrapper>
 		</TodayLayout>

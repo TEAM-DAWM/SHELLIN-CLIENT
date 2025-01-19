@@ -25,6 +25,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	/* Custom button styles */
 	.fc-toolbar-chunk .fc-button {
+		z-index: 1;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -146,10 +147,25 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-daygrid-body {
 		width: 100% !important;
+		overflow: hidden;
+
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-radius: 12px;
+
+		${({ currentView }) =>
+			currentView === 'timeGridWeekCustom' &&
+			`
+    border-left: none;
+		border-radius: 0
+  	`}
 	}
 
 	.fc-event-allday {
 		height: 2rem;
+	}
+
+	.fc-col-header {
+		width: 100% !important;
 	}
 
 	.fc .fc-col-header-cell {
@@ -158,6 +174,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 		border-right: none;
 		border-left: none;
+	}
+
+	.fc-scrollgrid-sync-table {
+		width: 100% !important;
 	}
 
 	/* 종일  - 타임그리드 셀 크기 고정 */
@@ -176,6 +196,15 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 전체 캘린더(주간) */
 	.fc-scrollgrid.fc-scrollgrid-liquid {
 		/* padding: 0 8px 0 0; */
+	}
+
+	.fc-daygrid-day-events {
+		margin-top: 4rem;
+	}
+
+	.month-view .fc-daygrid-day-frame:active {
+		background-color: ${({ theme }) => theme.colorToken.Component.strong};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.primaryStrong};
 	}
 
 	/* fc-daygrid-day-events: 종일 행(개별) */
@@ -205,6 +234,11 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 타임그리드 테두리 */
 	.fc .fc-scrollgrid-section-body table,
 	.fc .fc-scrollgrid-section-footer table {
+		${({ currentView }) =>
+			currentView === 'dayGridMonth' &&
+			`
+			border: none
+  	`}
 		border-right: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 		border-bottom-style: hidden;
 	}
@@ -218,13 +252,17 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		width: 100%;
 		height: 100%;
 		padding: 0.4rem 0.6rem;
+		overflow: hidden;
 
-		color: ${(color) => color.theme.palette.Grey.Grey8};
-
-		background-color: ${({ theme }) => theme.palette.Blue.Blue2};
+		background-color: ${({ theme }) => theme.colorToken.Component.strong};
 		border: none;
 		border-radius: 4px;
-		${({ theme }) => theme.fontTheme.CAPTION_03};
+	}
+
+	/* fc-event-title이 더 위로 오도록  */
+	.fc-event-main-frame {
+		flex-direction: column-reverse;
+		gap: 4px;
 	}
 
 	/** 넘어가는 텍스트 처리 */
@@ -232,8 +270,15 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		flex-shrink: 1;
 		overflow: hidden;
 
+		color: ${({ theme }) => theme.colorToken.Text.neutralLight};
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		${({ theme }) => theme.font.body05};
+	}
+
+	.fc-event-time {
+		color: ${({ theme }) => theme.colorToken.Text.assistive};
+		${({ theme }) => theme.font.caption02};
 	}
 
 	.fc-event-main .tasks {
@@ -267,7 +312,11 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	/* fc-timegrid-col-events : 주간 이벤트 , fc-daygrid-day-frame: 월간 이벤트 */
 	.fc .fc-timegrid-col-events .fc-event-main:hover {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue3};
+		background-color: ${({ theme }) => theme.colorToken.Component.heavy};
+	}
+
+	.fc .fc-timegrid-col-events .fc-event-main:active {
+		background-color: ${({ theme }) => theme.colorToken.Component.accent};
 	}
 
 	.fc .fc-daygrid-day-frame .schedule .fc-event-main {
@@ -366,21 +415,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		overflow: hidden !important;
 	}
 
-	.fc-daygrid-body {
-		padding-right: 1rem;
-		overflow: hidden;
-
-		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
-		border-radius: 12px;
-
-		${({ currentView }) =>
-			currentView === 'timeGridWeekCustom' &&
-			`
-    border-left: none;
-		border-radius: 0
-  `}
-	}
-
 	/* 15분 줄선 테두리 */
 	.fc .fc-timegrid-slot-minor {
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
@@ -448,6 +482,8 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc .fc-daygrid-event {
 		margin: 0;
+
+		text-overflow: ellipsis;
 	}
 
 	.fc .fc-cell-shaded {
@@ -469,6 +505,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		border-radius: 4px;
 	}
 
+	.fc-daygrid-event .fc-event-time {
+		display: none;
+	}
+
 	.fc .fc-daygrid-dot-event {
 		padding: 0.4rem 0.6rem;
 
@@ -481,7 +521,16 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.fc .fc-daygrid-dot-event.tasks {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue2};
+		display: flex;
+		gap: 4px;
+		align-items: center;
+		width: 12rem;
+		width: ${({ size }) => (size === 'big' ? '18rem' : '12rem')};
+		height: 2rem;
+		padding: 0 4px 0 8px;
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
+		border-radius: 4px;
 	}
 
 	/* 월간 이벤트 호버 효과 */
@@ -490,15 +539,35 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.fc .fc-daygrid-dot-event.tasks:hover {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue3};
+		background-color: ${({ theme }) => theme.colorToken.Neutral.strong};
+	}
+
+	.fc .fc-daygrid-dot-event.tasks:active {
+		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
 	}
 
 	.fc .fc-h-event {
 		border: none;
 	}
 
+	/** TODO: category 추가 시 해당 부분에서 카테고리 색 적용하면 됨 */
 	.fc-daygrid-event-dot {
-		display: none;
+		border-color: ${({ theme }) => theme.colorToken.Text.assistive};
+	}
+
+	/* Month view 중 이벤트 초과 안내 */
+	.fc-daygrid-more-link {
+		display: flex;
+		align-items: center;
+		width: ${({ size }) => (size === 'big' ? '18rem' : '12rem')};
+		height: 2rem;
+		padding: 0 4px 0 8px;
+
+		color: ${({ theme }) => theme.colorToken.Text.neutralLight};
+
+		background-color: ${({ theme }) => theme.colorToken.Component.strong};
+		${({ theme }) => theme.font.body05};
+		border-radius: 4px;
 	}
 
 	.fc .fc-timegrid-axis-frame {

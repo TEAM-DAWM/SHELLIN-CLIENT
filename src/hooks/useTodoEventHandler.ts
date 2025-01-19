@@ -22,9 +22,7 @@ function useTodoEventHandler() {
 	};
 
 	const handleMouseUp = () => {
-		if (state === TODO_EVENT_STATE.PRESSED) {
-			setState(TODO_EVENT_STATE.DEFAULT);
-		}
+		setState(TODO_EVENT_STATE.DEFAULT);
 	};
 
 	const handleDragStart = () => {
