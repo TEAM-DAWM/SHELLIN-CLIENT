@@ -49,6 +49,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [selectedStatuses, setSelectedStatuses] = useState<(keyof typeof STATUSES)[]>(
 		Object.keys(STATUSES) as (keyof typeof STATUSES)[]
 	);
+	const [isFilterPopupDot, setIsFilterPopupDot] = useState(false);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -246,6 +247,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const handleStatusChange = (status: keyof typeof STATUSES) => {
 		setSelectedStatuses((prev) => {
 			const updatedStatuses = prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status];
+			setIsFilterPopupDot(updatedStatuses.length !== Object.keys(STATUSES).length);
+
 			return updatedStatuses;
 		});
 	};
@@ -269,6 +272,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				isActive={isCalendarPopupOpen}
 				handleCalendarPopup={handleCalendarPopup}
 				handleFilterPopup={handleFilterPopup}
+				isFilterPopupDot={isFilterPopupDot}
 			/>
 			<FullCalendar
 				height="100%"
