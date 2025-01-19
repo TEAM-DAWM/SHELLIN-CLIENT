@@ -1,4 +1,4 @@
-import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
+import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg, EventMountArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { EventReceiveArg } from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
@@ -253,6 +253,14 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		});
 	};
 
+	// 완료 task 스타일링 위한 클래스명 추가 (주간)
+	const handleCompletedTask = (arg: EventMountArg) => {
+		const weekElement = arg.el.querySelector('.fc-event-main');
+		if (weekElement && arg.event.extendedProps.isCompleted) {
+			weekElement.classList.add('completed');
+		}
+	};
+
 	return (
 		<FullCalendarLayout size={size} currentView={currentView}>
 			<CalendarHeader
@@ -285,6 +293,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				nowIndicator
 				dayMaxEvents
 				events={calendarEvents}
+				eventDidMount={(arg) => handleCompletedTask(arg)}
 				buttonText={{
 					month: '월',
 					timeGridWeekCustom: '주',

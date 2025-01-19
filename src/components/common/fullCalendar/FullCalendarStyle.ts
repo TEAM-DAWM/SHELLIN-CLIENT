@@ -259,6 +259,13 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		border-radius: 4px;
 	}
 
+	.fc-event-main.completed {
+		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
+		text-decoration: line-through;
+
+		background-color: ${({ theme }) => theme.colorToken.Component.assistive};
+	}
+
 	/* fc-event-title이 더 위로 오도록  */
 	.fc-event-main-frame {
 		flex-direction: column-reverse;
@@ -273,12 +280,36 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		color: ${({ theme }) => theme.colorToken.Text.neutralLight};
 		white-space: nowrap;
 		text-overflow: ellipsis;
+
 		${({ theme }) => theme.font.body05};
 	}
 
 	.fc-event-time {
 		color: ${({ theme }) => theme.colorToken.Text.assistive};
 		${({ theme }) => theme.font.caption02};
+	}
+
+	.fc-daygrid-event .fc-event-time {
+		display: none;
+	}
+
+	.fc-event-main.completed .fc-event-title,
+	.fc-event-main.completed .fc-event-time {
+		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
+	}
+
+	.fc-daygrid-dot-event.completed .fc-event-title,
+	.fc-daygrid-dot-event.completed .fc-event-time {
+		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
+	}
+
+	/** TODO: category 추가 시 해당 부분에서 카테고리 색 적용하면 됨 */
+	.fc-daygrid-event-dot {
+		border-color: ${({ theme }) => theme.colorToken.Text.assistive};
+	}
+
+	.fc-daygrid-dot-event.completed .fc-daygrid-event-dot {
+		border-color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
 	}
 
 	.fc-event-main .tasks {
@@ -505,10 +536,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		border-radius: 4px;
 	}
 
-	.fc-daygrid-event .fc-event-time {
-		display: none;
-	}
-
 	.fc .fc-daygrid-dot-event {
 		padding: 0.4rem 0.6rem;
 
@@ -533,6 +560,14 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		border-radius: 4px;
 	}
 
+	.fc .fc-daygrid-dot-event.tasks.completed {
+		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
+		text-decoration: line-through;
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
+		border-radius: 4px;
+	}
+
 	/* 월간 이벤트 호버 효과 */
 	.fc .fc-daygrid-dot-event.schedule:hover {
 		background-color: ${({ theme }) => theme.palette.Grey.Grey3};
@@ -548,11 +583,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc .fc-h-event {
 		border: none;
-	}
-
-	/** TODO: category 추가 시 해당 부분에서 카테고리 색 적용하면 됨 */
-	.fc-daygrid-event-dot {
-		border-color: ${({ theme }) => theme.colorToken.Text.assistive};
 	}
 
 	/* Month view 중 이벤트 초과 안내 */

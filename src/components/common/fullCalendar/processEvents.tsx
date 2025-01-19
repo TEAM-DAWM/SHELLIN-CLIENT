@@ -1,4 +1,5 @@
 import { TimeBlockData } from '@/apis/timeBlocks/getTimeBlock/GetTimeBlock';
+import { STATUSES } from '@/constants/statuses';
 
 interface EventData {
 	title: string;
@@ -9,6 +10,7 @@ interface EventData {
 	extendedProps: {
 		taskId: number;
 		timeBlockId: number | null;
+		isCompleted: boolean;
 	};
 }
 
@@ -24,10 +26,11 @@ const processEvents = (timeBlockData: TimeBlockData, selectedStatuses: string[])
 					title: task.name,
 					start: timeBlock.startTime,
 					end: timeBlock.endTime,
-					classNames: 'tasks',
+					classNames: task.status === STATUSES.COMPLETED ? 'tasks completed' : 'tasks',
 					extendedProps: {
 						taskId: task.id,
 						timeBlockId: timeBlock.id,
+						isCompleted: task.status === STATUSES.COMPLETED,
 					},
 				});
 			});
