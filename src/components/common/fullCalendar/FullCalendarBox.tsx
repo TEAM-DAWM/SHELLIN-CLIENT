@@ -1,4 +1,4 @@
-import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
+import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg, MoreLinkContentArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { EventReceiveArg } from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
@@ -297,6 +297,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget }: FullCalendarBoxPr
 				dayCellContent={(arg) => (
 					<CustomDayCellContent arg={arg} today={today.toDateString()} selectDate={selectDate?.toString()} />
 				)}
+				moreLinkContent={(arg) => `${arg.num}개 일정 더보기 +`}
 				eventTimeFormat={{
 					hour: 'numeric',
 					minute: '2-digit',
