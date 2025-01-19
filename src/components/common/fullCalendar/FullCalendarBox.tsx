@@ -291,6 +291,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 						currentView={currentView}
 						today={today.toDateString()}
 						selectDate={selectDate?.toString()}
+						handleChangeDate={handleChangeDate}
 					/>
 				)}
 				viewDidMount={handleViewChange}
