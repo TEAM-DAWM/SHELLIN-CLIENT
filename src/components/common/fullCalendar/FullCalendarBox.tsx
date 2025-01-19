@@ -38,7 +38,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [currentView, setCurrentView] = useState('timeGridWeek');
 	const [range, setRange] = useState(7);
 	const [startDate, setStartDate] = useState<string>(todayDate);
-	const [isModalOpen, setModalOpen] = useState(false);
+	const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [top, setTop] = useState(0);
 	const [left, setLeft] = useState(0);
 	const [modalTaskId, setModalTaskId] = useState<number | null>(null);
@@ -122,12 +122,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		if (clickedEvent) {
 			setModalTaskId(clickedEvent.taskId);
 			setModalTimeBlockId(clickedEvent.timeBlockId);
-			setModalOpen(true);
+			setDeleteModalOpen(true);
 		}
 	};
 
 	const closeModal = () => {
-		setModalOpen(false);
+		setDeleteModalOpen(false);
 		setModalTaskId(null);
 		setModalTimeBlockId(null);
 	};
@@ -201,7 +201,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			console.error('taskId 또는 timeBlockId가 존재하지 않습니다.');
 		}
 
-		setModalOpen(false);
+		setDeleteModalOpen(false);
 	};
 
 	const handleCalendarPopup = () => {
@@ -344,7 +344,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					handleStatusChange={handleStatusChange}
 				/>
 			)}
-			{isModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
+			{isDeleteModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
 				<ModalDeleteDetail top={top} left={left} onClose={closeModal} onDelete={handleDelete} />
 			)}
 		</FullCalendarLayout>
