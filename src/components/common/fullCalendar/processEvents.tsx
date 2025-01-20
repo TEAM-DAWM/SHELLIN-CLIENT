@@ -31,22 +31,25 @@ const processEvents = (timeBlockData: TimeBlockData): EventData[] => {
 		});
 	});
 
-	// googles 데이터 처리
-	timeBlockData.googles.forEach((google) => {
-		google.schedules.forEach((schedule) => {
-			events.push({
-				title: google.name,
-				start: schedule.startTime,
-				end: schedule.endTime,
-				allDay: schedule.allDay,
-				classNames: 'schedule',
-				extendedProps: {
-					taskId: -1, // 구글 캘린더 이벤트에는 taskId가 없으므로 -1로 설정
-					timeBlockId: null,
-				},
-			});
-		});
-	});
+	/**
+	 * TODO: 구글 캘린더 추후 다시 추가 예정
+	 */
+	// // googles 데이터 처리
+	// timeBlockData.googles.forEach((google) => {
+	// 	google.schedules.forEach((schedule) => {
+	// 		events.push({
+	// 			title: google.name,
+	// 			start: schedule.startTime,
+	// 			end: schedule.endTime,
+	// 			allDay: schedule.allDay,
+	// 			classNames: 'schedule',
+	// 			extendedProps: {
+	// 				taskId: -1, // 구글 캘린더 이벤트에는 taskId가 없으므로 -1로 설정
+	// 				timeBlockId: null,
+	// 			},
+	// 		});
+	// 	});
+	// });
 
 	return events;
 };

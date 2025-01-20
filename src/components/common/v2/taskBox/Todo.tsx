@@ -27,6 +27,7 @@ type TodoProps = {
 	deadlineTime?: string;
 	status: StatusType;
 	isStatusVisible?: boolean;
+  onClick: () => void;
 	preventDoubleClick?: boolean;
 	taskId: number;
 	targetDate: string;
@@ -42,6 +43,8 @@ function Todo({
 	taskId,
 	targetDate,
 }: TodoProps) {
+
+function Todo({ title, deadlineDate, status: initStatus, isStatusVisible = true, deadlineTime, onClick, taskId }: TodoProps) {
 	const { state, handleMouseEnter, handleMouseLeave, handleMouseDown, handleMouseUp, handleDragStart, handleDragEnd } =
 		useTodoEventHandler();
 
@@ -97,6 +100,7 @@ function Todo({
 				onDragStart={handleDragStart}
 				onDragEnd={handleDragEnd}
 				draggable
+        onClick={onClick}
 			>
 				<TodoWrapper>
 					<span className="todo-title">{title}</span>
@@ -148,7 +152,7 @@ const stateStyles = ({ theme, state, isCompleted }: { theme: Theme; state: TodoE
 		case TODO_EVENT_STATE.PRESSED:
 			return css`
 				background-color: ${theme.colorToken.Component.strong};
-				border-color: ${theme.colorToken.Outline.primaryStrong};
+				border: 1px solid ${theme.colorToken.Outline.primaryStrong};
 			`;
 		case TODO_EVENT_STATE.FLOATED:
 			return css`
@@ -157,7 +161,11 @@ const stateStyles = ({ theme, state, isCompleted }: { theme: Theme; state: TodoE
 					0 16px 20px rgb(0 0 0 / 12%),
 					0 8px 16px rgb(0 0 0 / 8%),
 					0 0 8px rgb(0 0 0 / 8%);
-				border-color: ${theme.colorToken.Outline.primaryStrong};
+				border: 1px solid ${theme.colorToken.Outline.primaryStrong};
+			`;
+		case TODO_EVENT_STATE.HOVER:
+			return css`
+				border: ${isCompleted ? '1px' : '2px'} solid ${theme.colorToken.Outline.primaryStrong};
 			`;
 		default:
 			return css`
@@ -193,11 +201,6 @@ const TodoContainer = styled.div<{ isCompleted: boolean; state: TodoEventState }
 	${({ theme }) => baseStyles({ theme })}
 	${({ theme, isCompleted }) => textStyles({ theme, isCompleted })}
 	${({ theme, state, isCompleted }) => stateStyles({ theme, state, isCompleted })}
-
-	&:hover {
-		border-color: ${({ theme }) => theme.colorToken.Outline.primaryStrong};
-		border-width: ${({ isCompleted }) => (isCompleted ? '1px' : '2px')};
-	}
 `;
 
 const TodoWrapper = styled.div`

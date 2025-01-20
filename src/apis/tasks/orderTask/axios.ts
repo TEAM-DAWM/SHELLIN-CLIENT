@@ -2,11 +2,11 @@ import { OrderTaskType } from './OrderTaskType';
 
 import { privateInstance } from '@/apis/instance';
 
-// type: true=dumping area, false=todo list
+// type: false=dumping area, true=todo list
 const orderTask = async ({ type, targetDate, taskList }: OrderTaskType) => {
 	const { data } = await privateInstance.post('/api/tasks/orders', {
 		type,
-		targetDate: type === true ? null : targetDate,
+		targetDate: type === false ? null : targetDate,
 		taskList,
 	});
 	return data;

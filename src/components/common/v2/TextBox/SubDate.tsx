@@ -22,9 +22,10 @@ interface SubDateProps {
 	day: string;
 	weekDay: string;
 	type: (typeof TYPE)[keyof typeof TYPE];
+	handleChangeDate?: (target: Date) => void;
 }
 
-function SubDate({ day, weekDay, type }: SubDateProps) {
+function SubDate({ day, weekDay, type, handleChangeDate }: SubDateProps) {
 	const [state, setState] = useState<StateType>(STATE.DEFAULT);
 
 	const handleStateChange = (newState: StateType) => () => {
@@ -39,6 +40,7 @@ function SubDate({ day, weekDay, type }: SubDateProps) {
 			onMouseLeave={handleStateChange(STATE.DEFAULT)}
 			onMouseDown={handleStateChange(STATE.PRESSED)}
 			onMouseUp={handleStateChange(STATE.DEFAULT)}
+			onClick={() => (handleChangeDate ?? (() => {}))(new Date())}
 		>
 			<span className="day">{day}</span>
 			<span className="week-day">{weekDay}</span>
