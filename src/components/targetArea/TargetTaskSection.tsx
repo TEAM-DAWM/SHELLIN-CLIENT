@@ -17,8 +17,6 @@ interface TargetTaskSectionProps {
 	targetDate: string;
 }
 function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, targetDate }: TargetTaskSectionProps) {
-	// TODO: 추후에 해당 로직을 연결해야 합니다.
-
 	useEffect(() => {
 		const container = document.getElementById('todolist-task-container');
 
