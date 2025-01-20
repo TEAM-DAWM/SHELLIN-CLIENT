@@ -314,8 +314,13 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				eventReceive={(info) => handleEventReceive(info)}
 			/>
 			{isCalendarPopupOpen && (
-				// Todo: date props 실제값으로 변경 필요
-				<DateCorrectionModal date={new Date().toISOString()} onClick={handleCalendarPopup} top={9.8} right={0.8} />
+				<DateCorrectionModal
+					date={new Date().toISOString()}
+					onClick={handleCalendarPopup}
+					top={9.8}
+					right={0.8}
+					handleCurrentDate={handleChangeDate}
+				/>
 			)}
 			{isFilterPopupOpen && <CalendarSettingDropdown top={9.8} right={0.8} />}
 			{isModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
