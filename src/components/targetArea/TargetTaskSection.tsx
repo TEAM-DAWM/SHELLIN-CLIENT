@@ -7,7 +7,7 @@ import BtnTaskContainer from '../common/BtnTaskContainer';
 import EmptyContainer from '../common/EmptyContainer';
 
 import Todo from '@/components/common/v2/taskBox/Todo';
-import { TaskType, STATUS } from '@/types/tasks/taskType';
+import { TaskType } from '@/types/tasks/taskType';
 import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
 
 interface TargetTaskSectionProps {
@@ -18,7 +18,6 @@ interface TargetTaskSectionProps {
 }
 function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, targetDate }: TargetTaskSectionProps) {
 	// TODO: 추후에 해당 로직을 연결해야 합니다.
-	console.log(handleSelectedTarget, selectedTarget, targetDate);
 
 	useEffect(() => {
 		const container = document.getElementById('todolist-task-container');
@@ -75,8 +74,8 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 											taskId={task.id}
 											targetDate={targetDate}
 											onClick={() => handleSelectedTarget(task)}
-											status={selectedTarget?.status || STATUS.NOT_DONE}
-											// id={task.id}
+											status={task.status}
+
 											// handleSelectedTarget={handleSelectedTarget}
 											// selectedTarget={selectedTarget}
 											// isDragging={snapshot.isDragging}
