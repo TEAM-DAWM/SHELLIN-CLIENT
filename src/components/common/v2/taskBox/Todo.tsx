@@ -27,7 +27,7 @@ type TodoProps = {
 	deadlineTime?: string;
 	status: StatusType;
 	isStatusVisible?: boolean;
-  onClick: () => void;
+	onClick: () => void;
 	preventDoubleClick?: boolean;
 	taskId: number;
 	targetDate: string;
@@ -39,12 +39,11 @@ function Todo({
 	status: initStatus,
 	isStatusVisible = true,
 	deadlineTime,
-	preventDoubleClick = false,
+	onClick,
 	taskId,
+	preventDoubleClick,
 	targetDate,
 }: TodoProps) {
-
-function Todo({ title, deadlineDate, status: initStatus, isStatusVisible = true, deadlineTime, onClick, taskId }: TodoProps) {
 	const { state, handleMouseEnter, handleMouseLeave, handleMouseDown, handleMouseUp, handleDragStart, handleDragEnd } =
 		useTodoEventHandler();
 
@@ -100,7 +99,7 @@ function Todo({ title, deadlineDate, status: initStatus, isStatusVisible = true,
 				onDragStart={handleDragStart}
 				onDragEnd={handleDragEnd}
 				draggable
-        onClick={onClick}
+				onClick={onClick}
 			>
 				<TodoWrapper>
 					<span className="todo-title">{title}</span>
@@ -116,7 +115,7 @@ function Todo({ title, deadlineDate, status: initStatus, isStatusVisible = true,
 							status={status}
 							handleStatusChange={handleStatusChange}
 							handleStatusEdit={handleStatusEdit}
-							isModalOpen={false}
+							isModalOpen
 						/>
 					</DropdownWrapper>
 				)}

@@ -7,7 +7,7 @@ import BtnTaskContainer from '../common/BtnTaskContainer';
 import EmptyContainer from '../common/EmptyContainer';
 
 import Todo from '@/components/common/v2/taskBox/Todo';
-import { TaskType } from '@/types/tasks/taskType';
+import { TaskType, STATUS } from '@/types/tasks/taskType';
 import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
 
 interface TargetTaskSectionProps {
@@ -73,8 +73,9 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 											deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
 											deadlineTime={task.deadLine?.time || undefined}
 											taskId={task.id}
-										  targetDate={targetDate}
-                      onClick={() => handleSelectedTarget(task)}
+											targetDate={targetDate}
+											onClick={() => handleSelectedTarget(task)}
+											status={selectedTarget?.status || STATUS.NOT_DONE}
 											// id={task.id}
 											// handleSelectedTarget={handleSelectedTarget}
 											// selectedTarget={selectedTarget}
