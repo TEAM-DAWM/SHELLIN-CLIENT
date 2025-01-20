@@ -12,9 +12,10 @@ const TYPE = {
 
 type PopUpProps = {
 	type: (typeof TYPE)[keyof typeof TYPE];
+	defaultValue?: string;
 };
 
-function PopUp({ type }: PopUpProps) {
+function PopUp({ type, defaultValue }: PopUpProps) {
 	const { state, handleFocus, handleBlur, handleChange } = useInputHandler();
 	const placeholder = type === TYPE.TITLE ? '제목을 입력하세요' : '설명을 추가하세요';
 
@@ -28,6 +29,7 @@ function PopUp({ type }: PopUpProps) {
 				onFocus={handleFocus}
 				onBlur={handleBlur}
 				onChange={handleChange}
+				defaultValue={defaultValue}
 			/>
 		</PopUpContainer>
 	);

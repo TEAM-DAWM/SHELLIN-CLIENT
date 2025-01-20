@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
 import useDeleteTask from '@/apis/tasks/deleteTask/query';
+import useTaskDescription from '@/apis/tasks/taskDescription/query';
 import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
 import DropdownButton from '@/components/common/v2/control/DropdownButton';
@@ -18,12 +19,22 @@ interface MainSettingModalProps {
 	onClose: () => void;
 	status: StatusType;
 	handleStatusEdit: (newStatus: StatusType) => void;
+	targetDate: string;
 }
 
-function MainSettingModal({ isOpen, top, left, taskId, onClose, status, handleStatusEdit }: MainSettingModalProps) {
+function MainSettingModal({
+	isOpen,
+	top,
+	left,
+	taskId,
+	onClose,
+	status,
+	handleStatusEdit,
+	targetDate,
+}: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
 	const [taskStatus, setTaskStatus] = useState(status);
-
+	const { data: taskDetailData } = useTaskDescription({ taskId, targetDate });
 	useEffect(() => {
 		setTaskStatus(status);
 	}, [status]);
@@ -62,12 +73,16 @@ function MainSettingModal({ isOpen, top, left, taskId, onClose, status, handleSt
 							<IconButton iconName="IcnX" type="normal" size="small" onClick={onClose} />
 						</ButtonBox>
 					</ModalTopButtonBox>
-					<PopUp type="title" />
+					<PopUp type="title" defaultValue={taskDetailData.data.name} />
 				</MainSettingModalHeadLayout>
 				<MainSettingModalBodyLayout>
-					<DeadlineBox date={new Date()} endTime="06:00pm" label="마감 기간" />
+					<DeadlineBox
+						date={taskDetailData.data.deadline ? new Date(taskDetailData.data.deadline.date) : new Date()}
+						endTime={taskDetailData.data.deadline ? taskDetailData.data.deadline.time : '06:00pm'}
+						label="마감 기간"
+					/>
 					<PopUpTitleBox>
-						<PopUp type="description" />
+						<PopUp type="description" defaultValue={taskDetailData.data.description} />
 					</PopUpTitleBox>
 					<DeadlineBox date={new Date()} startTime="11:00am" endTime="06:00pm" label="진행 기간" />
 				</MainSettingModalBodyLayout>

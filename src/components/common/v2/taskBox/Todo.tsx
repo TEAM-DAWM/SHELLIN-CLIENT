@@ -128,6 +128,7 @@ function Todo({
 				taskId={taskId}
 				status={status}
 				handleStatusEdit={handleStatusEdit}
+				targetDate={targetDate}
 			/>
 		</>
 	);
