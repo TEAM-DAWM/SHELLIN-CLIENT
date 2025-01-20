@@ -31,9 +31,6 @@ function Today() {
 		setDumpAreaOpen((prev) => !prev);
 	};
 
-	console.log('stagingData', stagingData);
-	console.log('targetData', targetData);
-
 	/** isTotal 핸들링 함수 */
 	const handleTextBtnClick = (button: '전체' | '지연') => {
 		setActiveButton(button);
