@@ -21,7 +21,7 @@ function StagingAreaTaskContainer({
 	handleSelectedTarget,
 	selectedTarget,
 	tasks,
-	// targetDate,
+	targetDate,
 }: StagingAreaTaskContainerProps) {
 	useEffect(() => {
 		const container = document.getElementById('dumping-task-container');
@@ -77,6 +77,8 @@ function StagingAreaTaskContainer({
 													deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
 													deadlineTime={task.deadLine?.time || undefined}
 													isStatusVisible={false}
+                          taskId={task.id}
+                          targetDate={targetDate}
 													onClick={() => handleSelectedTarget(task)}
 												/>
 											</div>

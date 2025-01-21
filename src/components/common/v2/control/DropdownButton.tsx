@@ -1,19 +1,21 @@
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Button from '../button/Button';
 
 import StatusDropdown from '@/components/common/v2/dropdown/StatusDropdown';
 
 // 추후 type 로 빼기
-type TaskStatus = '미완료' | '진행중' | '완료';
+type TaskStatus = '미완료' | '진행 중' | '완료';
 type DropdownButtonProps = {
 	status: TaskStatus;
 	handleStatusChange: (newStatus: TaskStatus) => void;
+	handleStatusEdit: (newStatus: TaskStatus) => void;
+	isModalOpen: boolean;
 };
 
-function DropdownButton({ status, handleStatusChange }: DropdownButtonProps) {
+function DropdownButton({ status, handleStatusChange, handleStatusEdit, isModalOpen }: DropdownButtonProps) {
 	const { shadow } = useTheme();
 
 	/** 임시 state */
@@ -28,10 +30,10 @@ function DropdownButton({ status, handleStatusChange }: DropdownButtonProps) {
 		e.stopPropagation();
 		setOpen((prev) => !prev);
 	};
-	/** 임시 state */
 
 	const handleStatus = (newStatus: TaskStatus) => {
 		handleStatusChange(newStatus);
+		if (!isModalOpen) handleStatusEdit(newStatus);
 		setOpen(false);
 	};
 
@@ -40,7 +42,7 @@ function DropdownButton({ status, handleStatusChange }: DropdownButtonProps) {
 		switch (status) {
 			case '미완료':
 				return 'outlined-assistive';
-			case '진행중':
+			case '진행 중':
 				return 'solid';
 			case '완료':
 				return 'outlined-primary';

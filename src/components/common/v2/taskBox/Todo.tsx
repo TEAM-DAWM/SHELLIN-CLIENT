@@ -1,9 +1,12 @@
 import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import DropdownButton from '../control/DropdownButton';
 
+import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
+import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
+import MODAL from '@/constants/modalLocation';
 import useTodoEventHandler from '@/hooks/useTodoEventHandler';
 import { STATUS } from '@/types/tasks/taskType';
 
@@ -25,46 +28,108 @@ type TodoProps = {
 	status: StatusType;
 	isStatusVisible?: boolean;
 	onClick: () => void;
+	preventDoubleClick?: boolean;
+	taskId: number;
+	targetDate: string;
 };
 
-function Todo({ title, deadlineDate, status: initStatus, isStatusVisible = true, deadlineTime, onClick }: TodoProps) {
+function Todo({
+	title,
+	deadlineDate,
+	status: initStatus,
+	isStatusVisible = true,
+	deadlineTime,
+	onClick,
+	taskId,
+	preventDoubleClick,
+	targetDate,
+}: TodoProps) {
 	const { state, handleMouseEnter, handleMouseLeave, handleMouseDown, handleMouseUp, handleDragStart, handleDragEnd } =
 		useTodoEventHandler();
 
 	const [status, setStatus] = useState<StatusType>(initStatus);
 	const isCompleted = status === STATUS.COMPLETE;
 
+	const [isModalOpen, setModalOpen] = useState(false);
+
+	const [top, setTop] = useState(0);
+	const [left, setLeft] = useState(0);
+
+	useEffect(() => {
+		setStatus(initStatus);
+	}, [initStatus]);
+	/** 모달 띄우기 */
+	const handleDoubleClick = (e: React.MouseEvent) => {
+		if (preventDoubleClick) {
+			e.preventDefault();
+			return;
+		}
+		const rect = e.currentTarget.getBoundingClientRect();
+		const calculatedTop = rect.top;
+		const adjustedTop = Math.min(calculatedTop, MODAL.SCREEN_HEIGHT - MODAL.TASK_MODAL_HEIGHT);
+		setTop(adjustedTop);
+		setLeft(rect.right + 6);
+		setModalOpen((prev) => !prev);
+	};
+
+	const handleCloseModal = () => {
+		setModalOpen(false);
+	};
+
 	const handleStatusChange = (newStatus: StatusType) => {
 		setStatus(newStatus);
 	};
 
+	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
+
+	const handleStatusEdit = (newStatus: StatusType) => {
+		updateStateMutate({ taskId, targetDate, status: newStatus });
+	};
+
 	return (
-		<TodoContainer
-			isCompleted={isCompleted}
-			state={state}
-			onMouseEnter={handleMouseEnter}
-			onMouseLeave={handleMouseLeave}
-			onMouseDown={handleMouseDown}
-			onMouseUp={handleMouseUp}
-			onDragStart={handleDragStart}
-			onDragEnd={handleDragEnd}
-			draggable
-			onClick={onClick}
-		>
-			<TodoWrapper>
-				<span className="todo-title">{title}</span>
-				{deadlineDate && (
-					<span className="todo-deadline">
-						{deadlineDate} / {deadlineTime}
-					</span>
+		<>
+			<TodoContainer
+				isCompleted={isCompleted}
+				state={state}
+				onDoubleClick={handleDoubleClick}
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
+				onMouseDown={handleMouseDown}
+				onMouseUp={handleMouseUp}
+				onDragStart={handleDragStart}
+				onDragEnd={handleDragEnd}
+				draggable
+				onClick={onClick}
+			>
+				<TodoWrapper>
+					<span className="todo-title">{title}</span>
+					{deadlineDate && (
+						<span className="todo-deadline">
+							{deadlineDate} / {deadlineTime}
+						</span>
+					)}
+				</TodoWrapper>
+				{isStatusVisible && (
+					<DropdownWrapper>
+						<DropdownButton
+							status={status}
+							handleStatusChange={handleStatusChange}
+							handleStatusEdit={handleStatusEdit}
+							isModalOpen
+						/>
+					</DropdownWrapper>
 				)}
-			</TodoWrapper>
-			{isStatusVisible && (
-				<DropdownWrapper>
-					<DropdownButton status={status} handleStatusChange={handleStatusChange} />
-				</DropdownWrapper>
-			)}
-		</TodoContainer>
+			</TodoContainer>
+			<MainSettingModal
+				isOpen={isModalOpen}
+				top={top}
+				left={left}
+				onClose={handleCloseModal}
+				taskId={taskId}
+				status={status}
+				handleStatusEdit={handleStatusEdit}
+			/>
+		</>
 	);
 }
 

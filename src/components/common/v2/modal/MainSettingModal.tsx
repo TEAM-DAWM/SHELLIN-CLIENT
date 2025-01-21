@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import useDeleteTask from '@/apis/tasks/deleteTask/query';
+import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
 import DropdownButton from '@/components/common/v2/control/DropdownButton';
 import IconButton from '@/components/common/v2/IconButton';
@@ -8,40 +10,80 @@ import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
 import PopUp from '@/components/common/v2/TextBox/PopUp';
 import { StatusType } from '@/types/tasks/taskType';
 
-function MainSettingModal() {
-	const [status, setStatus] = useState<StatusType>('미완료');
+interface MainSettingModalProps {
+	isOpen: boolean;
+	top: number;
+	left: number;
+	taskId: number;
+	onClose: () => void;
+	status: StatusType;
+	handleStatusEdit: (newStatus: StatusType) => void;
+}
 
-	const handleStatusChange = (newStatus: StatusType) => {
-		setStatus(newStatus);
+function MainSettingModal({ isOpen, top, left, taskId, onClose, status, handleStatusEdit }: MainSettingModalProps) {
+	const { mutate: deleteMutate } = useDeleteTask();
+	const [taskStatus, setTaskStatus] = useState(status);
+
+	useEffect(() => {
+		setTaskStatus(status);
+	}, [status]);
+
+	const handleConfirm = () => {
+		handleStatusEdit(taskStatus);
+		onClose();
 	};
 
+	const handleDelete = () => {
+		if (taskId) {
+			deleteMutate(taskId);
+		}
+		onClose();
+	};
+
+	const handleTaskStatusChange = (newStatus: StatusType) => {
+		setTaskStatus(newStatus);
+	};
+
+	if (!isOpen) return null;
+
 	return (
-		<MainSettingModalLayout>
-			<MainSettingModalHeadLayout>
-				<ModalTopButtonBox>
-					<DropdownButton status={status} handleStatusChange={handleStatusChange} />
-					<ButtonBox>
-						<IconButton iconName="IcnDelete" type="normal" size="small" disabled />
-						<IconButton iconName="IcnX" type="normal" size="small" disabled />
-					</ButtonBox>
-				</ModalTopButtonBox>
-				<PopUp type="title" />
-			</MainSettingModalHeadLayout>
-			<MainSettingModalBodyLayout>
-				<DeadlineBox date={new Date()} endTime="06:00pm" label="마감 기간" />
-				<PopUpTitleBox>
-					<PopUp type="description" />
-				</PopUpTitleBox>
-				<DeadlineBox date={new Date()} startTime="11:00am" endTime="06:00pm" label="진행 기간" />
-			</MainSettingModalBodyLayout>
-			<MainSettingModalButtonLayout>
-				<Button type="solid" size="medium" label="확인" />
-			</MainSettingModalButtonLayout>
-		</MainSettingModalLayout>
+		<ModalBackdrop onClick={onClose}>
+			<MainSettingModalLayout top={top} left={left} onClick={(e) => e.stopPropagation()}>
+				<MainSettingModalHeadLayout>
+					<ModalTopButtonBox>
+						<DropdownButton
+							status={taskStatus}
+							handleStatusChange={handleTaskStatusChange}
+							handleStatusEdit={handleStatusEdit}
+							isModalOpen={isOpen}
+						/>
+						<ButtonBox>
+							<IconButton iconName="IcnDelete" type="normal" size="small" onClick={handleDelete} />
+							<IconButton iconName="IcnX" type="normal" size="small" onClick={onClose} />
+						</ButtonBox>
+					</ModalTopButtonBox>
+					<PopUp type="title" />
+				</MainSettingModalHeadLayout>
+				<MainSettingModalBodyLayout>
+					<DeadlineBox date={new Date()} endTime="06:00pm" label="마감 기간" />
+					<PopUpTitleBox>
+						<PopUp type="description" />
+					</PopUpTitleBox>
+					<DeadlineBox date={new Date()} startTime="11:00am" endTime="06:00pm" label="진행 기간" />
+				</MainSettingModalBodyLayout>
+				<MainSettingModalButtonLayout>
+					<Button type="solid" size="medium" label="확인" onClick={handleConfirm} />
+				</MainSettingModalButtonLayout>
+			</MainSettingModalLayout>
+		</ModalBackdrop>
 	);
 }
 
-const MainSettingModalLayout = styled.article`
+const MainSettingModalLayout = styled.article<{ top: number; left: number }>`
+	position: fixed;
+	top: ${({ top }) => top}px;
+	left: ${({ left }) => left}px;
+	z-index: 3;
 	display: flex;
 	flex-direction: column;
 	gap: 2.4rem;

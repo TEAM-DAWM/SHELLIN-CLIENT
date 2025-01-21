@@ -21,18 +21,24 @@ export const Incomplete: Story = {
 	args: {
 		status: '미완료',
 		handleStatusChange: noop,
+		handleStatusEdit: noop,
+		isModalOpen: true,
 	},
 };
 
 export const Inprogress: Story = {
 	args: {
-		status: '진행중',
+		status: '진행 중',
 		handleStatusChange: noop,
+		handleStatusEdit: noop,
+		isModalOpen: true,
 	},
 };
 export const Complete: Story = {
 	args: {
 		status: '완료',
 		handleStatusChange: noop,
+		handleStatusEdit: noop,
+		isModalOpen: true,
 	},
 };

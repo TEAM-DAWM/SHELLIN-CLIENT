@@ -18,7 +18,6 @@ interface TargetTaskSectionProps {
 }
 function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, targetDate }: TargetTaskSectionProps) {
 	// TODO: 추후에 해당 로직을 연결해야 합니다.
-	console.log(handleSelectedTarget, selectedTarget, targetDate);
 
 	useEffect(() => {
 		const container = document.getElementById('todolist-task-container');
@@ -72,9 +71,11 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 											title={task.name}
 											deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
 											deadlineTime={task.deadLine?.time || undefined}
-											status={task.status}
+											taskId={task.id}
+											targetDate={targetDate}
 											onClick={() => handleSelectedTarget(task)}
-											// id={task.id}
+											status={task.status}
+
 											// handleSelectedTarget={handleSelectedTarget}
 											// selectedTarget={selectedTarget}
 											// isDragging={snapshot.isDragging}
