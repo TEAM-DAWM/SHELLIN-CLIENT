@@ -37,9 +37,21 @@ function MainSettingModal({
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutate: editMutate } = usePatchTaskDescription();
 	const [taskStatus, setTaskStatus] = useState(status);
-	const { data: taskDetailData, isLoading: isTaskDetailLoading } = useTaskDescription({ taskId, targetDate, isOpen });
-	const { content: titleContent, onChange: onTitleChange } = useInput('');
+	const {
+		data: taskDetailData,
+		isLoading: isTaskDetailLoading,
+		isFetched: isTaskDetailFetched,
+	} = useTaskDescription({ taskId, targetDate, isOpen });
+
+	// === useInput ===
+	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
 	const { content: descriptionContent, onChange: onDescriptionChange } = useInput('');
+
+	useEffect(() => {
+		if (isTaskDetailFetched) {
+			handleTitle(taskDetailData?.name || '');
+		}
+	}, [isTaskDetailFetched]);
 
 	useEffect(() => {
 		setTaskStatus(status);
@@ -71,7 +83,8 @@ function MainSettingModal({
 	};
 
 	if (!isOpen) return null;
-	if (isTaskDetailLoading) return <>loading</>;
+	if (isTaskDetailLoading) return <div />;
+
 	return (
 		<ModalBackdrop onClick={onClose}>
 			<MainSettingModalLayout top={top} left={left} onClick={(e) => e.stopPropagation()} className="non-draggable">
@@ -92,8 +105,14 @@ function MainSettingModal({
 				</MainSettingModalHeadLayout>
 				<MainSettingModalBodyLayout>
 					<DeadlineBox
-						date={taskDetailData.data.deadline ? new Date(taskDetailData.data.deadline.date) : new Date()}
-						endTime={taskDetailData.data.deadline ? taskDetailData.data.deadline.time : '06:00pm'}
+						date={
+							taskDetailData?.deadLine && taskDetailData?.deadLine.date
+								? new Date(taskDetailData.deadLine.date)
+								: new Date()
+						}
+						endTime={
+							taskDetailData?.deadLine && taskDetailData?.deadLine.time ? taskDetailData.deadLine.time : '06:00pm'
+						}
 						label="마감 기간"
 					/>
 					<PopUpTitleBox>
