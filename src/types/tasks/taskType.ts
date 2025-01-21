@@ -14,3 +14,17 @@ export interface TaskType {
 	};
 	status: StatusType;
 }
+export interface DetailedTaskType {
+	name: string;
+	description: string;
+	deadLine: {
+		date: string | null;
+		time: string | null;
+	};
+	status: StatusType;
+	timeBlock: {
+		id: number;
+		startTime: string;
+		endTime: string;
+	};
+}
