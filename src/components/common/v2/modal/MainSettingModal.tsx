@@ -45,11 +45,12 @@ function MainSettingModal({
 
 	// === useInput ===
 	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
-	const { content: descriptionContent, onChange: onDescriptionChange } = useInput('');
+	const { content: descriptionContent, onChange: onDescriptionChange, handleContent: handleDesc } = useInput('');
 
 	useEffect(() => {
 		if (isTaskDetailFetched) {
 			handleTitle(taskDetailData?.name || '');
+			handleDesc(taskDetailData?.description || '');
 		}
 	}, [isTaskDetailFetched]);
 
