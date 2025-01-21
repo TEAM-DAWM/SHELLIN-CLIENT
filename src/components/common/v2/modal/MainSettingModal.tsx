@@ -12,6 +12,7 @@ import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
 import PopUp from '@/components/common/v2/TextBox/PopUp';
 import useInput from '@/hooks/useInput';
 import { StatusType } from '@/types/tasks/taskType';
+import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
 
 interface MainSettingModalProps {
 	isOpen: boolean;
@@ -46,11 +47,15 @@ function MainSettingModal({
 	// === useInput ===
 	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
 	const { content: descriptionContent, onChange: onDescriptionChange, handleContent: handleDesc } = useInput('');
+	const { content: deadlineTime, handleContent: handleDeadlineTime } = useInput('');
+	const [deadlineDate, setDeadlineDate] = useState<Date>();
 
 	useEffect(() => {
 		if (isTaskDetailFetched) {
 			handleTitle(taskDetailData?.name || '');
 			handleDesc(taskDetailData?.description || '');
+			handleDeadlineDate(taskDetailData?.deadLine.date ? new Date(taskDetailData?.deadLine.date) : new Date());
+			handleDeadlineTime(taskDetailData?.deadLine.time || '');
 		}
 	}, [isTaskDetailFetched]);
 
@@ -58,6 +63,9 @@ function MainSettingModal({
 		setTaskStatus(status);
 	}, [status]);
 
+	const handleDeadlineDate = (date: Date) => {
+		setDeadlineDate(date);
+	};
 	const handleConfirm = () => {
 		handleStatusEdit(taskStatus);
 		handleEdit();
@@ -76,7 +84,7 @@ function MainSettingModal({
 			taskId,
 			name: titleContent,
 			description: descriptionContent,
-			deadLine: { date: '2025-01-21', time: '' },
+			deadLine: { date: deadlineDate ? formatDatetoLocalDate(deadlineDate) : null, time: deadlineTime },
 		});
 	};
 	const handleTaskStatusChange = (newStatus: StatusType) => {
@@ -106,14 +114,10 @@ function MainSettingModal({
 				</MainSettingModalHeadLayout>
 				<MainSettingModalBodyLayout>
 					<DeadlineBox
-						date={
-							taskDetailData?.deadLine && taskDetailData?.deadLine.date
-								? new Date(taskDetailData.deadLine.date)
-								: new Date()
-						}
-						endTime={
-							taskDetailData?.deadLine && taskDetailData?.deadLine.time ? taskDetailData.deadLine.time : '06:00pm'
-						}
+						date={deadlineDate ? new Date(deadlineDate) : new Date()}
+						endTime={deadlineTime || '06:00pm'}
+						handleDueDateModalDate={handleDeadlineDate}
+						handleDueDateModalTime={handleDeadlineTime}
 						label="마감 기간"
 					/>
 					<PopUpTitleBox>
