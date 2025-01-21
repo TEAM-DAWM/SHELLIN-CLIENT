@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
 import useDeleteTask from '@/apis/tasks/deleteTask/query';
+import usePatchTaskDescription from '@/apis/tasks/editTask/query';
 import useTaskDescription from '@/apis/tasks/taskDescription/query';
 import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
@@ -9,6 +10,7 @@ import DropdownButton from '@/components/common/v2/control/DropdownButton';
 import IconButton from '@/components/common/v2/IconButton';
 import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
 import PopUp from '@/components/common/v2/TextBox/PopUp';
+import useInput from '@/hooks/useInput';
 import { StatusType } from '@/types/tasks/taskType';
 
 interface MainSettingModalProps {
@@ -33,14 +35,19 @@ function MainSettingModal({
 	targetDate,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
+	const { mutate: editMutate } = usePatchTaskDescription();
 	const [taskStatus, setTaskStatus] = useState(status);
-	const { data: taskDetailData } = useTaskDescription({ taskId, targetDate });
+	const { data: taskDetailData, isLoading: isTaskDetailLoading } = useTaskDescription({ taskId, targetDate, isOpen });
+	const { content: titleContent, onChange: onTitleChange } = useInput('');
+	const { content: descriptionContent, onChange: onDescriptionChange } = useInput('');
+
 	useEffect(() => {
 		setTaskStatus(status);
 	}, [status]);
 
 	const handleConfirm = () => {
 		handleStatusEdit(taskStatus);
+		handleEdit();
 		onClose();
 	};
 
@@ -51,15 +58,23 @@ function MainSettingModal({
 		onClose();
 	};
 
+	const handleEdit = () => {
+		editMutate({
+			taskId,
+			name: titleContent,
+			description: descriptionContent,
+			deadLine: { date: '2025-01-21', time: '' },
+		});
+	};
 	const handleTaskStatusChange = (newStatus: StatusType) => {
 		setTaskStatus(newStatus);
 	};
 
 	if (!isOpen) return null;
-
+	if (isTaskDetailLoading) return <>loading</>;
 	return (
 		<ModalBackdrop onClick={onClose}>
-			<MainSettingModalLayout top={top} left={left} onClick={(e) => e.stopPropagation()}>
+			<MainSettingModalLayout top={top} left={left} onClick={(e) => e.stopPropagation()} className="non-draggable">
 				<MainSettingModalHeadLayout>
 					<ModalTopButtonBox>
 						<DropdownButton
@@ -73,7 +88,7 @@ function MainSettingModal({
 							<IconButton iconName="IcnX" type="normal" size="small" onClick={onClose} />
 						</ButtonBox>
 					</ModalTopButtonBox>
-					<PopUp type="title" defaultValue={taskDetailData.data.name} />
+					<PopUp type="title" defaultValue={titleContent} onChange={onTitleChange} />
 				</MainSettingModalHeadLayout>
 				<MainSettingModalBodyLayout>
 					<DeadlineBox
@@ -82,7 +97,7 @@ function MainSettingModal({
 						label="마감 기간"
 					/>
 					<PopUpTitleBox>
-						<PopUp type="description" defaultValue={taskDetailData.data.description} />
+						<PopUp type="description" defaultValue={descriptionContent} onChange={onDescriptionChange} />
 					</PopUpTitleBox>
 					<DeadlineBox date={new Date()} startTime="11:00am" endTime="06:00pm" label="진행 기간" />
 				</MainSettingModalBodyLayout>
@@ -98,7 +113,7 @@ const MainSettingModalLayout = styled.article<{ top: number; left: number }>`
 	position: fixed;
 	top: ${({ top }) => top}px;
 	left: ${({ left }) => left}px;
-	z-index: 3;
+	z-index: 5;
 	display: flex;
 	flex-direction: column;
 	gap: 2.4rem;
