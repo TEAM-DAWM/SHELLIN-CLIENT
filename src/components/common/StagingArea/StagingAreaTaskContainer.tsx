@@ -77,8 +77,8 @@ function StagingAreaTaskContainer({
 													deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
 													deadlineTime={task.deadLine?.time || undefined}
 													isStatusVisible={false}
-                          taskId={task.id}
-                          targetDate={targetDate}
+													taskId={task.id}
+													targetDate={targetDate}
 													onClick={() => handleSelectedTarget(task)}
 												/>
 											</div>
