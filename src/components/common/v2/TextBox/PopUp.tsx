@@ -13,12 +13,17 @@ const TYPE = {
 type PopUpProps = {
 	type: (typeof TYPE)[keyof typeof TYPE];
 	defaultValue?: string;
+	onChange?: (e: React.FocusEvent<HTMLInputElement>) => void;
 };
 
-function PopUp({ type, defaultValue }: PopUpProps) {
+function PopUp({ type, defaultValue, onChange = () => {} }: PopUpProps) {
 	const { state, handleFocus, handleBlur, handleChange } = useInputHandler();
 	const placeholder = type === TYPE.TITLE ? '제목을 입력하세요' : '설명을 추가하세요';
 
+	const handlePopUpChange = (e: React.FocusEvent<HTMLInputElement>) => {
+		onChange(e);
+		handleChange(e);
+	};
 	return (
 		<PopUpContainer>
 			{type === TYPE.DESC && state === INPUT_STATE.DEFAULT && <Icon name="IcnDescription" size="tiny" />}
@@ -28,7 +33,7 @@ function PopUp({ type, defaultValue }: PopUpProps) {
 				placeholder={placeholder}
 				onFocus={handleFocus}
 				onBlur={handleBlur}
-				onChange={handleChange}
+				onChange={handlePopUpChange}
 				defaultValue={defaultValue}
 			/>
 		</PopUpContainer>
