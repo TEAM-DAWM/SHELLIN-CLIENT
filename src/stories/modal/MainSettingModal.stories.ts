@@ -22,7 +22,7 @@ export const Default: Story = {
 		left: 10,
 		taskId: 1,
 		onClose: () => {},
-		status: '진행 중',
+		status: '진행중',
 		handleStatusEdit: () => {},
 	},
 };

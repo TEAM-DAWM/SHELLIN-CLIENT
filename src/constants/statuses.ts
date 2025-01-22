@@ -1,6 +1,6 @@
 export const STATUSES = {
 	INCOMPLETE: '미완료',
-	IN_PROGRESS: '진행 중',
+	IN_PROGRESS: '진행중',
 	COMPLETED: '완료',
 } as const;
 

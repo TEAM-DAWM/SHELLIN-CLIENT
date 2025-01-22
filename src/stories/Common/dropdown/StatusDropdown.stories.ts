@@ -26,7 +26,7 @@ export const Incomplete: Story = {
 
 export const InProgress: Story = {
 	args: {
-		currentStatus: '진행 중',
+		currentStatus: '진행중',
 		handleStatusChange: noop,
 	},
 };
