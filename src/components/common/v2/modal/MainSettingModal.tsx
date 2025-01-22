@@ -48,13 +48,13 @@ function MainSettingModal({
 	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
 	const { content: descriptionContent, onChange: onDescriptionChange, handleContent: handleDesc } = useInput('');
 	const { content: deadlineTime, handleContent: handleDeadlineTime } = useInput('');
-	const [deadlineDate, setDeadlineDate] = useState<Date>();
+	const [deadlineDate, setDeadlineDate] = useState<Date | null>(null);
 
 	useEffect(() => {
 		if (isTaskDetailFetched) {
 			handleTitle(taskDetailData?.name || '');
 			handleDesc(taskDetailData?.description || '');
-			handleDeadlineDate(taskDetailData?.deadLine.date ? new Date(taskDetailData?.deadLine.date) : new Date());
+			handleDeadlineDate(taskDetailData?.deadLine.date ? new Date(taskDetailData?.deadLine.date) : null);
 			handleDeadlineTime(taskDetailData?.deadLine.time || '');
 		}
 	}, [isTaskDetailFetched]);
@@ -63,7 +63,7 @@ function MainSettingModal({
 		setTaskStatus(status);
 	}, [status]);
 
-	const handleDeadlineDate = (date: Date) => {
+	const handleDeadlineDate = (date: Date | null) => {
 		setDeadlineDate(date);
 	};
 	const handleConfirm = () => {
