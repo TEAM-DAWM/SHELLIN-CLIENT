@@ -88,38 +88,40 @@ function Todo({
 
 	return (
 		<>
-			<TodoContainer
-				isCompleted={isCompleted}
-				state={state}
-				onDoubleClick={handleDoubleClick}
-				onMouseEnter={handleMouseEnter}
-				onMouseLeave={handleMouseLeave}
-				onMouseDown={handleMouseDown}
-				onMouseUp={handleMouseUp}
-				onDragStart={handleDragStart}
-				onDragEnd={handleDragEnd}
-				draggable
-				onClick={onClick}
-			>
-				<TodoWrapper>
-					<span className="todo-title">{title}</span>
-					{deadlineDate && (
-						<span className="todo-deadline">
-							{deadlineDate} / {deadlineTime}
-						</span>
+			<div className="todo-item">
+				<TodoContainer
+					isCompleted={isCompleted}
+					state={state}
+					onDoubleClick={handleDoubleClick}
+					onMouseEnter={handleMouseEnter}
+					onMouseLeave={handleMouseLeave}
+					onMouseDown={handleMouseDown}
+					onMouseUp={handleMouseUp}
+					onDragStart={handleDragStart}
+					onDragEnd={handleDragEnd}
+					draggable
+					onClick={onClick}
+				>
+					<TodoWrapper>
+						<span className="todo-title">{title}</span>
+						{deadlineDate && (
+							<span className="todo-deadline">
+								{deadlineDate} / {deadlineTime}
+							</span>
+						)}
+					</TodoWrapper>
+					{isStatusVisible && (
+						<DropdownWrapper>
+							<DropdownButton
+								status={status}
+								handleStatusChange={handleStatusChange}
+								handleStatusEdit={handleStatusEdit}
+								isModalOpen
+							/>
+						</DropdownWrapper>
 					)}
-				</TodoWrapper>
-				{isStatusVisible && (
-					<DropdownWrapper>
-						<DropdownButton
-							status={status}
-							handleStatusChange={handleStatusChange}
-							handleStatusEdit={handleStatusEdit}
-							isModalOpen
-						/>
-					</DropdownWrapper>
-				)}
-			</TodoContainer>
+				</TodoContainer>
+			</div>
 			<MainSettingModal
 				isOpen={isModalOpen}
 				top={top}

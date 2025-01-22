@@ -96,7 +96,7 @@ function MainSettingModal({
 
 	return (
 		<ModalBackdrop onClick={onClose}>
-			<MainSettingModalLayout top={top} left={left} onClick={(e) => e.stopPropagation()} className="non-draggable">
+			<MainSettingModalLayout top={top} left={left} onClick={(e) => e.stopPropagation()}>
 				<MainSettingModalHeadLayout>
 					<ModalTopButtonBox>
 						<DropdownButton
