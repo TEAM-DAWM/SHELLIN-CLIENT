@@ -1,22 +1,42 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import Button from '../common/v2/button/Button';
+import Button from '@/components/common/v2/button/Button';
+import colorToken from '@/styles/colorToken';
 
-function SettingMenu() {
+type TabType = 'account' | 'category' | 'routine' | 'history';
+
+interface SettingMenuProps {
+	activeTab: TabType;
+	onTabChange: (tab: TabType) => void;
+}
+
+function SettingMenu({ activeTab, onTabChange }: SettingMenuProps) {
 	return (
-		<MenuLayout>
-			<Button type="text-assistive" size="large" disabled={false} label="계정 관리" />
-		</MenuLayout>
+		<TabSection>
+			<Button
+				type="text-assistive"
+				size="medium"
+				disabled={false}
+				label="계정 관리"
+				onClick={() => onTabChange('account')}
+				additionalCss={activeTab === 'account' ? activeButtonStyle : undefined}
+			/>
+		</TabSection>
 	);
 }
 
-const MenuLayout = styled.div`
+const TabSection = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
-	align-items: flex-start;
-	align-self: stretch;
-	padding: 32px 24px 0;
+	gap: 0.4rem;
+	width: 20rem;
+	padding: 3.2rem 0;
+
+	border-right: 1px solid ${({ theme }) => theme.colorToken.Neutral.normal};
 `;
 
+const activeButtonStyle = css`
+	background-color: ${colorToken.Neutral.heavy};
+`;
 export default SettingMenu;
