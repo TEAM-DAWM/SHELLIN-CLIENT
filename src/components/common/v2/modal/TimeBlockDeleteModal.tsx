@@ -1,28 +1,22 @@
 import styled from '@emotion/styled';
 
-import ModalBackdrop from '../../modal/ModalBackdrop';
 import Button from '../button/Button';
+
+import useOutsideClick from '@/hooks/useOutsideClick';
 
 type ModalDeleteDetailProps = {
 	top: number;
 	left: number;
-	onClose: (e: React.MouseEvent) => void;
+	onClose: () => void;
 	onDelete: (e: React.MouseEvent) => void;
 };
 
 function TimeBlockDeleteModal({ top, left, onClose, onDelete }: ModalDeleteDetailProps) {
+	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
 	return (
-		<ModalBackdrop onClick={onClose}>
-			<TimeBlockDeleteModalContainer top={top} left={left} onClick={(e) => e.stopPropagation()}>
-				<Button
-					type="text-assistive"
-					size="large"
-					label="진행 기간 삭제하기"
-					rightIcon="IcnDelete"
-					onClick={onDelete}
-				/>
-			</TimeBlockDeleteModalContainer>
-		</ModalBackdrop>
+		<TimeBlockDeleteModalContainer ref={modalRef} top={top} left={left} onClick={(e) => e.stopPropagation()}>
+			<Button type="text-assistive" size="large" label="진행 기간 삭제하기" rightIcon="IcnDelete" onClick={onDelete} />
+		</TimeBlockDeleteModalContainer>
 	);
 }
 
@@ -32,6 +26,7 @@ const TimeBlockDeleteModalContainer = styled.div<{ top: number; left: number }>`
 	position: fixed;
 	top: ${({ top }) => top}px;
 	left: ${({ left }) => left}px;
+	z-index: 1;
 
 	display: flex;
 	padding: 8px;
