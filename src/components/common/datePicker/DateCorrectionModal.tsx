@@ -9,6 +9,7 @@ import Button from '../v2/button/Button';
 import CorrectionCustomHeader from './CorrectionCustomHeader';
 import CalendarStyle from './DatePickerStyle';
 
+import useOutsideClick from '@/hooks/useOutsideClick';
 import formatDatetoString from '@/utils/formatDatetoString';
 import { blurRef } from '@/utils/refStatus';
 
@@ -43,8 +44,11 @@ function DateCorrectionModal({ top = 0, left, right, date, onClick, handleCurren
 	const onClose = () => {
 		onClick();
 	};
+
+	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
+
 	return (
-		<DateCorrectionModalLayout top={top} left={left} right={right} onClick={(e) => e.stopPropagation()}>
+		<DateCorrectionModalLayout ref={modalRef} top={top} left={left} right={right} onClick={(e) => e.stopPropagation()}>
 			<DatePicker
 				locale={ko}
 				selected={currentDate}

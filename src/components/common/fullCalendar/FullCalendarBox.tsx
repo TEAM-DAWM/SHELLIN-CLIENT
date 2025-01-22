@@ -72,18 +72,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		// updateRange(view.view.type);
 	};
 
-	// 오늘 날짜를 기준으로 가운데 조정
-	useEffect(() => {
-		if (calendarRef.current) {
-			const calendarApi = calendarRef.current.getApi();
-			const adjustedDate = new Date(today);
-
-			adjustedDate.setDate(adjustedDate.getDate() - (size === 'big' ? 3 : 2));
-
-			calendarApi.gotoDate(adjustedDate);
-		}
-	}, [today, size]);
-
 	const handleDatesSet = (dateInfo: DatesSetArg) => {
 		const currentViewType = dateInfo.view.type;
 		const newStartDate = new Date(dateInfo.start);
@@ -340,8 +328,13 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				eventReceive={(info) => handleEventReceive(info)}
 			/>
 			{isCalendarPopupOpen && (
-				// Todo: date props 실제값으로 변경 필요
-				<DateCorrectionModal date={new Date().toISOString()} onClick={handleCalendarPopup} top={9.8} right={0.8} />
+				<DateCorrectionModal
+					date={new Date().toISOString()}
+					onClick={handleCalendarPopup}
+					top={9.8}
+					right={0.8}
+					handleCurrentDate={handleChangeDate}
+				/>
 			)}
 			{isFilterPopupOpen && (
 				<CalendarSettingDropdown
