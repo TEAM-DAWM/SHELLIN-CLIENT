@@ -15,7 +15,7 @@ const meta = {
 		deadlineTime: { control: 'text', description: '할 일의 마감시간' },
 		status: {
 			control: 'radio',
-			options: ['미완료', '진행 중', '완료'],
+			options: ['미완료', '진행중', '완료'],
 			description: '할 일 상태 (미완료, 진행중, 완료)',
 		},
 	},

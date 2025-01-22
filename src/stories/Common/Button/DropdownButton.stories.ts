@@ -28,7 +28,7 @@ export const Incomplete: Story = {
 
 export const Inprogress: Story = {
 	args: {
-		status: '진행 중',
+		status: '진행중',
 		handleStatusChange: noop,
 		handleStatusEdit: noop,
 		isModalOpen: true,

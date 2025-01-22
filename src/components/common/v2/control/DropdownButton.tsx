@@ -7,7 +7,7 @@ import Button from '../button/Button';
 import StatusDropdown from '@/components/common/v2/dropdown/StatusDropdown';
 
 // 추후 type 로 빼기
-type TaskStatus = '미완료' | '진행 중' | '완료';
+type TaskStatus = '미완료' | '진행중' | '완료';
 type DropdownButtonProps = {
 	status: TaskStatus;
 	handleStatusChange: (newStatus: TaskStatus) => void;
@@ -42,7 +42,7 @@ function DropdownButton({ status, handleStatusChange, handleStatusEdit, isModalO
 		switch (status) {
 			case '미완료':
 				return 'outlined-assistive';
-			case '진행 중':
+			case '진행중':
 				return 'solid';
 			case '완료':
 				return 'outlined-primary';

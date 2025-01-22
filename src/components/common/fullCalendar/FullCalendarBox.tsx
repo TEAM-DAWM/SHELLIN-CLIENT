@@ -7,8 +7,8 @@ import { DateSelectArg, EventResizeDoneArg } from 'fullcalendar/index.js';
 import { useState, useRef, useEffect, useMemo } from 'react';
 
 import DateCorrectionModal from '../datePicker/DateCorrectionModal';
-import ModalDeleteDetail from '../modal/ModalDeleteDetail';
 import CalendarSettingDropdown from '../v2/dropdown/CalendarSettingDropdown';
+import TimeBlockDeleteModal from '../v2/modal/TimeBlockDeleteModal';
 
 import CalendarHeader from './CalendarHeader';
 import CustomDayCellContent from './CustomDayCellContent';
@@ -38,7 +38,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [currentView, setCurrentView] = useState('timeGridWeek');
 	const [range, setRange] = useState(7);
 	const [startDate, setStartDate] = useState<string>(todayDate);
-	const [isModalOpen, setModalOpen] = useState(false);
+	const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [top, setTop] = useState(0);
 	const [left, setLeft] = useState(0);
 	const [modalTaskId, setModalTaskId] = useState<number | null>(null);
@@ -117,17 +117,18 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		setTop(adjustedTop);
 		setLeft(rect.left - MODAL.TASK_DELETE_WIDTH);
 
-		const clickedEvent = info.event.extendedProps;
+		/** TODO: 클릭 시 MainModal 띄우기 */
+		// const clickedEvent = info.event.extendedProps;
 
-		if (clickedEvent) {
-			setModalTaskId(clickedEvent.taskId);
-			setModalTimeBlockId(clickedEvent.timeBlockId);
-			setModalOpen(true);
-		}
+		// if (clickedEvent) {
+		// 	setModalTaskId(clickedEvent.taskId);
+		// 	setModalTimeBlockId(clickedEvent.timeBlockId);
+		// 	setDeleteModalOpen(true);
+		// }
 	};
 
 	const closeModal = () => {
-		setModalOpen(false);
+		setDeleteModalOpen(false);
 		setModalTaskId(null);
 		setModalTimeBlockId(null);
 	};
@@ -201,7 +202,27 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			console.error('taskId 또는 timeBlockId가 존재하지 않습니다.');
 		}
 
-		setModalOpen(false);
+		setDeleteModalOpen(false);
+	};
+
+	const handleRightClick = (info: EventMountArg, event: MouseEvent) => {
+		// 브라우저 우클릭 방지
+		event.preventDefault();
+
+		const rect = info.el.getBoundingClientRect();
+		const calculatedTop = rect.top;
+		const screenHeight = window.innerHeight;
+		const adjustedTop = Math.min(calculatedTop, screenHeight - MODAL.TASK_DELETE_HEIGHT);
+		setTop(adjustedTop);
+		setLeft(rect.left - MODAL.TASK_DELETE_WIDTH - 8);
+
+		const clickedEvent = info.event.extendedProps;
+
+		if (clickedEvent) {
+			setModalTaskId(clickedEvent.taskId);
+			setModalTimeBlockId(clickedEvent.timeBlockId);
+			setDeleteModalOpen(true);
+		}
 	};
 
 	const handleCalendarPopup = () => {
@@ -249,6 +270,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		}
 	};
 
+	const handleEventDidMount = (arg: EventMountArg) => {
+		handleCompletedTask(arg);
+		// 우클릭 시
+		arg.el.addEventListener('contextmenu', (event) => handleRightClick(arg, event));
+	};
+
 	return (
 		<FullCalendarLayout size={size} currentView={currentView}>
 			<CalendarHeader
@@ -281,7 +308,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				nowIndicator
 				dayMaxEvents
 				events={calendarEvents}
-				eventDidMount={(arg) => handleCompletedTask(arg)}
+				eventDidMount={(arg) => handleEventDidMount(arg)}
 				buttonText={{
 					month: '월',
 					timeGridWeekCustom: '주',
@@ -344,8 +371,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					handleStatusChange={handleStatusChange}
 				/>
 			)}
-			{isModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
-				<ModalDeleteDetail top={top} left={left} onClose={closeModal} onDelete={handleDelete} />
+			{isDeleteModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
+				<TimeBlockDeleteModal top={top} left={left} onClose={closeModal} onDelete={handleDelete} />
 			)}
 		</FullCalendarLayout>
 	);
