@@ -41,8 +41,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [top, setTop] = useState(0);
 	const [left, setLeft] = useState(0);
-	const [modalTaskId, setModalTaskId] = useState<number | null>(null);
-	const [modalTimeBlockId, setModalTimeBlockId] = useState<number | null>(null);
+	const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+	const [selectedTimeBlockId, setSelectedTimeBlockId] = useState<number | null>(null);
 	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 	const [isCalendarPopupOpen, setCalendarPopupOpen] = useState(false);
 	const [isFilterPopupOpen, setFilterPopupOpen] = useState(false);
@@ -50,6 +50,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		Object.values(STATUSES)
 	);
 	const [isFilterPopupDot, setIsFilterPopupDot] = useState(false);
+	const [isMainModalOpen, setMainModalOpen] = useState(false);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -121,16 +122,16 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		// const clickedEvent = info.event.extendedProps;
 
 		// if (clickedEvent) {
-		// 	setModalTaskId(clickedEvent.taskId);
-		// 	setModalTimeBlockId(clickedEvent.timeBlockId);
+		// 	setSelectedTaskId(clickedEvent.taskId);
+		// 	setSelectedTimeBlockId(clickedEvent.timeBlockId);
 		// 	setDeleteModalOpen(true);
 		// }
 	};
 
 	const closeModal = () => {
 		setDeleteModalOpen(false);
-		setModalTaskId(null);
-		setModalTimeBlockId(null);
+		setSelectedTaskId(null);
+		setSelectedTimeBlockId(null);
 	};
 
 	const removeTimezone = (str: string) => str.replace(/:\d{2}[+-]\d{2}:\d{2}$/, '');
@@ -194,10 +195,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const isSelectable = !!selectedTarget;
 
 	const handleDelete = () => {
-		console.log('taskId, timeBlockId', modalTaskId, modalTimeBlockId);
+		console.log('taskId, timeBlockId', selectedTaskId, selectedTimeBlockId);
 
-		if (modalTaskId && modalTimeBlockId) {
-			deleteMutate({ taskId: modalTaskId, timeBlockId: modalTimeBlockId });
+		if (selectedTaskId && selectedTimeBlockId) {
+			deleteMutate({ taskId: selectedTaskId, timeBlockId: selectedTimeBlockId });
 		} else {
 			console.error('taskId 또는 timeBlockId가 존재하지 않습니다.');
 		}
@@ -219,8 +220,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		const clickedEvent = info.event.extendedProps;
 
 		if (clickedEvent) {
-			setModalTaskId(clickedEvent.taskId);
-			setModalTimeBlockId(clickedEvent.timeBlockId);
+			setSelectedTaskId(clickedEvent.taskId);
+			setSelectedTimeBlockId(clickedEvent.timeBlockId);
 			setDeleteModalOpen(true);
 		}
 	};
@@ -371,7 +372,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					handleStatusChange={handleStatusChange}
 				/>
 			)}
-			{isDeleteModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
+			{isDeleteModalOpen && selectedTaskId !== null && selectedTimeBlockId !== null && (
 				<TimeBlockDeleteModal top={top} left={left} onClose={closeModal} onDelete={handleDelete} />
 			)}
 		</FullCalendarLayout>
