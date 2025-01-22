@@ -1,30 +1,30 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
 import CheckButton from '@/components/common/v2/control/CheckButton';
-import { STATUS_OPTIONS } from '@/constants/statuses';
+import { STATUS_OPTIONS, STATUSES } from '@/constants/statuses';
 
 type CalendarSettingDropdownProps = {
 	top?: number;
 	right?: number;
+	selectedStatuses: (typeof STATUSES)[keyof typeof STATUSES][];
+	handleStatusChange: (status: (typeof STATUSES)[keyof typeof STATUSES]) => void;
 };
 
-function CalendarSettingDropdown({ top = 0, right = 0 }: CalendarSettingDropdownProps) {
-	const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-
-	const handleStatusChange = (status: string) => {
-		setSelectedStatus(status === selectedStatus ? null : status);
-	};
-
+function CalendarSettingDropdown({
+	top = 0,
+	right = 0,
+	selectedStatuses,
+	handleStatusChange,
+}: CalendarSettingDropdownProps) {
 	return (
 		<CalendarSettingDropdownContainer top={top} right={right}>
 			{STATUS_OPTIONS.map((option) => (
 				<CheckButton
 					key={option.value}
 					label={option.label}
-					onClick={() => handleStatusChange(option.value)}
+					onClick={() => handleStatusChange(option.label as (typeof STATUSES)[keyof typeof STATUSES])}
 					size="large"
-					checked={selectedStatus === option.value}
+					checked={selectedStatuses.includes(option.label as (typeof STATUSES)[keyof typeof STATUSES])}
 				/>
 			))}
 		</CalendarSettingDropdownContainer>
@@ -42,7 +42,7 @@ const CalendarSettingDropdownContainer = styled.div<{ top: number; right: number
 	gap: 0.4rem;
 	box-sizing: border-box;
 	width: 16.8rem;
-	height: 16rem;
+	height: auto;
 	padding: 1.6rem 0.8rem;
 
 	background-color: ${({ theme }) => theme.color.Grey.White};

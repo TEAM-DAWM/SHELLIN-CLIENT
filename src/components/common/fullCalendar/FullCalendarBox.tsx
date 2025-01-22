@@ -1,4 +1,4 @@
-import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
+import { ViewMountArg, DatesSetArg, EventClickArg, EventDropArg, EventMountArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { EventReceiveArg } from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
@@ -22,6 +22,7 @@ import DayHeaderContent from '@/components/common/fullCalendar/DayHeaderContent'
 import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarStyle';
 import customSlotLabelContent from '@/components/common/fullCalendar/fullCalendarUtils';
 import MODAL from '@/constants/modalLocation';
+import { STATUSES } from '@/constants/statuses';
 import { TaskType } from '@/types/tasks/taskType';
 
 interface FullCalendarBoxProps {
@@ -45,6 +46,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 	const [isCalendarPopupOpen, setCalendarPopupOpen] = useState(false);
 	const [isFilterPopupOpen, setFilterPopupOpen] = useState(false);
+	const [selectedStatuses, setSelectedStatuses] = useState<(typeof STATUSES)[keyof typeof STATUSES][]>(
+		Object.values(STATUSES)
+	);
+	const [isFilterPopupDot, setIsFilterPopupDot] = useState(false);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -53,7 +58,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const { mutate: updateMutate } = useUpdateTimeBlock();
 	const { mutate: deleteMutate } = useDeleteTimeBlock();
 
-	const calendarEvents = timeBlockData ? processEvents(timeBlockData.data.data) : [];
+	const calendarEvents = timeBlockData ? processEvents(timeBlockData.data.data, selectedStatuses) : [];
 
 	useEffect(() => {
 		if (selectDate && calendarRef.current) {
@@ -238,14 +243,34 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		createMutate({ taskId: Number(info.event.id), startTime: start, endTime: end });
 	};
 
+	// CalendarSettingDropdown handler
+	const handleStatusChange = (status: (typeof STATUSES)[keyof typeof STATUSES]) => {
+		setSelectedStatuses((prev) => {
+			const updatedStatuses = prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status];
+			setIsFilterPopupDot(updatedStatuses.length !== Object.values(STATUSES).length);
+
+			return updatedStatuses;
+		});
+	};
+
+	// 완료 task 스타일링 위한 클래스명 추가 (주간)
+	const handleCompletedTask = (arg: EventMountArg) => {
+		const weekElement = arg.el.querySelector('.fc-event-main');
+		if (weekElement && arg.event.extendedProps.isCompleted) {
+			weekElement.classList.add('completed');
+		}
+	};
+
 	return (
 		<FullCalendarLayout size={size} currentView={currentView}>
 			<CalendarHeader
 				size={size}
 				date={date}
-				isActive={isCalendarPopupOpen}
+				isCalendarPopupActive={isCalendarPopupOpen}
+				isFilterPopupActive={isFilterPopupOpen}
 				handleCalendarPopup={handleCalendarPopup}
 				handleFilterPopup={handleFilterPopup}
+				isFilterPopupDot={isFilterPopupDot}
 			/>
 			<FullCalendar
 				height="100%"
@@ -268,6 +293,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				nowIndicator
 				dayMaxEvents
 				events={calendarEvents}
+				eventDidMount={(arg) => handleCompletedTask(arg)}
 				buttonText={{
 					month: '월',
 					timeGridWeekCustom: '주',
@@ -317,7 +343,14 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				// Todo: date props 실제값으로 변경 필요
 				<DateCorrectionModal date={new Date().toISOString()} onClick={handleCalendarPopup} top={9.8} right={0.8} />
 			)}
-			{isFilterPopupOpen && <CalendarSettingDropdown top={9.8} right={0.8} />}
+			{isFilterPopupOpen && (
+				<CalendarSettingDropdown
+					top={9.8}
+					right={0.8}
+					selectedStatuses={selectedStatuses}
+					handleStatusChange={handleStatusChange}
+				/>
+			)}
 			{isModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
 				<ModalDeleteDetail top={top} left={left} onClose={closeModal} onDelete={handleDelete} />
 			)}

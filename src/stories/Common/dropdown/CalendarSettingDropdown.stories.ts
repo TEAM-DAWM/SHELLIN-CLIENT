@@ -15,4 +15,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+	args: {
+		top: 0,
+		right: 0,
+		selectedStatuses: ['미완료', '진행중'],
+		handleStatusChange: () => {},
+	},
+};

@@ -1,4 +1,5 @@
 import { TimeBlockData } from '@/apis/timeBlocks/getTimeBlock/GetTimeBlock';
+import { STATUSES } from '@/constants/statuses';
 
 interface EventData {
 	title: string;
@@ -9,27 +10,31 @@ interface EventData {
 	extendedProps: {
 		taskId: number;
 		timeBlockId: number | null;
+		isCompleted: boolean;
 	};
 }
 
-const processEvents = (timeBlockData: TimeBlockData): EventData[] => {
+const processEvents = (timeBlockData: TimeBlockData, selectedStatuses: string[]): EventData[] => {
 	const events: EventData[] = [];
 
-	// tasks 데이터 처리
-	timeBlockData.tasks.forEach((task) => {
-		task.timeBlocks.forEach((timeBlock) => {
-			events.push({
-				title: task.name,
-				start: timeBlock.startTime,
-				end: timeBlock.endTime,
-				classNames: 'tasks',
-				extendedProps: {
-					taskId: task.id,
-					timeBlockId: timeBlock.id,
-				},
+	// tasks 데이터 처리 + 상태 필터링
+	timeBlockData.tasks
+		.filter((task) => selectedStatuses.includes(task.status))
+		.forEach((task) => {
+			task.timeBlocks.forEach((timeBlock) => {
+				events.push({
+					title: task.name,
+					start: timeBlock.startTime,
+					end: timeBlock.endTime,
+					classNames: task.status === STATUSES.COMPLETED ? 'tasks completed' : 'tasks',
+					extendedProps: {
+						taskId: task.id,
+						timeBlockId: timeBlock.id,
+						isCompleted: task.status === STATUSES.COMPLETED,
+					},
+				});
 			});
 		});
-	});
 
 	/**
 	 * TODO: 구글 캘린더 추후 다시 추가 예정

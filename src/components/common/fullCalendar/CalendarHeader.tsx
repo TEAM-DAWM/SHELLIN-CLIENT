@@ -7,12 +7,22 @@ import MainDate from '../v2/TextBox/MainDate';
 type CalendarHeaderProps = {
 	size: 'small' | 'big';
 	date: { year: number; month: number };
-	isActive: boolean;
+	isCalendarPopupActive: boolean;
+	isFilterPopupActive: boolean;
 	handleCalendarPopup: () => void;
 	handleFilterPopup: () => void;
+	isFilterPopupDot: boolean;
 };
 
-function CalendarHeader({ size, date, isActive, handleCalendarPopup, handleFilterPopup }: CalendarHeaderProps) {
+function CalendarHeader({
+	size,
+	date,
+	isCalendarPopupActive,
+	isFilterPopupActive,
+	handleCalendarPopup,
+	handleFilterPopup,
+	isFilterPopupDot,
+}: CalendarHeaderProps) {
 	const { color } = useTheme();
 
 	const activeButtonStyle = css`
@@ -20,7 +30,7 @@ function CalendarHeader({ size, date, isActive, handleCalendarPopup, handleFilte
 
 		background-color: ${color.Grey.Grey3};
 
-		${isActive &&
+		${(isCalendarPopupActive || isFilterPopupActive) &&
 		css`
 			:hover {
 				color: ${color.Grey.Grey5};
@@ -39,14 +49,15 @@ function CalendarHeader({ size, date, isActive, handleCalendarPopup, handleFilte
 					size="small"
 					iconName="IcnCalendar"
 					onClick={handleCalendarPopup}
-					additionalCss={isActive ? activeButtonStyle : undefined}
+					additionalCss={isCalendarPopupActive ? activeButtonStyle : undefined}
 				/>
 				<IconButton
 					type="normal"
 					size="small"
 					iconName="IcnFilter"
 					onClick={handleFilterPopup}
-					additionalCss={isActive ? activeButtonStyle : undefined}
+					additionalCss={isFilterPopupActive ? activeButtonStyle : undefined}
+					dot={isFilterPopupDot}
 				/>
 			</CalendarHeaderWrapper>
 		</CalendarHeaderContainer>
