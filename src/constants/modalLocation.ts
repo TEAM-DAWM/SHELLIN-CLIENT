@@ -1,5 +1,5 @@
 const MODAL = {
-	SCREEN_HEIGHT: 768,
+	SCREEN_HEIGHT: 1080,
 
 	// // Task 버튼 누르면 나오는 Modal 모달
 	TASK_MODAL_HEIGHT: 362,
