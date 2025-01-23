@@ -23,8 +23,8 @@ function DropdownButton({ status, handleStatusChange, handleStatusEdit, isModalO
 	// 필요하면 위치 변경 등 추가 작업 자유롭게 하세요
 	const [isOpen, setOpen] = useState(false);
 
-	const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-		e.stopPropagation();
+	const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
+		handleOpen(e);
 	};
 	const handleOpen = (e: React.MouseEvent<HTMLElement>) => {
 		e.stopPropagation();
@@ -61,21 +61,19 @@ function DropdownButton({ status, handleStatusChange, handleStatusEdit, isModalO
 
 	const iconType = isOpen ? 'IcnUp' : 'IcnDown';
 	return (
-		<DropdownWrapper
-			onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
-				handleMouseDown(e);
-			}}
-		>
-			<Button
-				type={getDropdownBtnType()}
-				label={status}
-				size="medium"
-				disabled={false}
-				rightIcon={iconType}
-				additionalCss={customStyle}
-				onClick={handleOpen}
-			/>
-			{isOpen && <StatusDropdown currentStatus={status} handleStatusChange={handleStatus} />}
+		<DropdownWrapper>
+			<button type="button" onMouseDown={handleMouseDown}>
+				<Button
+					type={getDropdownBtnType()}
+					label={status}
+					size="medium"
+					disabled={false}
+					rightIcon={iconType}
+					additionalCss={customStyle}
+					onClick={handleOpen}
+				/>
+				{isOpen && <StatusDropdown currentStatus={status} handleStatusChange={handleStatus} />}
+			</button>
 		</DropdownWrapper>
 	);
 }
