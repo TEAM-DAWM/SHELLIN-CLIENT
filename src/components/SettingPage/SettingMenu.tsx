@@ -16,7 +16,7 @@ function SettingMenu({ activeTab, onTabChange }: SettingMenuProps) {
 		<TabSection>
 			<Button
 				type="text-assistive"
-				size="medium"
+				size="large"
 				disabled={false}
 				label="계정 관리"
 				onClick={() => onTabChange('account')}
@@ -29,11 +29,14 @@ function SettingMenu({ activeTab, onTabChange }: SettingMenuProps) {
 const TabSection = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 0.4rem;
-	width: 20rem;
-	padding: 3.2rem 0;
 
-	border-right: 1px solid ${({ theme }) => theme.colorToken.Neutral.normal};
+	/* gap: 8px; */
+	align-self: stretch;
+	width: 44.8rem;
+	padding: 3.2rem 0;
+	padding: 32px 24px 0;
+
+	border-right: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 `;
 
 const activeButtonStyle = css`

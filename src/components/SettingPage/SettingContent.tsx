@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
 
-// 연동된 계정 영역
-// import AccountArea from '@/components/SettingPage/AccountArea';
 import ProfileArea from '@/components/SettingPage/ProfileArea';
 
 type TabType = 'account' | 'category' | 'routine' | 'history';
@@ -16,7 +14,6 @@ function SettingContent({ activeTab }: SettingContentProps) {
 			{activeTab === 'account' && (
 				<ContentWrapper>
 					<ProfileArea />
-					{/* <AccountArea calendarAccount={[]} /> */}
 				</ContentWrapper>
 			)}
 		</ContentSection>
