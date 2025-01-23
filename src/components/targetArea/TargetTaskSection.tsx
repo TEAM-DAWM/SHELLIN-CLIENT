@@ -53,12 +53,15 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 				<>
 					{tasks.map((task: TaskType, index: number) => (
 						<BeautifulDnDDraggable key={task.id} draggableId={task.id.toString()} index={index}>
-							{(provided) => (
+							{(provided, snapshot) => (
 								<TodoSizedWrapper
 									ref={provided.innerRef}
 									{...provided.draggableProps}
 									{...provided.dragHandleProps}
-									style={provided.draggableProps.style}
+									style={{
+										...provided.draggableProps.style,
+										opacity: snapshot.isDragging ? 0 : 1,
+									}}
 								>
 									<Todo
 										// location="target"

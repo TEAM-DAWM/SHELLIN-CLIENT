@@ -59,12 +59,12 @@ function StagingAreaTaskContainer({
 						{tasks &&
 							tasks.map((task: TaskType, index: number) => (
 								<BeautifulDnDDraggable key={task.id} draggableId={task.id.toString()} index={index}>
-									{(provided) => (
+									{(provided, snapshot) => (
 										<div
 											ref={provided.innerRef}
 											{...provided.draggableProps}
 											{...provided.dragHandleProps}
-											style={{ userSelect: 'none', ...provided.draggableProps.style }}
+											style={{ ...provided.draggableProps.style, opacity: snapshot.isDragging ? 0 : 1 }}
 										>
 											<div
 												className="todo-item" // FullCalendarDraggable 대상
