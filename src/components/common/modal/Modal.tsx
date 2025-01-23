@@ -40,10 +40,10 @@ function Modal({ isOpen, sizeType, top, left, onClose, taskId, targetDate, locat
 
 	useEffect(() => {
 		if (isFetched && data) {
-			setTaskName(data.data.name);
-			setDesc(data.data.description);
-			setDeadLineDate(data.data.deadLine.date);
-			setDeadLineTime(data.data.deadLine.time);
+			setTaskName(data.name);
+			setDesc(data.description);
+			setDeadLineDate(data.deadLine.date || '');
+			setDeadLineTime(data.deadLine.time || '');
 
 			setStartTime('');
 			setEndTime('');

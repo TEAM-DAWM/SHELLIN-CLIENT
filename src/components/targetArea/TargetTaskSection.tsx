@@ -17,14 +17,12 @@ interface TargetTaskSectionProps {
 	targetDate: string;
 }
 function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, targetDate }: TargetTaskSectionProps) {
-	// TODO: 추후에 해당 로직을 연결해야 합니다.
-
 	useEffect(() => {
 		const container = document.getElementById('todolist-task-container');
 
 		if (container) {
 			const draggable = new FullCalendarDraggable(container, {
-				itemSelector: '.todo-item', // 드래그 가능한 요소
+				itemSelector: '.todo-item',
 				eventData: () => {
 					if (selectedTarget) {
 						return {
@@ -62,27 +60,23 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 									{...provided.dragHandleProps}
 									style={provided.draggableProps.style}
 								>
-									<div
-										className="todo-item" // FullCalendarDraggable 대상
-									>
-										<Todo
-											// location="target"
-											key={task.id}
-											title={task.name}
-											deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
-											deadlineTime={task.deadLine?.time || undefined}
-											taskId={task.id}
-											targetDate={targetDate}
-											onClick={() => handleSelectedTarget(task)}
-											status={task.status}
+									<Todo
+										// location="target"
+										key={task.id}
+										title={task.name}
+										deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
+										deadlineTime={task.deadLine?.time || undefined}
+										taskId={task.id}
+										targetDate={targetDate}
+										onClick={() => handleSelectedTarget(task)}
+										status={task.status}
 
-											// handleSelectedTarget={handleSelectedTarget}
-											// selectedTarget={selectedTarget}
-											// isDragging={snapshot.isDragging}
-											// targetDate={targetDate}
-											// dashBoardInprogress={false}
-										/>
-									</div>
+										// handleSelectedTarget={handleSelectedTarget}
+										// selectedTarget={selectedTarget}
+										// isDragging={snapshot.isDragging}
+										// targetDate={targetDate}
+										// dashBoardInprogress={false}
+									/>
 								</TodoSizedWrapper>
 							)}
 						</BeautifulDnDDraggable>

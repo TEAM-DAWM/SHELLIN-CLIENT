@@ -24,5 +24,6 @@ export const Default: Story = {
 		onClose: () => {},
 		status: '진행중',
 		handleStatusEdit: () => {},
+		targetDate: '2025-01-22',
 	},
 };
