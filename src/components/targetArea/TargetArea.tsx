@@ -70,6 +70,7 @@ const TargetAreaLayout = styled.section`
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: 47.2rem;
+	height: 108rem;
 	margin: 0.8rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
