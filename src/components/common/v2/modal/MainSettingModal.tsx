@@ -24,7 +24,7 @@ interface MainSettingModalProps {
 	handleStatusEdit: (newStatus: StatusType) => void;
 	targetDate: string;
 	timeBlockId?: number;
-	isDeadlineBoxOpen: boolean;
+	isDeadlineBoxOpen?: boolean;
 }
 
 function MainSettingModal({
@@ -37,7 +37,7 @@ function MainSettingModal({
 	handleStatusEdit,
 	targetDate,
 	timeBlockId,
-	isDeadlineBoxOpen,
+	isDeadlineBoxOpen = false,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutate: editMutate } = usePatchTaskDescription();
