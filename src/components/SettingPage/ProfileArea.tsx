@@ -1,24 +1,29 @@
 import styled from '@emotion/styled';
 
-import Images from '@/assets/images';
-import USERDATA from '@/constants/settingUserData';
+import LogOutBtn from './LogOutBtn';
 
-function ProfileArea() {
+import { UserData } from '@/apis/user/userInfoType';
+
+interface ProfileAreaProps {
+	userData: UserData | undefined;
+}
+function ProfileArea({ userData }: ProfileAreaProps) {
 	return (
 		<ProfileAreaLayout>
 			<ProfileBox>
 				프로필
 				<ProfileWrapper>
-					<ProfileImg src={Images.sampleImg} alt="프로필 이미지" />
+					<ProfileImg src={userData?.image} alt="프로필 이미지" />
 					<ProfileTextBox>
 						<LastName>
-							{USERDATA?.familyName}
-							{USERDATA?.givenName}
+							{userData?.familyName}
+							{userData?.givenName}
 						</LastName>
-						<Email>{USERDATA.email}</Email>
+						<Email>{userData?.email}</Email>
 					</ProfileTextBox>
 				</ProfileWrapper>
 			</ProfileBox>
+			<LogOutBtn />
 		</ProfileAreaLayout>
 	);
 }
@@ -29,6 +34,7 @@ const ProfileAreaLayout = styled.div`
 	display: flex;
 	flex: 1 0 0;
 	flex-direction: column;
+	gap: 3.2rem;
 	align-items: flex-start;
 	align-self: stretch;
 	padding: 32px 32px 0;

@@ -15,19 +15,19 @@ function Setting() {
 	const handleTabChange = (tab: TabType) => {
 		setActiveTab(tab);
 	};
-	const { isLoading } = useGetUserInfo();
+	const { data: userInfo, isLoading } = useGetUserInfo();
 	if (isLoading) {
 		return <LoadingSpinner />;
 	}
 
 	return (
 		<SettingLayout>
-			<NavBar />
+			<NavBar isOpen={false} handleSideBar={() => {}} />
 			<SettingArea>
 				<SettingHeader>설정</SettingHeader>
 				<MainWrapper>
 					<SettingMenu activeTab={activeTab} onTabChange={handleTabChange} />
-					<SettingContent activeTab={activeTab} />
+					<SettingContent activeTab={activeTab} userData={userInfo?.data} />
 				</MainWrapper>
 			</SettingArea>
 		</SettingLayout>
