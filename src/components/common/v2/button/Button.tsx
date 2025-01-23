@@ -18,6 +18,7 @@ type ButtonProps = {
 	label: string;
 	additionalCss?: SerializedStyles;
 	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+	onMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 function Button({
@@ -28,7 +29,8 @@ function Button({
 	rightIcon,
 	label,
 	additionalCss,
-	onClick,
+	onClick = () => {},
+	onMouseDown = () => {},
 }: ButtonProps) {
 	const { font, color } = useTheme();
 	// 크기별 사이즈
@@ -139,7 +141,7 @@ function Button({
 	};
 
 	return (
-		<ButtonLayout onClick={disabled ? () => {} : onClick}>
+		<ButtonLayout onClick={disabled ? () => {} : onClick} onMouseDown={onMouseDown}>
 			{leftIcon && <Icon name={leftIcon} size={iconSize[size]} />}
 			{label}
 			{rightIcon && <Icon name={rightIcon} size={iconSize[size]} />}

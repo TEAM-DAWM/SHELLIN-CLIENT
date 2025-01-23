@@ -20,7 +20,7 @@ function StatusDropdown({ currentStatus, handleStatusChange }: StatusDropdownPro
 				<Button
 					key={status}
 					label={status}
-					onClick={() => handleStatusChange(status)}
+					onMouseDown={() => handleStatusChange(status)}
 					size="large"
 					type={status === STATUSES.COMPLETED ? 'text-primary' : 'text-assistive'}
 				/>
