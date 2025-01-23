@@ -551,7 +551,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		display: flex;
 		gap: 4px;
 		align-items: center;
-		width: 12rem;
 		width: ${({ size }) => (size === 'big' ? '18rem' : '12rem')};
 		height: 2rem;
 		padding: 0 4px 0 8px;
