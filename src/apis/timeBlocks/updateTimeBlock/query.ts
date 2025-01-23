@@ -16,6 +16,10 @@ const usePatchTimeBlock = () => {
 				addToast(response.message, response.code);
 				throw new Error('error');
 			}
+			if (response && response.code === 'conflict') {
+				addToast(response.message, 'error');
+				throw new Error('error');
+			}
 			return response;
 		},
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['timeblock'] }),
