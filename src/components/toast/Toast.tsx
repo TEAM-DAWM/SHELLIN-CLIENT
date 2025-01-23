@@ -11,7 +11,7 @@ const toastIcon: Record<ToastType, { icon: JSX.Element }> = {
 	error: {
 		icon: <Icon name="IcnDelete" />,
 	},
-	info: {
+	conflict: {
 		icon: <Icon name="IcnAlert" />,
 	},
 };
@@ -49,7 +49,7 @@ const ToastMessage = styled.div<{ code: string }>`
 	align-items: center;
 	justify-content: space-between;
 	box-sizing: border-box;
-	width: 44rem;
+	min-width: 44rem;
 	height: 6.4rem;
 	padding: 1.6rem;
 
@@ -94,7 +94,7 @@ const TextLayout = styled.div`
 	display: flex;
 	gap: 0.8rem;
 	align-items: center;
-	width: 26.8rem;
+	min-width: 26.8rem;
 
 	svg {
 		width: 2.4rem;

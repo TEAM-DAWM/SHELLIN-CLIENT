@@ -8,12 +8,14 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 
 import DateCorrectionModal from '../datePicker/DateCorrectionModal';
 import CalendarSettingDropdown from '../v2/dropdown/CalendarSettingDropdown';
+import MainSettingModal from '../v2/modal/MainSettingModal';
 import TimeBlockDeleteModal from '../v2/modal/TimeBlockDeleteModal';
 
 import CalendarHeader from './CalendarHeader';
 import CustomDayCellContent from './CustomDayCellContent';
 import processEvents from './processEvents';
 
+import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import useDeleteTimeBlock from '@/apis/timeBlocks/deleteTimeBlock/query';
 import useGetTimeBlock from '@/apis/timeBlocks/getTimeBlock/query';
 import usePostTimeBlock from '@/apis/timeBlocks/postTimeBlock/query';
@@ -23,7 +25,8 @@ import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarSty
 import customSlotLabelContent from '@/components/common/fullCalendar/fullCalendarUtils';
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
-import { TaskType } from '@/types/tasks/taskType';
+import { StatusType, TaskType } from '@/types/tasks/taskType';
+import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
 
 interface FullCalendarBoxProps {
 	size: 'small' | 'big';
@@ -41,8 +44,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [top, setTop] = useState(0);
 	const [left, setLeft] = useState(0);
-	const [modalTaskId, setModalTaskId] = useState<number | null>(null);
-	const [modalTimeBlockId, setModalTimeBlockId] = useState<number | null>(null);
+	const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+	const [selectedTimeBlockId, setSelectedTimeBlockId] = useState<number | null>(null);
+	const [selectdTimeBlockDate, setSelectdTimeBlockDate] = useState<string | null>(null);
+
 	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 	const [isCalendarPopupOpen, setCalendarPopupOpen] = useState(false);
 	const [isFilterPopupOpen, setFilterPopupOpen] = useState(false);
@@ -50,6 +55,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		Object.values(STATUSES)
 	);
 	const [isFilterPopupDot, setIsFilterPopupDot] = useState(false);
+	const [isMainModalOpen, setMainModalOpen] = useState(false);
+	const [isDeadlineBoxOpen, setDeadlineBoxOpen] = useState(false);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -113,24 +120,36 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		const rect = info.el.getBoundingClientRect();
 		const calculatedTop = rect.top;
 		const screenHeight = window.innerHeight;
-		const adjustedTop = Math.min(calculatedTop, screenHeight - MODAL.TASK_DELETE_HEIGHT);
+		const adjustedTop = Math.min(calculatedTop, screenHeight - MODAL.TASK_MODAL_HEIGHT);
 		setTop(adjustedTop);
-		setLeft(rect.left - MODAL.TASK_DELETE_WIDTH);
+		setLeft(rect.left - MODAL.TASK_MODAL_WIDTH - 50);
 
-		/** TODO: 클릭 시 MainModal 띄우기 */
-		// const clickedEvent = info.event.extendedProps;
+		const clickedEvent = info.event;
 
-		// if (clickedEvent) {
-		// 	setModalTaskId(clickedEvent.taskId);
-		// 	setModalTimeBlockId(clickedEvent.timeBlockId);
-		// 	setDeleteModalOpen(true);
-		// }
+		if (clickedEvent) {
+			setSelectedTaskId(clickedEvent.extendedProps.taskId);
+			setSelectedTimeBlockId(clickedEvent.extendedProps.timeBlockId);
+			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
+			setMainModalOpen(true);
+		}
 	};
 
-	const closeModal = () => {
+	const closeDeleteModal = () => {
 		setDeleteModalOpen(false);
-		setModalTaskId(null);
-		setModalTimeBlockId(null);
+		setSelectedTaskId(null);
+		setSelectedTimeBlockId(null);
+	};
+
+	const closeMainModal = () => {
+		setMainModalOpen(false);
+		setDeadlineBoxOpen(false);
+		setSelectedTaskId(null);
+		setSelectedTimeBlockId(null);
+
+		/** TODO:
+		 * 닫힐 때 이벤트 생성하기
+		 * createMutate({ taskId: Number(info.event.id), startTime: start, endTime: end });
+		 * */
 	};
 
 	const removeTimezone = (str: string) => str.replace(/:\d{2}[+-]\d{2}:\d{2}$/, '');
@@ -194,10 +213,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const isSelectable = !!selectedTarget;
 
 	const handleDelete = () => {
-		console.log('taskId, timeBlockId', modalTaskId, modalTimeBlockId);
+		console.log('taskId, timeBlockId', selectedTaskId, selectedTimeBlockId);
 
-		if (modalTaskId && modalTimeBlockId) {
-			deleteMutate({ taskId: modalTaskId, timeBlockId: modalTimeBlockId });
+		if (selectedTaskId && selectedTimeBlockId) {
+			deleteMutate({ taskId: selectedTaskId, timeBlockId: selectedTimeBlockId });
 		} else {
 			console.error('taskId 또는 timeBlockId가 존재하지 않습니다.');
 		}
@@ -216,11 +235,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		setTop(adjustedTop);
 		setLeft(rect.left - MODAL.TASK_DELETE_WIDTH - 8);
 
-		const clickedEvent = info.event.extendedProps;
+		const clickedEvent = info.event;
 
 		if (clickedEvent) {
-			setModalTaskId(clickedEvent.taskId);
-			setModalTimeBlockId(clickedEvent.timeBlockId);
+			setSelectedTaskId(clickedEvent.extendedProps.taskId);
+			setSelectedTimeBlockId(clickedEvent.extendedProps.timeBlockId);
+			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
 			setDeleteModalOpen(true);
 		}
 	};
@@ -249,7 +269,36 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		endDate.setHours(endDate.getHours() + 1);
 		const end = formatDateToLocal(endDate);
 
-		createMutate({ taskId: Number(info.event.id), startTime: start, endTime: end });
+		const el = info.draggedEl;
+		const clickedEvent = info.event.extendedProps;
+
+		const rect = el.getBoundingClientRect();
+		const calculatedTop = rect.top;
+		const screenHeight = window.innerHeight;
+		const adjustedTop = Math.min(calculatedTop, screenHeight - MODAL.TIMEBLOCK_MONTH.HEIGHT);
+
+		const adjustedLeft = rect.left - MODAL.TIMEBLOCK_MONTH.SMALL_WIDTH * 2;
+
+		setTop(adjustedTop);
+		setLeft(adjustedLeft);
+
+		console.log('드롭된 task id', Number(info.event.id));
+
+		createMutate(
+			{ taskId: Number(info.event.id), startTime: start, endTime: end },
+			{
+				onSuccess: () => {
+					if (clickedEvent) {
+						setSelectedTaskId(Number(info.event.id));
+						setSelectedTimeBlockId(clickedEvent.timeBlockId);
+						setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
+						setMainModalOpen(true);
+						setDeadlineBoxOpen(true);
+					}
+				},
+				onError: () => closeMainModal(),
+			}
+		);
 	};
 
 	// CalendarSettingDropdown handler
@@ -274,6 +323,15 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		handleCompletedTask(arg);
 		// 우클릭 시
 		arg.el.addEventListener('contextmenu', (event) => handleRightClick(arg, event));
+	};
+
+	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
+
+	const handleStatusEdit = (newStatus: StatusType) => {
+		if (selectedTaskId !== null) {
+			const targetDate = selectDate ? selectDate.toISOString().split('T')[0] : todayDate;
+			updateStateMutate({ taskId: selectedTaskId, targetDate, status: newStatus });
+		}
 	};
 
 	return (
@@ -371,8 +429,22 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					handleStatusChange={handleStatusChange}
 				/>
 			)}
-			{isDeleteModalOpen && modalTaskId !== null && modalTimeBlockId !== null && (
-				<TimeBlockDeleteModal top={top} left={left} onClose={closeModal} onDelete={handleDelete} />
+			{isDeleteModalOpen && selectedTaskId !== null && selectedTimeBlockId !== null && (
+				<TimeBlockDeleteModal top={top} left={left} onClose={closeDeleteModal} onDelete={handleDelete} />
+			)}
+			{isMainModalOpen && selectedTaskId !== null && selectedTimeBlockId !== null && (
+				<MainSettingModal
+					isOpen={isMainModalOpen}
+					top={top}
+					left={left}
+					onClose={closeMainModal}
+					status="미완료"
+					taskId={selectedTaskId}
+					handleStatusEdit={handleStatusEdit}
+					targetDate={selectdTimeBlockDate ? formatDatetoLocalDate(selectdTimeBlockDate) : formatDatetoLocalDate(today)}
+					timeBlockId={selectedTimeBlockId}
+					isDeadlineBoxOpen={isDeadlineBoxOpen}
+				/>
 			)}
 		</FullCalendarLayout>
 	);

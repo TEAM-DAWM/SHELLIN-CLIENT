@@ -37,6 +37,6 @@ export const InfoToast: Story = {
 	args: {
 		message: '할 일을 완료했어요',
 		onClose: fn(),
-		code: 'info',
+		code: 'success',
 	},
 };

@@ -23,6 +23,13 @@ const MODAL = {
 			left: -20.2,
 		},
 	},
+
+	// timeBlock 월간이벤트 크기
+	TIMEBLOCK_MONTH: {
+		HEIGHT: 20,
+		SMALL_WIDTH: 120,
+		BIG_WIDTH: 180,
+	},
 };
 
 export default MODAL;
