@@ -46,6 +46,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [left, setLeft] = useState(0);
 	const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
 	const [selectedTimeBlockId, setSelectedTimeBlockId] = useState<number | null>(null);
+	const [selectdTimeBlockDate, setSelectdTimeBlockDate] = useState<string | null>(null);
+
 	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 	const [isCalendarPopupOpen, setCalendarPopupOpen] = useState(false);
 	const [isFilterPopupOpen, setFilterPopupOpen] = useState(false);
@@ -122,11 +124,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		setTop(adjustedTop);
 		setLeft(rect.left - MODAL.TASK_MODAL_WIDTH - 50);
 
-		const clickedEvent = info.event.extendedProps;
+		const clickedEvent = info.event;
 
 		if (clickedEvent) {
-			setSelectedTaskId(clickedEvent.taskId);
-			setSelectedTimeBlockId(clickedEvent.timeBlockId);
+			setSelectedTaskId(clickedEvent.extendedProps.taskId);
+			setSelectedTimeBlockId(clickedEvent.extendedProps.timeBlockId);
+			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
 			setMainModalOpen(true);
 		}
 	};
@@ -232,11 +235,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		setTop(adjustedTop);
 		setLeft(rect.left - MODAL.TASK_DELETE_WIDTH - 8);
 
-		const clickedEvent = info.event.extendedProps;
+		const clickedEvent = info.event;
 
 		if (clickedEvent) {
-			setSelectedTaskId(clickedEvent.taskId);
-			setSelectedTimeBlockId(clickedEvent.timeBlockId);
+			setSelectedTaskId(clickedEvent.extendedProps.taskId);
+			setSelectedTimeBlockId(clickedEvent.extendedProps.timeBlockId);
+			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
 			setDeleteModalOpen(true);
 		}
 	};
@@ -287,6 +291,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					if (clickedEvent) {
 						setSelectedTaskId(Number(info.event.id));
 						setSelectedTimeBlockId(clickedEvent.timeBlockId);
+						setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
 						setMainModalOpen(true);
 						setDeadlineBoxOpen(true);
 					}
@@ -436,7 +441,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					status="미완료"
 					taskId={selectedTaskId}
 					handleStatusEdit={handleStatusEdit}
-					targetDate={selectDate ? formatDatetoLocalDate(selectDate) : formatDatetoLocalDate(today)}
+					targetDate={selectdTimeBlockDate ? formatDatetoLocalDate(selectdTimeBlockDate) : formatDatetoLocalDate(today)}
 					timeBlockId={selectedTimeBlockId}
 					isDeadlineBoxOpen={isDeadlineBoxOpen}
 				/>

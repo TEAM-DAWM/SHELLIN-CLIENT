@@ -61,6 +61,8 @@ function MainSettingModal({
 	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
 	const { content: descriptionContent, onChange: onDescriptionChange, handleContent: handleDesc } = useInput('');
 	const { content: deadlineTime, handleContent: handleDeadlineTime } = useInput('');
+	const { content: startTime, handleContent: handleStartTime } = useInput('');
+	const { content: endTime, handleContent: handleEndTime } = useInput('');
 	const [deadlineDate, setDeadlineDate] = useState<Date | null>(null);
 
 	useEffect(() => {
@@ -69,6 +71,8 @@ function MainSettingModal({
 			handleDesc(taskDetailData?.description || '');
 			handleDeadlineDate(taskDetailData?.deadLine.date ? new Date(taskDetailData?.deadLine.date) : null);
 			handleDeadlineTime(taskDetailData?.deadLine.time || '');
+			handleStartTime(taskDetailData?.timeBlock.startTime || '');
+			handleEndTime(taskDetailData?.timeBlock.endTime || '');
 		}
 	}, [isTaskDetailFetched]);
 	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
@@ -104,6 +108,14 @@ function MainSettingModal({
 	const handleTaskStatusChange = (newStatus: StatusType) => {
 		setTaskStatus(newStatus);
 	};
+	const formatTimeWithAmPm = (time: string) => {
+		if (time) {
+			const onlyTime = time.split('T')[1];
+			const [hour, minute] = onlyTime.split(':').map(Number);
+			const period = hour >= 12 ? 'pm' : 'am';
+			return `${hour}:${minute.toString().padStart(2, '0')} ${period}`;
+		}
+	};
 
 	if (!isOpen) return null;
 	if (isTaskDetailLoading) return <div />;
@@ -138,9 +150,9 @@ function MainSettingModal({
 				</PopUpTitleBox>
 				{timeBlockId && (
 					<DeadlineBox
-						date={new Date()}
-						startTime="11:00am"
-						endTime="06:00pm"
+						date={new Date(targetDate)}
+						startTime={formatTimeWithAmPm(startTime) || '06:00pm'}
+						endTime={formatTimeWithAmPm(endTime) || '06:00pm'}
 						label="진행 기간"
 						isDueDate={isDeadlineBoxOpen}
 					/>
