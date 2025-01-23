@@ -26,6 +26,7 @@ import customSlotLabelContent from '@/components/common/fullCalendar/fullCalenda
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
+import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
 
 interface FullCalendarBoxProps {
 	size: 'small' | 'big';
@@ -53,6 +54,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	);
 	const [isFilterPopupDot, setIsFilterPopupDot] = useState(false);
 	const [isMainModalOpen, setMainModalOpen] = useState(false);
+	const [isDeadlineBoxOpen, setDeadlineBoxOpen] = useState(false);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -137,6 +139,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 	const closeMainModal = () => {
 		setMainModalOpen(false);
+		setDeadlineBoxOpen(false);
 		setSelectedTaskId(null);
 		setSelectedTimeBlockId(null);
 
@@ -275,15 +278,19 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		setTop(adjustedTop);
 		setLeft(adjustedLeft);
 
-		if (clickedEvent) {
-			setSelectedTaskId(clickedEvent.taskId);
-			setSelectedTimeBlockId(clickedEvent.timeBlockId);
-			setMainModalOpen(true);
-		}
+		console.log('드롭된 task id', Number(info.event.id));
 
 		createMutate(
 			{ taskId: Number(info.event.id), startTime: start, endTime: end },
 			{
+				onSuccess: () => {
+					if (clickedEvent) {
+						setSelectedTaskId(Number(info.event.id));
+						setSelectedTimeBlockId(clickedEvent.timeBlockId);
+						setMainModalOpen(true);
+						setDeadlineBoxOpen(true);
+					}
+				},
 				onError: () => closeMainModal(),
 			}
 		);
@@ -429,7 +436,9 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					status="미완료"
 					taskId={selectedTaskId}
 					handleStatusEdit={handleStatusEdit}
-					targetDate={selectDate ? selectDate.toDateString() : todayDate}
+					targetDate={selectDate ? formatDatetoLocalDate(selectDate) : formatDatetoLocalDate(today)}
+					timeBlockId={selectedTimeBlockId}
+					isDeadlineBoxOpen={isDeadlineBoxOpen}
 				/>
 			)}
 		</FullCalendarLayout>

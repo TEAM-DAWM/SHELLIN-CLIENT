@@ -23,6 +23,8 @@ interface MainSettingModalProps {
 	status: StatusType;
 	handleStatusEdit: (newStatus: StatusType) => void;
 	targetDate: string;
+	timeBlockId?: number;
+	isDeadlineBoxOpen: boolean;
 }
 
 function MainSettingModal({
@@ -34,6 +36,8 @@ function MainSettingModal({
 	status,
 	handleStatusEdit,
 	targetDate,
+	timeBlockId,
+	isDeadlineBoxOpen,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutate: editMutate } = usePatchTaskDescription();
@@ -43,6 +47,15 @@ function MainSettingModal({
 		isLoading: isTaskDetailLoading,
 		isFetched: isTaskDetailFetched,
 	} = useTaskDescription({ taskId, targetDate, isOpen });
+
+	if (isTaskDetailFetched) {
+		console.log('taskDetailData', taskDetailData);
+		if (!timeBlockId) {
+			// eslint-disable-next-line no-param-reassign
+			timeBlockId = taskDetailData?.timeBlock?.id;
+		}
+	}
+	console.log('taskId, targetDate, timeblockId', taskId, targetDate, timeBlockId);
 
 	// === useInput ===
 	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
@@ -123,7 +136,15 @@ function MainSettingModal({
 				<PopUpTitleBox>
 					<PopUp type="description" defaultValue={descriptionContent} onChange={onDescriptionChange} />
 				</PopUpTitleBox>
-				<DeadlineBox date={new Date()} startTime="11:00am" endTime="06:00pm" label="진행 기간" />
+				{timeBlockId && (
+					<DeadlineBox
+						date={new Date()}
+						startTime="11:00am"
+						endTime="06:00pm"
+						label="진행 기간"
+						isDueDate={isDeadlineBoxOpen}
+					/>
+				)}
 			</MainSettingModalBodyLayout>
 			<MainSettingModalButtonLayout>
 				<Button type="solid" size="medium" label="확인" onClick={handleConfirm} />
