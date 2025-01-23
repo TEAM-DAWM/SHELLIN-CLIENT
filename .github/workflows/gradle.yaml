@@ -44,10 +44,10 @@ jobs:
 
       - name: .env setting
         run: |
-            echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env
-            echo "VITE_GOOGLE_LOGIN_CLIENT_ID=${{ secrets.VITE_GOOGLE_LOGIN_CLIENT_ID }}" >> .env
-            echo "VITE_GOOGLE_CALENDAR_CLIENT_ID=${{ secrets.VITE_GOOGLE_CALENDAR_CLIENT_ID }}" >> .env
-            echo "VITE_MAZE_CODE=${{ secrets.VITE_MAZE_CODE }}" >> .env
+          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env
+          echo "VITE_GOOGLE_LOGIN_CLIENT_ID=${{ secrets.VITE_GOOGLE_LOGIN_CLIENT_ID }}" >> .env
+          echo "VITE_GOOGLE_CALENDAR_CLIENT_ID=${{ secrets.VITE_GOOGLE_CALENDAR_CLIENT_ID }}" >> .env
+          echo "VITE_MAZE_CODE=${{ secrets.VITE_MAZE_CODE }}" >> .env
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
