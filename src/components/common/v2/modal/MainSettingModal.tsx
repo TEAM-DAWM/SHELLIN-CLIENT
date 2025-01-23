@@ -49,14 +49,11 @@ function MainSettingModal({
 	} = useTaskDescription({ taskId, targetDate, isOpen });
 
 	if (isTaskDetailFetched) {
-		console.log('taskDetailData', taskDetailData);
 		if (!timeBlockId) {
 			// eslint-disable-next-line no-param-reassign
 			timeBlockId = taskDetailData?.timeBlock?.id;
 		}
 	}
-	console.log('taskId, targetDate, timeblockId', taskId, targetDate, timeBlockId);
-
 	// === useInput ===
 	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
 	const { content: descriptionContent, onChange: onDescriptionChange, handleContent: handleDesc } = useInput('');
@@ -71,8 +68,8 @@ function MainSettingModal({
 			handleDesc(taskDetailData?.description || '');
 			handleDeadlineDate(taskDetailData?.deadLine.date ? new Date(taskDetailData?.deadLine.date) : null);
 			handleDeadlineTime(taskDetailData?.deadLine.time || '');
-			handleStartTime(taskDetailData?.timeBlock.startTime || '');
-			handleEndTime(taskDetailData?.timeBlock.endTime || '');
+			handleStartTime(taskDetailData?.timeBlock?.startTime || '');
+			handleEndTime(taskDetailData?.timeBlock?.endTime || '');
 		}
 	}, [isTaskDetailFetched]);
 	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
@@ -115,6 +112,8 @@ function MainSettingModal({
 			const period = hour >= 12 ? 'pm' : 'am';
 			return `${hour}:${minute.toString().padStart(2, '0')} ${period}`;
 		}
+		// 임시 리턴
+		return '06:00pm';
 	};
 
 	if (!isOpen) return null;
