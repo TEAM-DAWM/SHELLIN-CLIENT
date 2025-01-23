@@ -57,12 +57,10 @@ const SettingArea = styled.div`
 const SettingHeader = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 0.8rem;
 	align-items: flex-start;
 	align-self: stretch;
 	justify-content: center;
 	width: 100%;
-	height: 9.6rem;
 	padding: 5.2rem 0 1.2rem 2.4rem;
 
 	color: ${({ theme }) => theme.colorToken.Neutral.light};
