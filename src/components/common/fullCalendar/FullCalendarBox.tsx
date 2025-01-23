@@ -139,6 +139,11 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		setMainModalOpen(false);
 		setSelectedTaskId(null);
 		setSelectedTimeBlockId(null);
+
+		/** TODO:
+		 * 닫힐 때 이벤트 생성하기
+		 * createMutate({ taskId: Number(info.event.id), startTime: start, endTime: end });
+		 * */
 	};
 
 	const removeTimezone = (str: string) => str.replace(/:\d{2}[+-]\d{2}:\d{2}$/, '');
@@ -257,7 +262,31 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		endDate.setHours(endDate.getHours() + 1);
 		const end = formatDateToLocal(endDate);
 
-		createMutate({ taskId: Number(info.event.id), startTime: start, endTime: end });
+		const el = info.draggedEl;
+		const clickedEvent = info.event.extendedProps;
+
+		const rect = el.getBoundingClientRect();
+		const calculatedTop = rect.top;
+		const screenHeight = window.innerHeight;
+		const adjustedTop = Math.min(calculatedTop, screenHeight - MODAL.TIMEBLOCK_MONTH.HEIGHT);
+
+		const adjustedLeft = rect.left - MODAL.TIMEBLOCK_MONTH.SMALL_WIDTH * 2;
+
+		setTop(adjustedTop);
+		setLeft(adjustedLeft);
+
+		if (clickedEvent) {
+			setSelectedTaskId(clickedEvent.taskId);
+			setSelectedTimeBlockId(clickedEvent.timeBlockId);
+			setMainModalOpen(true);
+		}
+
+		createMutate(
+			{ taskId: Number(info.event.id), startTime: start, endTime: end },
+			{
+				onError: () => closeMainModal(),
+			}
+		);
 	};
 
 	// CalendarSettingDropdown handler
@@ -400,6 +429,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					status="미완료"
 					taskId={selectedTaskId}
 					handleStatusEdit={handleStatusEdit}
+					targetDate={selectDate ? selectDate.toDateString() : todayDate}
 				/>
 			)}
 		</FullCalendarLayout>
