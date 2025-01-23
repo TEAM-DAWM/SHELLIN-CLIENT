@@ -7,17 +7,7 @@ import DropdownButton from '../control/DropdownButton';
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
 import MODAL from '@/constants/modalLocation';
-import useTodoEventHandler from '@/hooks/useTodoEventHandler';
 import { STATUS } from '@/types/tasks/taskType';
-
-const TODO_EVENT_STATE = {
-	DEFAULT: 'default',
-	HOVER: 'hover',
-	PRESSED: 'pressed',
-	FLOATED: 'floated',
-} as const;
-
-type TodoEventState = (typeof TODO_EVENT_STATE)[keyof typeof TODO_EVENT_STATE];
 
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
@@ -44,9 +34,6 @@ function Todo({
 	preventDoubleClick,
 	targetDate,
 }: TodoProps) {
-	const { state, handleMouseEnter, handleMouseLeave, handleMouseDown, handleMouseUp, handleDragStart, handleDragEnd } =
-		useTodoEventHandler();
-
 	const [status, setStatus] = useState<StatusType>(initStatus);
 	const isCompleted = status === STATUS.COMPLETE;
 
@@ -89,19 +76,7 @@ function Todo({
 	return (
 		<>
 			<div className="todo-item">
-				<TodoContainer
-					isCompleted={isCompleted}
-					state={state}
-					onDoubleClick={handleDoubleClick}
-					onMouseEnter={handleMouseEnter}
-					onMouseLeave={handleMouseLeave}
-					onMouseDown={handleMouseDown}
-					onMouseUp={handleMouseUp}
-					onDragStart={handleDragStart}
-					onDragEnd={handleDragEnd}
-					draggable
-					onClick={onClick}
-				>
+				<TodoContainer isCompleted={isCompleted} onDoubleClick={handleDoubleClick} draggable onClick={onClick}>
 					<TodoWrapper>
 						<span className="todo-title">{title}</span>
 						{deadlineDate && (
@@ -149,34 +124,6 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	border-radius: 12px;
 `;
 
-const stateStyles = ({ theme, state, isCompleted }: { theme: Theme; state: TodoEventState; isCompleted: boolean }) => {
-	switch (state) {
-		case TODO_EVENT_STATE.PRESSED:
-			return css`
-				background-color: ${theme.colorToken.Component.strong};
-				border: 1px solid ${theme.colorToken.Outline.primaryStrong};
-			`;
-		case TODO_EVENT_STATE.FLOATED:
-			return css`
-				background-color: ${theme.colorToken.Component.strong};
-				box-shadow:
-					0 16px 20px rgb(0 0 0 / 12%),
-					0 8px 16px rgb(0 0 0 / 8%),
-					0 0 8px rgb(0 0 0 / 8%);
-				border: 1px solid ${theme.colorToken.Outline.primaryStrong};
-			`;
-		case TODO_EVENT_STATE.HOVER:
-			return css`
-				border: ${isCompleted ? '1px' : '2px'} solid ${theme.colorToken.Outline.primaryStrong};
-			`;
-		default:
-			return css`
-				border: 1px solid
-					${isCompleted ? theme.colorToken.Outline.neutralNormal : theme.colorToken.Outline.neutralStrong};
-			`;
-	}
-};
-
 const textStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boolean }) => css`
 	.todo-title {
 		display: -webkit-box;
@@ -199,10 +146,22 @@ const textStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boolean
 	}
 `;
 
-const TodoContainer = styled.div<{ isCompleted: boolean; state: TodoEventState }>`
+const TodoContainer = styled.div<{ isCompleted: boolean }>`
 	${({ theme }) => baseStyles({ theme })}
 	${({ theme, isCompleted }) => textStyles({ theme, isCompleted })}
-	${({ theme, state, isCompleted }) => stateStyles({ theme, state, isCompleted })}
+	border: 1px solid
+		${({ theme, isCompleted }) =>
+		isCompleted ? theme.colorToken.Outline.neutralNormal : theme.colorToken.Outline.neutralStrong};
+
+	&:hover {
+		border: ${({ isCompleted }) => (isCompleted ? '1px' : '2px')} solid
+			${({ theme }) => theme.colorToken.Outline.primaryStrong};
+	}
+
+	&:active {
+		background-color: ${({ theme }) => theme.colorToken.Component.strong};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.primaryStrong};
+	}
 `;
 
 const TodoWrapper = styled.div`
