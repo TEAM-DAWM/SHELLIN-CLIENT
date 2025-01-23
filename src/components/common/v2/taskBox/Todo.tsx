@@ -116,7 +116,7 @@ function Todo({
 								status={status}
 								handleStatusChange={handleStatusChange}
 								handleStatusEdit={handleStatusEdit}
-								isModalOpen
+								isModalOpen={isModalOpen}
 							/>
 						</DropdownWrapper>
 					)}
