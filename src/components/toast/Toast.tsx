@@ -11,7 +11,7 @@ const toastIcon: Record<ToastType, { icon: JSX.Element }> = {
 	error: {
 		icon: <Icon name="IcnDelete" />,
 	},
-	info: {
+	conflict: {
 		icon: <Icon name="IcnAlert" />,
 	},
 };
