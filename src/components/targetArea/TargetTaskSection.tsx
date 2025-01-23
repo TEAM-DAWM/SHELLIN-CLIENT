@@ -50,7 +50,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 					<EmptyContainer />
 				</EmptyLayout>
 			) : (
-				<>
+				<TargetAreaWrapper>
 					{tasks.map((task: TaskType, index: number) => (
 						<BeautifulDnDDraggable key={task.id} draggableId={task.id.toString()} index={index}>
 							{(provided) => (
@@ -81,16 +81,23 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 							)}
 						</BeautifulDnDDraggable>
 					))}
-				</>
+				</TargetAreaWrapper>
 			)}
 		</BtnTaskContainer>
 	);
 }
 
 export default TargetTaskSection;
-
 const TodoSizedWrapper = styled.div`
 	width: 100%;
+`;
+const TargetAreaWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	width: 100%;
+	height: 88rem;
+	padding-bottom: 2.8rem;
 `;
 const EmptyLayout = styled.div`
 	display: flex;
