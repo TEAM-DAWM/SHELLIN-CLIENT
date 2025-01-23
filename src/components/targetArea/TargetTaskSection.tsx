@@ -19,12 +19,20 @@ interface TargetTaskSectionProps {
 function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, targetDate }: TargetTaskSectionProps) {
 	useEffect(() => {
 		const container = document.getElementById('todolist-task-container');
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 
 		if (container) {
 			const draggable = new FullCalendarDraggable(container, {
 				itemSelector: '.todo-item',
 				eventData: () => {
 					if (selectedTarget) {
+						setTimeout(() => {
+							const mirrorElement = document.querySelector('.fc-event-dragging');
+							if (mirrorElement) {
+								(mirrorElement as HTMLElement).style.opacity = '0';
+								(mirrorElement as HTMLElement).style.backgroundColor = 'transparent';
+							}
+						}, 0);
 						return {
 							id: selectedTarget.id.toString(),
 							title: selectedTarget.name,
@@ -60,7 +68,10 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 									{...provided.dragHandleProps}
 									style={{
 										...provided.draggableProps.style,
-										opacity: snapshot.isDragging ? 0 : 1,
+										borderRadius: '12px',
+										boxShadow: snapshot.isDragging
+											? '0 16px 20px rgb(0 0 0 / 12%), 0 8px 16px rgb(0 0 0 / 8%), 0 0 8px rgb(0 0 0 / 8%)'
+											: 'none',
 									}}
 								>
 									<Todo
