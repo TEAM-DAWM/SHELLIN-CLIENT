@@ -6,7 +6,6 @@ import Modal from '../modal/Modal';
 
 import BtnTaskIconRender from './BtnTaskIconRender';
 
-import Icons from '@/assets/svg/index';
 import BtnDate from '@/components/common/BtnDate/BtnDate';
 import MODAL from '@/constants/modalLocation';
 import { theme } from '@/styles/theme';
@@ -39,7 +38,6 @@ function BtnTask(props: BtnTaskProps) {
 		id,
 		name,
 		deadLine,
-		hasDescription,
 		status,
 		location,
 		handleSelectedTarget,
@@ -88,7 +86,6 @@ function BtnTask(props: BtnTaskProps) {
 				id,
 				name,
 				deadLine,
-				hasDescription,
 				status,
 			};
 			handleSelectedTarget(currentData);
@@ -112,15 +109,12 @@ function BtnTask(props: BtnTaskProps) {
 				isDragging={isDragging}
 			>
 				<BtnTaskContainer onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-					<BtnTaskTextWrapper isDescription={hasDescription}>
-						{hasDescription && <IconFile />}
-						{name}
-					</BtnTaskTextWrapper>
+					<BtnTaskTextWrapper>{name}</BtnTaskTextWrapper>
 					<BtnDate
 						date={deadLine?.date || null}
 						time={deadLine?.time || null}
 						size={{ type: 'short' }}
-						isDelayed={status === '지연'}
+						// isDelayed={status === '지연'}
 					/>
 				</BtnTaskContainer>
 				<BtnTaskIconRender
@@ -205,17 +199,10 @@ const BtnTaskContainer = styled.div`
 	padding: 0.8rem 0 0.8rem 1.2rem;
 `;
 
-const BtnTaskTextWrapper = styled.div<{ isDescription: boolean }>`
+const BtnTaskTextWrapper = styled.div`
 	display: flex;
 	gap: 0.4rem;
 	align-items: center;
 	align-self: stretch;
-	padding-left: ${({ isDescription }) => (isDescription ? '0rem' : '0.4rem')};
-
-	${({ theme }) => theme.fontTheme.LABEL_03};
-`;
-
-const IconFile = styled(Icons.IcnFile)`
-	width: 1.4rem;
-	height: 1.4rem;
+	padding-left: '0.4rem' ${({ theme }) => theme.fontTheme.LABEL_03};
 `;

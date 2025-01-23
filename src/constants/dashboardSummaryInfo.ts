@@ -1,5 +1,5 @@
 import Images from '@/assets/images/index';
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 
 const SUMMARY_INFO = [
 	{

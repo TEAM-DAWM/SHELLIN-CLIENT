@@ -23,10 +23,6 @@ function TextInputStaging() {
 		setDate(new Date(newDate));
 	};
 
-	const handleTime = (newTime: string) => {
-		setTime(newTime);
-	};
-
 	const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setTaskName(e.target.value);
 	};
@@ -72,13 +68,7 @@ function TextInputStaging() {
 			<BtnWrapper>
 				<SetDeadLineContainer>
 					{time || date ? (
-						<BtnDate
-							date={formatDatetoString(date)}
-							time={time}
-							handleDate={handleDate}
-							handleTime={handleTime}
-							size={{ type: 'default' }}
-						/>
+						<BtnDate date={formatDatetoString(date)} time={time} handleDate={handleDate} size={{ type: 'default' }} />
 					) : (
 						<BtnStagingDate onClick={handleArrangeBtnClick} />
 					)}

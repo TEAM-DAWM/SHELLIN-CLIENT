@@ -6,7 +6,7 @@ import TodayPlusBtn from '../button/TodayPlusBtn';
 
 import useIconHoverUtil from './useIconHoverUtil';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 
 type Props = {
 	dashBoardInprogress: boolean;

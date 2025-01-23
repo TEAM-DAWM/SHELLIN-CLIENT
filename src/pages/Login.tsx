@@ -3,6 +3,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import Images from '@/assets/images';
 import GoogleLoginBtn from '@/components/loginPage/GoogleLoginBtn';
+import LoginContainer from '@/components/loginPage/LoginContainer';
 
 function Login() {
 	const LOGIN_CLIENT_ID = import.meta.env.VITE_GOOGLE_LOGIN_CLIENT_ID;
@@ -11,7 +12,8 @@ function Login() {
 		<GoogleOAuthProvider clientId={LOGIN_CLIENT_ID}>
 			<LoginLayout>
 				<LeftSection>
-					<LogoTitleImg src={Images.titleIcon} />
+					<LoginContainer />
+					<Divider />
 					<LoginBtn>
 						<GoogleLoginBtn />
 						<SignDescription>
@@ -35,7 +37,7 @@ function Login() {
 						</SignDescription>
 					</LoginBtn>
 				</LeftSection>
-				<LoginImg src={Images.BG.loginBg} />
+				<LoginImg src={Images.BG.LoginBg} />
 			</LoginLayout>
 		</GoogleOAuthProvider>
 	);
@@ -45,33 +47,30 @@ const LoginLayout = styled.div`
 	position: relative;
 	display: flex;
 	justify-content: space-between;
-	width: 136.6rem;
-	height: 76.8rem;
+	width: 192rem;
+	height: 108rem;
 
-	background-color: ${({ theme }) => theme.palette.Grey.White};
+	background-color: ${({ theme }) => theme.color.Grey.White};
 	border-radius: 8px;
 `;
 
 const LeftSection = styled.section`
 	display: flex;
 	flex-direction: column;
-	gap: 8.2rem;
-	align-items: center;
+	gap: 3.2rem;
+	align-items: start;
 	justify-content: center;
-	width: 50%;
+	width: 32rem;
 	height: 100%;
+	margin-left: 20rem;
 `;
 
-const LoginImg = styled.img`
-	width: 50%;
-	height: 100%;
+const Divider = styled.div`
+	width: 0.1rem;
+	height: 17.95rem;
+	margin: 0 2.4rem;
 
-	border-radius: 0 8px 8px 0;
-`;
-
-const LogoTitleImg = styled.img`
-	width: 34rem;
-	height: 8rem;
+	background-color: ${({ theme }) => theme.color.Grey.Grey4};
 `;
 
 const LoginBtn = styled.div`
@@ -79,19 +78,26 @@ const LoginBtn = styled.div`
 	flex-direction: column;
 	gap: 1.2rem;
 	align-items: center;
-	width: 32.4rem;
-	height: 9.5rem;
+	justify-content: space-between;
+	width: 32rem;
+	height: 10.8rem;
 `;
 
 const SignDescription = styled.p`
-	width: 24rem;
+	width: 28rem;
+	height: 4rem;
 
-	color: ${({ theme }) => theme.palette.Grey.Grey5};
+	color: ${({ theme }) => theme.color.Grey.Grey5};
 	text-align: center;
+	word-break: keep-all;
 
-	${({ theme }) => theme.fontTheme.CAPTION_02};
+	${({ theme }) => theme.font.body04};
 	a {
-		color: ${({ theme }) => theme.palette.Grey.Grey5};
+		color: ${({ theme }) => theme.color.Grey.Grey5};
 	}
+`;
+
+const LoginImg = styled.img`
+	border-radius: 0 8px 8px 0;
 `;
 export default Login;

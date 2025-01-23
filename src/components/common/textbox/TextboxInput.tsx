@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import { theme } from '@/styles/theme';
 import checkDateFormat from '@/utils/checkDateFormat';
 import checkTimeFormat from '@/utils/checkTimeFormat';

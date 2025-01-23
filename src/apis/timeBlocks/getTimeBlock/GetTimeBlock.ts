@@ -1,3 +1,5 @@
+import { STATUSES } from '@/constants/statuses';
+
 interface TimeBlock {
 	id: number;
 	startTime: string;
@@ -14,6 +16,7 @@ interface Schedule {
 interface Task {
 	id: number;
 	name: string;
+	status: (typeof STATUSES)[keyof typeof STATUSES];
 	timeBlocks: TimeBlock[];
 }
 

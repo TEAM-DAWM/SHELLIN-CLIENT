@@ -3,7 +3,7 @@ import { FunctionComponent, SVGProps } from 'react';
 
 import { bigSize, smallSize } from './arrangeBtnStyle';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import { ArrangeBtnType } from '@/types/arrangeBtnType';
 
 const iconMap: Record<string, FunctionComponent<SVGProps<SVGSVGElement>>> = {

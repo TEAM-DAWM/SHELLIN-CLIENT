@@ -1,5 +1,4 @@
 export interface GetTasksType {
-	isTotal?: boolean;
-	sortOrder?: string;
+	sortOrder: string;
 	targetDate?: string;
 }

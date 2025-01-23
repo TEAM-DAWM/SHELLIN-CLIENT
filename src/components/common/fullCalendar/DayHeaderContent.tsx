@@ -1,50 +1,49 @@
+/* eslint-disable no-nested-ternary */
 import styled from '@emotion/styled';
 import { DayHeaderContentArg } from '@fullcalendar/core';
+
+import SubDate from '../v2/TextBox/SubDate';
 
 interface DayHeaderContentProps {
 	arg: DayHeaderContentArg;
 	currentView: string;
 	today: string;
+	selectDate?: string;
+	handleChangeDate: (target: Date) => void;
 }
 
-function DayHeaderContent({ arg, currentView, today }: DayHeaderContentProps) {
-	const isTimeGridDay = currentView === 'timeGridDay';
-	const day = new Intl.DateTimeFormat('en-US', { weekday: isTimeGridDay ? 'long' : 'short' }).format(arg.date);
+function DayHeaderContent({ arg, currentView, today, selectDate, handleChangeDate }: DayHeaderContentProps) {
+	const day = new Intl.DateTimeFormat('ko', { weekday: 'short' }).format(arg.date);
 	const date = arg.date.getDate();
+
+	const isSelectedDate = selectDate ? new Date(selectDate).toDateString() === new Date(arg.date).toDateString() : false;
 	const isToday = arg.date.toDateString() === today;
+	const isSatday = day === '토';
+	const isSunday = day === '일';
 
 	return (
 		<div>
-			{!isTimeGridDay ? (
-				<>
-					<WeekDay isToday={isToday}>{day}</WeekDay>
-					{currentView !== 'dayGridMonth' && <WeekDate isToday={isToday}>{date}</WeekDate>}
-				</>
+			{currentView === 'dayGridMonth' ? (
+				<WeekDay isSatday={isSatday} isSunday={isSunday}>
+					{day}
+				</WeekDay>
 			) : (
-				<DayLayout>
-					<WeekDate isToday={false}>{date}일</WeekDate> <WeekDay isToday={false}>{day}</WeekDay>
-				</DayLayout>
+				<SubDate
+					day={date.toString()}
+					weekDay={day.toString()}
+					type={isToday ? 'Primary' : isSelectedDate ? 'Secondary' : 'Teritary'}
+					handleChangeDate={() => handleChangeDate(arg.date)}
+				/>
 			)}
 		</div>
 	);
 }
 
-const DayLayout = styled.div`
-	display: flex;
-	gap: 1.2rem;
-	align-items: flex-end;
-	margin-left: 0.8rem;
-`;
-
-const WeekDay = styled.div<{ isToday: boolean }>`
-	${({ theme }) => theme.fontTheme.CAPTION_02};
-	color: ${({ isToday, theme }) => (isToday ? theme.palette.Blue.Blue11 : theme.palette.Grey.Grey6)};
+const WeekDay = styled.div<{ isSatday: boolean; isSunday: boolean }>`
+	${({ theme }) => theme.font.label04};
+	color: ${({ isSatday, isSunday, theme }) =>
+		isSatday ? theme.color.Blue.Blue7 : isSunday ? theme.color.Orange.Orange5 : theme.color.Grey.Grey5};
 	text-transform: uppercase;
-`;
-
-const WeekDate = styled.div<{ isToday: boolean }>`
-	${({ theme }) => theme.fontTheme.HEADLINE_01};
-	color: ${({ isToday, theme }) => (isToday ? theme.palette.Primary : theme.palette.Grey.Black)};
 `;
 
 export default DayHeaderContent;

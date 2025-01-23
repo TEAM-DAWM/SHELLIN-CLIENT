@@ -3,13 +3,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import updateTaskStatus from './axios';
 import { UpdateTaskStatusType } from './UpdateTaskStatusType';
 
+import { useToast } from '@/components/toast/ToastContext';
+
 const useUpdateTaskStatus = (handleIconMouseLeave: (() => void) | null) => {
 	const queryClient = useQueryClient();
+	const { addToast } = useToast();
 
 	const mutation = useMutation({
 		mutationFn: (updateData: UpdateTaskStatusType) => updateTaskStatus(updateData),
-		onSuccess: (data, updateData) => {
-			console.log(data);
+		onSuccess: (_, updateData) => {
+			addToast('변경사항이 적용되었어요', 'success');
 			queryClient.invalidateQueries({ queryKey: ['today'] }).then(() => {
 				if (handleIconMouseLeave) {
 					handleIconMouseLeave();

@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 
 interface TodayPlusBtnProps {
 	taskId: number;

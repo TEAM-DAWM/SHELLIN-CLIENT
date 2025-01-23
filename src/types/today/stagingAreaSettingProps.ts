@@ -1,4 +1,4 @@
-import { SortOrderType } from '../sortOrderType';
+import { SortOrderType } from '@/constants/sortType';
 
 export interface StagingAreaSettingProps {
 	handleTextBtnClick: (button: '전체' | '지연') => void;

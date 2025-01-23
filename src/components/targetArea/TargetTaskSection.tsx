@@ -1,11 +1,14 @@
 import styled from '@emotion/styled';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable as FullCalendarDraggable } from 'fullcalendar/index.js';
+import { useEffect } from 'react';
+import { Draggable as BeautifulDnDDraggable } from 'react-beautiful-dnd';
 
-import BtnTask from '../common/BtnTask/BtnTask';
 import BtnTaskContainer from '../common/BtnTaskContainer';
 import EmptyContainer from '../common/EmptyContainer';
 
+import Todo from '@/components/common/v2/taskBox/Todo';
 import { TaskType } from '@/types/tasks/taskType';
+import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
 
 interface TargetTaskSectionProps {
 	handleSelectedTarget: (task: TaskType | null) => void;
@@ -13,11 +16,35 @@ interface TargetTaskSectionProps {
 	tasks: TaskType[];
 	targetDate: string;
 }
-function TargetTaskSection(props: TargetTaskSectionProps) {
-	const { handleSelectedTarget, selectedTarget, tasks, targetDate } = props;
+function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, targetDate }: TargetTaskSectionProps) {
+	useEffect(() => {
+		const container = document.getElementById('todolist-task-container');
+
+		if (container) {
+			const draggable = new FullCalendarDraggable(container, {
+				itemSelector: '.todo-item',
+				eventData: () => {
+					if (selectedTarget) {
+						return {
+							id: selectedTarget.id.toString(),
+							title: selectedTarget.name,
+						};
+					}
+					return null;
+				},
+			});
+
+			// 컴포넌트 언마운트 시 FullCalendarDraggable 정리
+			return () => {
+				draggable.destroy?.();
+			};
+		}
+
+		return undefined;
+	}, [selectedTarget]);
 
 	return (
-		<BtnTaskContainer type="target">
+		<BtnTaskContainer id="todolist-task-container" type="target">
 			{tasks.length === 0 ? (
 				<EmptyLayout>
 					<EmptyContainer />
@@ -25,33 +52,34 @@ function TargetTaskSection(props: TargetTaskSectionProps) {
 			) : (
 				<>
 					{tasks.map((task: TaskType, index: number) => (
-						<Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-							{(provided, snapshot) => (
-								<div
+						<BeautifulDnDDraggable key={task.id} draggableId={task.id.toString()} index={index}>
+							{(provided) => (
+								<TodoSizedWrapper
 									ref={provided.innerRef}
 									{...provided.draggableProps}
 									{...provided.dragHandleProps}
-									style={{ userSelect: 'none', ...provided.draggableProps.style }}
+									style={provided.draggableProps.style}
 								>
-									<BtnTask
-										location="target"
+									<Todo
+										// location="target"
 										key={task.id}
-										hasDescription={task.hasDescription}
-										name={task.name}
-										deadLine={task.deadLine}
-										btnStatus={task.status}
-										status={task.status}
-										id={task.id}
-										handleSelectedTarget={handleSelectedTarget}
-										selectedTarget={selectedTarget}
-										isDragging={snapshot.isDragging}
+										title={task.name}
+										deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
+										deadlineTime={task.deadLine?.time || undefined}
+										taskId={task.id}
 										targetDate={targetDate}
-										dashBoardInprogress={false}
-										modalSize={{ type: 'long' }}
+										onClick={() => handleSelectedTarget(task)}
+										status={task.status}
+
+										// handleSelectedTarget={handleSelectedTarget}
+										// selectedTarget={selectedTarget}
+										// isDragging={snapshot.isDragging}
+										// targetDate={targetDate}
+										// dashBoardInprogress={false}
 									/>
-								</div>
+								</TodoSizedWrapper>
 							)}
-						</Draggable>
+						</BeautifulDnDDraggable>
 					))}
 				</>
 			)}
@@ -61,10 +89,12 @@ function TargetTaskSection(props: TargetTaskSectionProps) {
 
 export default TargetTaskSection;
 
+const TodoSizedWrapper = styled.div`
+	width: 100%;
+`;
 const EmptyLayout = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	height: 90%;
 `;

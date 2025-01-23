@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, useState, useEffect } from 'react';
 
-import Icons from '@/assets/svg/index';
+import Icons from '@/assets/svg/V1/index';
 import TextInputTime from '@/components/common/textbox/TextInputTime';
 import timeRange from '@/utils/timeRange';
 

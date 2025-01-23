@@ -1,16 +1,249 @@
 import styled from '@emotion/styled';
 
-const FullCalendarLayout = styled.div<{ size: string }>`
-	width: ${({ size }) => (size === 'big' ? '91rem' : '58rem')};
-	height: 70rem;
+const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
+	position: relative;
+
+	box-sizing: border-box;
+	width: ${({ size }) => (size === 'big' ? '132rem' : '88.8rem')};
+	height: 106.4rem;
+	padding: 0 10px 8px;
+	overflow: hidden;
+
+	background-color: ${({ theme }) => theme.color.Grey.White};
+	border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+	border-radius: 20px;
 
 	.fc .fc-toolbar.fc-header-toolbar {
-		margin-bottom: 1.8rem;
+		display: flex;
+		align-items: flex-start;
+		margin: 2.4rem 0 0;
 	}
 
-	.fc .fc-timegrid-slot-label-cushion {
-		padding: 0 1.2rem 0 0;
+	.fc-toolbar {
+		position: relative;
 	}
+
+	/* Custom button styles */
+	.fc-toolbar-chunk .fc-button {
+		z-index: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		${({ theme }) => theme.font.label04}
+		height: 3.2rem;
+		padding: 0 1.6rem;
+
+		background: ${({ theme }) => theme.color.Grey.White};
+		border: none;
+	}
+
+	.fc-toolbar-chunk .fc-button:hover,
+	.fc-toolbar-chunk .fc-button:active {
+		background: none;
+	}
+
+	/** .fc-button-group: 주/월 토글 */
+	.fc .fc-button-group {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		overflow: hidden;
+
+		background: ${({ theme }) => theme.color.Grey.White};
+		transform: translateX(-50%);
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+		border-radius: 8px;
+	}
+
+	.fc-button-group > button {
+		width: 8rem;
+
+		border-radius: 0;
+	}
+
+	/** .fc-button-primary: .fc-button-group 중 선택된 버튼 */
+	.fc .fc-button-primary:focus {
+		box-shadow: none;
+	}
+
+	.fc .fc-button-primary:not(:disabled).fc-button-active {
+		background: ${({ theme }) => theme.colorToken.Neutral.heavy};
+		border: none;
+		border-radius: 0 7px 7px 0;
+	}
+
+	.fc-button-group > button:last-of-type.fc-button-primary:not(:disabled).fc-button-active {
+		border-radius: 7px 0 0 7px;
+	}
+
+	/* Override the button group border-radius styles */
+	.fc-direction-ltr .fc-button-group > .fc-button {
+		display: flex;
+		align-items: center;
+
+		color: ${({ theme }) => theme.colorToken.Icon.strong};
+	}
+
+	.fc-button-active:focus {
+		box-shadow: none;
+	}
+
+	.fc-toolbar-chunk {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		margin-right: 7.2rem;
+	}
+
+	/* 오늘 버튼 */
+	.fc-toolbar-chunk .fc-today-button {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		justify-content: center;
+		margin: 3.4rem 0 0;
+
+		color: ${({ theme }) => theme.color.Grey.Grey5};
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
+		opacity: 1;
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+		${({ theme }) => theme.font.label04}
+		border-radius: 8px;
+	}
+
+	.fc-toolbar-chunk .fc-today-button:active {
+		color: ${({ theme }) => theme.color.Grey.Grey5};
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+	}
+
+	/* 좌우 버튼 스타일 */
+	.fc-toolbar-chunk .fc-prev-button,
+	.fc-toolbar-chunk .fc-next-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 3.2rem;
+		margin: 3.4rem 0 0;
+
+		color: ${({ theme }) => theme.color.Grey.Grey5};
+
+		background-color: ${({ theme }) => theme.color.Grey.White};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+		border-radius: 8px;
+	}
+
+	.fc-toolbar-chunk .fc-prev-button:active,
+	.fc-toolbar-chunk .fc-next-button:active {
+		color: ${({ theme }) => theme.color.Grey.Grey5};
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+	}
+
+	/* ---- 여기까지 toolbar (캘린더 헤더) */
+
+	.fc-daygrid-body {
+		width: 100% !important;
+		overflow: hidden;
+
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-radius: 12px;
+
+		${({ currentView }) =>
+			currentView === 'timeGridWeekCustom' &&
+			`
+    border-left: none;
+		border-radius: 0
+  	`}
+	}
+
+	.fc-event-allday {
+		height: 2rem;
+	}
+
+	.fc-col-header {
+		width: 100% !important;
+	}
+
+	.fc .fc-col-header-cell {
+		height: 2.4rem;
+		padding: 2.4rem 0.8rem 0.5rem;
+
+		border-right: none;
+		border-left: none;
+	}
+
+	.fc-scrollgrid-sync-table {
+		width: 100% !important;
+	}
+
+	/* 종일  - 타임그리드 셀 크기 고정 */
+	.fc-scrollgrid-sync-table > colgroup > col {
+		width: 3rem !important;
+	}
+
+	.fc-timegrid-axis .fc-scrollgrid-shrink {
+		width: fit-content;
+	}
+
+	.fc-timegrid-body .fc-timegrid-slots > colgroup > col {
+		width: 3rem;
+	}
+
+	/* 전체 캘린더(주간) */
+	.fc-scrollgrid.fc-scrollgrid-liquid {
+		/* padding: 0 8px 0 0; */
+	}
+
+	.fc-daygrid-day-events {
+		margin-top: 4rem;
+	}
+
+	.month-view .fc-daygrid-day-frame:active {
+		background-color: ${({ theme }) => theme.colorToken.Component.strong};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.primaryStrong};
+	}
+
+	/* fc-daygrid-day-events: 종일 행(개별) */
+	.fc-daygrid-day-frame .fc-scrollgrid-sync-inner,
+	.fc-daygrid-day-events {
+		width: ${({ size }) => (size === 'big' ? '17.6rem' : '16.8rem')};
+		height: 4.4rem;
+	}
+
+	.fc-timegrid-slot .fc-timegrid-slot-label .fc-scrollgrid-shrink {
+		width: 4rem;
+	}
+
+	.fc-timegrid-allday {
+		display: flex;
+		align-items: center;
+		height: 4.4rem;
+		overflow: hidden;
+	}
+
+	.fc-timegrid-allday-bg {
+		height: 4.4rem;
+
+		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+	}
+
+	/* 타임그리드 테두리 */
+	.fc .fc-scrollgrid-section-body table,
+	.fc .fc-scrollgrid-section-footer table {
+		${({ currentView }) =>
+			currentView === 'dayGridMonth' &&
+			`
+			border: none
+  	`}
+		border-right: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-bottom-style: hidden;
+	}
+
+	/* 주간캘린더 */
 
 	/* 이벤트 박스 */
 	.fc-event-main {
@@ -19,13 +252,24 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		width: 100%;
 		height: 100%;
 		padding: 0.4rem 0.6rem;
+		overflow: hidden;
 
-		color: ${(color) => color.theme.palette.Grey.Grey8};
-
-		background-color: ${({ theme }) => theme.palette.Blue.Blue2};
+		background-color: ${({ theme }) => theme.colorToken.Component.strong};
 		border: none;
 		border-radius: 4px;
-		${({ theme }) => theme.fontTheme.CAPTION_03};
+	}
+
+	.fc-event-main.completed {
+		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
+		text-decoration: line-through;
+
+		background-color: ${({ theme }) => theme.colorToken.Component.assistive};
+	}
+
+	/* fc-event-title이 더 위로 오도록  */
+	.fc-event-main-frame {
+		flex-direction: column-reverse;
+		gap: 4px;
 	}
 
 	/** 넘어가는 텍스트 처리 */
@@ -33,8 +277,39 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		flex-shrink: 1;
 		overflow: hidden;
 
+		color: ${({ theme }) => theme.colorToken.Text.neutralLight};
 		white-space: nowrap;
 		text-overflow: ellipsis;
+
+		${({ theme }) => theme.font.body05};
+	}
+
+	.fc-event-time {
+		color: ${({ theme }) => theme.colorToken.Text.assistive};
+		${({ theme }) => theme.font.caption02};
+	}
+
+	.fc-daygrid-event .fc-event-time {
+		display: none;
+	}
+
+	.fc-event-main.completed .fc-event-title,
+	.fc-event-main.completed .fc-event-time {
+		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
+	}
+
+	.fc-daygrid-dot-event.completed .fc-event-title,
+	.fc-daygrid-dot-event.completed .fc-event-time {
+		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
+	}
+
+	/** TODO: category 추가 시 해당 부분에서 카테고리 색 적용하면 됨 */
+	.fc-daygrid-event-dot {
+		border-color: ${({ theme }) => theme.colorToken.Text.assistive};
+	}
+
+	.fc-daygrid-dot-event.completed .fc-daygrid-event-dot {
+		border-color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
 	}
 
 	.fc-event-main .tasks {
@@ -43,6 +318,12 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 
 	.schedule .fc-event-main {
 		background-color: ${({ theme }) => theme.palette.Grey.Grey2};
+	}
+
+	/* 종일 텍스트 */
+	.fc-scrollgrid-shrink-frame .fc-scrollgrid-sync-inner {
+		${({ theme }) => theme.font.caption02}
+		color: ${({ theme }) => theme.colorToken.Text.disable};
 	}
 
 	/* 종일 이벤트 테두리 */
@@ -62,7 +343,11 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 
 	/* fc-timegrid-col-events : 주간 이벤트 , fc-daygrid-day-frame: 월간 이벤트 */
 	.fc .fc-timegrid-col-events .fc-event-main:hover {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue3};
+		background-color: ${({ theme }) => theme.colorToken.Component.heavy};
+	}
+
+	.fc .fc-timegrid-col-events .fc-event-main:active {
+		background-color: ${({ theme }) => theme.colorToken.Component.accent};
 	}
 
 	.fc .fc-daygrid-day-frame .schedule .fc-event-main {
@@ -110,14 +395,32 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		${({ theme }) => theme.fontTheme.CAPTION_01};
 	}
 
-	/* 타임 그리드 30분당 일정 */
+	.fc .fc-col-header-cell-cushion {
+		padding: 6px 4px;
+	}
+
+	/** .fc-timegrid-slot-label: 시간 라벨 */
+
+	/* 타임 그리드 15분당 일정 */
 	.fc .fc-timegrid-slot-label {
-		width: 5.7rem;
-		height: 2.4rem;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		box-sizing: border-box;
+		width: 4rem;
 
-		color: ${(color) => color.theme.palette.Grey.Grey6};
+		color: ${(color) => color.theme.palette.Grey.Grey5};
+		text-transform: lowercase;
 
+		${({ theme }) => theme.font.caption01}
 		border-bottom: none;
+	}
+
+	.fc-theme-standard td,
+	.fc-theme-standard th {
+		border-right: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-bottom: none;
+		border-left: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 	}
 
 	/* 요일 행 첫번째 border 없애기 */
@@ -126,75 +429,54 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		border: none;
 	}
 
-	/* 타임 그리드 종일 일정 */
-	.fc-scrollgrid-shrink {
-		max-height: 2.4rem;
-	}
-
 	/* 타임 그리드 종일 마진 없애기 */
 	.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
 		margin: 0;
-
-		border-bottom: 1px solid ${({ theme }) => theme.palette.Grey.Grey9};
 	}
 
-	/* 30분 줄선 지우기 */
+	/* 월간뷰 border 위아래 짤림 커버용 */
+	.month-view .fc-scroller.fc-scroller-liquid-absolute {
+		border-top: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
+		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
+		border-radius: 12px;
+	}
+
+	/* 월간뷰 스크롤 제거 */
+	.month-view .fc-scroller {
+		overflow: hidden !important;
+	}
+
+	/* 15분 줄선 테두리 */
 	.fc .fc-timegrid-slot-minor {
-		border-top-style: none;
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+		border-right: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+		border-left: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+	}
+
+	tr td.fc-timegrid-slot-minor[data-time$=':45:00']:nth-of-type(2) {
+		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
+	}
+
+	.fc-scrollgrid .fc-scrollgrid-liquid {
+		height: 100%;
 	}
 
 	/* 요일 헤더 높이 조정 */
 
-	.fc .fc-col-header-cell {
-		box-sizing: border-box;
-		height: 5.5rem;
-		padding: 0.4rem 0.8rem 0.6rem;
+	/** .fc-daygrid-day: 각 날짜 별 박스 */
+	.fc-daygrid-day {
+		width: ${({ size }) => (size === 'big' ? '13.2rem' : '12.4rem')};
+		height: ${({ currentView }) => (currentView === 'timeGridWeekCustom' ? '0' : '15.2rem')};
+	}
 
-		border-right: none;
-		border-left: none;
-		border-radius: 8px 8px 0 0;
+	.fc-daygrid-day-number {
+		${({ theme }) => theme.font.label03}
+		color: ${({ theme }) => theme.colorToken.Text.neutralLight};
 	}
 
 	/* 오늘 배경색 없애기 */
 	.fc .fc-day-today {
 		background: none;
-	}
-
-	/* 주말 색 다르게 */
-	.fc .fc-day-sun,
-	.fc .fc-day-sat {
-		background: ${({ theme }) => theme.palette.Blue.Blue1};
-	}
-
-	.fc .fc-button-primary:not(:disabled).fc-button-active {
-		background: ${({ theme }) => theme.palette.Primary};
-	}
-
-	.fc .fc-button-primary:focus {
-		box-shadow: none;
-	}
-
-	/* Custom button styles */
-	.fc-toolbar-chunk .fc-button {
-		width: 4.5rem;
-		height: 2.6rem;
-		padding: 0;
-
-		background-color: ${({ theme }) => theme.palette.Blue.Blue3};
-		border: none;
-		border-radius: 8px;
-	}
-
-	.fc-toolbar-chunk .fc-button:active {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue3};
-	}
-
-	/* Override the button group border-radius styles */
-	.fc-direction-ltr .fc-button-group > .fc-button {
-		margin-right: 0.4rem;
-		margin-left: 0;
-
-		border-radius: 8px;
 	}
 
 	/* 스타일링 현재 시간 표시 */
@@ -207,9 +489,7 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 
 	/* 시간 세로줄 테두리 없애기 */
 	.fc-timegrid-axis {
-		color: ${({ theme }) => theme.palette.Grey.Grey6};
-
-		border: none;
+		border: 100px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 	}
 
 	.fc-timegrid-event {
@@ -227,77 +507,14 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		inset: 0.1rem;
 	}
 
-	/* 좌우 버튼 스타일 */
-	.fc-toolbar-chunk .fc-prev-button,
-	.fc-toolbar-chunk .fc-next-button {
-		width: 2.6rem;
-		height: 2.6rem;
-		padding: 0;
-
-		background-color: ${({ theme }) => theme.palette.Grey.Black};
-	}
-
-	.fc-toolbar-chunk .fc-button:hover {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue8};
-	}
-
-	.fc-toolbar-chunk .fc-prev-button:hover,
-	.fc-toolbar-chunk .fc-next-button:hover {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey7};
-	}
-
-	.fc-direction-ltr .fc-toolbar > * > :not(:first-of-type) {
-		margin-left: 0.4rem;
-	}
-
-	.fc-button-active:focus {
-		box-shadow: none;
-	}
-
-	.fc-toolbar-chunk {
-		display: flex;
-		align-items: center;
-	}
-
-	/* 오늘 버튼 */
-	.fc-toolbar-chunk .fc-today-button {
-		background-color: ${({ theme }) => theme.palette.Grey.Black};
-		opacity: 1;
-	}
-
-	.fc-toolbar-chunk .fc-today-button:hover {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey7};
-	}
-
-	.fc-toolbar-chunk .fc-today-button:active {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey8};
-	}
-
-	.fc .fc-button-group {
-		margin-left: 5.4rem;
-	}
-
-	.fc .fc-custom-button {
-		background-color: ${({ theme }) => theme.palette.Grey.Black};
-	}
-
-	.fc .fc-custom-button:hover {
-		background-color: ${({ theme }) => theme.palette.Grey.Grey7};
-	}
-
-	/* 오늘 버튼 마진 */
-	.fc .fc-toolbar-title {
-		margin-right: 0.75rem;
-		padding: 0 1rem;
-		${({ theme }) => theme.fontTheme.HEADLINE_02};
-	}
-
 	.fc .fc-daygrid-event-harness {
 		margin: 0;
 	}
 
 	.fc .fc-daygrid-event {
 		margin: 0;
+
+		text-overflow: ellipsis;
 	}
 
 	.fc .fc-cell-shaded {
@@ -331,7 +548,23 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 	}
 
 	.fc .fc-daygrid-dot-event.tasks {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue2};
+		display: flex;
+		gap: 4px;
+		align-items: center;
+		width: ${({ size }) => (size === 'big' ? '18rem' : '12rem')};
+		height: 2rem;
+		padding: 0 4px 0 8px;
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
+		border-radius: 4px;
+	}
+
+	.fc .fc-daygrid-dot-event.tasks.completed {
+		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
+		text-decoration: line-through;
+
+		background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
+		border-radius: 4px;
 	}
 
 	/* 월간 이벤트 호버 효과 */
@@ -340,19 +573,35 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 	}
 
 	.fc .fc-daygrid-dot-event.tasks:hover {
-		background-color: ${({ theme }) => theme.palette.Blue.Blue3};
+		background-color: ${({ theme }) => theme.colorToken.Neutral.strong};
+	}
+
+	.fc .fc-daygrid-dot-event.tasks:active {
+		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
 	}
 
 	.fc .fc-h-event {
 		border: none;
 	}
 
-	.fc-daygrid-event-dot {
-		display: none;
+	/* Month view 중 이벤트 초과 안내 */
+	.fc-daygrid-more-link {
+		display: flex;
+		align-items: center;
+		width: ${({ size }) => (size === 'big' ? '18rem' : '12rem')};
+		height: 2rem;
+		padding: 0 4px 0 8px;
+
+		color: ${({ theme }) => theme.colorToken.Text.neutralLight};
+
+		background-color: ${({ theme }) => theme.colorToken.Component.strong};
+		${({ theme }) => theme.font.body05};
+		border-radius: 4px;
 	}
 
 	.fc .fc-timegrid-axis-frame {
-		justify-content: flex-start;
+		justify-content: center;
+		width: 4rem;
 	}
 
 	/* 시간 왼쪽에 붙이기 */
@@ -373,7 +622,7 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 
 	/* 바깥 테두리 없애기 */
 	.fc .fc-scrollgrid-liquid {
-		height: 65.5rem;
+		height: 100%;
 		overflow: auto;
 
 		border: none;
@@ -406,12 +655,13 @@ const FullCalendarLayout = styled.div<{ size: string }>`
 		background: none;
 	}
 
+	/* 일요일 border 조정 */
 	.fc-dayGridMonth-view .fc-day-sun .fc-daygrid-day-frame {
-		box-shadow: 0 1px 0 0 ${({ theme }) => theme.palette.Grey.Grey9} inset;
+		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
 	}
 
-	.fc .fc-dayGridMonth-view .fc-scrollgrid-section-body table {
-		border: 1px solid ${({ theme }) => theme.palette.Grey.Grey9};
+	.fc-dayGridMonth-view .fc-daygrid-body tr:last-child .fc-day-sun .fc-daygrid-day-frame {
+		border-bottom: none;
 	}
 
 	.fc .fc-timeGridDay-view .fc-col-header-cell-cushion {
