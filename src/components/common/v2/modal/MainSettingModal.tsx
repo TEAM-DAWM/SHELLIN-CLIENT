@@ -87,7 +87,8 @@ function MainSettingModal({
 
 	useEffect(() => {
 		console.log('onStartTimeChange', startTime);
-	}, [startTime]);
+		console.log('onEndTimeChange', endTime);
+	}, [startTime, endTime]);
 
 	const handleDeadlineDate = (date: Date | null) => {
 		setDeadlineDate(date);

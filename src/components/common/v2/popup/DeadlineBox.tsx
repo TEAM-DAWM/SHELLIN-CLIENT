@@ -119,7 +119,7 @@ function DeadlineBox({
 							handleDueDateModalTime={handleDueDateModalTime}
 							handleTimeBlockDate={handleTimeBlockDate}
 							onStartTimeChange={onStartTimeChange}
-							onEndTimeChange={onStartTimeChange}
+							onEndTimeChange={onEndTimeChange}
 						/>
 						{!isSettingActive && (
 							<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />
