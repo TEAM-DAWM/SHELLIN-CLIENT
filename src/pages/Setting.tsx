@@ -10,10 +10,10 @@ import SettingMenu from '@/components/SettingPage/SettingMenu';
 type TabType = 'account' | 'category' | 'routine' | 'history';
 
 function Setting() {
-	const [activeTab, setActiveTab] = useState<TabType>('account');
+	const [activeMenu, setActiveMenu] = useState<TabType>('account');
 
 	const handleTabChange = (tab: TabType) => {
-		setActiveTab(tab);
+		setActiveMenu(tab);
 	};
 	const { data: userInfo, isLoading } = useGetUserInfo();
 	if (isLoading) {
@@ -28,8 +28,8 @@ function Setting() {
 			<SettingArea>
 				<SettingHeader>설정</SettingHeader>
 				<MainWrapper>
-					<SettingMenu activeTab={activeTab} onTabChange={handleTabChange} />
-					<SettingContent activeTab={activeTab} userData={userInfo?.data} />
+					<SettingMenu activeMenu={activeMenu} onTabChange={handleTabChange} />
+					<SettingContent activeMenu={activeMenu} userData={userInfo?.data} />
 				</MainWrapper>
 			</SettingArea>
 		</SettingLayout>

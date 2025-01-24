@@ -4,14 +4,14 @@ import styled from '@emotion/styled';
 import Button from '@/components/common/v2/button/Button';
 import colorToken from '@/styles/colorToken';
 
-type TabType = 'account' | 'category' | 'routine' | 'history';
+type MenuType = 'account' | 'category' | 'routine' | 'history';
 
 interface SettingMenuProps {
-	activeTab: TabType;
-	onTabChange: (tab: TabType) => void;
+	activeMenu: MenuType;
+	onTabChange: (tab: MenuType) => void;
 }
 
-function SettingMenu({ activeTab, onTabChange }: SettingMenuProps) {
+function SettingMenu({ activeMenu, onTabChange }: SettingMenuProps) {
 	return (
 		<TabSection>
 			<Button
@@ -20,7 +20,7 @@ function SettingMenu({ activeTab, onTabChange }: SettingMenuProps) {
 				disabled={false}
 				label="계정 관리"
 				onClick={() => onTabChange('account')}
-				additionalCss={activeTab === 'account' ? activeButtonStyle : undefined}
+				additionalCss={activeMenu === 'account' ? activeButtonStyle : undefined}
 			/>
 		</TabSection>
 	);
