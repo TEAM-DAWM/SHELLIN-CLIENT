@@ -57,6 +57,10 @@ const StyledIconWrapper = styled.div<{
 		width: 100%;
 		height: 100%;
 
+		path {
+			stroke: 'none';
+		}
+
 		${({ theme, color }) => color && `color: ${getColorMap(theme)[color]};`}
 		${({ stroke }) => stroke && `stroke: ${stroke};`}
 	}
