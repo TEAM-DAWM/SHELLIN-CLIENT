@@ -6,6 +6,7 @@ import ToggleSwitchButton from './v2/control/ToggleSwitchButton';
 
 import useGetUserInfo from '@/apis/user/query';
 import Images from '@/assets/images';
+import IconButton from '@/components/common/v2/IconButton';
 
 interface NavBarProps {
 	isOpen: boolean;
@@ -16,10 +17,19 @@ function NavBar({ isOpen, handleSideBar }: NavBarProps) {
 	const moveToSetting = () => {
 		navigate('/setting');
 	};
+	const moveToToday = () => {
+		navigate('/today');
+	};
 	const { data: userInfo } = useGetUserInfo();
 	return (
 		<NavBarLayout>
-			<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
+			<ProfileContainer>
+				<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
+				<IconWrapper>
+					<IconButton iconName="IcnTodolist" size="big" type="normal" onClick={moveToToday} dot={false} />
+					<TextBox>할 일</TextBox>
+				</IconWrapper>
+			</ProfileContainer>
 			<ControllContainer>
 				<ToggleWrapper>
 					<ToggleSwitchButton active={isOpen} onClick={handleSideBar} />
@@ -91,5 +101,29 @@ const IconContainer = styled.div`
 `;
 const SettingTouchArea = styled.div`
 	display: block;
+`;
+
+const IconWrapper = styled.span`
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+	align-items: center;
+	width: 3.1rem;
+`;
+
+const TextBox = styled.p`
+	width: 4rem;
+
+	color: ${({ theme }) => theme.colorToken.Text.assistive};
+	text-align: center;
+	${({ theme }) => theme.font.label03};
+`;
+
+const ProfileContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 10rem;
+	align-items: center;
+	width: 100%;
 `;
 export default NavBar;
