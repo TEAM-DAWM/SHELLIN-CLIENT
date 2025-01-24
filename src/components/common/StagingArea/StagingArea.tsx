@@ -51,7 +51,7 @@ function StagingArea(props: StagingAreaProps) {
 			<BottomContainer>
 				<Droppable droppableId="staging">
 					{(provided) => (
-						<SizedWrapper ref={provided.innerRef} {...provided.droppableProps}>
+						<SizedWrapper ref={provided.innerRef} {...provided.droppableProps} style={{ height: '100%' }}>
 							<StagingAreaTaskContainer
 								handleSelectedTarget={handleSelectedTarget}
 								selectedTarget={selectedTarget}

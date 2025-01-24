@@ -49,7 +49,7 @@ function TargetArea({
 			{/* 태스크 목록 */}
 			<Droppable droppableId="target">
 				{(provided) => (
-					<DroppableWrapper ref={provided.innerRef} {...provided.droppableProps}>
+					<DroppableWrapper ref={provided.innerRef} {...provided.droppableProps} style={{ height: '100%' }}>
 						<TargetTaskSection
 							handleSelectedTarget={handleSelectedTarget}
 							selectedTarget={selectedTarget}
