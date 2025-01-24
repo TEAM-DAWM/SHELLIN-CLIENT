@@ -26,7 +26,7 @@ const TimeBlockDeleteModalContainer = styled.div<{ top: number; left: number }>`
 	position: fixed;
 	top: ${({ top }) => top}px;
 	left: ${({ left }) => left}px;
-	z-index: 1;
+	z-index: 2;
 
 	display: flex;
 	padding: 8px;
