@@ -4,8 +4,10 @@ import styled from '@emotion/styled';
 import Icn from '@/assets/svg/V2';
 import Icon from '@/components/common/Icon';
 
+type SizeType = 'small' | 'big';
 type NavbarBtnType = 'solid' | 'normal' | 'outlined';
 type NavbarButtonProps = {
+	size?: SizeType;
 	type: NavbarBtnType;
 	disabled?: boolean;
 	iconName: keyof typeof Icn;
@@ -14,7 +16,15 @@ type NavbarButtonProps = {
 	isActive?: boolean;
 };
 
-function NavbarButton({ type, disabled = false, iconName, onClick, additionalCss, isActive }: NavbarButtonProps) {
+function NavbarButton({
+	type,
+	disabled = false,
+	size = 'small',
+	iconName,
+	onClick,
+	additionalCss,
+	isActive,
+}: NavbarButtonProps) {
 	const { color, colorToken } = useTheme();
 
 	// 아이콘 배경 색상 및 테두리
@@ -80,10 +90,11 @@ function NavbarButton({ type, disabled = false, iconName, onClick, additionalCss
 		${buttonStyles[type]}
 		${additionalCss}
 	`;
+	const iconSize = size === 'big' ? 'large' : 'medium';
 
 	return (
 		<NavbarBtnContainer onClick={disabled ? () => {} : onClick}>
-			<Icon name={iconName} stroke={isActive ? colorToken.Icon.primary : colorToken.Icon.normal} />
+			<Icon name={iconName} stroke={isActive ? colorToken.Icon.primary : colorToken.Icon.normal} size={iconSize} />
 		</NavbarBtnContainer>
 	);
 }
