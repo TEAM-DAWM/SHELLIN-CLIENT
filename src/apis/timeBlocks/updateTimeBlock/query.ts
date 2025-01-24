@@ -4,6 +4,7 @@ import PatchTimeBlock from './axios';
 import { PatchTimeBlokType } from './PatchTimeBlockType';
 
 import { useToast } from '@/components/toast/ToastContext';
+import { formatDateToLocal } from '@/utils/formatDateTime';
 
 const usePatchTimeBlock = () => {
 	const queryClient = useQueryClient();
@@ -11,6 +12,15 @@ const usePatchTimeBlock = () => {
 
 	const mutation = useMutation({
 		mutationFn: async ({ taskId, timeBlockId, startTime, endTime, isAllTime }: PatchTimeBlokType) => {
+			if (!endTime) {
+				const startDate = new Date(startTime); // startTime을 Date 객체로 변환
+				startDate.setHours(startDate.getHours() + 1); // 1시간 추가
+				// eslint-disable-next-line no-param-reassign
+				endTime = formatDateToLocal(startDate);
+			}
+
+			console.log('usePatchTimeBlock ', taskId, timeBlockId, startTime, endTime, isAllTime);
+
 			const response = await PatchTimeBlock({ taskId, timeBlockId, startTime, endTime, isAllTime });
 			if (response && response.code === 'conflict') {
 				addToast(response.message, response.code);
