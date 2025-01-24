@@ -98,6 +98,18 @@ const SignDescription = styled.p`
 `;
 
 const LoginImg = styled.img`
+	width: 70%;
+	height: 100%;
+	object-fit: cover;
+
 	border-radius: 0 8px 8px 0;
+
+	@media (width <= 1200px) {
+		width: 35%;
+	}
+
+	@media (width <= 900px) {
+		width: 25%;
+	}
 `;
 export default Login;
