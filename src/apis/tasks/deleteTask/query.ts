@@ -14,6 +14,7 @@ const useDeleteTask = () => {
 		onSuccess: () => {
 			addToast('할 일이 삭제되었어요', 'error');
 			queryClient.invalidateQueries({ queryKey: ['today'] });
+			queryClient.invalidateQueries({ queryKey: ['timeblock'] });
 		},
 	});
 
