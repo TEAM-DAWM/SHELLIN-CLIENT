@@ -22,7 +22,9 @@ function Setting() {
 
 	return (
 		<SettingLayout>
-			<NavBar isOpen={false} handleSideBar={() => {}} />
+			<NavBarWrapper>
+				<NavBar isOpen={false} handleSideBar={() => {}} />
+			</NavBarWrapper>
 			<SettingArea>
 				<SettingHeader>설정</SettingHeader>
 				<MainWrapper>
@@ -40,6 +42,12 @@ const SettingLayout = styled.div`
 	display: flex;
 	height: 108rem;
 	overflow: hidden;
+`;
+
+const NavBarWrapper = styled.div`
+	box-shadow:
+		4px 4px 40px 20px #717e9833,
+		-4px -4px 40px 0 #717e9833;
 `;
 
 const SettingArea = styled.div`
