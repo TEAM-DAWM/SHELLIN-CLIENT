@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import { Draggable as BeautifulDnDDraggable } from 'react-beautiful-dnd';
 
 import BtnTaskContainer from '../common/BtnTaskContainer';
-import EmptyContainer from '../common/EmptyContainer';
 
+import EmptyViewToday from '@/components/common/EmptyViewToday';
 import Todo from '@/components/common/v2/taskBox/Todo';
 import { TaskType } from '@/types/tasks/taskType';
 import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
@@ -55,7 +55,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 		<BtnTaskContainer id="todolist-task-container" type="target">
 			{tasks.length === 0 ? (
 				<EmptyLayout>
-					<EmptyContainer />
+					<EmptyViewToday />
 				</EmptyLayout>
 			) : (
 				<TargetAreaWrapper>
