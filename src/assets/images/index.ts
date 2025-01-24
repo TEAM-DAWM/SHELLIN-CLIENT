@@ -8,7 +8,6 @@ import googleCalendar from './google_calendar.png';
 import googleIcon from './googleIcon.png';
 import LoginBg from './loginBg.png';
 import notFountBg from './notFoundBg.png';
-import sampleImg from './sample.png';
 import smallLogo from './smallLogo.png';
 import titleIcon from './titleIcon.png';
 
@@ -31,7 +30,6 @@ const Images = {
 		postpone,
 		upcoming,
 	},
-	sampleImg,
 };
 
 export default Images;
