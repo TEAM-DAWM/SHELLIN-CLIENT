@@ -58,7 +58,7 @@ function Todo({
 		const adjustedTop = Math.min(calculatedTop, MODAL.SCREEN_HEIGHT - MODAL.TASK_MODAL_HEIGHT);
 		if (location === 'staging') {
 			setTop(adjustedTop - 190);
-			setLeft(rect.right + 6 - 50);
+			setLeft(rect.width + 12);
 		} else {
 			setTop(adjustedTop);
 			setLeft(rect.right + 6);
