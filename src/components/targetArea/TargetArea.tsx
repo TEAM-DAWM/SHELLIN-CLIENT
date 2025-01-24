@@ -49,7 +49,7 @@ function TargetArea({
 			{/* 태스크 목록 */}
 			<Droppable droppableId="target">
 				{(provided) => (
-					<DroppableWrapper ref={provided.innerRef} {...provided.droppableProps}>
+					<DroppableWrapper ref={provided.innerRef} {...provided.droppableProps} style={{ height: '100%' }}>
 						<TargetTaskSection
 							handleSelectedTarget={handleSelectedTarget}
 							selectedTarget={selectedTarget}
@@ -70,6 +70,7 @@ const TargetAreaLayout = styled.section`
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: 47.2rem;
+	height: 108rem;
 	margin: 0.8rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};

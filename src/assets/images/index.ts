@@ -4,6 +4,8 @@ import upcoming from './Dashboard_Upcoming.png';
 import categoryImg from './Empty_Category.png';
 import postponeImg from './Empty_Postpone.png';
 import taskImg from './Empty_Task.png';
+import emptyStagingImg from './EmptyStaging.png';
+import emptyTodayImg from './EmptyToday.png';
 import googleCalendar from './google_calendar.png';
 import googleIcon from './googleIcon.png';
 import LoginBg from './loginBg.png';
@@ -23,6 +25,8 @@ const Images = {
 		taskImg,
 		postponeImg,
 		categoryImg,
+		emptyStagingImg,
+		emptyTodayImg,
 	},
 	googleCalendar,
 	DASHBOARD: {

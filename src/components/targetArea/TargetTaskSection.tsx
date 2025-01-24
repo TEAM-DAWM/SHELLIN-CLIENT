@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import { Draggable as BeautifulDnDDraggable } from 'react-beautiful-dnd';
 
 import BtnTaskContainer from '../common/BtnTaskContainer';
-import EmptyContainer from '../common/EmptyContainer';
 
+import EmptyViewToday from '@/components/common/EmptyViewToday';
 import Todo from '@/components/common/v2/taskBox/Todo';
 import { TaskType } from '@/types/tasks/taskType';
 import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
@@ -19,12 +19,20 @@ interface TargetTaskSectionProps {
 function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, targetDate }: TargetTaskSectionProps) {
 	useEffect(() => {
 		const container = document.getElementById('todolist-task-container');
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 
 		if (container) {
 			const draggable = new FullCalendarDraggable(container, {
 				itemSelector: '.todo-item',
 				eventData: () => {
 					if (selectedTarget) {
+						setTimeout(() => {
+							const mirrorElement = document.querySelector('.fc-event-dragging');
+							if (mirrorElement) {
+								(mirrorElement as HTMLElement).style.opacity = '0';
+								(mirrorElement as HTMLElement).style.backgroundColor = 'transparent';
+							}
+						}, 0);
 						return {
 							id: selectedTarget.id.toString(),
 							title: selectedTarget.name,
@@ -47,18 +55,24 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 		<BtnTaskContainer id="todolist-task-container" type="target">
 			{tasks.length === 0 ? (
 				<EmptyLayout>
-					<EmptyContainer />
+					<EmptyViewToday />
 				</EmptyLayout>
 			) : (
-				<>
+				<TargetAreaWrapper>
 					{tasks.map((task: TaskType, index: number) => (
 						<BeautifulDnDDraggable key={task.id} draggableId={task.id.toString()} index={index}>
-							{(provided) => (
+							{(provided, snapshot) => (
 								<TodoSizedWrapper
 									ref={provided.innerRef}
 									{...provided.draggableProps}
 									{...provided.dragHandleProps}
-									style={provided.draggableProps.style}
+									style={{
+										...provided.draggableProps.style,
+										borderRadius: '12px',
+										boxShadow: snapshot.isDragging
+											? '0 16px 20px rgb(0 0 0 / 12%), 0 8px 16px rgb(0 0 0 / 8%), 0 0 8px rgb(0 0 0 / 8%)'
+											: 'none',
+									}}
 								>
 									<Todo
 										// location="target"
@@ -81,16 +95,23 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 							)}
 						</BeautifulDnDDraggable>
 					))}
-				</>
+				</TargetAreaWrapper>
 			)}
 		</BtnTaskContainer>
 	);
 }
 
 export default TargetTaskSection;
-
 const TodoSizedWrapper = styled.div`
 	width: 100%;
+`;
+const TargetAreaWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	width: 100%;
+	height: 88rem;
+	padding-bottom: 2.8rem;
 `;
 const EmptyLayout = styled.div`
 	display: flex;

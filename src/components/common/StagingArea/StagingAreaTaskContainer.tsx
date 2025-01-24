@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { Draggable as BeautifulDnDDraggable } from 'react-beautiful-dnd';
 
 import BtnTaskContainer from '../BtnTaskContainer';
-import EmptyContainer from '../EmptyContainer';
 import Todo from '../v2/taskBox/Todo';
 
+import EmptyViewStaging from '@/components/common/EmptyViewStaging';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
 import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
 
@@ -31,6 +31,13 @@ function StagingAreaTaskContainer({
 				itemSelector: '.todo-item', // 드래그 가능한 요소
 				eventData: () => {
 					if (selectedTarget) {
+						setTimeout(() => {
+							const mirrorElement = document.querySelector('.fc-event-dragging');
+							if (mirrorElement) {
+								(mirrorElement as HTMLElement).style.opacity = '0';
+								(mirrorElement as HTMLElement).style.backgroundColor = 'transparent';
+							}
+						}, 0);
 						return {
 							id: selectedTarget.id.toString(),
 							title: selectedTarget.name,
@@ -53,18 +60,24 @@ function StagingAreaTaskContainer({
 		<StagingAreaTaskContainerLayout>
 			<BtnTaskContainer id="dumping-task-container" type="staging">
 				{tasks?.length === 0 || !tasks ? (
-					<EmptyContainer />
+					<EmptyViewStaging />
 				) : (
 					<TaskWrapper>
 						{tasks &&
 							tasks.map((task: TaskType, index: number) => (
 								<BeautifulDnDDraggable key={task.id} draggableId={task.id.toString()} index={index}>
-									{(provided) => (
+									{(provided, snapshot) => (
 										<div
 											ref={provided.innerRef}
 											{...provided.draggableProps}
 											{...provided.dragHandleProps}
-											style={{ userSelect: 'none', ...provided.draggableProps.style }}
+											style={{
+												...provided.draggableProps.style,
+												borderRadius: '12px',
+												boxShadow: snapshot.isDragging
+													? '0 16px 20px rgb(0 0 0 / 12%), 0 8px 16px rgb(0 0 0 / 8%), 0 0 8px rgb(0 0 0 / 8%)'
+													: 'none',
+											}}
 										>
 											<div
 												className="todo-item" // FullCalendarDraggable 대상
