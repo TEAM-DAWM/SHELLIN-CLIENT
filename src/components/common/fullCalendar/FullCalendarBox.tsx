@@ -204,7 +204,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			const startStr = removeTimezone(event.startStr);
 			const endStr = removeTimezone(event.endStr);
 
-			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: false });
+			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: info.event.allDay });
 		} else {
 			info.revert();
 		}
@@ -320,6 +320,13 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	};
 
 	const handleEventDidMount = (arg: EventMountArg) => {
+		if (arg.event.allDay) {
+			arg.el.classList.add('fc-all-day-event');
+			const eventMainElement = arg.el.querySelector('.fc-event-main');
+			if (eventMainElement) {
+				eventMainElement.classList.add('fc-all-day-event-main');
+			}
+		}
 		handleCompletedTask(arg);
 		// 우클릭 시
 		arg.el.addEventListener('contextmenu', (event) => handleRightClick(arg, event));

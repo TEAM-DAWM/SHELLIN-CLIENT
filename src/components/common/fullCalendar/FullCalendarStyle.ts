@@ -303,6 +303,15 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
 	}
 
+	/* TimeGrid(주간) all-day-event(종일) */
+	.fc-all-day-event .fc-event-main {
+		background-color: ${({ theme }) => theme.colorToken.Component.strong} !important;
+	}
+
+	.fc-all-day-event .fc-event-main :active {
+		background-color: ${({ theme }) => theme.colorToken.Outline.primaryStrong} !important;
+	}
+
 	/** TODO: category 추가 시 해당 부분에서 카테고리 색 적용하면 됨 */
 	.fc-daygrid-event-dot {
 		border-color: ${({ theme }) => theme.colorToken.Text.assistive};
@@ -582,6 +591,16 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc .fc-h-event {
 		border: none;
+	}
+
+	/* TimeGrid(주간) all-day-event(종일) */
+
+	.fc-all-day-event {
+		width: 95%;
+	}
+
+	.month-view .fc-all-day-event {
+		width: 72%;
 	}
 
 	/* Month view 중 이벤트 초과 안내 */
