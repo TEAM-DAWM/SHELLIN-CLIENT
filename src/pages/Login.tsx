@@ -61,7 +61,7 @@ const LeftSection = styled.section`
 	align-items: start;
 	justify-content: center;
 	width: 32rem;
-	height: 100%;
+	margin-right: 20rem;
 	margin-left: 20rem;
 `;
 
