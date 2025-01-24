@@ -27,6 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
+		location: 'target',
 		title: '할 일 제목',
 		deadlineDate: '2024년 12월 31일',
 		deadlineTime: '오후 6시 40분 까지',
