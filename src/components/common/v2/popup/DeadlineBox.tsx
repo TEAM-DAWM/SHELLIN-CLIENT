@@ -11,12 +11,12 @@ interface DeadlineBoxProps {
 	endTime: string;
 	label: string;
 	isDueDate?: boolean;
-	isAllDay?: boolean; // 부모로부터 전달받은 하루종일 상태
+	isAllDay?: boolean;
 	handleDueDateModalTime?: (time: string) => void;
 	handleDueDateModalDate?: (date: Date) => void;
 	handleTimeBlockDate?: (date: Date) => void;
-	onAllDayToggle?: (isAllDay: boolean) => void; // 하루종일 상태 변경 핸들러
-	onStartTimeChange?: (time: string) => void; // 시작 시간 변경 핸들러
+	onAllDayToggle?: (isAllDay: boolean) => void;
+	onStartTimeChange?: (time: string) => void;
 	onEndTimeChange?: (time: string) => void;
 }
 
@@ -36,11 +36,9 @@ function DeadlineBox({
 }: DeadlineBoxProps) {
 	const [isSettingActive, setIsSettingActive] = useState(isAllDay);
 	const [isClicked, setIsClicked] = useState(isDueDate);
-	const [isAllday, setIsAllday] = useState(isAllDay); // 내부 상태로 초기화
+	const [isAllday, setIsAllday] = useState(isAllDay);
 
 	const containerRef = useRef(null);
-
-	console.log('DeadlineBox 진행기간', isAllDay);
 
 	const handlePlusBtnClick = () => {
 		setIsClicked((prev) => !prev);
@@ -48,7 +46,7 @@ function DeadlineBox({
 	};
 	const handleCheckBtnClick = () => {
 		const newIsAllDay = !isAllday;
-		setIsAllday(newIsAllDay); // 내부 상태 업데이트
+		setIsAllday(newIsAllDay);
 		onAllDayToggle(newIsAllDay);
 
 		if (newIsAllDay) {
@@ -65,7 +63,7 @@ function DeadlineBox({
 	const handleXBtnClick = () => {
 		setIsSettingActive(false);
 		setIsClicked((prev) => !prev);
-		setIsAllday(false); // 내부 상태 초기화
+		setIsAllday(false);
 		onAllDayToggle(false);
 	};
 

@@ -15,7 +15,7 @@ interface DateTimeBtnProps {
 	handleDueDateModalDate?: (date: Date) => void;
 	handleDueDateModalTime?: (time: string) => void;
 	handleTimeBlockDate?: (date: Date) => void;
-	onStartTimeChange?: (time: string) => void; // 시작 시간 변경 핸들러
+	onStartTimeChange?: (time: string) => void;
 	onEndTimeChange?: (time: string) => void;
 }
 
@@ -32,12 +32,6 @@ function DateTimeBtn({
 	onStartTimeChange = () => {},
 	onEndTimeChange = () => {},
 }: DateTimeBtnProps) {
-	// ~~여기에 상태 있어야하는지 의문~~
-	// const [startTime, setStartTime] = useState(initStartTime);
-	// const [endTime, setEndTime] = useState(initEndTime);
-	// const [date, setDate] = useState(initDate);
-	// ~~~~
-
 	const updateStartTime = (newTime: string) => {
 		onStartTimeChange(`${formatDatetoLocalDate(date)}T${newTime.slice(0, 5)}`);
 	};

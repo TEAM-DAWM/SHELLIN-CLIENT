@@ -85,18 +85,12 @@ function MainSettingModal({
 		setTaskStatus(status);
 	}, [status]);
 
-	useEffect(() => {
-		console.log('onStartTimeChange', startTime);
-		console.log('onEndTimeChange', endTime);
-	}, [startTime, endTime]);
-
 	const handleDeadlineDate = (date: Date | null) => {
 		setDeadlineDate(date);
 	};
 
 	const handleTimeBlockDate = (date: Date | null) => {
 		setTimeBlockDate(date);
-		console.log('timeBlockDate', timeBlockDate);
 		handleStartTime(`${formatDatetoString(timeBlockDate)}T00:00`);
 		handleEndTime(`${formatDatetoString(timeBlockDate)}T00:00`);
 	};
@@ -138,18 +132,13 @@ function MainSettingModal({
 
 	// 수정 이벤트 핸들러
 	const handleTimeBlockUpdate = () => {
-		if (!timeBlockId) {
-			console.log('타임블록 아이디없어서 리턴');
-			return;
-		}
+		if (!timeBlockId) return;
 		const formattedStartTime = isAllDay
 			? `${timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : startTime.split('T')[0]}T00:00`
 			: startTime;
 		const formattedEndTime = isAllDay
 			? `${timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : endTime.split('T')[0]}T00:00`
 			: endTime;
-
-		console.log('formattedTime', formattedStartTime, formattedEndTime);
 
 		updateTimeBlockMutate({
 			taskId,
