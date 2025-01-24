@@ -199,10 +199,18 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const updateEvent = (info: EventDropArg | EventResizeDoneArg) => {
 		const { event } = info;
 		const { taskId, timeBlockId } = event.extendedProps;
-
+		console.log('updateEvent EventDropArg | EventResizeDoneArg', event.startStr);
+		console.log('updateEvent EventDropArg | EventResizeDoneArg', info);
 		if (taskId && taskId !== -1) {
-			const startStr = removeTimezone(event.startStr);
-			const endStr = removeTimezone(event.endStr);
+			let startStr = removeTimezone(event.startStr);
+			let endStr = removeTimezone(event.endStr);
+
+			if (info.event.allDay) {
+				startStr += 'T00:00';
+				endStr = startStr;
+			}
+
+			console.log('updateMutate ', taskId, timeBlockId, startStr, endStr, info.event.allDay);
 
 			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: info.event.allDay });
 		} else {
