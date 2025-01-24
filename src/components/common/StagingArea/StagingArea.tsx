@@ -51,7 +51,7 @@ function StagingArea(props: StagingAreaProps) {
 			<BottomContainer>
 				<Droppable droppableId="staging">
 					{(provided) => (
-						<SizedWrapper ref={provided.innerRef} {...provided.droppableProps}>
+						<SizedWrapper ref={provided.innerRef} {...provided.droppableProps} style={{ height: '100%' }}>
 							<StagingAreaTaskContainer
 								handleSelectedTarget={handleSelectedTarget}
 								selectedTarget={selectedTarget}
@@ -96,6 +96,7 @@ const slideOut = keyframes`
 
 const StagingAreaLayout = styled.div<{ isOpen: boolean }>`
 	position: relative;
+	z-index: 1;
 	display: inline-flex;
 	flex-direction: column;
 	align-items: center;
