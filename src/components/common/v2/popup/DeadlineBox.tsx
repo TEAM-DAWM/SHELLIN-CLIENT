@@ -46,9 +46,6 @@ function DeadlineBox({
 		setIsClicked((prev) => !prev);
 		setIsSettingActive(false);
 	};
-	const removeTime = () => {
-		handleDueDateModalTime('');
-	};
 	const handleCheckBtnClick = () => {
 		const newIsAllDay = !isAllday;
 		setIsAllday(newIsAllDay); // 내부 상태 업데이트
@@ -60,8 +57,8 @@ function DeadlineBox({
 			onEndTimeChange(`${date.toISOString().split('T')[0]}T00:00`);
 		} else {
 			// 하루종일 해제 시 시간 비우기
-			onStartTimeChange('');
-			onEndTimeChange('');
+			onStartTimeChange(startTime || '06:00');
+			onEndTimeChange(endTime);
 		}
 	};
 
@@ -121,6 +118,8 @@ function DeadlineBox({
 							handleDueDateModalDate={handleDueDateModalDate}
 							handleDueDateModalTime={handleDueDateModalTime}
 							handleTimeBlockDate={handleTimeBlockDate}
+							onStartTimeChange={onStartTimeChange}
+							onEndTimeChange={onStartTimeChange}
 						/>
 						{!isSettingActive && (
 							<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />

@@ -85,6 +85,10 @@ function MainSettingModal({
 		setTaskStatus(status);
 	}, [status]);
 
+	useEffect(() => {
+		console.log('onStartTimeChange', startTime);
+	}, [startTime]);
+
 	const handleDeadlineDate = (date: Date | null) => {
 		setDeadlineDate(date);
 	};

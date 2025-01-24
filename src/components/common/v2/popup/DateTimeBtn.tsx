@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import DateBtn from '@/components/common/v2/popup/DateBtn';
 import TimeBtn from '@/components/common/v2/popup/TimeBtn';
+import { formatDateToLocal, formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface DateTimeBtnProps {
 	date: Date;
@@ -14,36 +15,40 @@ interface DateTimeBtnProps {
 	handleDueDateModalDate?: (date: Date) => void;
 	handleDueDateModalTime?: (time: string) => void;
 	handleTimeBlockDate?: (date: Date) => void;
+	onStartTimeChange?: (time: string) => void; // 시작 시간 변경 핸들러
+	onEndTimeChange?: (time: string) => void;
 }
 
 function DateTimeBtn({
-	date: initDate,
-	startTime: initStartTime,
-	endTime: initEndTime,
+	date,
+	startTime,
+	endTime,
 	isSetDate,
 	isAllday = false,
 	onClick,
 	handleDueDateModalDate = () => {},
 	handleDueDateModalTime = () => {},
 	handleTimeBlockDate = () => {},
+	onStartTimeChange = () => {},
+	onEndTimeChange = () => {},
 }: DateTimeBtnProps) {
 	// ~~여기에 상태 있어야하는지 의문~~
-	const [startTime, setStartTime] = useState(initStartTime);
-	const [endTime, setEndTime] = useState(initEndTime);
-	const [date, setDate] = useState(initDate);
+	// const [startTime, setStartTime] = useState(initStartTime);
+	// const [endTime, setEndTime] = useState(initEndTime);
+	// const [date, setDate] = useState(initDate);
 	// ~~~~
 
 	const updateStartTime = (newTime: string) => {
-		setStartTime(newTime);
+		onStartTimeChange(`${formatDatetoLocalDate(date)}T${newTime.slice(0, 5)}`);
 	};
 
 	const updateEndTime = (newTime: string) => {
-		setEndTime(newTime);
+		onEndTimeChange(`${formatDatetoLocalDate(date)}T${newTime.slice(0, 5)}`);
 		handleDueDateModalTime(newTime.slice(0, 5));
 	};
 
 	const updateDate = (newDate: Date) => {
-		setDate(newDate);
+		// setDate(newDate);
 		handleDueDateModalDate(newDate);
 		handleTimeBlockDate(newDate);
 	};
