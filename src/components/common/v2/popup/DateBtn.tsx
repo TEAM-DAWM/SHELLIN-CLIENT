@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import DateCorrectionModal from '@/components/common/datePicker/DateCorrectionModal';
 import Icon from '@/components/common/Icon';
-import formatDateWithDay from '@/utils/formatDateWithDay';
+import { formatDateWithDay } from '@/utils/formatDateTime';
 
 interface DateBtnProps {
 	isAllday: boolean;

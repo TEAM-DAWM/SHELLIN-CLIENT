@@ -14,7 +14,7 @@ import ModalTextInputTime from '@/components/common/modal/ModalTextInputTime';
 import TextInputBox from '@/components/common/modal/TextInputBox';
 import { SizeType } from '@/types/textInputType';
 import { BtnTaskLocationType } from '@/types/today/BtnTaskLocationType';
-import dotFormatTime from '@/utils/dotFormatTime';
+import { dotFormatTime } from '@/utils/formatDateTime';
 
 interface ModalProps {
 	isOpen: boolean;
