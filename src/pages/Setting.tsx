@@ -6,13 +6,12 @@ import NavBar from '@/components/common/NavBar';
 import LoadingSpinner from '@/components/common/spinner/Spinner';
 import SettingContent from '@/components/SettingPage/SettingContent';
 import SettingMenu from '@/components/SettingPage/SettingMenu';
-
-type TabType = 'account' | 'category' | 'routine' | 'history';
+import { MenuType } from '@/types/setting/menuType';
 
 function Setting() {
-	const [activeMenu, setActiveMenu] = useState<TabType>('account');
+	const [activeMenu, setActiveMenu] = useState<MenuType>('account');
 
-	const handleTabChange = (tab: TabType) => {
+	const handleTabChange = (tab: MenuType) => {
 		setActiveMenu(tab);
 	};
 	const { data: userInfo, isLoading } = useGetUserInfo();

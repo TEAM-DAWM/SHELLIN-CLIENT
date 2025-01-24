@@ -3,8 +3,7 @@ import styled from '@emotion/styled';
 
 import Button from '@/components/common/v2/button/Button';
 import colorToken from '@/styles/colorToken';
-
-type MenuType = 'account' | 'category' | 'routine' | 'history';
+import { MenuType } from '@/types/setting/menuType';
 
 interface SettingMenuProps {
 	activeMenu: MenuType;

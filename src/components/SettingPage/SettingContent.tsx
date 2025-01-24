@@ -2,18 +2,17 @@ import styled from '@emotion/styled';
 
 import { UserData } from '@/apis/user/userInfoType';
 import ProfileArea from '@/components/SettingPage/ProfileArea';
-
-type TabType = 'account' | 'category' | 'routine' | 'history';
+import { MenuType } from '@/types/setting/menuType';
 
 interface SettingContentProps {
-	activeTab: TabType;
+	activeMenu: MenuType;
 	userData?: UserData;
 }
 
-function SettingContent({ userData, activeTab }: SettingContentProps) {
+function SettingContent({ userData, activeMenu }: SettingContentProps) {
 	return (
 		<ContentSection>
-			{activeTab === 'account' && (
+			{activeMenu === 'account' && (
 				<ContentWrapper>
 					<ProfileArea userData={userData} />
 				</ContentWrapper>
