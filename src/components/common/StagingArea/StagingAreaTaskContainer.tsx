@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { Draggable as BeautifulDnDDraggable } from 'react-beautiful-dnd';
 
 import BtnTaskContainer from '../BtnTaskContainer';
-import EmptyContainer from '../EmptyContainer';
 import Todo from '../v2/taskBox/Todo';
 
+import EmptyViewStaging from '@/components/common/EmptyViewStaging';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
 import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
 
@@ -60,7 +60,7 @@ function StagingAreaTaskContainer({
 		<StagingAreaTaskContainerLayout>
 			<BtnTaskContainer id="dumping-task-container" type="staging">
 				{tasks?.length === 0 || !tasks ? (
-					<EmptyContainer />
+					<EmptyViewStaging />
 				) : (
 					<TaskWrapper>
 						{tasks &&
