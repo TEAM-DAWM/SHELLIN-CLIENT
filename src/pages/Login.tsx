@@ -27,7 +27,7 @@ function Login() {
 							</a>
 							과{' '}
 							<a
-								href="https://topaz-work-262.notion.site/aa83c69d45144f1182f9f54f1fae8c38"
+								href="https://topaz-work-262.notion.site/b8929b8098f94dbc9f87c1de7f5aa5f5"
 								target="_blank"
 								rel="noreferrer"
 							>
