@@ -27,6 +27,18 @@ function NavbarButton({
 }: NavbarButtonProps) {
 	const { color, colorToken } = useTheme();
 
+	// 사이즈별 분기
+	const buttonSizes: Record<SizeType, SerializedStyles> = {
+		big: css`
+			width: 4rem;
+			height: 4rem;
+		`,
+		small: css`
+			width: 3.2rem;
+			height: 3.2rem;
+		`,
+	};
+
 	// 아이콘 배경 색상 및 테두리
 	const getIconBtnStyles = (
 		strokeColor: string,
@@ -85,6 +97,7 @@ function NavbarButton({
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		${buttonSizes[size]}
 
 		border-radius: 8px;
 		${buttonStyles[type]}
