@@ -26,5 +26,6 @@ export interface DetailedTaskType {
 		id: number;
 		startTime: string;
 		endTime: string;
+		isAllTime: boolean;
 	};
 }

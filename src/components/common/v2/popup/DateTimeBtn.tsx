@@ -13,6 +13,7 @@ interface DateTimeBtnProps {
 	onClick: () => void;
 	handleDueDateModalDate?: (date: Date) => void;
 	handleDueDateModalTime?: (time: string) => void;
+	handleTimeBlockDate?: (date: Date) => void;
 }
 
 function DateTimeBtn({
@@ -24,6 +25,7 @@ function DateTimeBtn({
 	onClick,
 	handleDueDateModalDate = () => {},
 	handleDueDateModalTime = () => {},
+	handleTimeBlockDate = () => {},
 }: DateTimeBtnProps) {
 	// ~~여기에 상태 있어야하는지 의문~~
 	const [startTime, setStartTime] = useState(initStartTime);
@@ -43,6 +45,7 @@ function DateTimeBtn({
 	const updateDate = (newDate: Date) => {
 		setDate(newDate);
 		handleDueDateModalDate(newDate);
+		handleTimeBlockDate(newDate);
 	};
 
 	return isSetDate ? (

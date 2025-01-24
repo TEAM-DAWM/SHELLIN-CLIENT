@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import useDeleteTask from '@/apis/tasks/deleteTask/query';
 import usePatchTaskDescription from '@/apis/tasks/editTask/query';
 import useTaskDescription from '@/apis/tasks/taskDescription/query';
+import useUpdateTimeBlock from '@/apis/timeBlocks/updateTimeBlock/query';
 import Button from '@/components/common/v2/button/Button';
 import DropdownButton from '@/components/common/v2/control/DropdownButton';
 import IconButton from '@/components/common/v2/IconButton';
@@ -12,7 +13,7 @@ import PopUp from '@/components/common/v2/TextBox/PopUp';
 import useInput from '@/hooks/useInput';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { StatusType } from '@/types/tasks/taskType';
-import { formatDatetoLocalDate } from '@/utils/formatDateTime';
+import { formatDatetoString, formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface MainSettingModalProps {
 	isOpen: boolean;
@@ -25,6 +26,7 @@ interface MainSettingModalProps {
 	targetDate: string;
 	timeBlockId?: number;
 	isDeadlineBoxOpen?: boolean;
+	isAllTime?: boolean;
 }
 
 function MainSettingModal({
@@ -38,10 +40,13 @@ function MainSettingModal({
 	targetDate,
 	timeBlockId,
 	isDeadlineBoxOpen = false,
+	isAllTime = false,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutate: editMutate } = usePatchTaskDescription();
+	const { mutate: updateTimeBlockMutate } = useUpdateTimeBlock();
 	const [taskStatus, setTaskStatus] = useState(status);
+	const [isAllDay, setIsAllDay] = useState(isAllTime);
 	const {
 		data: taskDetailData,
 		isLoading: isTaskDetailLoading,
@@ -61,6 +66,7 @@ function MainSettingModal({
 	const { content: startTime, handleContent: handleStartTime } = useInput('');
 	const { content: endTime, handleContent: handleEndTime } = useInput('');
 	const [deadlineDate, setDeadlineDate] = useState<Date | null>(null);
+	const [timeBlockDate, setTimeBlockDate] = useState<Date | null>(null);
 
 	useEffect(() => {
 		if (isTaskDetailFetched) {
@@ -70,6 +76,7 @@ function MainSettingModal({
 			handleDeadlineTime(taskDetailData?.deadLine.time || '');
 			handleStartTime(taskDetailData?.timeBlock?.startTime || '');
 			handleEndTime(taskDetailData?.timeBlock?.endTime || '');
+			setIsAllDay(isAllDay || false);
 		}
 	}, [isTaskDetailFetched]);
 	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
@@ -81,9 +88,17 @@ function MainSettingModal({
 	const handleDeadlineDate = (date: Date | null) => {
 		setDeadlineDate(date);
 	};
+
+	const handleTimeBlockDate = (date: Date | null) => {
+		setTimeBlockDate(date);
+		console.log('timeBlockDate', timeBlockDate);
+		handleStartTime(`${formatDatetoString(timeBlockDate)}T00:00`);
+		handleEndTime(`${formatDatetoString(timeBlockDate)}T00:00`);
+	};
 	const handleConfirm = () => {
 		handleStatusEdit(taskStatus);
 		handleEdit();
+		handleTimeBlockUpdate();
 		onClose();
 	};
 
@@ -114,6 +129,35 @@ function MainSettingModal({
 		}
 		// 임시 리턴
 		return '06:00pm';
+	};
+
+	// 수정 이벤트 핸들러
+	const handleTimeBlockUpdate = () => {
+		if (!timeBlockId) {
+			console.log('타임블록 아이디없어서 리턴');
+			return;
+		}
+		const formattedStartTime = isAllDay
+			? `${timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : startTime.split('T')[0]}T00:00`
+			: startTime;
+		const formattedEndTime = isAllDay
+			? `${timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : endTime.split('T')[0]}T00:00`
+			: endTime;
+
+		console.log('formattedTime', formattedStartTime, formattedEndTime);
+
+		updateTimeBlockMutate({
+			taskId,
+			timeBlockId,
+			startTime: formattedStartTime,
+			endTime: formattedEndTime,
+			isAllTime: isAllDay,
+		});
+	};
+
+	// 하루종일 버튼 상태 변경 핸들러
+	const handleAllDayToggle = () => {
+		setIsAllDay((prev) => !prev);
 	};
 
 	if (!isOpen) return null;
@@ -154,6 +198,11 @@ function MainSettingModal({
 						endTime={formatTimeWithAmPm(endTime) || '06:00pm'}
 						label="진행 기간"
 						isDueDate={isDeadlineBoxOpen}
+						isAllDay={isAllDay}
+						onAllDayToggle={handleAllDayToggle}
+						onStartTimeChange={handleStartTime}
+						onEndTimeChange={handleEndTime}
+						handleTimeBlockDate={handleTimeBlockDate}
 					/>
 				)}
 			</MainSettingModalBodyLayout>
