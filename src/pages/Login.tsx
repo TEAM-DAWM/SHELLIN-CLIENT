@@ -27,7 +27,7 @@ function Login() {
 							</a>
 							과{' '}
 							<a
-								href="https://topaz-work-262.notion.site/aa83c69d45144f1182f9f54f1fae8c38"
+								href="https://topaz-work-262.notion.site/b8929b8098f94dbc9f87c1de7f5aa5f5"
 								target="_blank"
 								rel="noreferrer"
 							>
@@ -61,7 +61,7 @@ const LeftSection = styled.section`
 	align-items: start;
 	justify-content: center;
 	width: 32rem;
-	height: 100%;
+	margin-right: 20rem;
 	margin-left: 20rem;
 `;
 
@@ -98,6 +98,18 @@ const SignDescription = styled.p`
 `;
 
 const LoginImg = styled.img`
+	width: 70%;
+	height: 100%;
+	object-fit: cover;
+
 	border-radius: 0 8px 8px 0;
+
+	@media (width <= 1200px) {
+		width: 35%;
+	}
+
+	@media (width <= 900px) {
+		width: 25%;
+	}
 `;
 export default Login;
