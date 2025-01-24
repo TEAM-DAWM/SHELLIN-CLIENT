@@ -11,11 +11,13 @@ const PatchTimeBlock = async ({
 	timeBlockId,
 	startTime,
 	endTime,
+	isAllTime,
 }: PatchTimeBlokType): Promise<TimeBlockResponse | undefined> => {
 	try {
 		const response = await privateInstance.patch(`/api/tasks/${taskId}/time-blocks/${timeBlockId}`, {
 			startTime,
 			endTime,
+			isAllTime,
 		});
 		return {
 			code: response.data.code,

@@ -10,8 +10,8 @@ const usePostTimeBlock = () => {
 	const { addToast } = useToast();
 
 	const { mutate, isError } = useMutation({
-		mutationFn: async ({ taskId, startTime, endTime }: PostTimeBlokType) => {
-			const response = await CreateTimeBlock({ taskId, startTime, endTime });
+		mutationFn: async ({ taskId, startTime, endTime, isAllTime }: PostTimeBlokType) => {
+			const response = await CreateTimeBlock({ taskId, startTime, endTime, isAllTime });
 			/** response.code가 'conflict'일 때 타임블록 에러 토스트 출력 */
 			if (response && response.code === 'conflict') {
 				addToast(response.message, response.code);

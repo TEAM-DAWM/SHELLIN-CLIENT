@@ -181,7 +181,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			const startStr = removeTimezone(selectInfo.startStr);
 			const endStr = removeTimezone(selectInfo.endStr);
 
-			createMutate({ taskId: selectedTarget.id, startTime: startStr, endTime: endStr });
+			createMutate({ taskId: selectedTarget.id, startTime: startStr, endTime: endStr, isAllTime: false });
 		}
 	};
 
@@ -204,7 +204,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			const startStr = removeTimezone(event.startStr);
 			const endStr = removeTimezone(event.endStr);
 
-			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr });
+			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: false });
 		} else {
 			info.revert();
 		}
@@ -285,7 +285,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		console.log('드롭된 task id', Number(info.event.id));
 
 		createMutate(
-			{ taskId: Number(info.event.id), startTime: start, endTime: end },
+			{ taskId: Number(info.event.id), startTime: start, endTime: end, isAllTime: false },
 			{
 				onSuccess: () => {
 					if (clickedEvent) {

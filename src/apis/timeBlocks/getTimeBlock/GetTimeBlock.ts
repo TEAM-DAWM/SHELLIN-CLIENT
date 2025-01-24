@@ -4,6 +4,7 @@ interface TimeBlock {
 	id: number;
 	startTime: string;
 	endTime: string;
+	isAllTime: boolean;
 }
 
 interface Schedule {
