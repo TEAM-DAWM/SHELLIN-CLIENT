@@ -75,7 +75,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 									}}
 								>
 									<Todo
-										// location="target"
+										location="target"
 										key={task.id}
 										title={task.name}
 										deadlineDate={formatDatetoStringKor(task.deadLine?.date)}

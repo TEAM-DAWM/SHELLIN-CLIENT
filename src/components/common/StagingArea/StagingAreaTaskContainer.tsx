@@ -80,6 +80,7 @@ function StagingAreaTaskContainer({
 											}}
 										>
 											<Todo
+												location="staging"
 												key={task.id}
 												status={task.status as StatusType}
 												title={task.name}
