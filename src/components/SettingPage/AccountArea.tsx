@@ -10,8 +10,8 @@ interface AccountAreaProps {
 
 function AccountArea({ calendarAccount }: AccountAreaProps) {
 	return (
-		<AccountAreaWrapper>
-			<AccountText>연동된 계정</AccountText>
+		<AccountAreaLayout>
+			연동된 계정
 			<AccountWrapper>
 				<GoogleCalendarBtn />
 				{calendarAccount?.map((account) => (
@@ -21,28 +21,26 @@ function AccountArea({ calendarAccount }: AccountAreaProps) {
 					</InputBox>
 				))}
 			</AccountWrapper>
-		</AccountAreaWrapper>
+		</AccountAreaLayout>
 	);
 }
 
 export default AccountArea;
 
-const AccountAreaWrapper = styled.div`
+const AccountAreaLayout = styled.div`
 	display: flex;
 	flex-direction: column;
+	gap: 24px;
 	align-items: flex-start;
-	width: 42.2rem;
-	height: 20.4rem;
-`;
+	align-self: stretch;
+	width: 100%;
+	padding: 3.2rem 0;
 
-const AccountText = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 3.6rem 3.6rem 0.8rem 2rem;
+	${({ theme }) => theme.font.title02};
+	color: ${({ theme }) => theme.colorToken.Neutral.light};
 
-	${({ theme }) => theme.fontTheme.HEADLINE_02}
-	color: ${({ theme }) => theme.palette.Grey.Black}
+	border-color: ${({ theme }) => theme.color.Grey.Grey3};
+	border-bottom: 1px solid;
 `;
 
 const AccountWrapper = styled.div`

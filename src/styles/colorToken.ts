@@ -13,6 +13,7 @@ const colorToken = {
 		strong: color.Grey.Grey2,
 		heavy: color.Grey.Grey3,
 		accent: color.Grey.Grey4,
+		light: color.Grey.Grey8,
 	},
 	Text: {
 		primary: color.Blue.Blue7,

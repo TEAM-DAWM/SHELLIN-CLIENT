@@ -1,43 +1,84 @@
 import styled from '@emotion/styled';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { useState } from 'react';
 
 import useGetUserInfo from '@/apis/user/query';
+import NavBar from '@/components/common/NavBar';
 import LoadingSpinner from '@/components/common/spinner/Spinner';
-import AccountArea from '@/components/SettingPage/AccountArea';
-import LogOutBtn from '@/components/SettingPage/LogOutBtn';
-import ProfileArea from '@/components/SettingPage/ProfileArea';
+import SettingContent from '@/components/SettingPage/SettingContent';
+import SettingMenu from '@/components/SettingPage/SettingMenu';
+import { MenuType } from '@/types/setting/menuType';
 
 function Setting() {
-	const CALENDAR_CLIENT_ID = import.meta.env.VITE_GOOGLE_CALENDAR_CLIENT_ID;
+	const [activeMenu, setActiveMenu] = useState<MenuType>('account');
+
+	const handleTabChange = (tab: MenuType) => {
+		setActiveMenu(tab);
+	};
 	const { data: userInfo, isLoading } = useGetUserInfo();
 	if (isLoading) {
 		return <LoadingSpinner />;
 	}
 
 	return (
-		<GoogleOAuthProvider clientId={CALENDAR_CLIENT_ID}>
-			<SettingContainer>
-				<Wrapper>
-					<ProfileArea userData={userInfo?.data} />
-					<AccountArea calendarAccount={userInfo?.data.googleCalenders} />
-				</Wrapper>
-				<LogOutBtn />
-			</SettingContainer>
-		</GoogleOAuthProvider>
+		<SettingLayout>
+			<NavBarWrapper>
+				<NavBar isOpen={false} handleSideBar={() => {}} />
+			</NavBarWrapper>
+			<SettingArea>
+				<SettingHeader>설정</SettingHeader>
+				<MainWrapper>
+					<SettingMenu activeMenu={activeMenu} onTabChange={handleTabChange} />
+					<SettingContent activeMenu={activeMenu} userData={userInfo?.data} />
+				</MainWrapper>
+			</SettingArea>
+		</SettingLayout>
 	);
 }
 
 export default Setting;
 
-const Wrapper = styled.div`
+const SettingLayout = styled.div`
 	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
+	height: 108rem;
+	overflow: hidden;
 `;
 
-const SettingContainer = styled.div`
+const NavBarWrapper = styled.div`
+	box-shadow:
+		4px 4px 40px 20px #717e9833,
+		-4px -4px 40px 0 #717e9833;
+`;
+
+const SettingArea = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	height: 100%;
+	align-items: center;
+	width: 100%;
+	margin: 0.8rem 0.8rem 0.8rem 1.6rem;
+
+	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
+	border-radius: 20px;
+`;
+
+const SettingHeader = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	align-self: stretch;
+	justify-content: center;
+	width: 100%;
+	padding: 5.2rem 0 1.2rem 2.4rem;
+
+	color: ${({ theme }) => theme.colorToken.Neutral.light};
+
+	${({ theme }) => theme.font.title01};
+	border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
+`;
+
+const MainWrapper = styled.div`
+	display: flex;
+	flex: 1 0 0;
+	flex-direction: row;
+	align-items: flex-start;
+	align-self: stretch;
 `;

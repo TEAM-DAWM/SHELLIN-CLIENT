@@ -1,24 +1,29 @@
 import styled from '@emotion/styled';
 
+import LogOutBtn from './LogOutBtn';
+
 import { UserData } from '@/apis/user/userInfoType';
 
 interface ProfileAreaProps {
 	userData: UserData | undefined;
 }
-
 function ProfileArea({ userData }: ProfileAreaProps) {
 	return (
 		<ProfileAreaLayout>
-			<ProfileText>프로필</ProfileText>
-			<ProfileWrapper>
-				<ProfileImg src={userData?.image} alt="프로필" />
-				<ProfileTextBox>
-					<LastName>
-						{userData?.familyName} {userData?.givenName}
-					</LastName>
-					<EmailText>{userData?.email}</EmailText>
-				</ProfileTextBox>
-			</ProfileWrapper>
+			<ProfileBox>
+				프로필
+				<ProfileWrapper>
+					<ProfileImg src={userData?.image} alt="프로필 이미지" />
+					<ProfileTextBox>
+						<LastName>
+							{userData?.familyName}
+							{userData?.givenName}
+						</LastName>
+						<Email>{userData?.email}</Email>
+					</ProfileTextBox>
+				</ProfileWrapper>
+			</ProfileBox>
+			<LogOutBtn />
 		</ProfileAreaLayout>
 	);
 }
@@ -27,55 +32,58 @@ export default ProfileArea;
 
 const ProfileAreaLayout = styled.div`
 	display: flex;
+	flex: 1 0 0;
 	flex-direction: column;
+	gap: 3.2rem;
 	align-items: flex-start;
-	max-width: 43.2rem;
-	height: 17.8rem;
+	align-self: stretch;
+	padding: 32px 32px 0;
+
+	background-color: ${({ theme }) => theme.color.Grey.White};
+	border-left: 1px solid ${({ theme }) => theme.colorToken.Neutral.normal};
+`;
+
+const ProfileBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1.6rem;
+	align-items: flex-start;
+	align-self: stretch;
+	width: 100%;
+	padding-bottom: 3.2rem;
+
+	${({ theme }) => theme.font.title02};
+	color: ${({ theme }) => theme.colorToken.Neutral.light};
+
+	border-bottom: 1px solid ${({ theme }) => theme.colorToken.Neutral.normal};
 `;
 
 const ProfileWrapper = styled.div`
 	display: flex;
-	gap: 1.6rem;
+	gap: 2rem;
 	align-items: center;
-	align-self: stretch;
-	box-sizing: border-box;
-	width: 41.5rem;
-	margin: 0 1rem 0 0.7rem;
-	padding: 1.6rem 0 1.6rem 1.6rem;
-
-	border: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
-	border-radius: 12px;
+	width: 43.2rem;
+	padding: 1.6rem;
 `;
 
 const ProfileImg = styled.img`
-	width: 6.6rem;
-	height: 6.6rem;
+	width: 5.6rem;
+	height: 5.6rem;
 
 	border-radius: 50%;
 `;
 const ProfileTextBox = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 0.4rem;
 	align-items: flex-start;
 `;
 
 const LastName = styled.p`
-	${({ theme }) => theme.fontTheme.TITLE_03}
-	color: ${({ theme }) => theme.palette.Grey.Black}
+	${({ theme }) => theme.font.title02};
+	color: ${({ theme }) => theme.colorToken.Neutral.light};
 `;
 
-const EmailText = styled.p`
-	${({ theme }) => theme.fontTheme.BODY_02}
-	color: ${({ theme }) => theme.palette.Grey.Grey7}
-`;
-
-const ProfileText = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 3.6rem 3.6rem 1.6rem 2rem;
-
-	${({ theme }) => theme.fontTheme.HEADLINE_02}
-	color: ${({ theme }) => theme.palette.Grey.Black}
+const Email = styled.p`
+	${({ theme }) => theme.font.body04};
+	color: ${({ theme }) => theme.colorToken.Neutral.light};
 `;

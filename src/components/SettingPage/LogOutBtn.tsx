@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
 import userLogout from '@/apis/logout/logoutAxios';
+import Images from '@/assets/images';
 
 function LogOutBtn() {
 	const navigate = useNavigate();
@@ -17,26 +18,35 @@ function LogOutBtn() {
 		}
 	};
 
-	return <LogOutBox onClick={handleLogoutButton}>로그아웃</LogOutBox>;
+	return (
+		<LogOutBox onClick={handleLogoutButton}>
+			<GoogleImg src={Images.googleIcon} />
+			로그아웃
+		</LogOutBox>
+	);
 }
 
 export default LogOutBtn;
 
 const LogOutBox = styled.button`
 	display: flex;
-	gap: 1rem;
+	gap: 1.12rem;
 	align-items: center;
-	align-self: stretch;
 	justify-content: center;
 	box-sizing: border-box;
-	width: 41.2rem;
-	height: 3.6rem;
-	margin: 2rem 0 2.8rem 1rem;
-	padding: 1.2rem 1.6rem;
+	width: 32rem;
+	height: 5.6rem;
+	padding: 0 3.5rem 0 2.24rem;
 
-	color: ${({ theme }) => theme.palette.Grey.Grey6};
+	color: ${({ theme }) => theme.color.Grey.White};
 
-	background: ${({ theme }) => theme.palette.Grey.Grey3};
-	border-radius: 8px;
-	${({ theme }) => theme.fontTheme.BODY_02};
+	background: ${({ theme }) => theme.color.Grey.Black};
+	border-radius: 12px;
+	${({ theme }) => theme.font.title02};
+`;
+
+const GoogleImg = styled.img`
+	width: 2.4rem;
+	height: 2.4rem;
+	margin-right: 1.12rem;
 `;
