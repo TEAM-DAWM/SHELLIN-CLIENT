@@ -54,8 +54,7 @@ const SettingArea = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 182.4rem;
-	height: 106.4rem;
+	width: 100%;
 	margin: 0.8rem 0.8rem 0.8rem 1.6rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
