@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Icon from './Icon';
 import ToggleSwitchButton from './v2/control/ToggleSwitchButton';
@@ -14,6 +14,7 @@ interface NavBarProps {
 }
 function NavBar({ isOpen, handleSideBar }: NavBarProps) {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const moveToSetting = () => {
 		navigate('/setting');
 	};
@@ -27,7 +28,7 @@ function NavBar({ isOpen, handleSideBar }: NavBarProps) {
 				<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
 				<IconWrapper>
 					<IconButton iconName="IcnTodolist" size="big" type="normal" onClick={moveToToday} dot={false} />
-					<TextBox>할 일</TextBox>
+					<TextBox isActive={location.pathname === '/today'}>할 일</TextBox>
 				</IconWrapper>
 			</ProfileContainer>
 			<ControllContainer>
@@ -111,10 +112,10 @@ const IconWrapper = styled.span`
 	width: 3.1rem;
 `;
 
-const TextBox = styled.p`
+const TextBox = styled.p<{ isActive?: boolean }>`
 	width: 4rem;
 
-	color: ${({ theme }) => theme.colorToken.Text.assistive};
+	color: ${({ theme, isActive }) => (isActive ? theme.colorToken.Icon.primary : theme.colorToken.Text.assistive)};
 	text-align: center;
 	${({ theme }) => theme.font.label03};
 `;
