@@ -1,8 +1,8 @@
 const fonts = {
-	PretendardBold: 'Pretendard-Bold, -apple-system, Helvetica, Arial, sans-serif',
-	PretendardSemiBold: 'Pretendard-SemiBold, -apple-system, Helvetica, Arial, sans-serif',
-	PretendardMedium: 'Pretendard-Medium, -apple-system, Helvetica, Arial, sans-serif',
-	PretendardRegular: 'Pretendard-Regular, -apple-system, Helvetica, Arial, sans-serif',
+	PretendardBold: 'Pretendard, -apple-system, Helvetica, Arial, sans-serif',
+	PretendardSemiBold: 'Pretendard, -apple-system, Helvetica, Arial, sans-serif',
+	PretendardMedium: 'Pretendard, -apple-system, Helvetica, Arial, sans-serif',
+	PretendardRegular: 'Pretendard, -apple-system, Helvetica, Arial, sans-serif',
 };
 
 interface Font {
