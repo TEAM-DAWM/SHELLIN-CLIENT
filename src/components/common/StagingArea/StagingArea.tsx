@@ -46,6 +46,7 @@ function StagingArea(props: StagingAreaProps) {
 					onClick={handleArrangeBtnClick}
 					dot={isIconBtnDotted}
 				/>
+				{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortOrder} />}
 			</IconContainer>
 
 			<BottomContainer>
@@ -63,7 +64,6 @@ function StagingArea(props: StagingAreaProps) {
 					)}
 				</Droppable>
 			</BottomContainer>
-			{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortOrder} />}
 			{isSortModalOpen && <ModalBackdrop onClick={handleCloseModal} />}
 		</StagingAreaLayout>
 	);

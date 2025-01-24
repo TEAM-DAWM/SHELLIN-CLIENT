@@ -35,6 +35,7 @@ const btnCustomWidth = css`
 `;
 const SortingDropdownContainer = styled.div`
 	position: absolute;
+	left: 44.6rem;
 	z-index: 4;
 	display: flex;
 	flex-direction: column;
