@@ -87,3 +87,27 @@ export const parseDate = (isoDateString: string): string => {
 	const day = `0${date.getDate()}`.slice(-2); // 일을 두 자리로 포맷팅
 	return `${year}-${month}-${day}`; // YYYY-MM-DD 형식으로 반환
 };
+
+/**
+ * '00:00' 형식의 시간을 '오후 6시 40분 까지' 로 변경
+ * @param time
+ * @returns {string}
+ */
+export const formatTimeToDueTime = (time: string) => {
+	if (!/^\d{2}:\d{2}$/.test(time)) {
+		throw new Error('Invalid time format. Expected HH:mm');
+	}
+
+	const [hoursStr, minutesStr] = time.split(':');
+	const hours = parseInt(hoursStr, 10);
+	const minutes = parseInt(minutesStr, 10);
+
+	if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+		throw new Error('Invalid time value. Hours should be 0-23 and minutes 0-59.');
+	}
+
+	const period = hours < 12 ? '오전' : '오후';
+	const adjustedHours = hours % 12 === 0 ? 12 : hours % 12;
+
+	return `${period} ${adjustedHours}시 ${minutes}분 까지`;
+};
