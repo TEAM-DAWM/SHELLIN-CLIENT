@@ -26,7 +26,7 @@ import customSlotLabelContent from '@/components/common/fullCalendar/fullCalenda
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
-import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
+import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface FullCalendarBoxProps {
 	size: 'small' | 'big';

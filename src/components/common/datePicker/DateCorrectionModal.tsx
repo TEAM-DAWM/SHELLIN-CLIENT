@@ -10,7 +10,7 @@ import CorrectionCustomHeader from './CorrectionCustomHeader';
 import CalendarStyle from './DatePickerStyle';
 
 import useOutsideClick from '@/hooks/useOutsideClick';
-import formatDatetoString from '@/utils/formatDatetoString';
+import { formatDatetoString } from '@/utils/formatDateTime';
 import { blurRef } from '@/utils/refStatus';
 
 interface DateCorrectionModalProps {

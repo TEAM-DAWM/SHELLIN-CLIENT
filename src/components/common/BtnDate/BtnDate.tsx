@@ -10,7 +10,7 @@ import BtnDateText, { TextWrapper } from './BtnDateText';
 import Icons from '@/assets/svg/V1/index';
 import MODAL from '@/constants/modalLocation';
 import { SizeType } from '@/types/textInputType';
-import parseDate from '@/utils/parseDate';
+import { parseDate } from '@/utils/formatDateTime';
 
 interface BtnDateProps {
 	date: string | null;

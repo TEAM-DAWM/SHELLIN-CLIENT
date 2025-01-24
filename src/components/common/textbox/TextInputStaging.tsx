@@ -6,8 +6,7 @@ import BtnStagingDate from '../BtnDate/BtnStagingDate';
 import EnterBtn from '../button/EnterBtn';
 
 import useCreateTask from '@/apis/tasks/createTask/query';
-import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
-import formatDatetoString from '@/utils/formatDatetoString';
+import { formatDatetoLocalDate, formatDatetoString } from '@/utils/formatDateTime';
 
 function TextInputStaging() {
 	const [taskName, setTaskName] = useState('');

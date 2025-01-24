@@ -5,8 +5,7 @@ import Icons from '@/assets/svg/V1/index';
 import { theme } from '@/styles/theme';
 import checkDateFormat from '@/utils/checkDateFormat';
 import checkTimeFormat from '@/utils/checkTimeFormat';
-import dotFormatDate from '@/utils/dotFormatDate';
-import dotFormatTime from '@/utils/dotFormatTime';
+import { dotFormatDate, dotFormatTime } from '@/utils/formatDateTime';
 import { blurRef, focusRef, warnRef } from '@/utils/refStatus';
 
 interface TextboxInputProps {

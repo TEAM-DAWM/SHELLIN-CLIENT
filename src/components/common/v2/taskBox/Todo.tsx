@@ -8,6 +8,7 @@ import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
 import MODAL from '@/constants/modalLocation';
 import { STATUS } from '@/types/tasks/taskType';
+import { formatTimeToDueTime } from '@/utils/formatDateTime';
 
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
@@ -88,7 +89,7 @@ function Todo({
 						<span className="todo-title">{title}</span>
 						{deadlineDate && (
 							<span className="todo-deadline">
-								{deadlineDate} / {deadlineTime}
+								{deadlineDate} / {deadlineTime && formatTimeToDueTime(deadlineTime)}
 							</span>
 						)}
 					</TodoWrapper>

@@ -8,7 +8,7 @@ import Todo from '../v2/taskBox/Todo';
 
 import EmptyViewStaging from '@/components/common/EmptyViewStaging';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
-import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
+import { formatDatetoStringKor } from '@/utils/formatDateTime';
 
 interface StagingAreaTaskContainerProps {
 	handleSelectedTarget: (task: TaskType | null) => void;

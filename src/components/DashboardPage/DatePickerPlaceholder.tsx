@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Icons from '@/assets/svg/V1/index';
-import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
+import { formatDatetoStringKor } from '@/utils/formatDateTime';
 
 interface DatePickerPlaceholderProps {
 	isHover: boolean;

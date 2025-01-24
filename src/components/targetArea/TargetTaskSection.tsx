@@ -8,7 +8,7 @@ import BtnTaskContainer from '../common/BtnTaskContainer';
 import EmptyViewToday from '@/components/common/EmptyViewToday';
 import Todo from '@/components/common/v2/taskBox/Todo';
 import { TaskType } from '@/types/tasks/taskType';
-import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
+import { formatDatetoStringKor } from '@/utils/formatDateTime';
 
 interface TargetTaskSectionProps {
 	handleSelectedTarget: (task: TaskType | null) => void;

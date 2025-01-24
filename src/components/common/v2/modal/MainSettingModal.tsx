@@ -12,7 +12,7 @@ import PopUp from '@/components/common/v2/TextBox/PopUp';
 import useInput from '@/hooks/useInput';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { StatusType } from '@/types/tasks/taskType';
-import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
+import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface MainSettingModalProps {
 	isOpen: boolean;
