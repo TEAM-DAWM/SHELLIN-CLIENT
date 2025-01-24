@@ -96,6 +96,7 @@ const slideOut = keyframes`
 
 const StagingAreaLayout = styled.div<{ isOpen: boolean }>`
 	position: relative;
+	z-index: 1;
 	display: inline-flex;
 	flex-direction: column;
 	align-items: center;
