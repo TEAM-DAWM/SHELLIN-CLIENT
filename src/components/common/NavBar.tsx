@@ -6,7 +6,7 @@ import ToggleSwitchButton from './v2/control/ToggleSwitchButton';
 
 import useGetUserInfo from '@/apis/user/query';
 import Images from '@/assets/images';
-import IconButton from '@/components/common/v2/IconButton';
+import NavbarButton from '@/components/common/v2/button/NavbarButton';
 
 interface NavBarProps {
 	isOpen: boolean;
@@ -27,7 +27,12 @@ function NavBar({ isOpen, handleSideBar }: NavBarProps) {
 			<ProfileContainer>
 				<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
 				<IconWrapper>
-					<IconButton iconName="IcnTodolist" size="big" type="normal" onClick={moveToToday} dot={false} />
+					<NavbarButton
+						iconName="IcnTodolist"
+						type="normal"
+						onClick={moveToToday}
+						isActive={location.pathname === '/today'}
+					/>
 					<TextBox isActive={location.pathname === '/today'}>할 일</TextBox>
 				</IconWrapper>
 			</ProfileContainer>
