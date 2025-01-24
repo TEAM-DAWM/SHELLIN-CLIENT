@@ -308,10 +308,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		background-color: ${({ theme }) => theme.colorToken.Component.strong} !important;
 	}
 
-	.fc-all-day-event .fc-event-main :active {
-		background-color: ${({ theme }) => theme.colorToken.Outline.primaryStrong} !important;
-	}
-
 	/** TODO: category 추가 시 해당 부분에서 카테고리 색 적용하면 됨 */
 	.fc-daygrid-event-dot {
 		border-color: ${({ theme }) => theme.colorToken.Text.assistive};
