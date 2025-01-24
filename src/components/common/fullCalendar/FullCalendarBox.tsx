@@ -26,7 +26,7 @@ import customSlotLabelContent from '@/components/common/fullCalendar/fullCalenda
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
-import { formatDatetoLocalDate } from '@/utils/formatDateTime';
+import { formatDateToLocal, formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface FullCalendarBoxProps {
 	size: 'small' | 'big';
@@ -259,11 +259,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 	const handleFilterPopup = () => {
 		setFilterPopupOpen((prev) => !prev);
-	};
-
-	const formatDateToLocal = (inputDate: Date): string => {
-		const adjustedDate = new Date(inputDate.getTime() - inputDate.getTimezoneOffset() * 60000);
-		return adjustedDate.toISOString().slice(0, 16);
 	};
 
 	// 드래그해서 timeblock 추가
