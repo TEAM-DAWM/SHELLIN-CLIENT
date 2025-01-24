@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Icon from './Icon';
 import ToggleSwitchButton from './v2/control/ToggleSwitchButton';
 
 import useGetUserInfo from '@/apis/user/query';
 import Images from '@/assets/images';
+import NavbarButton from '@/components/common/v2/button/NavbarButton';
 
 interface NavBarProps {
 	isOpen: boolean;
@@ -13,13 +14,28 @@ interface NavBarProps {
 }
 function NavBar({ isOpen, handleSideBar }: NavBarProps) {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const moveToSetting = () => {
 		navigate('/setting');
+	};
+	const moveToToday = () => {
+		navigate('/today');
 	};
 	const { data: userInfo } = useGetUserInfo();
 	return (
 		<NavBarLayout>
-			<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
+			<ProfileContainer>
+				<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
+				<IconWrapper>
+					<NavbarButton
+						iconName="IcnTodolist"
+						type="normal"
+						onClick={moveToToday}
+						isActive={location.pathname === '/today'}
+					/>
+					<TextBox isActive={location.pathname === '/today'}>할 일</TextBox>
+				</IconWrapper>
+			</ProfileContainer>
 			<ControllContainer>
 				<ToggleWrapper>
 					<ToggleSwitchButton active={isOpen} onClick={handleSideBar} />
@@ -91,5 +107,29 @@ const IconContainer = styled.div`
 `;
 const SettingTouchArea = styled.div`
 	display: block;
+`;
+
+const IconWrapper = styled.span`
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+	align-items: center;
+	width: 3.1rem;
+`;
+
+const TextBox = styled.p<{ isActive?: boolean }>`
+	width: 3.4rem;
+
+	color: ${({ theme, isActive }) => (isActive ? theme.colorToken.Icon.primary : theme.colorToken.Text.assistive)};
+	text-align: center;
+	${({ theme }) => theme.font.label03};
+`;
+
+const ProfileContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 10rem;
+	align-items: center;
+	width: 100%;
 `;
 export default NavBar;
