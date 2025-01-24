@@ -118,7 +118,7 @@ const IconWrapper = styled.span`
 `;
 
 const TextBox = styled.p<{ isActive?: boolean }>`
-	width: 4rem;
+	width: 3.4rem;
 
 	color: ${({ theme, isActive }) => (isActive ? theme.colorToken.Icon.primary : theme.colorToken.Text.assistive)};
 	text-align: center;
