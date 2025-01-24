@@ -12,6 +12,7 @@ import { STATUS } from '@/types/tasks/taskType';
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
 type TodoProps = {
+	location: 'target' | 'staging';
 	title: string;
 	deadlineDate?: string;
 	deadlineTime?: string;
@@ -24,6 +25,7 @@ type TodoProps = {
 };
 
 function Todo({
+	location,
 	title,
 	deadlineDate,
 	status: initStatus,
@@ -54,8 +56,13 @@ function Todo({
 		const rect = e.currentTarget.getBoundingClientRect();
 		const calculatedTop = rect.top;
 		const adjustedTop = Math.min(calculatedTop, MODAL.SCREEN_HEIGHT - MODAL.TASK_MODAL_HEIGHT);
-		setTop(adjustedTop);
-		setLeft(rect.right + 6);
+		if (location === 'staging') {
+			setTop(adjustedTop - 190);
+			setLeft(rect.width + 12);
+		} else {
+			setTop(adjustedTop);
+			setLeft(rect.right + 6);
+		}
 		setModalOpen((prev) => !prev);
 	};
 

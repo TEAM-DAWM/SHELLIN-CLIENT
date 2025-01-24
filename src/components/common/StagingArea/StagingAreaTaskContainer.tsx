@@ -79,22 +79,19 @@ function StagingAreaTaskContainer({
 													: 'none',
 											}}
 										>
-											<div
-												className="todo-item" // FullCalendarDraggable 대상
-											>
-												<Todo
-													key={task.id}
-													status={task.status as StatusType}
-													title={task.name}
-													// 이후 날짜, 시간 표시 형식에 맞게 입력 / 조정
-													deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
-													deadlineTime={task.deadLine?.time || undefined}
-													isStatusVisible={false}
-													taskId={task.id}
-													targetDate={targetDate}
-													onClick={() => handleSelectedTarget(task)}
-												/>
-											</div>
+											<Todo
+												location="staging"
+												key={task.id}
+												status={task.status as StatusType}
+												title={task.name}
+												// 이후 날짜, 시간 표시 형식에 맞게 입력 / 조정
+												deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
+												deadlineTime={task.deadLine?.time || undefined}
+												isStatusVisible={false}
+												taskId={task.id}
+												targetDate={targetDate}
+												onClick={() => handleSelectedTarget(task)}
+											/>
 										</div>
 									)}
 								</BeautifulDnDDraggable>
