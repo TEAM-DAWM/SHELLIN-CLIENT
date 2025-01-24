@@ -16,7 +16,7 @@ function Icon({ name, size = 'medium', color, onClick, isCursor, stroke }: IconP
 	const SelectedIcon = Icn[name];
 	return (
 		<StyledIconWrapper size={size} color={color} onClick={onClick} isCursor={isCursor} stroke={stroke}>
-			<SelectedIcon />
+			<SelectedIcon stroke={stroke} />
 		</StyledIconWrapper>
 	);
 }
@@ -44,6 +44,7 @@ const StyledIconWrapper = styled.div<{
 	color?: 'nomal' | 'strong' | 'heavy' | 'primary' | 'inverse';
 	isCursor?: boolean;
 	stroke?: string;
+	fill?: string;
 }>`
 	display: flex;
 	align-items: center;
@@ -56,10 +57,6 @@ const StyledIconWrapper = styled.div<{
 	svg {
 		width: 100%;
 		height: 100%;
-
-		path {
-			stroke: 'none';
-		}
 
 		${({ theme, color }) => color && `color: ${getColorMap(theme)[color]};`}
 		${({ stroke }) => stroke && `stroke: ${stroke};`}

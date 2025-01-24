@@ -88,7 +88,13 @@ function NavbarButton({
 	};
 	const buttonStyles: Record<NavbarBtnType, SerializedStyles> = {
 		solid: getIconBtnStyles(color.Grey.White, color.Blue.Blue6, color.Blue.Blue7, color.Blue.Blue8, false),
-		normal: getIconBtnStyles(color.Grey.Grey5, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3, false),
+		normal: getIconBtnStyles(
+			isActive ? colorToken.Icon.primary : colorToken.Icon.normal,
+			color.Grey.White,
+			color.Grey.Grey2,
+			color.Grey.Grey3,
+			false
+		),
 		outlined: getIconBtnStyles(color.Grey.Grey5, color.Grey.White, color.Grey.Grey2, color.Grey.Grey3, true),
 	};
 
