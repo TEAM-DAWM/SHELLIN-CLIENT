@@ -9,12 +9,13 @@ type IconProps = {
 	color?: 'nomal' | 'strong' | 'heavy' | 'primary' | 'inverse';
 	onClick?: () => void;
 	isCursor?: boolean;
+	stroke?: string;
 };
 
-function Icon({ name, size = 'medium', color, onClick, isCursor }: IconProps) {
+function Icon({ name, size = 'medium', color, onClick, isCursor, stroke }: IconProps) {
 	const SelectedIcon = Icn[name];
 	return (
-		<StyledIconWrapper size={size} color={color} onClick={onClick} isCursor={isCursor}>
+		<StyledIconWrapper size={size} color={color} onClick={onClick} isCursor={isCursor} stroke={stroke}>
 			<SelectedIcon />
 		</StyledIconWrapper>
 	);
@@ -42,6 +43,7 @@ const StyledIconWrapper = styled.div<{
 	size: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge';
 	color?: 'nomal' | 'strong' | 'heavy' | 'primary' | 'inverse';
 	isCursor?: boolean;
+	stroke?: string;
 }>`
 	display: flex;
 	align-items: center;
@@ -56,5 +58,6 @@ const StyledIconWrapper = styled.div<{
 		height: 100%;
 
 		${({ theme, color }) => color && `color: ${getColorMap(theme)[color]};`}
+		${({ stroke }) => stroke && `stroke: ${stroke};`}
 	}
 `;
