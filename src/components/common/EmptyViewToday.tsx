@@ -13,9 +13,13 @@ function EmptyViewToday() {
 export default EmptyViewToday;
 
 const EmptyView = styled.div`
+	position: absolute;
 	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 20.772rem;
 	margin-top: 22.7rem;
+	inset: 22.5rem 10.4rem 34rem;
 `;
 
 const EmptyImg = styled.img`
