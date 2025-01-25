@@ -11,8 +11,13 @@ interface DeadlineBoxProps {
 	endTime: string;
 	label: string;
 	isDueDate?: boolean;
+	isAllDay?: boolean;
 	handleDueDateModalTime?: (time: string) => void;
 	handleDueDateModalDate?: (date: Date) => void;
+	handleTimeBlockDate?: (date: Date) => void;
+	onAllDayToggle?: (isAllDay: boolean) => void;
+	onStartTimeChange?: (time: string) => void;
+	onEndTimeChange?: (time: string) => void;
 }
 
 function DeadlineBox({
@@ -21,12 +26,17 @@ function DeadlineBox({
 	endTime,
 	label,
 	isDueDate = false,
+	isAllDay = false,
 	handleDueDateModalTime = () => {},
 	handleDueDateModalDate = () => {},
+	handleTimeBlockDate = () => {},
+	onAllDayToggle = () => {},
+	onStartTimeChange = () => {},
+	onEndTimeChange = () => {},
 }: DeadlineBoxProps) {
-	const [isSettingActive, setIsSettingActive] = useState(false);
+	const [isSettingActive, setIsSettingActive] = useState(isAllDay);
 	const [isClicked, setIsClicked] = useState(isDueDate);
-	const [isAllday, setIsAllday] = useState(false);
+	const [isAllday, setIsAllday] = useState(isAllDay);
 
 	const containerRef = useRef(null);
 
@@ -34,20 +44,27 @@ function DeadlineBox({
 		setIsClicked((prev) => !prev);
 		setIsSettingActive(false);
 	};
-	const removeTime = () => {
-		handleDueDateModalTime('');
-	};
 	const handleCheckBtnClick = () => {
-		setIsAllday((prev) => !prev);
+		const newIsAllDay = !isAllday;
+		setIsAllday(newIsAllDay);
+		onAllDayToggle(newIsAllDay);
 
-		// 하루종일 선택시 기존 time 제거
-		removeTime();
+		if (newIsAllDay) {
+			// 하루종일 선택 시 시간을 기본 값으로 설정
+			onStartTimeChange(`${date.toISOString().split('T')[0]}T00:00`);
+			onEndTimeChange(`${date.toISOString().split('T')[0]}T00:00`);
+		} else {
+			// 하루종일 해제 시 시간 비우기
+			onStartTimeChange(startTime || '06:00');
+			onEndTimeChange(endTime);
+		}
 	};
 
 	const handleXBtnClick = () => {
 		setIsSettingActive(false);
 		setIsClicked((prev) => !prev);
 		setIsAllday(false);
+		onAllDayToggle(false);
 	};
 
 	const handleClickOutside = (event: MouseEvent) => {
@@ -98,6 +115,9 @@ function DeadlineBox({
 							onClick={handleClickModify}
 							handleDueDateModalDate={handleDueDateModalDate}
 							handleDueDateModalTime={handleDueDateModalTime}
+							handleTimeBlockDate={handleTimeBlockDate}
+							onStartTimeChange={onStartTimeChange}
+							onEndTimeChange={onEndTimeChange}
 						/>
 						{!isSettingActive && (
 							<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />

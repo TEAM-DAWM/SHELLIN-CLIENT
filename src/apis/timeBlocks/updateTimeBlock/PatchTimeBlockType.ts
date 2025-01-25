@@ -3,4 +3,5 @@ export interface PatchTimeBlokType {
 	timeBlockId: number;
 	startTime: string;
 	endTime: string;
+	isAllTime: boolean;
 }

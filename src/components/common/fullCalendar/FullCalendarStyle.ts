@@ -211,7 +211,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	.fc-daygrid-day-frame .fc-scrollgrid-sync-inner,
 	.fc-daygrid-day-events {
 		width: ${({ size }) => (size === 'big' ? '17.6rem' : '16.8rem')};
-		height: 4.4rem;
+		min-height: 4.4rem;
 	}
 
 	.fc-timegrid-slot .fc-timegrid-slot-label .fc-scrollgrid-shrink {
@@ -301,6 +301,11 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	.fc-daygrid-dot-event.completed .fc-event-title,
 	.fc-daygrid-dot-event.completed .fc-event-time {
 		color: ${({ theme }) => theme.colorToken.Text.assistiveLight};
+	}
+
+	/* TimeGrid(주간) all-day-event(종일) */
+	.fc-all-day-event .fc-event-main {
+		background-color: ${({ theme }) => theme.colorToken.Component.strong} !important;
 	}
 
 	/** TODO: category 추가 시 해당 부분에서 카테고리 색 적용하면 됨 */
@@ -582,6 +587,16 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc .fc-h-event {
 		border: none;
+	}
+
+	/* TimeGrid(주간) all-day-event(종일) */
+
+	.fc-all-day-event {
+		width: 95%;
+	}
+
+	.month-view .fc-all-day-event {
+		width: 72%;
 	}
 
 	/* Month view 중 이벤트 초과 안내 */

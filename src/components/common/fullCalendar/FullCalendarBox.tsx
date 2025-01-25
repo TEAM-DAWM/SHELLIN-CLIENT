@@ -26,7 +26,7 @@ import customSlotLabelContent from '@/components/common/fullCalendar/fullCalenda
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
-import { formatDatetoLocalDate } from '@/utils/formatDateTime';
+import { formatDateToLocal, formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface FullCalendarBoxProps {
 	size: 'small' | 'big';
@@ -181,7 +181,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			const startStr = removeTimezone(selectInfo.startStr);
 			const endStr = removeTimezone(selectInfo.endStr);
 
-			createMutate({ taskId: selectedTarget.id, startTime: startStr, endTime: endStr });
+			createMutate({ taskId: selectedTarget.id, startTime: startStr, endTime: endStr, isAllTime: false });
 		}
 	};
 
@@ -199,12 +199,20 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const updateEvent = (info: EventDropArg | EventResizeDoneArg) => {
 		const { event } = info;
 		const { taskId, timeBlockId } = event.extendedProps;
-
+		console.log('updateEvent EventDropArg | EventResizeDoneArg', event.startStr);
+		console.log('updateEvent EventDropArg | EventResizeDoneArg', info);
 		if (taskId && taskId !== -1) {
-			const startStr = removeTimezone(event.startStr);
-			const endStr = removeTimezone(event.endStr);
+			let startStr = removeTimezone(event.startStr);
+			let endStr = removeTimezone(event.endStr);
 
-			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr });
+			if (info.event.allDay) {
+				startStr += 'T00:00';
+				endStr = startStr;
+			}
+
+			console.log('updateMutate ', taskId, timeBlockId, startStr, endStr, info.event.allDay);
+
+			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: info.event.allDay });
 		} else {
 			info.revert();
 		}
@@ -253,11 +261,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		setFilterPopupOpen((prev) => !prev);
 	};
 
-	const formatDateToLocal = (inputDate: Date): string => {
-		const adjustedDate = new Date(inputDate.getTime() - inputDate.getTimezoneOffset() * 60000);
-		return adjustedDate.toISOString().slice(0, 16);
-	};
-
 	// 드래그해서 timeblock 추가
 	const handleEventReceive = (info: EventReceiveArg) => {
 		if (!info.event.start) {
@@ -285,7 +288,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		console.log('드롭된 task id', Number(info.event.id));
 
 		createMutate(
-			{ taskId: Number(info.event.id), startTime: start, endTime: end },
+			{ taskId: Number(info.event.id), startTime: start, endTime: end, isAllTime: false },
 			{
 				onSuccess: () => {
 					if (clickedEvent) {
@@ -320,6 +323,13 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	};
 
 	const handleEventDidMount = (arg: EventMountArg) => {
+		if (arg.event.allDay) {
+			arg.el.classList.add('fc-all-day-event');
+			const eventMainElement = arg.el.querySelector('.fc-event-main');
+			if (eventMainElement) {
+				eventMainElement.classList.add('fc-all-day-event-main');
+			}
+		}
 		handleCompletedTask(arg);
 		// 우클릭 시
 		arg.el.addEventListener('contextmenu', (event) => handleRightClick(arg, event));
@@ -444,6 +454,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					targetDate={selectdTimeBlockDate ? formatDatetoLocalDate(selectdTimeBlockDate) : formatDatetoLocalDate(today)}
 					timeBlockId={selectedTimeBlockId}
 					isDeadlineBoxOpen={isDeadlineBoxOpen}
+					isAllTime={calendarEvents.find((event) => event.extendedProps.taskId === selectedTaskId)?.allDay || false}
 				/>
 			)}
 		</FullCalendarLayout>

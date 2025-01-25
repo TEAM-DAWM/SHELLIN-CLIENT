@@ -111,3 +111,13 @@ export const formatTimeToDueTime = (time: string) => {
 
 	return `${period} ${adjustedHours}시 ${minutes}분 까지`;
 };
+
+/**
+ *
+ * @param inputDate
+ * @returns 'yyyy-mm-ddThh:mm'
+ */
+export const formatDateToLocal = (inputDate: Date): string => {
+	const adjustedDate = new Date(inputDate.getTime() - inputDate.getTimezoneOffset() * 60000);
+	return adjustedDate.toISOString().slice(0, 16);
+};
