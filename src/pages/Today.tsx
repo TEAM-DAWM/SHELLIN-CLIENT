@@ -12,7 +12,7 @@ import StagingArea from '@/components/common/StagingArea/StagingArea';
 import TargetArea from '@/components/targetArea/TargetArea';
 import { SortOrderType } from '@/constants/sortType';
 import { TaskType } from '@/types/tasks/taskType';
-import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
+import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 function Today() {
 	const [selectedTarget, setSelectedTarget] = useState<TaskType | null>(null);

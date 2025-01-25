@@ -9,7 +9,7 @@ import ModalBackdrop from '../modal/ModalBackdrop';
 import CustomHeader from './CustomHeader';
 import CalendarStyle from './DatePickerStyle';
 
-import formatDatetoString from '@/utils/formatDatetoString';
+import { formatDatetoString } from '@/utils/formatDateTime';
 import { blurRef } from '@/utils/refStatus';
 
 interface DatePickerCustomProps {

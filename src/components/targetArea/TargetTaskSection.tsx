@@ -8,7 +8,7 @@ import BtnTaskContainer from '../common/BtnTaskContainer';
 import EmptyViewToday from '@/components/common/EmptyViewToday';
 import Todo from '@/components/common/v2/taskBox/Todo';
 import { TaskType } from '@/types/tasks/taskType';
-import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
+import { formatDatetoStringKor } from '@/utils/formatDateTime';
 
 interface TargetTaskSectionProps {
 	handleSelectedTarget: (task: TaskType | null) => void;
@@ -75,7 +75,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 									}}
 								>
 									<Todo
-										// location="target"
+										location="target"
 										key={task.id}
 										title={task.name}
 										deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
@@ -114,6 +114,7 @@ const TargetAreaWrapper = styled.div`
 	padding-bottom: 2.8rem;
 `;
 const EmptyLayout = styled.div`
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;

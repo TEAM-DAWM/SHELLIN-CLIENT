@@ -26,6 +26,7 @@ const processEvents = (timeBlockData: TimeBlockData, selectedStatuses: string[])
 					title: task.name,
 					start: timeBlock.startTime,
 					end: timeBlock.endTime,
+					allDay: timeBlock.isAllTime,
 					classNames: task.status === STATUSES.COMPLETED ? 'tasks completed' : 'tasks',
 					extendedProps: {
 						taskId: task.id,

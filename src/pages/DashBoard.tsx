@@ -7,7 +7,7 @@ import DashboardTaskWrapper from '@/components/DashboardPage/DashboardTaskWrappe
 import DateArea from '@/components/DashboardPage/DateArea';
 import TaskSummary from '@/components/DashboardPage/TaskSummary';
 import SUMMARY_INFO from '@/constants/dashboardSummaryInfo';
-import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
+import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 function DashBoard() {
 	const today = new Date();

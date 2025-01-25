@@ -8,7 +8,7 @@ import Button from '@/components/common/v2/button/Button';
 import IconButton from '@/components/common/v2/IconButton';
 import MODAL from '@/constants/modalLocation';
 import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
-import formatDatetoString from '@/utils/formatDatetoString';
+import { formatDatetoString } from '@/utils/formatDateTime';
 
 function TargetControlSection({
 	onClickPrevDate,

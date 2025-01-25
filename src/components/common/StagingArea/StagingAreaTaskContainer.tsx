@@ -8,7 +8,7 @@ import Todo from '../v2/taskBox/Todo';
 
 import EmptyViewStaging from '@/components/common/EmptyViewStaging';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
-import formatDatetoStringKor from '@/utils/formatDatetoStringKor';
+import { formatDatetoStringKor } from '@/utils/formatDateTime';
 
 interface StagingAreaTaskContainerProps {
 	handleSelectedTarget: (task: TaskType | null) => void;
@@ -79,22 +79,19 @@ function StagingAreaTaskContainer({
 													: 'none',
 											}}
 										>
-											<div
-												className="todo-item" // FullCalendarDraggable 대상
-											>
-												<Todo
-													key={task.id}
-													status={task.status as StatusType}
-													title={task.name}
-													// 이후 날짜, 시간 표시 형식에 맞게 입력 / 조정
-													deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
-													deadlineTime={task.deadLine?.time || undefined}
-													isStatusVisible={false}
-													taskId={task.id}
-													targetDate={targetDate}
-													onClick={() => handleSelectedTarget(task)}
-												/>
-											</div>
+											<Todo
+												location="staging"
+												key={task.id}
+												status={task.status as StatusType}
+												title={task.name}
+												// 이후 날짜, 시간 표시 형식에 맞게 입력 / 조정
+												deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
+												deadlineTime={task.deadLine?.time || undefined}
+												isStatusVisible={false}
+												taskId={task.id}
+												targetDate={targetDate}
+												onClick={() => handleSelectedTarget(task)}
+											/>
 										</div>
 									)}
 								</BeautifulDnDDraggable>
@@ -115,6 +112,7 @@ const TaskWrapper = styled.div`
 	width: 100%;
 `;
 const StagingAreaTaskContainerLayout = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;

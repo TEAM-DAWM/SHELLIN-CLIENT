@@ -10,8 +10,7 @@ import { CreateTaskType } from '@/apis/tasks/createTask/CreateTaskType';
 import useCreateTask from '@/apis/tasks/createTask/query';
 import useInputHandler from '@/hooks/useInputHandler';
 import { INPUT_STATE, InputState } from '@/types/inputStateType';
-import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
-import formatDateWithDay from '@/utils/formatDateWithDay';
+import { formatDatetoLocalDate, formatDateWithDay } from '@/utils/formatDateTime';
 
 function DumpingAreaBtn() {
 	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave } = useInputHandler();

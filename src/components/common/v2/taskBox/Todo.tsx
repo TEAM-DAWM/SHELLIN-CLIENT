@@ -8,10 +8,12 @@ import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
 import MODAL from '@/constants/modalLocation';
 import { STATUS } from '@/types/tasks/taskType';
+import { formatTimeToDueTime } from '@/utils/formatDateTime';
 
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
 type TodoProps = {
+	location: 'target' | 'staging';
 	title: string;
 	deadlineDate?: string;
 	deadlineTime?: string;
@@ -24,6 +26,7 @@ type TodoProps = {
 };
 
 function Todo({
+	location,
 	title,
 	deadlineDate,
 	status: initStatus,
@@ -54,8 +57,13 @@ function Todo({
 		const rect = e.currentTarget.getBoundingClientRect();
 		const calculatedTop = rect.top;
 		const adjustedTop = Math.min(calculatedTop, MODAL.SCREEN_HEIGHT - MODAL.TASK_MODAL_HEIGHT);
-		setTop(adjustedTop);
-		setLeft(rect.right + 6);
+		if (location === 'staging') {
+			setTop(adjustedTop - 190);
+			setLeft(rect.width + 12);
+		} else {
+			setTop(adjustedTop);
+			setLeft(rect.right + 6);
+		}
 		setModalOpen((prev) => !prev);
 	};
 
@@ -81,7 +89,7 @@ function Todo({
 						<span className="todo-title">{title}</span>
 						{deadlineDate && (
 							<span className="todo-deadline">
-								{deadlineDate} / {deadlineTime}
+								{deadlineDate} / {deadlineTime && formatTimeToDueTime(deadlineTime)}
 							</span>
 						)}
 					</TodoWrapper>

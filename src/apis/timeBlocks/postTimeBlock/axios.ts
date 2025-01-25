@@ -10,11 +10,13 @@ const CreateTimeBlock = async ({
 	taskId,
 	startTime,
 	endTime,
+	isAllTime,
 }: PostTimeBlokType): Promise<TimeBlockResponse | undefined> => {
 	try {
 		const response = await privateInstance.post(`/api/tasks/${taskId}/time-blocks`, {
 			startTime,
 			endTime,
+			isAllTime,
 		});
 		return {
 			code: response.data.code,

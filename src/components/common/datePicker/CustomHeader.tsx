@@ -5,7 +5,7 @@ import TextboxInput from '../textbox/TextboxInput';
 
 import DayDiffText from './DayDiffText';
 
-import formatDatetoString from '@/utils/formatDatetoString';
+import { formatDatetoString } from '@/utils/formatDateTime';
 import { warnRef } from '@/utils/refStatus';
 
 interface CustonHeaderProps {

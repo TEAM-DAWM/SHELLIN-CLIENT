@@ -8,7 +8,7 @@ import MainDate from '@/components/common/v2/TextBox/MainDate';
 import TargetFilterSection from '@/components/targetArea/TargetFilterSection';
 import { TaskType } from '@/types/tasks/taskType';
 import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
-import formatDatetoLocalDate from '@/utils/formatDatetoLocalDate';
+import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface TargetAreaProps extends TargetControlSectionProps {
 	handleSelectedTarget: (task: TaskType | null) => void;
