@@ -13,7 +13,7 @@ import PopUp from '@/components/common/v2/TextBox/PopUp';
 import useInput from '@/hooks/useInput';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { StatusType } from '@/types/tasks/taskType';
-import { formatDatetoString, formatDatetoLocalDate } from '@/utils/formatDateTime';
+import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface MainSettingModalProps {
 	isOpen: boolean;
@@ -66,7 +66,7 @@ function MainSettingModal({
 	const { content: startTime, handleContent: handleStartTime } = useInput('');
 	const { content: endTime, handleContent: handleEndTime } = useInput('');
 	const [deadlineDate, setDeadlineDate] = useState<Date | null>(null);
-	const [timeBlockDate, setTimeBlockDate] = useState<Date | null>(null);
+	const [timeBlockDate, setTimeBlockDate] = useState<Date | null>(new Date(targetDate));
 
 	useEffect(() => {
 		if (isTaskDetailFetched) {
@@ -91,8 +91,14 @@ function MainSettingModal({
 
 	const handleTimeBlockDate = (date: Date | null) => {
 		setTimeBlockDate(date);
-		handleStartTime(`${formatDatetoString(timeBlockDate)}T00:00`);
-		handleEndTime(`${formatDatetoString(timeBlockDate)}T00:00`);
+
+		if (isAllDay) {
+			handleStartTime(`${formatDatetoLocalDate(timeBlockDate)}T00:00`);
+			handleEndTime(`${formatDatetoLocalDate(timeBlockDate)}T00:00`);
+		} else {
+			handleStartTime(`${formatDatetoLocalDate(date)}T${startTime.split('T')[1]}`);
+			handleEndTime(`${formatDatetoLocalDate(date)}T${endTime.split('T')[1]}`);
+		}
 	};
 	const handleConfirm = () => {
 		handleStatusEdit(taskStatus);
@@ -119,7 +125,17 @@ function MainSettingModal({
 	const handleTaskStatusChange = (newStatus: StatusType) => {
 		setTaskStatus(newStatus);
 	};
+
+	/**
+	 *
+	 * @param time (yyyy-mm-ddThh:mm)
+	 * @returns (hh:mm am/pm)
+	 */
 	const formatTimeWithAmPm = (time: string) => {
+		if (/^\d{1,2}:\d{2} (am|pm)$/i.test(time)) {
+			return time; // 이미 포맷된 값이므로 바로 반환
+		}
+
 		if (time) {
 			const onlyTime = time.split('T')[1];
 			const [hour, minute] = onlyTime.split(':').map(Number);
@@ -132,7 +148,11 @@ function MainSettingModal({
 
 	// 수정 이벤트 핸들러
 	const handleTimeBlockUpdate = () => {
-		if (!timeBlockId) return;
+		if (!timeBlockId) {
+			console.log('타임블록 아이디없어서 리턴');
+			return;
+		}
+
 		const formattedStartTime = isAllDay
 			? `${timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : startTime.split('T')[0]}T00:00`
 			: startTime;
@@ -187,7 +207,7 @@ function MainSettingModal({
 				</PopUpTitleBox>
 				{timeBlockId && (
 					<DeadlineBox
-						date={new Date(targetDate)}
+						date={timeBlockDate || new Date(targetDate)}
 						startTime={formatTimeWithAmPm(startTime) || '06:00pm'}
 						endTime={formatTimeWithAmPm(endTime) || '06:00pm'}
 						label="진행 기간"
