@@ -211,7 +211,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	.fc-daygrid-day-frame .fc-scrollgrid-sync-inner,
 	.fc-daygrid-day-events {
 		width: ${({ size }) => (size === 'big' ? '17.6rem' : '16.8rem')};
-		height: 4.4rem;
+		min-height: 4.4rem;
 	}
 
 	.fc-timegrid-slot .fc-timegrid-slot-label .fc-scrollgrid-shrink {
