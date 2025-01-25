@@ -8,10 +8,11 @@ const AUTH_URL = {
 	LOGIN: '/api/auth/login/google',
 };
 
+const REDIRECT_URL = import.meta.env.VITE_REDIRECT_URL;
 const userLogin = async (code: string): Promise<LoginResponse> => {
 	try {
 		const response = await instance.post<LoginResponse>(AUTH_URL.LOGIN, null, {
-			params: { code },
+			params: { code, redirectUrl: REDIRECT_URL },
 		});
 		return response.data;
 	} catch (error) {
