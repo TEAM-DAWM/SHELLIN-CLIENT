@@ -67,7 +67,7 @@ const LoginBtn = styled.div`
 	@media (width <= 900px) {
 		width: 20rem;
 		height: auto;
-		margin-bottom: 3rem;
+		padding-bottom: 3rem;
 	}
 `;
 
@@ -100,7 +100,7 @@ const LoginLayout = styled.div`
 		flex-direction: column-reverse;
 		width: 100vw;
 		height: 100vh;
-		margin-bottom: 2rem;
+		padding-bottom: 2rem;
 
 		border-radius: 0;
 	}
