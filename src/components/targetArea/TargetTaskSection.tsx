@@ -114,6 +114,7 @@ const TargetAreaWrapper = styled.div`
 	padding-bottom: 2.8rem;
 `;
 const EmptyLayout = styled.div`
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;

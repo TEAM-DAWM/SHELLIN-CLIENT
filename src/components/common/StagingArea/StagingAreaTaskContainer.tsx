@@ -112,6 +112,7 @@ const TaskWrapper = styled.div`
 	width: 100%;
 `;
 const StagingAreaTaskContainerLayout = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
