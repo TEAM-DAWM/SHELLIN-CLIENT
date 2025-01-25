@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ko } from 'date-fns/locale';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -25,6 +25,9 @@ interface DateCorrectionModalProps {
 function DateCorrectionModal({ top = 0, left, right, date, onClick, handleCurrentDate }: DateCorrectionModalProps) {
 	const prevDate = date ? new Date(date) : null;
 	const [currentDate, setCurrentDate] = useState<Date | null>(prevDate);
+	const [isOutOfBounds, setIsOutOfBounds] = useState(false);
+	const modalRef = useRef<HTMLDivElement>(null);
+
 	const dateTextRef = useRef<HTMLInputElement>(null);
 
 	const onChange = (newDate: Date | null) => {
@@ -45,10 +48,35 @@ function DateCorrectionModal({ top = 0, left, right, date, onClick, handleCurren
 		onClick();
 	};
 
-	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
+	useOutsideClick<HTMLDivElement>({ onClose });
+
+	/** 화면 벗어나는 경우 bottom으로 고정 */
+	useEffect(() => {
+		const adjustPosition = () => {
+			if (modalRef.current) {
+				const rect = modalRef.current.getBoundingClientRect();
+				if (rect.bottom > window.innerHeight) {
+					setIsOutOfBounds(true);
+				} else {
+					setIsOutOfBounds(false);
+				}
+			}
+		};
+
+		adjustPosition();
+		window.addEventListener('resize', adjustPosition);
+		return () => window.removeEventListener('resize', adjustPosition);
+	}, [top]);
 
 	return (
-		<DateCorrectionModalLayout ref={modalRef} top={top} left={left} right={right} onClick={(e) => e.stopPropagation()}>
+		<DateCorrectionModalLayout
+			ref={modalRef}
+			top={top}
+			left={left}
+			right={right}
+			isOutOfBounds={isOutOfBounds}
+			onClick={(e) => e.stopPropagation()}
+		>
 			<DatePicker
 				locale={ko}
 				selected={currentDate}
@@ -65,9 +93,15 @@ function DateCorrectionModal({ top = 0, left, right, date, onClick, handleCurren
 	);
 }
 
-const DateCorrectionModalLayout = styled.div<{ top: number; left?: number; right?: number }>`
+const DateCorrectionModalLayout = styled.div<{
+	top: number;
+	left?: number;
+	right?: number;
+	isOutOfBounds: boolean;
+}>`
 	position: absolute;
-	top: ${({ top }) => top}rem;
+	top: ${({ isOutOfBounds, top }) => (isOutOfBounds ? 'unset' : `${top}rem`)};
+	bottom: ${({ isOutOfBounds }) => (isOutOfBounds ? '0rem' : 'unset')};
 	z-index: 4;
 
 	${({ left, right }) => {
