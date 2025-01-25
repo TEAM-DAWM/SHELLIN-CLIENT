@@ -46,6 +46,11 @@ const GoogleBtn = styled.button`
 	background-color: ${({ theme }) => theme.color.Grey.Black};
 	border-radius: 12px;
 	${({ theme }) => theme.font.title02};
+
+	@media (width <= 900px) {
+		/* display: none; */
+		${({ theme }) => theme.font.body02};
+	}
 `;
 const GoogleImg = styled.img`
 	width: 2.4rem;
