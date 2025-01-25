@@ -43,34 +43,16 @@ function Login() {
 	);
 }
 
-const LoginLayout = styled.div`
-	position: relative;
-	display: flex;
-	justify-content: space-between;
-	width: 192rem;
-	height: 108rem;
-
-	background-color: ${({ theme }) => theme.color.Grey.White};
-	border-radius: 8px;
-`;
-
-const LeftSection = styled.section`
-	display: flex;
-	flex-direction: column;
-	gap: 3.2rem;
-	align-items: start;
-	justify-content: center;
-	width: 32rem;
-	margin-right: 20rem;
-	margin-left: 20rem;
-`;
-
 const Divider = styled.div`
 	width: 0.1rem;
 	height: 17.95rem;
 	margin: 0 2.4rem;
 
 	background-color: ${({ theme }) => theme.color.Grey.Grey4};
+
+	@media (width <= 900px) {
+		height: 10rem;
+	}
 `;
 
 const LoginBtn = styled.div`
@@ -81,6 +63,12 @@ const LoginBtn = styled.div`
 	justify-content: space-between;
 	width: 32rem;
 	height: 10.8rem;
+
+	@media (width <= 900px) {
+		width: 20rem;
+		height: auto;
+		padding-bottom: 3rem;
+	}
 `;
 
 const SignDescription = styled.p`
@@ -97,6 +85,47 @@ const SignDescription = styled.p`
 	}
 `;
 
+const LoginLayout = styled.div`
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	width: 192rem;
+	height: 108rem;
+
+	background-color: ${({ theme }) => theme.color.Grey.White};
+	border-radius: 8px;
+
+	@media (width <= 900px) {
+		display: flex;
+		flex-direction: column-reverse;
+		width: 100vw;
+		height: 100vh;
+		padding-bottom: 2rem;
+
+		border-radius: 0;
+	}
+`;
+const LeftSection = styled.section`
+	display: flex;
+	flex-direction: column;
+	gap: 3.2rem;
+	align-items: start;
+	justify-content: center;
+	width: 32rem;
+	margin-right: 20rem;
+	margin-left: 20rem;
+
+	@media (width <= 900px) {
+		align-items: center;
+		width: 100%;
+		margin: 0;
+
+		> div:first-of-type {
+			display: none;
+		}
+	}
+`;
+
 const LoginImg = styled.img`
 	width: 70%;
 	height: 100%;
@@ -104,12 +133,13 @@ const LoginImg = styled.img`
 
 	border-radius: 0 8px 8px 0;
 
-	@media (width <= 1200px) {
-		width: 35%;
-	}
-
 	@media (width <= 900px) {
-		width: 25%;
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+
+		border-radius: 0;
 	}
 `;
+
 export default Login;
