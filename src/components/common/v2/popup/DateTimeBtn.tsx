@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
 import DateBtn from '@/components/common/v2/popup/DateBtn';
 import TimeBtn from '@/components/common/v2/popup/TimeBtn';
-import { formatDateToLocal, formatDatetoLocalDate } from '@/utils/formatDateTime';
+import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface DateTimeBtnProps {
 	date: Date;
