@@ -17,7 +17,7 @@ const TargetFilterSectionLayout = styled.div`
 	box-sizing: border-box;
 	width: 100%;
 	height: 4.8rem;
-	padding: 0 2rem;
+	padding: 0.8rem 1.6rem;
 
 	border-top: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 `;

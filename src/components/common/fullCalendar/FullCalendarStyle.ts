@@ -6,7 +6,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
-	padding: 8px;
+	padding: 0 8px;
 	overflow: hidden;
 
 	background-color: ${({ theme }) => theme.color.Grey.White};
