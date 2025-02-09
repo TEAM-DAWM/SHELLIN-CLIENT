@@ -102,7 +102,6 @@ const StagingAreaLayout = styled.div<{ isOpen: boolean }>`
 	align-items: center;
 	box-sizing: border-box;
 	width: 44.8rem;
-	height: 108rem;
 
 	background-color: ${({ theme }) => theme.color.Grey.White};
 	border-right: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};

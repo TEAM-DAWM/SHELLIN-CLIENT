@@ -69,7 +69,6 @@ const TargetAreaLayout = styled.section`
 	flex-shrink: 0;
 	align-items: flex-start;
 	width: 47.2rem;
-	max-height: 106.4rem;
 	margin: 0.8rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};

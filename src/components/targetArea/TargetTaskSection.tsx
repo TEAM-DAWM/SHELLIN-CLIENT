@@ -53,7 +53,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 
 	return (
 		<BtnTaskContainer id="todolist-task-container" type="target">
-			{tasks.length === 0 ? (
+			{!tasks || tasks?.length === 0 ? (
 				<EmptyLayout>
 					<EmptyViewToday />
 				</EmptyLayout>
