@@ -177,6 +177,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-scrollgrid-sync-table {
 		width: 100% !important;
+		height: 4rem !important;
 	}
 
 	/* 종일  - 타임그리드 셀 크기 고정 */
