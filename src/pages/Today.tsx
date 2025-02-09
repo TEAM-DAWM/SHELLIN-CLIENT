@@ -195,5 +195,6 @@ const CalendarWrapper = styled.div`
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: fit-content;
-	margin: 1rem 0;
+	width: 100%;
+	margin: 1rem 0.8rem 1rem 0;
 `;

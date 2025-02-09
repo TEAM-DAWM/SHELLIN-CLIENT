@@ -58,7 +58,7 @@ const NavBarLayout = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
-	width: 8rem;
+	min-width: 8rem;
 	height: 100%;
 
 	background-color: ${({ theme }) => theme.palette.Grey.White};
