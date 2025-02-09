@@ -185,7 +185,7 @@ export default Today;
 
 const TodayLayout = styled.div`
 	display: flex;
-	height: 108rem;
+	height: 100vh;
 	overflow: hidden;
 `;
 

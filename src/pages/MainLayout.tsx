@@ -10,12 +10,11 @@ function MainLayout() {
 }
 const MainLayOutContainer = styled.div`
 	position: relative;
-	width: 192rem;
-	height: 108rem;
-	padding-left: 7.2rem;
+
+	width: 100%;
+	height: 100vh;
 
 	background-color: ${({ theme }) => theme.colorToken.Component.strong};
-	border-radius: 8px;
 `;
 
 export default MainLayout;
