@@ -171,7 +171,7 @@ function Today() {
 			</DragDropContext>
 			<CalendarWrapper>
 				<FullCalendarBox
-					size="small"
+					size={isDumpAreaOpen ? 'small' : 'big'}
 					selectedTarget={selectedTarget}
 					selectDate={selectedDate}
 					handleChangeDate={handleChangeDate}
