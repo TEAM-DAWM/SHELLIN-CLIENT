@@ -6,7 +6,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
-	padding: 0 8px;
+	padding: 0 0.8rem 0.8rem;
 	overflow: hidden;
 
 	background-color: ${({ theme }) => theme.color.Grey.White};
@@ -16,6 +16,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	.fc .fc-toolbar.fc-header-toolbar {
 		display: flex;
 		align-items: flex-start;
+		height: 6.4rem;
 		margin: 2.4rem 0 0;
 	}
 
@@ -47,6 +48,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		position: absolute;
 		top: 0;
 		left: 50%;
+		height: 3.2rem;
 		overflow: hidden;
 
 		background: ${({ theme }) => theme.color.Grey.White};
@@ -90,15 +92,15 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-toolbar-chunk {
 		display: flex;
-		gap: 8px;
+		gap: 0.8rem;
 		align-items: center;
-		margin-right: 7.2rem;
+		margin-right: 6rem;
 	}
 
 	/* 오늘 버튼 */
 	.fc-toolbar-chunk .fc-today-button {
 		display: flex;
-		gap: 8px;
+		gap: 0.8rem;
 		align-items: center;
 		justify-content: center;
 		margin: 3.4rem 0 0;
@@ -156,7 +158,8 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 			currentView === 'timeGridWeekCustom' &&
 			`border-left: none;
 			border-radius: 0;
-			border-right: none;`}
+			border-right: none;
+			`}
 	}
 
 	.fc-event-allday {
@@ -169,7 +172,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc .fc-col-header-cell {
 		height: 2.4rem;
-		padding: 2.4rem 0.8rem 0.5rem;
+		padding: 1.6rem 0.8rem 0;
 
 		border-right: none;
 		border-left: none;

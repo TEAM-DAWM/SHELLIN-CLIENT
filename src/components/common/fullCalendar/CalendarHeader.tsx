@@ -68,20 +68,20 @@ export default CalendarHeader;
 
 const CalendarHeaderContainer = styled.div<{ size: string }>`
 	position: absolute;
-	top: 56px;
+	top: 5.6rem;
 	z-index: 1;
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
 	box-sizing: border-box;
 	width: 100%;
-	height: auto;
-	padding: ${({ size }) => (size === 'big' ? '0 2.4rem;' : '0 1.6rem 0 2.4rem;')};
+	min-height: 3.2rem;
+	padding: 0 2.4rem;
 `;
 
 const CalendarHeaderWrapper = styled.div`
 	display: flex;
-	gap: 194px;
+	gap: 17.8rem;
 	margin-top: 0.2rem;
 
 	color: ${({ theme }) => theme.colorToken.Icon.normal};
