@@ -1,22 +1,14 @@
 import styled from '@emotion/styled';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Images from '@/assets/images';
 import GoogleLoginBtn from '@/components/loginPage/GoogleLoginBtn';
 import LoginContainer from '@/components/loginPage/LoginContainer';
+import useAuthRedirect from '@/hooks/useAuthRedirect';
 
 function Login() {
 	const LOGIN_CLIENT_ID = import.meta.env.VITE_GOOGLE_LOGIN_CLIENT_ID;
-	const isAuthenticated = localStorage.getItem('accessToken');
-	const naviate = useNavigate();
-
-	useEffect(() => {
-		if (isAuthenticated) {
-			naviate('/today');
-		}
-	}, [isAuthenticated, naviate]);
+	useAuthRedirect();
 
 	return (
 		<GoogleOAuthProvider clientId={LOGIN_CLIENT_ID}>
