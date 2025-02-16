@@ -147,7 +147,13 @@ const style = css`
 	}
 
 	html {
-		font-size: 45%;
+		font-size: 62.5%;
+	}
+
+	@media (width <= 1440px) {
+		html {
+			font-size: 50%;
+		}
 	}
 
 	:root {
