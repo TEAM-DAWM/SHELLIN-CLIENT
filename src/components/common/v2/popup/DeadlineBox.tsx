@@ -92,14 +92,14 @@ function DeadlineBox({
 		<>
 			{!isDueDate && <Divder />}
 			<DeadlineBoxContainer ref={containerRef}>
-				<DeadlineBtnLayout>
+				<DeadlineBtnLayout onClick={isClicked ? handleXBtnClick : handlePlusBtnClick}>
 					<CategoryTitleStyle>{label}</CategoryTitleStyle>
 					{!isDueDate && (
 						<div>
 							{isClicked ? (
-								<Icon name="IcnX" size="tiny" color="strong" onClick={handleXBtnClick} isCursor />
+								<Icon name="IcnX" size="tiny" color="strong" isCursor />
 							) : (
-								<Icon name="IcnPlus" size="tiny" color="strong" onClick={handlePlusBtnClick} isCursor />
+								<Icon name="IcnPlus" size="tiny" color="strong" isCursor />
 							)}
 						</div>
 					)}
@@ -152,8 +152,10 @@ const DeadlineBtnLayout = styled.div`
 	display: flex;
 	gap: 0.8rem;
 	align-items: center;
-	width: 100%;
+	width: fit-content;
 	height: 2.4rem;
+
+	cursor: pointer;
 `;
 
 const CategoryTitleStyle = styled.div`

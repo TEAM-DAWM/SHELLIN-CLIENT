@@ -59,7 +59,7 @@ function StagingAreaTaskContainer({
 	return (
 		<StagingAreaTaskContainerLayout>
 			<BtnTaskContainer id="dumping-task-container" type="staging">
-				{tasks?.length === 0 || !tasks ? (
+				{!tasks || tasks?.length === 0 ? (
 					<EmptyViewStaging />
 				) : (
 					<TaskWrapper>

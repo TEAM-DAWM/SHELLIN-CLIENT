@@ -4,9 +4,11 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Images from '@/assets/images';
 import GoogleLoginBtn from '@/components/loginPage/GoogleLoginBtn';
 import LoginContainer from '@/components/loginPage/LoginContainer';
+import useAuthRedirect from '@/hooks/useAuthRedirect';
 
 function Login() {
 	const LOGIN_CLIENT_ID = import.meta.env.VITE_GOOGLE_LOGIN_CLIENT_ID;
+	useAuthRedirect();
 
 	return (
 		<GoogleOAuthProvider clientId={LOGIN_CLIENT_ID}>
@@ -89,11 +91,10 @@ const LoginLayout = styled.div`
 	position: relative;
 	display: flex;
 	justify-content: space-between;
-	width: 192rem;
-	height: 108rem;
+	width: 100%;
+	height: 100vh;
 
 	background-color: ${({ theme }) => theme.color.Grey.White};
-	border-radius: 8px;
 
 	@media (width <= 900px) {
 		display: flex;
@@ -127,11 +128,7 @@ const LeftSection = styled.section`
 `;
 
 const LoginImg = styled.img`
-	width: 70%;
-	height: 100%;
-	object-fit: cover;
-
-	border-radius: 0 8px 8px 0;
+	object-fit: contain;
 
 	@media (width <= 900px) {
 		width: 100%;

@@ -64,7 +64,7 @@ const TargetControlSectionLayout = styled.div`
 	box-sizing: border-box;
 	width: 100%;
 	height: 4.8rem;
-	padding: 0 1.6rem 0 2.8rem;
+	padding: 0.8rem 1.6rem 0.8rem 2.8rem;
 `;
 const BtnWrapper = styled.div`
 	display: flex;

@@ -53,14 +53,12 @@ function NavBar({ isOpen, handleSideBar }: NavBarProps) {
 	);
 }
 const NavBarLayout = styled.div`
-	position: absolute;
-	left: 0;
 	z-index: 2;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
-	width: 7.2rem;
+	min-width: 8rem;
 	height: 100%;
 
 	background-color: ${({ theme }) => theme.palette.Grey.White};

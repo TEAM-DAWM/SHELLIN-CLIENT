@@ -171,7 +171,7 @@ function Today() {
 			</DragDropContext>
 			<CalendarWrapper>
 				<FullCalendarBox
-					size="small"
+					size={isDumpAreaOpen ? 'small' : 'big'}
 					selectedTarget={selectedTarget}
 					selectDate={selectedDate}
 					handleChangeDate={handleChangeDate}
@@ -185,7 +185,7 @@ export default Today;
 
 const TodayLayout = styled.div`
 	display: flex;
-	height: 108rem;
+	height: 100vh;
 	overflow: hidden;
 `;
 
@@ -195,5 +195,6 @@ const CalendarWrapper = styled.div`
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: fit-content;
-	margin: 1rem 0;
+	width: 100%;
+	margin: 1rem 0.8rem 1rem 0;
 `;

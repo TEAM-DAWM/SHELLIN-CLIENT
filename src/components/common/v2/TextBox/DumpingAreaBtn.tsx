@@ -123,7 +123,7 @@ const DumpingAreaContainer = styled.div`
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 0.8rem;
 	align-items: flex-start;
 `;
 
@@ -164,7 +164,7 @@ const DumpingAreaWrapper = styled.div<{ state: InputState }>`
 
 const IconTouchArea = styled.div`
 	display: flex;
-	gap: 8px;
+	gap: 0.8rem;
 	align-items: center;
 	padding: 8px 8px 8px 16px;
 
