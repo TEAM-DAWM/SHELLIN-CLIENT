@@ -20,13 +20,13 @@ function DumpingAreaBtn() {
 	//   마감기간/시간은 접속 날짜 기준
 	//   14일 후의 동일 시간으로 자동 지정.
 
-	const [todoDate, setTodoDate] = useState<Date>();
+	const [todoDate, setTodoDate] = useState<Date | null>();
 	const [todoTime, setTodoTime] = useState('');
 	const { mutate: createTaskMutate } = useCreateTask();
 	const createTask = (taskData: CreateTaskType) => {
 		createTaskMutate(taskData);
 	};
-	const handleTodoDate = (selectedTodoDate: Date) => {
+	const handleTodoDate = (selectedTodoDate: Date | null) => {
 		setTodoDate(selectedTodoDate);
 	};
 	const handleTodoTime = (selectedTodoTime: string) => {
@@ -107,7 +107,7 @@ function DumpingAreaBtn() {
 				<DueDateModal
 					handleTodoTime={handleTodoTime}
 					handleTodoDate={handleTodoDate}
-					todoDate={todoDate}
+					todoDate={todoDate ? new Date(todoDate) : new Date()}
 					todoTime={todoTime}
 					handleSettingModal={handleSettingModal}
 				/>
