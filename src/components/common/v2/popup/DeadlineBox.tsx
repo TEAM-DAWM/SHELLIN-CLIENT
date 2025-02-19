@@ -10,7 +10,7 @@ interface DeadlineBoxProps {
 	startTime?: string;
 	endTime: string;
 	label: string;
-	isDueDate: boolean;
+	isDueDate?: boolean;
 	isAllDay?: boolean;
 	handleDueDateModalTime?: (time: string) => void;
 	handleDueDateModalDate?: (date: Date | null) => void;
