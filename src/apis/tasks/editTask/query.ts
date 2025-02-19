@@ -7,14 +7,16 @@ const usePatchTaskDescription = () => {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation({
-		mutationFn: ({ taskId, name, description, deadLine: { date, time } }: EditTaskDescriptionType) =>
-			editTaskDescription({ taskId, name, description, deadLine: { date, time } }),
-		onSuccess: (_, variables) => {
-			queryClient.invalidateQueries({ queryKey: ['today'] });
-			queryClient.invalidateQueries({ queryKey: ['taskDesc', variables.taskId] });
-		},
+		mutationFn: async ({ taskId, name, description, deadLine }: EditTaskDescriptionType) =>
+			editTaskDescription({
+				taskId,
+				name,
+				description,
+				deadLine,
+			}),
 	});
-	return { mutate: mutation.mutate };
+
+	return { mutate: mutation.mutate, queryClient };
 };
 
 export default usePatchTaskDescription;
