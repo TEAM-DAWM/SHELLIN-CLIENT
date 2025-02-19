@@ -18,6 +18,7 @@ interface DeadlineBoxProps {
 	onAllDayToggle?: (isAllDay: boolean) => void;
 	onStartTimeChange?: (time: string) => void;
 	onEndTimeChange?: (time: string) => void;
+	hasDivider?: boolean;
 }
 
 function DeadlineBox({
@@ -33,6 +34,7 @@ function DeadlineBox({
 	onAllDayToggle = () => {},
 	onStartTimeChange = () => {},
 	onEndTimeChange = () => {},
+	hasDivider,
 }: DeadlineBoxProps) {
 	const [isSettingActive, setIsSettingActive] = useState(isDueDate);
 	const [isClicked, setIsClicked] = useState(false);
@@ -95,7 +97,7 @@ function DeadlineBox({
 
 	return (
 		<>
-			<Divder />
+			{hasDivider && <Divder />}
 			<DeadlineBoxContainer ref={containerRef}>
 				<DeadlineBtnLayout onClick={isClicked ? handleXBtnClick : handlePlusBtnClick}>
 					<CategoryTitleStyle>{label}</CategoryTitleStyle>
@@ -128,7 +130,7 @@ function DeadlineBox({
 					</>
 				)}
 			</DeadlineBoxContainer>
-			<Divder />
+			{hasDivider && <Divder />}
 		</>
 	);
 }
