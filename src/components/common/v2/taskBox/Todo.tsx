@@ -114,7 +114,6 @@ function Todo({
 				status={status}
 				handleStatusEdit={handleStatusEdit}
 				targetDate={targetDate}
-				isDueDate={!!deadlineDate}
 			/>
 		</>
 	);

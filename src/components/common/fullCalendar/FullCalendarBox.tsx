@@ -56,7 +56,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	);
 	const [isFilterPopupDot, setIsFilterPopupDot] = useState(false);
 	const [isMainModalOpen, setMainModalOpen] = useState(false);
-	const [isDeadlineBoxOpen, setDeadlineBoxOpen] = useState(false);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -142,7 +141,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 	const closeMainModal = () => {
 		setMainModalOpen(false);
-		setDeadlineBoxOpen(false);
 		setSelectedTaskId(null);
 		setSelectedTimeBlockId(null);
 
@@ -285,8 +283,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		setTop(adjustedTop);
 		setLeft(adjustedLeft);
 
-		console.log('드롭된 task id', Number(info.event.id));
-
 		createMutate(
 			{ taskId: Number(info.event.id), startTime: start, endTime: end, isAllTime: false },
 			{
@@ -296,7 +292,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 						setSelectedTimeBlockId(clickedEvent.timeBlockId);
 						setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
 						setMainModalOpen(true);
-						setDeadlineBoxOpen(true);
 					}
 				},
 				onError: () => closeMainModal(),
@@ -453,7 +448,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					handleStatusEdit={handleStatusEdit}
 					targetDate={selectdTimeBlockDate ? formatDatetoLocalDate(selectdTimeBlockDate) : formatDatetoLocalDate(today)}
 					timeBlockId={selectedTimeBlockId}
-					isDeadlineBoxOpen={isDeadlineBoxOpen}
 					isAllTime={calendarEvents.find((event) => event.extendedProps.taskId === selectedTaskId)?.allDay || false}
 				/>
 			)}
