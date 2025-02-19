@@ -14,15 +14,10 @@ interface StagingAreaTaskContainerProps {
 	handleSelectedTarget: (task: TaskType | null) => void;
 	selectedTarget: TaskType | null;
 	tasks: TaskType[];
-	targetDate: string;
+	targetDate?: string;
 }
 
-function StagingAreaTaskContainer({
-	handleSelectedTarget,
-	selectedTarget,
-	tasks,
-	targetDate,
-}: StagingAreaTaskContainerProps) {
+function StagingAreaTaskContainer({ handleSelectedTarget, selectedTarget, tasks }: StagingAreaTaskContainerProps) {
 	useEffect(() => {
 		const container = document.getElementById('dumping-task-container');
 
@@ -89,7 +84,7 @@ function StagingAreaTaskContainer({
 												deadlineTime={task.deadLine?.time || undefined}
 												isStatusVisible={false}
 												taskId={task.id}
-												targetDate={targetDate}
+												targetDate=""
 												onClick={() => handleSelectedTarget(task)}
 											/>
 										</div>
