@@ -26,9 +26,7 @@ interface MainSettingModalProps {
 	handleStatusEdit: (newStatus: StatusType) => void;
 	targetDate: string;
 	timeBlockId?: number;
-	isDeadlineBoxOpen?: boolean;
 	isAllTime?: boolean;
-	isDueDate: boolean;
 }
 
 function MainSettingModal({
@@ -41,28 +39,13 @@ function MainSettingModal({
 	handleStatusEdit,
 	targetDate,
 	timeBlockId,
-	isDeadlineBoxOpen = false,
 	isAllTime = false,
-	isDueDate,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutate: editMutate } = usePatchTaskDescription();
 	const { mutate: updateTimeBlockMutate } = useUpdateTimeBlock();
 	const [taskStatus, setTaskStatus] = useState(status);
 	const [isAllDay, setIsAllDay] = useState(isAllTime);
-
-	const {
-		data: taskDetailData,
-		isLoading: isTaskDetailLoading,
-		isFetched: isTaskDetailFetched,
-	} = useTaskDescription({ taskId, targetDate, isOpen });
-
-	if (isTaskDetailFetched) {
-		if (!timeBlockId) {
-			// eslint-disable-next-line no-param-reassign
-			timeBlockId = taskDetailData?.timeBlock?.id;
-		}
-	}
 
 	// === useInput ===
 	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
@@ -72,6 +55,28 @@ function MainSettingModal({
 	const { content: endTime, handleContent: handleEndTime } = useInput('');
 	const [deadlineDate, setDeadlineDate] = useState<Date | null>(null);
 	const [timeBlockDate, setTimeBlockDate] = useState<Date | null>(new Date(targetDate));
+
+	const {
+		data: taskDetailData,
+		isLoading: isTaskDetailLoading,
+		isFetched: isTaskDetailFetched,
+	} = useTaskDescription({ taskId, targetDate, isOpen });
+
+	const [shouldOpenModal, setShouldOpenModal] = useState(false);
+
+	useEffect(() => {
+		// 데이터를 다 불러온 후에 모달을 띄움
+		if (!isTaskDetailLoading && isTaskDetailFetched) {
+			setShouldOpenModal(true);
+		}
+	}, [isTaskDetailLoading, isTaskDetailFetched]);
+
+	if (isTaskDetailFetched) {
+		if (!timeBlockId) {
+			// eslint-disable-next-line no-param-reassign
+			timeBlockId = taskDetailData?.timeBlock?.id;
+		}
+	}
 
 	useEffect(() => {
 		if (isTaskDetailFetched) {
@@ -84,11 +89,8 @@ function MainSettingModal({
 			setIsAllDay(isAllDay || false);
 		}
 	}, [isTaskDetailFetched]);
-	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
 
-	useEffect(() => {
-		setTaskStatus(status);
-	}, [status]);
+	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
 
 	const handleDeadlineDate = (date: Date | null) => {
 		setDeadlineDate(date);
@@ -187,6 +189,7 @@ function MainSettingModal({
 	const handleAllDayToggle = () => {
 		setIsAllDay((prev) => !prev);
 	};
+	if (!shouldOpenModal) return null;
 
 	if (!isOpen) return null;
 	if (isTaskDetailLoading) return <div />;
@@ -216,7 +219,8 @@ function MainSettingModal({
 						handleDueDateModalDate={handleDeadlineDate}
 						handleDueDateModalTime={handleDeadlineTime}
 						label="마감 기간"
-						isDueDate={isDueDate}
+						isDueDate={!!deadlineDate}
+						hasDivider
 					/>
 					<PopUpTitleBox>
 						<PopUp type="description" defaultValue={descriptionContent} onChange={onDescriptionChange} />
@@ -227,12 +231,13 @@ function MainSettingModal({
 							startTime={formatTimeWithAmPm(startTime) || '23:59'}
 							endTime={formatTimeWithAmPm(endTime) || '23:59'}
 							label="진행 기간"
-							isDueDate={isDeadlineBoxOpen}
+							isDueDate={!!timeBlockId}
 							isAllDay={isAllDay}
 							onAllDayToggle={handleAllDayToggle}
 							onStartTimeChange={handleStartTime}
 							onEndTimeChange={handleEndTime}
 							handleTimeBlockDate={handleTimeBlockDate}
+							hasDivider
 						/>
 					)}
 				</MainSettingModalBodyLayout>
