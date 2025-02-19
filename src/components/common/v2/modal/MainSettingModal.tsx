@@ -5,6 +5,7 @@ import useDeleteTask from '@/apis/tasks/deleteTask/query';
 import usePatchTaskDescription from '@/apis/tasks/editTask/query';
 import useTaskDescription from '@/apis/tasks/taskDescription/query';
 import useUpdateTimeBlock from '@/apis/timeBlocks/updateTimeBlock/query';
+import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
 import DropdownButton from '@/components/common/v2/control/DropdownButton';
 import IconButton from '@/components/common/v2/IconButton';
@@ -27,6 +28,7 @@ interface MainSettingModalProps {
 	timeBlockId?: number;
 	isDeadlineBoxOpen?: boolean;
 	isAllTime?: boolean;
+	isDueDate: boolean;
 }
 
 function MainSettingModal({
@@ -41,12 +43,14 @@ function MainSettingModal({
 	timeBlockId,
 	isDeadlineBoxOpen = false,
 	isAllTime = false,
+	isDueDate,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutate: editMutate } = usePatchTaskDescription();
 	const { mutate: updateTimeBlockMutate } = useUpdateTimeBlock();
 	const [taskStatus, setTaskStatus] = useState(status);
 	const [isAllDay, setIsAllDay] = useState(isAllTime);
+
 	const {
 		data: taskDetailData,
 		isLoading: isTaskDetailLoading,
@@ -59,6 +63,7 @@ function MainSettingModal({
 			timeBlockId = taskDetailData?.timeBlock?.id;
 		}
 	}
+
 	// === useInput ===
 	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
 	const { content: descriptionContent, onChange: onDescriptionChange, handleContent: handleDesc } = useInput('');
@@ -100,8 +105,8 @@ function MainSettingModal({
 			handleEndTime(`${formatDatetoLocalDate(date)}T${endTime.split('T')[1]}`);
 		}
 	};
+
 	const handleConfirm = () => {
-		handleStatusEdit(taskStatus);
 		handleEdit();
 		handleTimeBlockUpdate();
 		onClose();
@@ -114,14 +119,23 @@ function MainSettingModal({
 		onClose();
 	};
 
-	const handleEdit = () => {
-		editMutate({
-			taskId,
-			name: titleContent,
-			description: descriptionContent,
-			deadLine: { date: deadlineDate ? formatDatetoLocalDate(deadlineDate) : null, time: deadlineTime },
+	const handleEdit = async () => {
+		await new Promise((resolve) => {
+			editMutate(
+				{
+					taskId,
+					name: titleContent,
+					description: descriptionContent,
+					deadLine: { date: deadlineDate ? formatDatetoLocalDate(deadlineDate) : null, time: deadlineTime || null },
+				},
+				{
+					onSuccess: resolve,
+				}
+			);
 		});
+		handleStatusEdit(taskStatus); // task 상세 수정 완료 후 상태 변경 실행
 	};
+
 	const handleTaskStatusChange = (newStatus: StatusType) => {
 		setTaskStatus(newStatus);
 	};
@@ -178,52 +192,56 @@ function MainSettingModal({
 	if (isTaskDetailLoading) return <div />;
 
 	return (
-		<MainSettingModalLayout ref={modalRef} top={top} left={left} onClick={(e) => e.stopPropagation()}>
-			<MainSettingModalHeadLayout>
-				<ModalTopButtonBox>
-					<DropdownButton
-						status={taskStatus}
-						handleStatusChange={handleTaskStatusChange}
-						handleStatusEdit={handleStatusEdit}
-						isModalOpen={isOpen}
-					/>
-					<ButtonBox>
-						<IconButton iconName="IcnDelete" type="normal" size="small" onClick={handleDelete} />
-						<IconButton iconName="IcnX" type="normal" size="small" onClick={onClose} />
-					</ButtonBox>
-				</ModalTopButtonBox>
-				<PopUp type="title" defaultValue={titleContent} onChange={onTitleChange} />
-			</MainSettingModalHeadLayout>
-			<MainSettingModalBodyLayout>
-				<DeadlineBox
-					date={deadlineDate ? new Date(deadlineDate) : new Date()}
-					endTime={deadlineTime || '06:00pm'}
-					handleDueDateModalDate={handleDeadlineDate}
-					handleDueDateModalTime={handleDeadlineTime}
-					label="마감 기간"
-				/>
-				<PopUpTitleBox>
-					<PopUp type="description" defaultValue={descriptionContent} onChange={onDescriptionChange} />
-				</PopUpTitleBox>
-				{timeBlockId && (
+		<>
+			<MainSettingModalLayout ref={modalRef} top={top} left={left} onClick={(e) => e.stopPropagation()}>
+				<MainSettingModalHeadLayout>
+					<ModalTopButtonBox>
+						<DropdownButton
+							status={taskStatus}
+							handleStatusChange={handleTaskStatusChange}
+							handleStatusEdit={handleStatusEdit}
+							isModalOpen={isOpen}
+						/>
+						<ButtonBox>
+							<IconButton iconName="IcnDelete" type="normal" size="small" onClick={handleDelete} />
+							<IconButton iconName="IcnX" type="normal" size="small" onClick={onClose} />
+						</ButtonBox>
+					</ModalTopButtonBox>
+					<PopUp type="title" defaultValue={titleContent} onChange={onTitleChange} />
+				</MainSettingModalHeadLayout>
+				<MainSettingModalBodyLayout>
 					<DeadlineBox
-						date={timeBlockDate || new Date(targetDate)}
-						startTime={formatTimeWithAmPm(startTime) || '06:00pm'}
-						endTime={formatTimeWithAmPm(endTime) || '06:00pm'}
-						label="진행 기간"
-						isDueDate={isDeadlineBoxOpen}
-						isAllDay={isAllDay}
-						onAllDayToggle={handleAllDayToggle}
-						onStartTimeChange={handleStartTime}
-						onEndTimeChange={handleEndTime}
-						handleTimeBlockDate={handleTimeBlockDate}
+						date={deadlineDate ? new Date(deadlineDate) : new Date()}
+						endTime={deadlineTime || '23:59'}
+						handleDueDateModalDate={handleDeadlineDate}
+						handleDueDateModalTime={handleDeadlineTime}
+						label="마감 기간"
+						isDueDate={isDueDate}
 					/>
-				)}
-			</MainSettingModalBodyLayout>
-			<MainSettingModalButtonLayout>
-				<Button type="solid" size="medium" label="확인" onClick={handleConfirm} />
-			</MainSettingModalButtonLayout>
-		</MainSettingModalLayout>
+					<PopUpTitleBox>
+						<PopUp type="description" defaultValue={descriptionContent} onChange={onDescriptionChange} />
+					</PopUpTitleBox>
+					{timeBlockId && (
+						<DeadlineBox
+							date={timeBlockDate || new Date(targetDate)}
+							startTime={formatTimeWithAmPm(startTime) || '23:59'}
+							endTime={formatTimeWithAmPm(endTime) || '23:59'}
+							label="진행 기간"
+							isDueDate={isDeadlineBoxOpen}
+							isAllDay={isAllDay}
+							onAllDayToggle={handleAllDayToggle}
+							onStartTimeChange={handleStartTime}
+							onEndTimeChange={handleEndTime}
+							handleTimeBlockDate={handleTimeBlockDate}
+						/>
+					)}
+				</MainSettingModalBodyLayout>
+				<MainSettingModalButtonLayout>
+					<Button type="solid" size="medium" label="확인" onClick={handleConfirm} />
+				</MainSettingModalButtonLayout>
+			</MainSettingModalLayout>
+			<ModalBackdrop onClick={onClose} />
+		</>
 	);
 }
 
