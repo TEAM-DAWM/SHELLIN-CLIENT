@@ -13,7 +13,7 @@ import '@/styles/font.css';
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			staleTime: 1000 * 60,
+			staleTime: 1000 * 5,
 			gcTime: 1000 * 60,
 		},
 	},
@@ -26,6 +26,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 				<App />
 			</ToastProvider>
 		</ThemeProvider>
-		<ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" position="left" />
+		<div style={{ fontSize: '16px' }}>
+			<ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" position="bottom" />
+		</div>
 	</QueryClientProvider>
 );
