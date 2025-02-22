@@ -12,7 +12,7 @@ interface ToastItem {
 
 interface ToastContextProps {
 	toasts: ToastItem[];
-	addToast: (message: string, code: ToastType, revert: () => void) => void;
+	addToast: (message: string, code: ToastType, revert?: () => void) => void;
 	removeToast: (id: number) => void;
 	revertToast: (id: number) => void;
 }
@@ -30,9 +30,9 @@ export const useToast = () => {
 export function ToastProvider({ children }: { children: ReactNode }) {
 	const [toasts, setToasts] = useState<ToastItem[]>([]);
 
-	const addToast = (message: string, code: ToastType, revert: () => void) => {
+	const addToast = (message: string, code: ToastType, revert?: () => void) => {
 		const id = new Date().getTime();
-		setToasts((prevToasts) => [...prevToasts, { id, message, code, revert }]);
+		setToasts((prevToasts) => [...prevToasts, { id, message, code, revert: revert ?? (() => {}) }]);
 	};
 
 	const removeToast = (id: number) => {
