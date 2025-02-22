@@ -12,9 +12,9 @@ const useUpdateTaskStatus = (handleIconMouseLeave: (() => void) | null) => {
 
 	const mutation = useMutation({
 		mutationFn: (updateData: UpdateTaskStatusType) => updateTaskStatus(updateData),
-		onMutate: async () => {
+		onMutate: async ({ targetDate }: UpdateTaskStatusType) => {
 			const todayQueries = queryClient.getQueriesData({ queryKey: ['today'] });
-			const filteredQueries = todayQueries.filter(([query]) => !query.includes(undefined));
+			const filteredQueries = todayQueries.filter(([query]) => query[2] === targetDate);
 			return { queryKey: filteredQueries[0][0], previousData: filteredQueries[0][1] as TaskType[] };
 		},
 		onSuccess: (_, updateData, context: { queryKey: QueryKey; previousData: TaskType[] }) => {
