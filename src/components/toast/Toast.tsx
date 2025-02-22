@@ -20,9 +20,10 @@ interface ToastProps {
 	message: string;
 	onClose: () => void;
 	code: ToastType;
+	onRevert?: () => void;
 }
 
-function Toast({ message, onClose, code }: ToastProps) {
+function Toast({ message, onClose, code, onRevert }: ToastProps) {
 	useEffect(() => {
 		const timer = setTimeout(onClose, 3000);
 		return () => clearTimeout(timer);
@@ -36,7 +37,7 @@ function Toast({ message, onClose, code }: ToastProps) {
 				{icon}
 				{message}
 			</TextLayout>
-			<RevertBox>
+			<RevertBox onClick={onRevert}>
 				<RevertText>되돌리기</RevertText>
 				<Icon name="IcnX" />
 			</RevertBox>

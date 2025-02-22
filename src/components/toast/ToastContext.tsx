@@ -13,6 +13,7 @@ interface ToastContextProps {
 	toasts: ToastItem[];
 	addToast: (message: string, code: ToastType) => void;
 	removeToast: (id: number) => void;
+	revertToast: (id: number) => void;
 }
 
 const ToastContext = createContext<ToastContextProps | null>(null);
@@ -37,11 +38,16 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 		setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
 	};
 
+	const revertToast = (id: number) => {
+		console.log('revertToast', id);
+	};
+
 	const value = useMemo(
 		() => ({
 			toasts,
 			addToast,
 			removeToast,
+			revertToast,
 		}),
 		[toasts]
 	);
