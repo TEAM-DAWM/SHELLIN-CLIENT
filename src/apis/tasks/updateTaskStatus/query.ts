@@ -11,8 +11,17 @@ const useUpdateTaskStatus = (handleIconMouseLeave: (() => void) | null) => {
 
 	const mutation = useMutation({
 		mutationFn: (updateData: UpdateTaskStatusType) => updateTaskStatus(updateData),
-		onSuccess: (_, updateData) => {
-			addToast('변경사항이 적용되었어요', 'success');
+		onMutate: async () => {
+			const todayQueries = queryClient.getQueriesData({ queryKey: ['today'] });
+			const filteredQueries = todayQueries.filter(([query]) => !query.includes(undefined));
+			return { queryKey: filteredQueries[0][0], previousData: filteredQueries[0][1] };
+		},
+		onSuccess: (_, updateData, context) => {
+			const revert = () => {
+				queryClient.setQueryData(context.queryKey, context.previousData);
+			};
+
+			addToast('변경사항이 적용되었어요', 'success', revert);
 			queryClient.invalidateQueries({ queryKey: ['today'] }).then(() => {
 				if (handleIconMouseLeave) {
 					handleIconMouseLeave();
