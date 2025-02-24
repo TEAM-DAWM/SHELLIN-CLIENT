@@ -102,11 +102,7 @@ function DeadlineBox({
 				<DeadlineBtnLayout onClick={isClicked ? handleXBtnClick : handlePlusBtnClick}>
 					<CategoryTitleStyle>{label}</CategoryTitleStyle>
 					<div>
-						{isClicked ? (
-							<Icon name="IcnX" size="tiny" color="strong" isCursor />
-						) : (
-							<Icon name="IcnPlus" size="tiny" color="strong" isCursor />
-						)}
+						<Icon name={isClicked ? 'IcnX' : 'IcnPlus'} size="tiny" color="strong" isCursor />
 					</div>
 				</DeadlineBtnLayout>
 				{isSettingActive && (
