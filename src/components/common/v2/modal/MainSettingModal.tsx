@@ -88,7 +88,7 @@ function MainSettingModal({
 			handleEndTime(taskDetailData?.timeBlock?.endTime || '');
 			setIsAllDay(isAllDay || false);
 		}
-	}, [isTaskDetailFetched]);
+	}, [isTaskDetailFetched, isOpen]);
 
 	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
 
@@ -128,7 +128,10 @@ function MainSettingModal({
 					taskId,
 					name: titleContent,
 					description: descriptionContent,
-					deadLine: { date: deadlineDate ? formatDatetoLocalDate(deadlineDate) : null, time: deadlineTime || null },
+					deadLine: {
+						date: formatDatetoLocalDate(deadlineDate) || null,
+						time: deadlineTime || null,
+					},
 				},
 				{
 					onSuccess: resolve,
@@ -189,8 +192,8 @@ function MainSettingModal({
 	const handleAllDayToggle = () => {
 		setIsAllDay((prev) => !prev);
 	};
-	if (!shouldOpenModal) return null;
 
+	if (!shouldOpenModal) return null;
 	if (!isOpen) return null;
 	if (isTaskDetailLoading) return <div />;
 
@@ -214,7 +217,7 @@ function MainSettingModal({
 				</MainSettingModalHeadLayout>
 				<MainSettingModalBodyLayout>
 					<DeadlineBox
-						date={deadlineDate ? new Date(deadlineDate) : new Date()}
+						date={deadlineDate || new Date()}
 						endTime={deadlineTime || '23:59'}
 						handleDueDateModalDate={handleDeadlineDate}
 						handleDueDateModalTime={handleDeadlineTime}
