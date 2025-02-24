@@ -13,7 +13,7 @@ import '@/styles/font.css';
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			staleTime: 1000 * 5,
+			staleTime: 1000 * 60,
 			gcTime: 1000 * 60,
 		},
 	},
