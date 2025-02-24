@@ -17,15 +17,18 @@ const useUpdateTaskStatus = (handleIconMouseLeave: (() => void) | null) => {
 
 			// staging과 today중 해당 task가 속한 영역만 쿼리키 무효화
 			const cachedTask = queryClient.getQueryData(QUERY_KEYS.taskDescription(updateData.taskId));
-			const listQueryKey = cachedTask ? QUERY_KEYS.staging() : QUERY_KEYS.today();
+			const shouldInvalidateTask = cachedTask ? QUERY_KEYS.staging() : QUERY_KEYS.today();
+
+			// 무효화할 쿼리키 변수 정의
+			const shouldInvalidateDashboard = updateData.status === '미완료' ? QUERY_KEYS.dashboard() : null;
+			const shouldInvalidateDashboardInProgress =
+				updateData.status === '진행중' || updateData.status === '완료' ? QUERY_KEYS.dashboardInProgress() : null;
 
 			await Promise.all([
-				queryClient.invalidateQueries({ queryKey: listQueryKey }),
-
-				updateData.status === '미완료' ? queryClient.invalidateQueries({ queryKey: QUERY_KEYS.dashboard() }) : null,
-				updateData.status === '진행중' || updateData.status === '완료'
-					? queryClient.invalidateQueries({ queryKey: QUERY_KEYS.dashboardInProgress() })
-					: null,
+				queryClient.invalidateQueries({ queryKey: shouldInvalidateTask }),
+				shouldInvalidateDashboard && queryClient.invalidateQueries({ queryKey: shouldInvalidateDashboard }),
+				shouldInvalidateDashboardInProgress &&
+					queryClient.invalidateQueries({ queryKey: shouldInvalidateDashboardInProgress }),
 			]);
 
 			if (handleIconMouseLeave) handleIconMouseLeave();
