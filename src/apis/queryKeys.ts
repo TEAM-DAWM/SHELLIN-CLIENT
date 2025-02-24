@@ -1,9 +1,18 @@
 export const QUERY_KEYS = {
 	allTasks: ['tasks'] as const,
 
-	today: (sortOrder?: string | null, targetDate?: string | null) =>
-		[...QUERY_KEYS.allTasks, 'today', sortOrder || '', targetDate || ''] as const,
-	staging: (sortOrder?: string) => [...QUERY_KEYS.allTasks, 'staging', sortOrder || ''] as const,
+	today: (sortOrder?: string | null, targetDate?: string | null) => {
+		const key = ['today'];
+		if (sortOrder) key.push(sortOrder);
+		if (targetDate) key.push(targetDate);
+		return [...QUERY_KEYS.allTasks, ...key] as const;
+	},
+
+	staging: (sortOrder?: string) => {
+		const key = ['staging'];
+		if (sortOrder) key.push(sortOrder);
+		return [...QUERY_KEYS.allTasks, ...key] as const;
+	},
 
 	taskDescription: (taskId: string | number, targetDate?: string | null) =>
 		[...QUERY_KEYS.allTasks, 'taskDesc', taskId, targetDate || ''] as const,
