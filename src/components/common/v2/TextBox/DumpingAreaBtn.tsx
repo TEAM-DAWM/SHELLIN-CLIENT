@@ -37,7 +37,6 @@ function DumpingAreaBtn() {
 		setTodoTitle(e.currentTarget.value);
 	};
 	const handleSettingModal = () => {
-		console.log(settingModalOpen);
 		setSettingModalOpen((prev) => !prev);
 	};
 
