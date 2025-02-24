@@ -48,7 +48,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 
 			<DueDateModalBodyLayout>
 				<DeadlineBox
-					date={dueDateDate ? new Date(dueDateDate) : new Date()}
+					date={dueDateDate || new Date()}
 					endTime={getDisplayCurrTime(defaultDate)}
 					label="마감 기간"
 					isDueDate
