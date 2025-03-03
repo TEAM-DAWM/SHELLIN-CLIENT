@@ -51,7 +51,7 @@ function SettingCheckBtn({
 					statusType = '완료';
 					break;
 				case 'progress':
-					statusType = '진행 중';
+					statusType = '진행중';
 					break;
 				default:
 					statusType = '완료';

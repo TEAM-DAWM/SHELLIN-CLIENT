@@ -38,7 +38,7 @@ function TargetIconHoverContainer({ btnStatus, taskId, targetDate }: Props) {
 				}
 				return <StatusDoneBtn taskId={taskId} targetDate={targetDate} handleIconMouseLeave={handleIconMouseLeave} />;
 
-			case '진행 중':
+			case '진행중':
 				if (!iconHovered) {
 					return (
 						<SettingCheckBtn

@@ -26,6 +26,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 				<App />
 			</ToastProvider>
 		</ThemeProvider>
-		<ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" position="left" />
+		<div style={{ fontSize: '16px' }}>
+			<ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" position="bottom" />
+		</div>
 	</QueryClientProvider>
 );

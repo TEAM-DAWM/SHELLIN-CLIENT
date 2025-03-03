@@ -10,7 +10,7 @@ interface DueDateModalType {
 	todoTime: string;
 	todoDate?: Date;
 	handleTodoTime: (selectedTodoTime: string) => void;
-	handleTodoDate: (selectedTodoDate: Date) => void;
+	handleTodoDate: (selectedTodoDate: Date | null) => void;
 	handleSettingModal: () => void;
 }
 function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, handleSettingModal }: DueDateModalType) {
@@ -21,7 +21,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 	dateAfter14Days.setDate(defaultDate.getDate() + 14);
 
 	const [dueDateTime, setDueDateTime] = useState(todoTime || getFormattedCurrTime(defaultDate));
-	const [dueDateDate, setDueDateDate] = useState(todoDate || dateAfter14Days);
+	const [dueDateDate, setDueDateDate] = useState<Date | null>(todoDate || dateAfter14Days);
 
 	const onDueDateSubmit = () => {
 		handleTodoDate(dueDateDate);
@@ -32,7 +32,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 	const handleDueDateModalTime = (time: string) => {
 		setDueDateTime(time);
 	};
-	const handleDueDateModalDate = (date: Date) => {
+	const handleDueDateModalDate = (date: Date | null) => {
 		setDueDateDate(date);
 	};
 
@@ -48,7 +48,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 
 			<DueDateModalBodyLayout>
 				<DeadlineBox
-					date={dueDateDate}
+					date={dueDateDate || new Date()}
 					endTime={getDisplayCurrTime(defaultDate)}
 					label="마감 기간"
 					isDueDate

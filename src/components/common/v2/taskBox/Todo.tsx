@@ -58,11 +58,11 @@ function Todo({
 		const calculatedTop = rect.top;
 		const adjustedTop = Math.min(calculatedTop, MODAL.SCREEN_HEIGHT - MODAL.TASK_MODAL_HEIGHT);
 		if (location === 'staging') {
-			setTop(adjustedTop - 190);
-			setLeft(rect.width + 12);
+			setTop(adjustedTop);
+			setLeft(rect.width + 20);
 		} else {
 			setTop(adjustedTop);
-			setLeft(rect.right + 6);
+			setLeft(rect.right + 12);
 		}
 		setModalOpen((prev) => !prev);
 	};

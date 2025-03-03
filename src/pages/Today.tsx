@@ -70,8 +70,8 @@ function Today() {
 		// 드래그가 끝난 위치가 없으면 리턴
 		if (!destination) return;
 
-		const updatedTargetData: TaskType[] = [...targetData];
-		const updatedStagingData: TaskType[] = [...stagingData];
+		const updatedTargetData: TaskType[] = targetData;
+		const updatedStagingData: TaskType[] = stagingData;
 		let movedTask: TaskType;
 
 		if (source.droppableId === 'target') {

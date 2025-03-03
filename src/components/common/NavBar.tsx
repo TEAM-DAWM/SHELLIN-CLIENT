@@ -26,13 +26,8 @@ function NavBar({ isOpen, handleSideBar }: NavBarProps) {
 		<NavBarLayout>
 			<ProfileContainer>
 				<ProfileImg src={userInfo?.data.image || Images.smallLogo} alt="프로필" onClick={moveToSetting} />
-				<IconWrapper>
-					<NavbarButton
-						iconName="IcnTodolist"
-						type="normal"
-						onClick={moveToToday}
-						isActive={location.pathname === '/today'}
-					/>
+				<IconWrapper onClick={moveToToday}>
+					<NavbarButton iconName="IcnTodolist" type="normal" isActive={location.pathname === '/today'} />
 					<TextBox isActive={location.pathname === '/today'}>할 일</TextBox>
 				</IconWrapper>
 			</ProfileContainer>

@@ -13,11 +13,12 @@ interface DeadlineBoxProps {
 	isDueDate?: boolean;
 	isAllDay?: boolean;
 	handleDueDateModalTime?: (time: string) => void;
-	handleDueDateModalDate?: (date: Date) => void;
+	handleDueDateModalDate?: (date: Date | null) => void;
 	handleTimeBlockDate?: (date: Date) => void;
 	onAllDayToggle?: (isAllDay: boolean) => void;
 	onStartTimeChange?: (time: string) => void;
 	onEndTimeChange?: (time: string) => void;
+	hasDivider?: boolean;
 }
 
 function DeadlineBox({
@@ -25,7 +26,7 @@ function DeadlineBox({
 	startTime,
 	endTime,
 	label,
-	isDueDate = false,
+	isDueDate,
 	isAllDay = false,
 	handleDueDateModalTime = () => {},
 	handleDueDateModalDate = () => {},
@@ -33,16 +34,19 @@ function DeadlineBox({
 	onAllDayToggle = () => {},
 	onStartTimeChange = () => {},
 	onEndTimeChange = () => {},
+	hasDivider,
 }: DeadlineBoxProps) {
-	const [isSettingActive, setIsSettingActive] = useState(isAllDay);
-	const [isClicked, setIsClicked] = useState(isDueDate);
+	const [isSettingActive, setIsSettingActive] = useState(isDueDate);
+	const [isClicked, setIsClicked] = useState(false);
 	const [isAllday, setIsAllday] = useState(isAllDay);
 
 	const containerRef = useRef(null);
 
 	const handlePlusBtnClick = () => {
+		handleDueDateModalTime(endTime);
+		handleDueDateModalDate(date);
 		setIsClicked((prev) => !prev);
-		setIsSettingActive(false);
+		setIsSettingActive(true);
 	};
 	const handleCheckBtnClick = () => {
 		const newIsAllDay = !isAllday;
@@ -55,7 +59,7 @@ function DeadlineBox({
 			onEndTimeChange(`${date.toISOString().split('T')[0]}T00:00`);
 		} else {
 			// 하루종일 해제 시 시간 비우기
-			onStartTimeChange(startTime || '06:00');
+			onStartTimeChange(startTime || '00:00');
 			onEndTimeChange(endTime);
 		}
 	};
@@ -65,6 +69,9 @@ function DeadlineBox({
 		setIsClicked((prev) => !prev);
 		setIsAllday(false);
 		onAllDayToggle(false);
+		setIsSettingActive(false);
+		handleDueDateModalTime('');
+		handleDueDateModalDate(null);
 	};
 
 	const handleClickOutside = (event: MouseEvent) => {
@@ -73,12 +80,12 @@ function DeadlineBox({
 			event.target instanceof Node &&
 			(containerRef.current as HTMLDivElement).contains(event.target) === false
 		) {
-			setIsSettingActive(true);
+			setIsClicked(false);
 		}
 	};
 
-	const handleClickModify = () => {
-		setIsSettingActive(false);
+	const handleClickEditMode = () => {
+		setIsClicked((prev) => !prev);
 	};
 
 	useEffect(() => {
@@ -90,42 +97,36 @@ function DeadlineBox({
 
 	return (
 		<>
-			{!isDueDate && <Divder />}
+			{hasDivider && <Divder />}
 			<DeadlineBoxContainer ref={containerRef}>
 				<DeadlineBtnLayout onClick={isClicked ? handleXBtnClick : handlePlusBtnClick}>
 					<CategoryTitleStyle>{label}</CategoryTitleStyle>
-					{!isDueDate && (
-						<div>
-							{isClicked ? (
-								<Icon name="IcnX" size="tiny" color="strong" isCursor />
-							) : (
-								<Icon name="IcnPlus" size="tiny" color="strong" isCursor />
-							)}
-						</div>
-					)}
+					<div>
+						<Icon name={isClicked ? 'IcnX' : 'IcnPlus'} size="tiny" color="strong" isCursor />
+					</div>
 				</DeadlineBtnLayout>
-				{isClicked && (
+				{isSettingActive && (
 					<>
 						<DateTimeBtn
 							date={date}
 							startTime={startTime}
 							endTime={endTime}
-							isSetDate={isSettingActive}
+							isEditMode={isClicked}
 							isAllday={isAllday}
-							onClick={handleClickModify}
+							onClick={handleClickEditMode}
 							handleDueDateModalDate={handleDueDateModalDate}
 							handleDueDateModalTime={handleDueDateModalTime}
 							handleTimeBlockDate={handleTimeBlockDate}
 							onStartTimeChange={onStartTimeChange}
 							onEndTimeChange={onEndTimeChange}
 						/>
-						{!isSettingActive && (
+						{isClicked && (
 							<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />
 						)}
 					</>
 				)}
 			</DeadlineBoxContainer>
-			{!isDueDate && <Divder />}
+			{hasDivider && <Divder />}
 		</>
 	);
 }

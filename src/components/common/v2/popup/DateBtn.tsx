@@ -7,14 +7,14 @@ import { formatDateWithDay } from '@/utils/formatDateTime';
 
 interface DateBtnProps {
 	isAllday: boolean;
-	isSetDate: boolean;
+	isEditMode: boolean;
 	startTime?: string;
 	endTime: string;
 	date: Date;
 	handleDate: (newDate: Date) => void;
 }
 
-function DateBtn({ isAllday, isSetDate, startTime, endTime, date, handleDate }: DateBtnProps) {
+function DateBtn({ isAllday, isEditMode, startTime, endTime, date, handleDate }: DateBtnProps) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const renderTimeText = () => {
@@ -29,7 +29,7 @@ function DateBtn({ isAllday, isSetDate, startTime, endTime, date, handleDate }: 
 	};
 
 	const onClickDateBtn = () => {
-		if (!isSetDate) setIsOpen((prev) => !prev);
+		if (isEditMode) setIsOpen((prev) => !prev);
 	};
 
 	const handleModalClose = () => {
@@ -50,9 +50,9 @@ function DateBtn({ isAllday, isSetDate, startTime, endTime, date, handleDate }: 
 	return (
 		<DateWrapper onBlur={handleBlur} tabIndex={-1}>
 			<DateBtnLayout onClick={onClickDateBtn} isActive={isOpen}>
-				<Icon name={isSetDate ? 'IcnModify' : 'IcnCalendar'} size="tiny" color="nomal" />
+				<Icon name={isEditMode ? 'IcnCalendar' : 'IcnModify'} size="tiny" color="nomal" />
 				<TextBox>
-					{formatDateWithDay(date)} {isSetDate && renderTimeText()}
+					{formatDateWithDay(date)} {!isEditMode && renderTimeText()}
 				</TextBox>
 			</DateBtnLayout>
 			{isOpen && (
