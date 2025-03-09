@@ -37,8 +37,8 @@ function Toast({ message, onClose, code, onRevert }: ToastProps) {
 				{icon}
 				{message}
 			</TextLayout>
-			<RevertBox onClick={onRevert}>
-				<RevertText>되돌리기</RevertText>
+			<RevertBox>
+				<RevertText onClick={onRevert}>되돌리기</RevertText>
 				<Icon name="IcnX" />
 			</RevertBox>
 		</ToastMessage>
