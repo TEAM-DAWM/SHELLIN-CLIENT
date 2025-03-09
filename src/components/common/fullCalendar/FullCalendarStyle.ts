@@ -346,7 +346,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 종일 이벤트 테두리 */
 	.fc .fc-daygrid-day-frame .fc-event-main {
 		display: flex;
-		align-items: center;
+		align-items: baseline;
 		justify-content: center;
 		box-sizing: border-box;
 		height: 2.1rem;
@@ -596,7 +596,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
 	}
 
+	/* TimeGrid(주간) all-day-event(종일) 컨테이너 */
 	.fc .fc-h-event {
+		width: 100%;
+
 		border: none;
 	}
 
@@ -607,7 +610,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.month-view .fc-all-day-event {
-		width: 72%;
+		width: 99%;
 	}
 
 	/* Month view 중 이벤트 초과 안내 */
