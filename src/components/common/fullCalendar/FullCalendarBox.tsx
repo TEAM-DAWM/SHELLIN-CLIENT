@@ -47,6 +47,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
 	const [selectedTimeBlockId, setSelectedTimeBlockId] = useState<number | null>(null);
 	const [selectdTimeBlockDate, setSelectdTimeBlockDate] = useState<string | null>(null);
+	const [selectedStatus, setSelectedStatus] = useState<(typeof STATUSES)[keyof typeof STATUSES]>(STATUSES.INCOMPLETE);
 
 	const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth() + 1 });
 	const [isCalendarPopupOpen, setCalendarPopupOpen] = useState(false);
@@ -128,6 +129,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		if (clickedEvent) {
 			setSelectedTaskId(clickedEvent.extendedProps.taskId);
 			setSelectedTimeBlockId(clickedEvent.extendedProps.timeBlockId);
+			setSelectedStatus(clickedEvent.extendedProps.status);
 			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
 			setMainModalOpen(true);
 		}
@@ -197,8 +199,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const updateEvent = (info: EventDropArg | EventResizeDoneArg) => {
 		const { event } = info;
 		const { taskId, timeBlockId } = event.extendedProps;
-		console.log('updateEvent EventDropArg | EventResizeDoneArg', event.startStr);
-		console.log('updateEvent EventDropArg | EventResizeDoneArg', info);
 		if (taskId && taskId !== -1) {
 			let startStr = removeTimezone(event.startStr);
 			let endStr = removeTimezone(event.endStr);
@@ -207,8 +207,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				startStr += 'T00:00';
 				endStr = startStr;
 			}
-
-			console.log('updateMutate ', taskId, timeBlockId, startStr, endStr, info.event.allDay);
 
 			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: info.event.allDay });
 		} else {
@@ -219,8 +217,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const isSelectable = !!selectedTarget;
 
 	const handleDelete = () => {
-		console.log('taskId, timeBlockId', selectedTaskId, selectedTimeBlockId);
-
 		if (selectedTaskId && selectedTimeBlockId) {
 			deleteMutate({ taskId: selectedTaskId, timeBlockId: selectedTimeBlockId });
 		} else {
@@ -443,7 +439,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					top={top}
 					left={left}
 					onClose={closeMainModal}
-					status="미완료"
+					status={selectedStatus}
 					taskId={selectedTaskId}
 					handleStatusEdit={handleStatusEdit}
 					targetDate={selectdTimeBlockDate ? formatDatetoLocalDate(selectdTimeBlockDate) : formatDatetoLocalDate(today)}

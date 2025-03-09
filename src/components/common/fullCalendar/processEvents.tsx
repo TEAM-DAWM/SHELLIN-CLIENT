@@ -11,6 +11,7 @@ interface EventData {
 		taskId: number;
 		timeBlockId: number | null;
 		isCompleted: boolean;
+		status: (typeof STATUSES)[keyof typeof STATUSES];
 	};
 }
 
@@ -32,6 +33,7 @@ const processEvents = (timeBlockData: TimeBlockData, selectedStatuses: string[])
 						taskId: task.id,
 						timeBlockId: timeBlock.id,
 						isCompleted: task.status === STATUSES.COMPLETED,
+						status: task.status,
 					},
 				});
 			});
