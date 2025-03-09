@@ -393,6 +393,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					hour12: true,
 				}}
 				slotLabelContent={customSlotLabelContent}
+				scrollTime="06:00:00"
+				scrollTimeReset={false}
 				/* eslint-disable */
 				dayHeaderContent={(arg) => (
 					<DayHeaderContent
