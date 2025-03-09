@@ -65,7 +65,27 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const { mutate: updateMutate } = useUpdateTimeBlock();
 	const { mutate: deleteMutate } = useDeleteTimeBlock();
 
-	const calendarEvents = timeBlockData ? processEvents(timeBlockData.data.data, selectedStatuses) : [];
+	// 추후 전역상태로 처리 예정
+	interface EventData {
+		title: string;
+		start: string;
+		end: string;
+		allDay?: boolean;
+		classNames: string;
+		extendedProps: {
+			taskId: number;
+			timeBlockId: number | null;
+			isCompleted: boolean;
+			status: (typeof STATUSES)[keyof typeof STATUSES];
+		};
+	}
+	const [calendarEvents, setCalendarEvents] = useState<EventData[]>([]);
+
+	useEffect(() => {
+		if (timeBlockData) {
+			setCalendarEvents(processEvents(timeBlockData.data.data, selectedStatuses));
+		}
+	}, [timeBlockData, selectedStatuses]);
 
 	useEffect(() => {
 		if (selectDate && calendarRef.current) {
@@ -217,9 +237,13 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				endStr = startStr;
 			}
 
+			setCalendarEvents((prevEvents) =>
+				prevEvents.map((e) =>
+					e.extendedProps.timeBlockId === timeBlockId ? { ...e, start: startStr, end: endStr } : e
+				)
+			);
+
 			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: info.event.allDay });
-		} else {
-			info.revert();
 		}
 	};
 
