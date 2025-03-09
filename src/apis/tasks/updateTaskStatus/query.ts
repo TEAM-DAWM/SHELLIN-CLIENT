@@ -29,6 +29,7 @@ const useUpdateTaskStatus = (handleIconMouseLeave: (() => void) | null) => {
 				shouldInvalidateDashboard && queryClient.invalidateQueries({ queryKey: shouldInvalidateDashboard }),
 				shouldInvalidateDashboardInProgress &&
 					queryClient.invalidateQueries({ queryKey: shouldInvalidateDashboardInProgress }),
+				queryClient.invalidateQueries({ queryKey: ['timeblock'] }),
 			]);
 
 			if (handleIconMouseLeave) handleIconMouseLeave();
