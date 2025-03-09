@@ -165,6 +165,15 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				}
 			});
 
+			const start = new Date(selectInfo.startStr);
+			const end = new Date(selectInfo.endStr);
+			const diffInMinutes = (end.getTime() - start.getTime()) / (1000 * 60);
+
+			if (diffInMinutes < 30) {
+				console.log('이벤트 생성 최소 시간 제한: 30분 이상이어야 합니다.'); // (클릭 시 실수로 이벤트 생성되는 것 방지)
+				return;
+			}
+
 			calendarApi.addEvent({
 				id: selectedTarget.id.toString(),
 				title: selectedTarget.name,
