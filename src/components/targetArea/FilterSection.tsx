@@ -37,7 +37,7 @@ function FilterSection({ sortOrder, handleSortOrder }: FilterSectionProps) {
 					onClick={handleArrangeBtnClick}
 					dot={isIconBtnDotted}
 				/>
-				{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortClickAndClose} />}
+				{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortClickAndClose} selectedSortOrder={sortOrder} />}
 			</IconContainer>
 			{isSortModalOpen && <ModalBackdrop onClick={handleCloseModal} />}
 		</>

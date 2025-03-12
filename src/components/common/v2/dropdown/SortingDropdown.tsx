@@ -1,38 +1,46 @@
-import { css } from '@emotion/react';
+import { css, useTheme, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Button from '@/components/common/v2/button/Button';
 import SORT_BY, { SortOrderType } from '@/constants/sortType';
 
 interface SortingDropDownType {
-	// sortOrder: SortOrderType;
+	selectedSortOrder: SortOrderType;
 	handleSortOrder: (order: SortOrderType) => void;
 }
-function SortingDropdown({ handleSortOrder }: SortingDropDownType) {
-	// TODO: 선택된 스타일 추가 설정해야 할 듯
+function SortingDropdown({ handleSortOrder, selectedSortOrder }: SortingDropDownType) {
+	const theme = useTheme();
+
 	return (
 		<SortingDropdownContainer>
-			{Object.keys(SORT_BY).map((label, index) => (
-				<ButtonLayout key={label}>
-					<Button
-						label={SORT_BY[label as SortOrderType]}
-						onClick={() => {
-							handleSortOrder(label as SortOrderType);
-						}}
-						size="large"
-						type="text-assistive"
-						additionalCss={btnCustomWidth}
-					/>
-					{(index === 0 || index === 2) && <Divider />}
-				</ButtonLayout>
-			))}
+			{Object.keys(SORT_BY).map((label, index) => {
+				const isSelected = selectedSortOrder === label;
+
+				return (
+					<ButtonLayout key={label}>
+						<Button
+							label={SORT_BY[label as SortOrderType]}
+							onClick={() => {
+								handleSortOrder(label as SortOrderType);
+							}}
+							size="large"
+							type="text-assistive"
+							additionalCss={btnCustomWidth(isSelected, theme)}
+						/>
+						{(index === 0 || index === 2) && <Divider />}
+					</ButtonLayout>
+				);
+			})}
 		</SortingDropdownContainer>
 	);
 }
 
-const btnCustomWidth = css`
+const btnCustomWidth = (isSelected: boolean, theme: Theme) => css`
 	width: 100%;
+
+	background-color: ${isSelected ? theme.color.Grey.Grey3 : 'transparent'};
 `;
+
 const SortingDropdownContainer = styled.div`
 	position: absolute;
 	right: -17.7rem;
