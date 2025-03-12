@@ -5,27 +5,24 @@ import TargetControlSection from './TargetControlSection';
 import TargetTaskSection from './TargetTaskSection';
 
 import MainDate from '@/components/common/v2/TextBox/MainDate';
-import TargetFilterSection from '@/components/targetArea/TargetFilterSection';
-import { TaskType } from '@/types/tasks/taskType';
-import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
+import FilterSection from '@/components/targetArea/FilterSection';
+import { TargetAreaProps } from '@/types/area/taskAreaType';
 import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
-interface TargetAreaProps extends TargetControlSectionProps {
-	handleSelectedTarget: (task: TaskType | null) => void;
-	selectedTarget: TaskType | null;
-	tasks: TaskType[];
-}
+function TargetArea(props: TargetAreaProps) {
+	const {
+		handleSelectedTarget,
+		selectedTarget,
+		tasks,
+		onClickPrevDate,
+		onClickNextDate,
+		onClickTodayDate,
+		onClickDatePicker,
+		targetDate,
+		sortOrder,
+		handleSortOrder,
+	} = props;
 
-function TargetArea({
-	handleSelectedTarget,
-	selectedTarget,
-	tasks,
-	onClickPrevDate,
-	onClickNextDate,
-	onClickTodayDate,
-	onClickDatePicker,
-	targetDate,
-}: TargetAreaProps) {
 	const dateTypeDate = new Date(targetDate);
 	const month = dateTypeDate.getMonth() + 1;
 	const day = dateTypeDate.getDate();
@@ -45,7 +42,7 @@ function TargetArea({
 				targetDate={targetDate}
 			/>
 			{/* 정렬 버튼 */}
-			<TargetFilterSection />
+			<FilterSection sortOrder={sortOrder} handleSortOrder={handleSortOrder} />
 			{/* 태스크 목록 */}
 			<Droppable droppableId="target">
 				{(provided) => (

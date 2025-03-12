@@ -7,8 +7,12 @@ import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
 import IconButton from '@/components/common/v2/IconButton';
 import MODAL from '@/constants/modalLocation';
-import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
+import { TargetControlProps } from '@/types/area/taskAreaType';
 import { formatDatetoString } from '@/utils/formatDateTime';
+
+interface TargetControlSectionProps extends TargetControlProps {
+	targetDate: string;
+}
 
 function TargetControlSection({
 	onClickPrevDate,
@@ -65,6 +69,8 @@ const TargetControlSectionLayout = styled.div`
 	width: 100%;
 	height: 4.8rem;
 	padding: 0.8rem 1.6rem 0.8rem 2.8rem;
+
+	border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 `;
 const BtnWrapper = styled.div`
 	display: flex;
