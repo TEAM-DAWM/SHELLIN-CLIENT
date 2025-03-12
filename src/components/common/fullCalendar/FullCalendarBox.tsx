@@ -57,6 +57,15 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	);
 	const [isFilterPopupDot, setIsFilterPopupDot] = useState(false);
 	const [isMainModalOpen, setMainModalOpen] = useState(false);
+	const [scrollTime, setScrollTime] = useState<string>(() => {
+		const now = new Date();
+		return now.toTimeString().split(' ')[0]; // "HH:MM:SS" 형식
+	});
+
+	useEffect(() => {
+		const now = new Date();
+		setScrollTime(now.toTimeString().split(' ')[0]);
+	}, []);
 
 	const calendarRef = useRef<FullCalendar>(null);
 
@@ -190,7 +199,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			const diffInMinutes = (end.getTime() - start.getTime()) / (1000 * 60);
 
 			if (diffInMinutes < 30) {
-				console.log('이벤트 생성 최소 시간 제한: 30분 이상이어야 합니다.'); // (클릭 시 실수로 이벤트 생성되는 것 방지)
+				// (클릭 시 실수로 이벤트 생성되는 것 방지)
 				return;
 			}
 
@@ -417,7 +426,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					hour12: true,
 				}}
 				slotLabelContent={customSlotLabelContent}
-				scrollTime="06:00:00"
+				scrollTime={scrollTime}
 				scrollTimeReset={false}
 				/* eslint-disable */
 				dayHeaderContent={(arg) => (
