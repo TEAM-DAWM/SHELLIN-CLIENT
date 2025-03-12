@@ -17,8 +17,11 @@ import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 function Today() {
 	const [selectedTarget, setSelectedTarget] = useState<TaskType | null>(null);
 
-	const [stagingSortOrder, setStagingSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
-	const [targetSortOrder, setTargetSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
+	const storedStagingSortOrder = localStorage.getItem('stagingSortOrder') as SortOrderType | null;
+	const storedTargetSortOrder = localStorage.getItem('targetSortOrder') as SortOrderType | null;
+
+	const [stagingSortOrder, setStagingSortOrder] = useState<SortOrderType>(storedStagingSortOrder || 'CUSTOM_ORDER');
+	const [targetSortOrder, setTargetSortOrder] = useState<SortOrderType>(storedTargetSortOrder || 'CUSTOM_ORDER');
 
 	const [selectedDate, setTargetDate] = useState(new Date());
 	const targetDate = formatDatetoLocalDate(selectedDate);
@@ -36,8 +39,10 @@ function Today() {
 	const handleSortOrder = (order: SortOrderType, type: 'staging' | 'target') => {
 		if (type === 'staging') {
 			setStagingSortOrder(order);
+			localStorage.setItem('stagingSortOrder', order);
 		} else {
 			setTargetSortOrder(order);
+			localStorage.setItem('targetSortOrder', order);
 		}
 	};
 
