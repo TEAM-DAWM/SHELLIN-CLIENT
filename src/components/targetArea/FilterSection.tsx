@@ -22,6 +22,11 @@ function FilterSection({ sortOrder, handleSortOrder }: FilterSectionProps) {
 	const handleCloseModal = () => {
 		setIsSortModalOpen(false);
 	};
+
+	const handleSortClickAndClose = (order: SortOrderType) => {
+		handleSortOrder(order);
+		setIsSortModalOpen(false);
+	};
 	return (
 		<>
 			<IconContainer>
@@ -32,7 +37,7 @@ function FilterSection({ sortOrder, handleSortOrder }: FilterSectionProps) {
 					onClick={handleArrangeBtnClick}
 					dot={isIconBtnDotted}
 				/>
-				{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortOrder} />}
+				{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortClickAndClose} />}
 			</IconContainer>
 			{isSortModalOpen && <ModalBackdrop onClick={handleCloseModal} />}
 		</>
