@@ -19,5 +19,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
 	args: {
 		handleSortOrder: action('handleSortOrder'), // 버튼 클릭 시 액션 로그 출력
+		selectedSortOrder: 'OLDEST',
 	},
 };

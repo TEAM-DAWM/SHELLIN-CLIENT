@@ -17,7 +17,7 @@ export interface StagingAreaSettingProps {
 }
 
 // TargetArea 관련 속성
-export interface TargetControlSectionProps {
+export interface TargetControlProps {
 	onClickPrevDate: () => void;
 	onClickNextDate: () => void;
 	onClickTodayDate: () => void;
@@ -26,4 +26,4 @@ export interface TargetControlSectionProps {
 
 export interface StagingAreaProps extends BaseTaskAreaProps, StagingAreaSettingProps {}
 
-export interface TargetAreaProps extends BaseTaskAreaProps, TargetControlSectionProps {}
+export interface TargetAreaProps extends BaseTaskAreaProps, TargetControlProps {}

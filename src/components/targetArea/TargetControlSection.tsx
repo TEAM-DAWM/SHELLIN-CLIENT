@@ -7,8 +7,12 @@ import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
 import IconButton from '@/components/common/v2/IconButton';
 import MODAL from '@/constants/modalLocation';
-import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
+import { TargetControlProps } from '@/types/area/taskAreaType';
 import { formatDatetoString } from '@/utils/formatDateTime';
+
+interface TargetControlSectionProps extends TargetControlProps {
+	targetDate: string;
+}
 
 function TargetControlSection({
 	onClickPrevDate,
