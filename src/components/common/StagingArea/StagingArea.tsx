@@ -1,15 +1,12 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
-import ModalBackdrop from '../modal/ModalBackdrop';
-import SortingDropdown from '../v2/dropdown/SortingDropdown';
-import IconButton from '../v2/IconButton';
 import DumpingAreaBtn from '../v2/TextBox/DumpingAreaBtn';
 
 import StagingAreaTaskContainer from './StagingAreaTaskContainer';
 
+import FilterSection from '@/components/targetArea/FilterSection';
 import { TaskType } from '@/types/tasks/taskType';
 import { StagingAreaSettingProps } from '@/types/today/stagingAreaSettingProps';
 
@@ -24,30 +21,14 @@ interface StagingAreaProps extends StagingAreaSettingProps {
 function StagingArea(props: StagingAreaProps) {
 	const { handleSelectedTarget, selectedTarget, tasks, sortOrder, handleSortOrder, targetDate, isStagingOpen } = props;
 
-	const [isSortModalOpen, setIsSortModalOpen] = useState(false);
-	const handleArrangeBtnClick = () => {
-		setIsSortModalOpen((prev) => !prev);
-	};
-	const handleCloseModal = () => {
-		setIsSortModalOpen(false);
-	};
-	const isIconBtnDotted = sortOrder !== 'CUSTOM_ORDER';
 	return (
 		<StagingAreaLayout isOpen={isStagingOpen}>
 			<UpperContainer>
 				<DumpingAreaBtn />
 			</UpperContainer>
 
-			<IconContainer>
-				<IconButton
-					iconName="IcnFilter"
-					size="small"
-					type="normal"
-					onClick={handleArrangeBtnClick}
-					dot={isIconBtnDotted}
-				/>
-				{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortOrder} />}
-			</IconContainer>
+			{/* 정렬 버튼 */}
+			<FilterSection sortOrder={sortOrder} handleSortOrder={handleSortOrder} />
 
 			<BottomContainer>
 				<Droppable droppableId="staging">
@@ -64,7 +45,6 @@ function StagingArea(props: StagingAreaProps) {
 					)}
 				</Droppable>
 			</BottomContainer>
-			{isSortModalOpen && <ModalBackdrop onClick={handleCloseModal} />}
 		</StagingAreaLayout>
 	);
 }
@@ -117,15 +97,7 @@ const UpperContainer = styled.div`
 
 	border-bottom: solid 1px ${({ theme }) => theme.color.Grey.Grey3};
 `;
-const IconContainer = styled.div`
-	position: relative;
-	display: flex;
-	justify-content: flex-end;
-	box-sizing: border-box;
-	width: 100%;
-	height: 4.8rem;
-	padding: 0.8rem 1.6rem;
-`;
+
 const BottomContainer = styled.div`
 	display: flex;
 	flex-direction: column;

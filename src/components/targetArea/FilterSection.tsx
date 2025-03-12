@@ -6,12 +6,12 @@ import SortingDropdown from '@/components/common/v2/dropdown/SortingDropdown';
 import IconButton from '@/components/common/v2/IconButton';
 import { SortOrderType } from '@/constants/sortType';
 
-interface TargetFilterSectionProps {
+interface FilterSectionProps {
 	sortOrder: SortOrderType;
 	handleSortOrder: (order: SortOrderType) => void;
 }
 
-function TargetFilterSection({ sortOrder, handleSortOrder }: TargetFilterSectionProps) {
+function FilterSection({ sortOrder, handleSortOrder }: FilterSectionProps) {
 	const [isSortModalOpen, setIsSortModalOpen] = useState(false);
 	const isIconBtnDotted = sortOrder !== 'CUSTOM_ORDER';
 
@@ -49,4 +49,4 @@ const IconContainer = styled.div`
 	padding: 0.8rem 1.6rem;
 `;
 
-export default TargetFilterSection;
+export default FilterSection;

@@ -5,7 +5,7 @@ import TargetControlSection from './TargetControlSection';
 import TargetTaskSection from './TargetTaskSection';
 
 import MainDate from '@/components/common/v2/TextBox/MainDate';
-import TargetFilterSection from '@/components/targetArea/TargetFilterSection';
+import FilterSection from '@/components/targetArea/FilterSection';
 import { SortOrderType } from '@/constants/sortType';
 import { TaskType } from '@/types/tasks/taskType';
 import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
@@ -50,7 +50,7 @@ function TargetArea({
 				targetDate={targetDate}
 			/>
 			{/* 정렬 버튼 */}
-			<TargetFilterSection sortOrder={sortOrder} handleSortOrder={handleSortOrder} />
+			<FilterSection sortOrder={sortOrder} handleSortOrder={handleSortOrder} />
 			{/* 태스크 목록 */}
 			<Droppable droppableId="target">
 				{(provided) => (
