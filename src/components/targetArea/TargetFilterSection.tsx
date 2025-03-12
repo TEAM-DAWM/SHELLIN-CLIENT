@@ -1,25 +1,52 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
-import Icon from '@/components/common/Icon';
+import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
+import SortingDropdown from '@/components/common/v2/dropdown/SortingDropdown';
+import IconButton from '@/components/common/v2/IconButton';
+import { SortOrderType } from '@/constants/sortType';
 
-function TargetFilterSection() {
+interface TargetFilterSectionProps {
+	sortOrder: SortOrderType;
+	handleSortOrder: (order: SortOrderType) => void;
+}
+
+function TargetFilterSection({ sortOrder, handleSortOrder }: TargetFilterSectionProps) {
+	const [isSortModalOpen, setIsSortModalOpen] = useState(false);
+	const isIconBtnDotted = sortOrder !== 'CUSTOM_ORDER';
+
+	const handleArrangeBtnClick = () => {
+		setIsSortModalOpen((prev) => !prev);
+	};
+
+	const handleCloseModal = () => {
+		setIsSortModalOpen(false);
+	};
 	return (
-		<TargetFilterSectionLayout>
-			<Icon name="IcnFilter" color="nomal" size="medium" />
-		</TargetFilterSectionLayout>
+		<>
+			<IconContainer>
+				<IconButton
+					iconName="IcnFilter"
+					size="small"
+					type="normal"
+					onClick={handleArrangeBtnClick}
+					dot={isIconBtnDotted}
+				/>
+				{isSortModalOpen && <SortingDropdown handleSortOrder={handleSortOrder} />}
+			</IconContainer>
+			{isSortModalOpen && <ModalBackdrop onClick={handleCloseModal} />}
+		</>
 	);
 }
 
-const TargetFilterSectionLayout = styled.div`
+const IconContainer = styled.div`
+	position: relative;
 	display: flex;
-	align-items: center;
 	justify-content: flex-end;
 	box-sizing: border-box;
 	width: 100%;
 	height: 4.8rem;
 	padding: 0.8rem 1.6rem;
-
-	border-top: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 `;
 
 export default TargetFilterSection;
