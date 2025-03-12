@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import getTasks from './axios';
 import { GetTasksType } from './GetTasksType';
@@ -13,6 +13,7 @@ const useGetTasks = ({ sortOrder, targetDate }: GetTasksType) => {
 	return useQuery({
 		queryKey: [...baseQueryKey, sortOrder, targetDate],
 		queryFn: () => getTasks({ sortOrder, targetDate }),
+		placeholderData: keepPreviousData,
 	});
 };
 
