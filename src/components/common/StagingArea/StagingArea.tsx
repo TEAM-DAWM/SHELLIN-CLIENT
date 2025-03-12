@@ -7,22 +7,14 @@ import DumpingAreaBtn from '../v2/TextBox/DumpingAreaBtn';
 import StagingAreaTaskContainer from './StagingAreaTaskContainer';
 
 import FilterSection from '@/components/targetArea/FilterSection';
-import { TaskType } from '@/types/tasks/taskType';
-import { StagingAreaSettingProps } from '@/types/today/stagingAreaSettingProps';
-
-interface StagingAreaProps extends StagingAreaSettingProps {
-	handleSelectedTarget: (task: TaskType | null) => void;
-	selectedTarget: TaskType | null;
-	tasks: TaskType[];
-	targetDate: string;
-	isStagingOpen: boolean;
-}
+import { StagingAreaProps } from '@/types/area/taskAreaType';
 
 function StagingArea(props: StagingAreaProps) {
 	const { handleSelectedTarget, selectedTarget, tasks, sortOrder, handleSortOrder, targetDate, isStagingOpen } = props;
 
 	return (
 		<StagingAreaLayout isOpen={isStagingOpen}>
+			{/* task 입력란 */}
 			<UpperContainer>
 				<DumpingAreaBtn />
 			</UpperContainer>

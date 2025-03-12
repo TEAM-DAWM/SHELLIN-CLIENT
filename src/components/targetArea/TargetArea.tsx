@@ -6,31 +6,23 @@ import TargetTaskSection from './TargetTaskSection';
 
 import MainDate from '@/components/common/v2/TextBox/MainDate';
 import FilterSection from '@/components/targetArea/FilterSection';
-import { SortOrderType } from '@/constants/sortType';
-import { TaskType } from '@/types/tasks/taskType';
-import { TargetControlSectionProps } from '@/types/today/TargetControlSectionProps';
+import { TargetAreaProps } from '@/types/area/taskAreaType';
 import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
-interface TargetAreaProps extends TargetControlSectionProps {
-	handleSelectedTarget: (task: TaskType | null) => void;
-	selectedTarget: TaskType | null;
-	tasks: TaskType[];
-	sortOrder: SortOrderType;
-	handleSortOrder: (order: SortOrderType) => void;
-}
+function TargetArea(props: TargetAreaProps) {
+	const {
+		handleSelectedTarget,
+		selectedTarget,
+		tasks,
+		onClickPrevDate,
+		onClickNextDate,
+		onClickTodayDate,
+		onClickDatePicker,
+		targetDate,
+		sortOrder,
+		handleSortOrder,
+	} = props;
 
-function TargetArea({
-	handleSelectedTarget,
-	selectedTarget,
-	tasks,
-	onClickPrevDate,
-	onClickNextDate,
-	onClickTodayDate,
-	onClickDatePicker,
-	targetDate,
-	sortOrder,
-	handleSortOrder,
-}: TargetAreaProps) {
 	const dateTypeDate = new Date(targetDate);
 	const month = dateTypeDate.getMonth() + 1;
 	const day = dateTypeDate.getDate();

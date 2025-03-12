@@ -16,7 +16,6 @@ import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 function Today() {
 	const [selectedTarget, setSelectedTarget] = useState<TaskType | null>(null);
-	const [activeButton, setActiveButton] = useState<'전체' | '지연'>('전체');
 
 	const [stagingSortOrder, setStagingSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
 	const [targetSortOrder, setTargetSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
@@ -32,11 +31,6 @@ function Today() {
 	const { mutate: orderTasksMutate } = useOrderTask();
 	const handleSidebar = () => {
 		setDumpAreaOpen((prev) => !prev);
-	};
-
-	/** isTotal 핸들링 함수 */
-	const handleTextBtnClick = (button: '전체' | '지연') => {
-		setActiveButton(button);
 	};
 
 	const handleSortOrder = (order: SortOrderType, type: 'staging' | 'target') => {
@@ -153,8 +147,6 @@ function Today() {
 					handleSelectedTarget={(task) => handleSelectedTarget(task)}
 					selectedTarget={selectedTarget}
 					tasks={stagingData}
-					handleTextBtnClick={handleTextBtnClick}
-					activeButton={activeButton}
 					targetDate={targetDate}
 					isStagingOpen={isDumpAreaOpen}
 					handleSortOrder={(order) => handleSortOrder(order, 'staging')}
