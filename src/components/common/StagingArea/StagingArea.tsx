@@ -118,6 +118,7 @@ const UpperContainer = styled.div`
 	border-bottom: solid 1px ${({ theme }) => theme.color.Grey.Grey3};
 `;
 const IconContainer = styled.div`
+	position: relative;
 	display: flex;
 	justify-content: flex-end;
 	box-sizing: border-box;

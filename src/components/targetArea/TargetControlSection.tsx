@@ -65,6 +65,8 @@ const TargetControlSectionLayout = styled.div`
 	width: 100%;
 	height: 4.8rem;
 	padding: 0.8rem 1.6rem 0.8rem 2.8rem;
+
+	border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralNormal};
 `;
 const BtnWrapper = styled.div`
 	display: flex;
