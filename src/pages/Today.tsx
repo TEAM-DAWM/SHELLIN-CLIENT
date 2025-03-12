@@ -17,14 +17,17 @@ import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 function Today() {
 	const [selectedTarget, setSelectedTarget] = useState<TaskType | null>(null);
 	const [activeButton, setActiveButton] = useState<'전체' | '지연'>('전체');
-	const [sortOrder, setSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
+
+	const [stagingSortOrder, setStagingSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
+	const [targetSortOrder, setTargetSortOrder] = useState<SortOrderType>('CUSTOM_ORDER');
+
 	const [selectedDate, setTargetDate] = useState(new Date());
 	const targetDate = formatDatetoLocalDate(selectedDate);
 	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
 
 	// Task 목록 Get
-	const { data: stagingData } = useGetTasks({ sortOrder });
-	const { data: targetData, isError: isTargetError } = useGetTasks({ sortOrder, targetDate });
+	const { data: stagingData } = useGetTasks({ sortOrder: stagingSortOrder });
+	const { data: targetData, isError: isTargetError } = useGetTasks({ sortOrder: targetSortOrder, targetDate });
 	const { mutate, queryClient } = useUpdateTaskStatus(null);
 	const { mutate: orderTasksMutate } = useOrderTask();
 	const handleSidebar = () => {
@@ -36,8 +39,12 @@ function Today() {
 		setActiveButton(button);
 	};
 
-	const handleSortOrder = (order: SortOrderType) => {
-		setSortOrder(order);
+	const handleSortOrder = (order: SortOrderType, type: 'staging' | 'target') => {
+		if (type === 'staging') {
+			setStagingSortOrder(order);
+		} else {
+			setTargetSortOrder(order);
+		}
 	};
 
 	const handleSelectedTarget = (task: TaskType | null) => {
@@ -115,7 +122,7 @@ function Today() {
 		else if (
 			destination.droppableId === 'staging' &&
 			source.droppableId === 'staging' &&
-			sortOrder === 'CUSTOM_ORDER'
+			stagingSortOrder === 'CUSTOM_ORDER'
 		) {
 			const newOrder = updatedStagingData.map((item) => item.id);
 			orderTasksMutate({
@@ -127,7 +134,7 @@ function Today() {
 		} else if (
 			destination.droppableId === 'target' &&
 			source.droppableId === 'target' &&
-			sortOrder === 'CUSTOM_ORDER'
+			targetSortOrder === 'CUSTOM_ORDER'
 		) {
 			const newOrder = updatedTargetData.map((item) => item.id);
 			orderTasksMutate({
@@ -146,12 +153,12 @@ function Today() {
 					handleSelectedTarget={(task) => handleSelectedTarget(task)}
 					selectedTarget={selectedTarget}
 					tasks={stagingData}
-					handleSortOrder={handleSortOrder}
 					handleTextBtnClick={handleTextBtnClick}
 					activeButton={activeButton}
-					sortOrder={sortOrder}
 					targetDate={targetDate}
 					isStagingOpen={isDumpAreaOpen}
+					handleSortOrder={(order) => handleSortOrder(order, 'staging')}
+					sortOrder={stagingSortOrder}
 				/>
 
 				{isTargetError ? (
@@ -166,6 +173,8 @@ function Today() {
 						onClickTodayDate={handleTodayBtn}
 						onClickDatePicker={handleChangeDate}
 						targetDate={selectedDate.toString()}
+						handleSortOrder={(order) => handleSortOrder(order, 'target')}
+						sortOrder={targetSortOrder}
 					/>
 				)}
 			</DragDropContext>
