@@ -149,6 +149,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-daygrid-body {
 		width: 100% !important;
+		height: 100%;
 		overflow: hidden;
 
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
@@ -176,11 +177,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 		border-right: none;
 		border-left: none;
-	}
-
-	.fc-scrollgrid-sync-table {
-		width: 100% !important;
-		height: 4rem !important;
 	}
 
 	/* 종일  - 타임그리드 셀 크기 고정 */
@@ -346,7 +342,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 종일 이벤트 테두리 */
 	.fc .fc-daygrid-day-frame .fc-event-main {
 		display: flex;
-		align-items: center;
+		align-items: baseline;
 		justify-content: center;
 		box-sizing: border-box;
 		height: 2.1rem;
@@ -449,13 +445,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 타임 그리드 종일 마진 없애기 */
 	.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
 		margin: 0;
-	}
-
-	/* 월간뷰 border 위아래 짤림 커버용 */
-	.month-view .fc-scroller.fc-scroller-liquid-absolute {
-		border-top: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
-		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
-		border-radius: 12px;
 	}
 
 	/* 월간뷰 스크롤 제거 */
@@ -596,7 +585,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
 	}
 
+	/* TimeGrid(주간) all-day-event(종일) 컨테이너 */
 	.fc .fc-h-event {
+		width: 100%;
+
 		border: none;
 	}
 
@@ -607,7 +599,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.month-view .fc-all-day-event {
-		width: 72%;
+		width: 99%;
 	}
 
 	/* Month view 중 이벤트 초과 안내 */
