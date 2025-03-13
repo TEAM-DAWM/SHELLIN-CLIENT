@@ -13,7 +13,8 @@ import { INPUT_STATE, InputState } from '@/types/inputStateType';
 import { formatDatetoLocalDate, formatDateWithDay } from '@/utils/formatDateTime';
 
 function DumpingAreaBtn() {
-	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave } = useInputHandler();
+	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave, handleEventDefault } =
+		useInputHandler();
 	const [todoTitle, setTodoTitle] = useState('');
 	const [settingModalOpen, setSettingModalOpen] = useState(false);
 	// 날짜를 별도로 설정하지 않을 경우,
@@ -44,6 +45,11 @@ function DumpingAreaBtn() {
 	const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter' && todoTitle.trim() !== '' && !e.nativeEvent.isComposing) {
 			onCreateTask();
+			resetInputs(); // 입력 필드 초기화
+			e.currentTarget.blur(); // 입력 필드에서 포커스 제거
+
+			// 모든 상태를 DEFAULT로 재설정하기 위해 상태를 업데이트
+			handleEventDefault();
 		}
 	};
 
@@ -57,6 +63,7 @@ function DumpingAreaBtn() {
 			},
 		});
 		resetInputs();
+		handleEventDefault();
 	};
 
 	const resetInputs = () => {
