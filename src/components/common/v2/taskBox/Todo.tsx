@@ -112,7 +112,6 @@ function Todo({
 				onClose={handleCloseModal}
 				taskId={taskId}
 				status={status}
-				handleStatusEdit={handleStatusEdit}
 				targetDate={targetDate}
 			/>
 		</>

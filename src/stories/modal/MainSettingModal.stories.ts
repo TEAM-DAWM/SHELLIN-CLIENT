@@ -23,7 +23,6 @@ export const Default: Story = {
 		taskId: 1,
 		onClose: () => {},
 		status: '진행중',
-		handleStatusEdit: () => {},
 		targetDate: '2025-01-22',
 	},
 };

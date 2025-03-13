@@ -15,7 +15,6 @@ import CalendarHeader from './CalendarHeader';
 import CustomDayCellContent from './CustomDayCellContent';
 import processEvents from './processEvents';
 
-import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import useDeleteTimeBlock from '@/apis/timeBlocks/deleteTimeBlock/query';
 import useGetTimeBlock from '@/apis/timeBlocks/getTimeBlock/query';
 import usePostTimeBlock from '@/apis/timeBlocks/postTimeBlock/query';
@@ -25,7 +24,7 @@ import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarSty
 import customSlotLabelContent from '@/components/common/fullCalendar/fullCalendarUtils';
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
-import { StatusType, TaskType } from '@/types/tasks/taskType';
+import { TaskType } from '@/types/tasks/taskType';
 import { formatDateToLocal, formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface FullCalendarBoxProps {
@@ -368,15 +367,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		arg.el.addEventListener('contextmenu', (event) => handleRightClick(arg, event));
 	};
 
-	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
-
-	const handleStatusEdit = (newStatus: StatusType) => {
-		if (selectedTaskId !== null) {
-			const targetDate = selectDate ? selectDate.toISOString().split('T')[0] : todayDate;
-			updateStateMutate({ taskId: selectedTaskId, targetDate, status: newStatus });
-		}
-	};
-
 	return (
 		<FullCalendarLayout size={size} currentView={currentView}>
 			<CalendarHeader
@@ -485,7 +475,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					onClose={closeMainModal}
 					status={selectedStatus}
 					taskId={selectedTaskId}
-					handleStatusEdit={handleStatusEdit}
 					targetDate={selectdTimeBlockDate ? formatDatetoLocalDate(selectdTimeBlockDate) : formatDatetoLocalDate(today)}
 					timeBlockId={selectedTimeBlockId}
 					isAllTime={calendarEvents.find((event) => event.extendedProps.taskId === selectedTaskId)?.allDay || false}

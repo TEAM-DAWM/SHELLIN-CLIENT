@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import useDeleteTask from '@/apis/tasks/deleteTask/query';
 import usePatchTaskDescription from '@/apis/tasks/editTask/query';
 import useTaskDescription from '@/apis/tasks/taskDescription/query';
+import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import useUpdateTimeBlock from '@/apis/timeBlocks/updateTimeBlock/query';
 import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
@@ -15,6 +16,7 @@ import useInput from '@/hooks/useInput';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { StatusType } from '@/types/tasks/taskType';
 import { formatDatetoLocalDate } from '@/utils/formatDateTime';
+import formatTimeWithAmPm from '@/utils/formatTimeWithAmPm';
 
 interface MainSettingModalProps {
 	isOpen: boolean;
@@ -23,7 +25,6 @@ interface MainSettingModalProps {
 	taskId: number;
 	onClose: () => void;
 	status: StatusType;
-	handleStatusEdit: (newStatus: StatusType) => void;
 	targetDate: string;
 	timeBlockId?: number;
 	isAllTime?: boolean;
@@ -36,7 +37,6 @@ function MainSettingModal({
 	taskId,
 	onClose,
 	status,
-	handleStatusEdit,
 	targetDate,
 	timeBlockId,
 	isAllTime = false,
@@ -44,32 +44,49 @@ function MainSettingModal({
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutate: editMutate } = usePatchTaskDescription();
 	const { mutate: updateTimeBlockMutate } = useUpdateTimeBlock();
+	const { data: taskDetailData, isFetched: isTaskDetailFetched } = useTaskDescription({ taskId, targetDate, isOpen });
+	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
+
 	const [taskStatus, setTaskStatus] = useState(status);
 	const [isAllDay, setIsAllDay] = useState(isAllTime);
-
-	// === useInput ===
-	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
-	const { content: descriptionContent, onChange: onDescriptionChange, handleContent: handleDesc } = useInput('');
-	const { content: deadlineTime, handleContent: handleDeadlineTime } = useInput('');
-	const { content: startTime, handleContent: handleStartTime } = useInput('');
-	const { content: endTime, handleContent: handleEndTime } = useInput('');
-	const [deadlineDate, setDeadlineDate] = useState<Date | null>(null);
-	const [timeBlockDate, setTimeBlockDate] = useState<Date | null>(new Date(targetDate));
-
-	const {
-		data: taskDetailData,
-		isLoading: isTaskDetailLoading,
-		isFetched: isTaskDetailFetched,
-	} = useTaskDescription({ taskId, targetDate, isOpen });
-
 	const [shouldOpenModal, setShouldOpenModal] = useState(false);
 
+	// === useInput ===
+	const {
+		content: titleContent,
+		onChange: onTitleChange,
+		handleContent: handleTitle,
+	} = useInput(taskDetailData?.name || '');
+	const {
+		content: descriptionContent,
+		onChange: onDescriptionChange,
+		handleContent: handleDesc,
+	} = useInput(taskDetailData?.description || '');
+	const { content: deadlineTime, handleContent: handleDeadlineTime } = useInput(taskDetailData?.deadLine?.time || '');
+	const { content: startTime, handleContent: handleStartTime } = useInput(taskDetailData?.timeBlock?.startTime || '');
+	const { content: endTime, handleContent: handleEndTime } = useInput(taskDetailData?.timeBlock?.endTime || '');
+
+	const [deadlineDate, setDeadlineDate] = useState<Date | null>(
+		taskDetailData?.deadLine?.date ? new Date(taskDetailData.deadLine.date) : null
+	);
+	const [timeBlockDate, setTimeBlockDate] = useState<Date | null>(new Date(targetDate));
+
 	useEffect(() => {
-		// 데이터를 다 불러온 후에 모달을 띄움
-		if (!isTaskDetailLoading && isTaskDetailFetched) {
+		if (isTaskDetailFetched && taskDetailData) {
+			handleTitle(taskDetailData.name || '');
+			handleDesc(taskDetailData.description || '');
+			handleDeadlineTime(taskDetailData?.deadLine?.time || '');
+			handleStartTime(taskDetailData?.timeBlock?.startTime || '');
+			handleEndTime(taskDetailData?.timeBlock?.endTime || '');
+
+			setDeadlineDate(taskDetailData?.deadLine?.date ? new Date(taskDetailData.deadLine.date) : null);
 			setShouldOpenModal(true);
 		}
-	}, [isTaskDetailLoading, isTaskDetailFetched]);
+	}, [taskDetailData, isTaskDetailFetched]);
+
+	useEffect(() => {
+		setTaskStatus(status);
+	}, [status]);
 
 	if (isTaskDetailFetched) {
 		if (!timeBlockId) {
@@ -77,18 +94,6 @@ function MainSettingModal({
 			timeBlockId = taskDetailData?.timeBlock?.id;
 		}
 	}
-
-	useEffect(() => {
-		if (isTaskDetailFetched) {
-			handleTitle(taskDetailData?.name || '');
-			handleDesc(taskDetailData?.description || '');
-			handleDeadlineDate(taskDetailData?.deadLine.date ? new Date(taskDetailData?.deadLine.date) : null);
-			handleDeadlineTime(taskDetailData?.deadLine.time || '');
-			handleStartTime(taskDetailData?.timeBlock?.startTime || '');
-			handleEndTime(taskDetailData?.timeBlock?.endTime || '');
-			setIsAllDay(isAllDay || false);
-		}
-	}, [isTaskDetailFetched, isOpen]);
 
 	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
 
@@ -121,6 +126,10 @@ function MainSettingModal({
 		onClose();
 	};
 
+	const handleStatusEdit = (newStatus: StatusType) => {
+		updateStateMutate({ taskId, targetDate, status: newStatus });
+	};
+
 	const handleEdit = async () => {
 		await new Promise((resolve) => {
 			editMutate(
@@ -143,26 +152,6 @@ function MainSettingModal({
 
 	const handleTaskStatusChange = (newStatus: StatusType) => {
 		setTaskStatus(newStatus);
-	};
-
-	/**
-	 *
-	 * @param time (yyyy-mm-ddThh:mm)
-	 * @returns (hh:mm am/pm)
-	 */
-	const formatTimeWithAmPm = (time: string) => {
-		if (/^\d{1,2}:\d{2} (am|pm)$/i.test(time)) {
-			return time; // 이미 포맷된 값이므로 바로 반환
-		}
-
-		if (time) {
-			const onlyTime = time.split('T')[1];
-			const [hour, minute] = onlyTime.split(':').map(Number);
-			const period = hour >= 12 ? 'pm' : 'am';
-			return `${hour}:${minute.toString().padStart(2, '0')} ${period}`;
-		}
-		// 임시 리턴
-		return '06:00pm';
 	};
 
 	// 수정 이벤트 핸들러
@@ -195,7 +184,6 @@ function MainSettingModal({
 
 	if (!shouldOpenModal) return null;
 	if (!isOpen) return null;
-	if (isTaskDetailLoading) return <div />;
 
 	return (
 		<>
