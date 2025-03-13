@@ -70,6 +70,7 @@ function MainSettingModal({
 		taskDetailData?.deadLine?.date ? new Date(taskDetailData.deadLine.date) : null
 	);
 	const [timeBlockDate, setTimeBlockDate] = useState<Date | null>(new Date(targetDate));
+	const [isTimeBlockSelected, setIsTimeBlockSelected] = useState(!!timeBlockId);
 
 	useEffect(() => {
 		if (isTaskDetailFetched && taskDetailData) {
@@ -81,6 +82,7 @@ function MainSettingModal({
 
 			setDeadlineDate(taskDetailData?.deadLine?.date ? new Date(taskDetailData.deadLine.date) : null);
 			setShouldOpenModal(true);
+			setIsTimeBlockSelected(!!taskDetailData?.timeBlock);
 		}
 	}, [taskDetailData, isTaskDetailFetched]);
 
@@ -214,13 +216,13 @@ function MainSettingModal({
 					<PopUpTitleBox>
 						<PopUp type="description" defaultValue={descriptionContent} onChange={onDescriptionChange} />
 					</PopUpTitleBox>
-					{timeBlockId && (
+					{isTimeBlockSelected && (
 						<DeadlineBox
 							date={timeBlockDate || new Date(targetDate)}
 							startTime={formatTimeWithAmPm(startTime) || '23:59'}
 							endTime={formatTimeWithAmPm(endTime) || '23:59'}
 							label="진행 기간"
-							isDueDate={!!timeBlockId}
+							isDueDate={!!isTimeBlockSelected}
 							isAllDay={isAllDay}
 							onAllDayToggle={handleAllDayToggle}
 							onStartTimeChange={handleStartTime}

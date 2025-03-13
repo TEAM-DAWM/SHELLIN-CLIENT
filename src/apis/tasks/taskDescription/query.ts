@@ -11,6 +11,7 @@ const useTaskDescription = ({ taskId, targetDate, isOpen }: TaskDescriptionType)
 		queryKey: QUERY_KEYS.taskDescription(taskId, targetDate),
 		queryFn: () => taskDescription({ taskId, targetDate }),
 		enabled: isOpen,
+		staleTime: 0,
 	});
 
 	return data;
