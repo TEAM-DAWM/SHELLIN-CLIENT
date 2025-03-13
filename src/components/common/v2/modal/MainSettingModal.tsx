@@ -12,6 +12,7 @@ import DropdownButton from '@/components/common/v2/control/DropdownButton';
 import IconButton from '@/components/common/v2/IconButton';
 import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
 import PopUp from '@/components/common/v2/TextBox/PopUp';
+import { useToast } from '@/components/toast/ToastContext';
 import useInput from '@/hooks/useInput';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { StatusType } from '@/types/tasks/taskType';
@@ -115,7 +116,21 @@ function MainSettingModal({
 		}
 	};
 
+	const { addToast } = useToast();
+
+	const isvalidTimeRange = (start: string, end: string) => {
+		const startDate = new Date(start);
+		const endDate = new Date(end);
+		return startDate <= endDate;
+	};
+
 	const handleConfirm = () => {
+		if (!isvalidTimeRange(startTime, endTime)) {
+			addToast('시작 시간이 종료 시간보다 클 수 없어요.', 'error');
+			onClose();
+			return;
+		}
+
 		handleEdit();
 		handleTimeBlockUpdate();
 		onClose();
