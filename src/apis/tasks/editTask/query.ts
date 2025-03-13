@@ -16,7 +16,7 @@ const usePatchTaskDescription = () => {
 			}),
 	});
 
-	return { mutate: mutation.mutate, queryClient };
+	return { mutate: mutation.mutate, queryClient, mutateAsync: mutation.mutateAsync };
 };
 
 export default usePatchTaskDescription;

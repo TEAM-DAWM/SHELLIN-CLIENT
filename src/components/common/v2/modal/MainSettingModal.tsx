@@ -42,7 +42,7 @@ function MainSettingModal({
 	isAllTime = false,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
-	const { mutate: editMutate } = usePatchTaskDescription();
+	const { mutateAsync: editMutate } = usePatchTaskDescription();
 	const { mutate: updateTimeBlockMutate } = useUpdateTimeBlock();
 	const { data: taskDetailData, isFetched: isTaskDetailFetched } = useTaskDescription({ taskId, targetDate, isOpen });
 	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
@@ -131,23 +131,21 @@ function MainSettingModal({
 	};
 
 	const handleEdit = async () => {
-		await new Promise((resolve) => {
-			editMutate(
-				{
-					taskId,
-					name: titleContent,
-					description: descriptionContent,
-					deadLine: {
-						date: formatDatetoLocalDate(deadlineDate) || null,
-						time: deadlineTime || null,
-					},
+		try {
+			await editMutate({
+				taskId,
+				name: titleContent,
+				description: descriptionContent,
+				deadLine: {
+					date: formatDatetoLocalDate(deadlineDate) || null,
+					time: deadlineTime || null,
 				},
-				{
-					onSuccess: resolve,
-				}
-			);
-		});
-		handleStatusEdit(taskStatus); // task 상세 수정 완료 후 상태 변경 실행
+			});
+
+			handleStatusEdit(taskStatus);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const handleTaskStatusChange = (newStatus: StatusType) => {
