@@ -35,7 +35,7 @@ function TimeBtn({ time, setTime }: TimeBtnProps) {
 			</TimeBtnLayout>
 			{isOpen && (
 				<StyledTimeDropdown>
-					<TimeDropdown handleSelectTime={handleSelectTime} />
+					<TimeDropdown handleSelectTime={handleSelectTime} selectedTime={time} />
 				</StyledTimeDropdown>
 			)}
 		</TimeBtnWrapper>
