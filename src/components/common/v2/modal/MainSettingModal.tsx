@@ -89,7 +89,7 @@ function MainSettingModal({
 			setShouldOpenModal(true);
 			setIsTimeBlockSelected(!!taskDetailData?.timeBlock);
 		}
-	}, [taskDetailData, isTaskDetailFetched]);
+	}, [taskDetailData, isTaskDetailFetched, isOpen]);
 
 	useEffect(() => {
 		setTaskStatus(status);
