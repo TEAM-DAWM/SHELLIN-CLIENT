@@ -19,8 +19,6 @@ const usePatchTimeBlock = () => {
 				endTime = formatDateToLocal(startDate);
 			}
 
-			console.log('usePatchTimeBlock ', taskId, timeBlockId, startTime, endTime, isAllTime);
-
 			const response = await PatchTimeBlock({ taskId, timeBlockId, startTime, endTime, isAllTime });
 			if (response && response.code === 'conflict') {
 				addToast(response.message, response.code);

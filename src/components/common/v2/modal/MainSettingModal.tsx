@@ -45,7 +45,11 @@ function MainSettingModal({
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutateAsync: editMutate } = usePatchTaskDescription();
 	const { mutate: updateTimeBlockMutate } = useUpdateTimeBlock();
-	const { data: taskDetailData, isFetched: isTaskDetailFetched } = useTaskDescription({ taskId, targetDate, isOpen });
+	const {
+		data: taskDetailData,
+		isFetched: isTaskDetailFetched,
+		refetch,
+	} = useTaskDescription({ taskId, targetDate, isOpen });
 	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
 
 	const [taskStatus, setTaskStatus] = useState(status);
@@ -63,9 +67,9 @@ function MainSettingModal({
 		onChange: onDescriptionChange,
 		handleContent: handleDesc,
 	} = useInput(taskDetailData?.description || '');
-	const { content: deadlineTime, handleContent: handleDeadlineTime } = useInput(taskDetailData?.deadLine?.time || '');
-	const { content: startTime, handleContent: handleStartTime } = useInput(taskDetailData?.timeBlock?.startTime || '');
-	const { content: endTime, handleContent: handleEndTime } = useInput(taskDetailData?.timeBlock?.endTime || '');
+	const { content: deadlineTime, handleContent: handleDeadlineTime } = useInput('');
+	const { content: startTime, handleContent: handleStartTime } = useInput('');
+	const { content: endTime, handleContent: handleEndTime } = useInput('');
 
 	const [deadlineDate, setDeadlineDate] = useState<Date | null>(
 		taskDetailData?.deadLine?.date ? new Date(taskDetailData.deadLine.date) : null
@@ -160,6 +164,7 @@ function MainSettingModal({
 			});
 
 			handleStatusEdit(taskStatus);
+			refetch();
 		} catch (error) {
 			console.error(error);
 		}
