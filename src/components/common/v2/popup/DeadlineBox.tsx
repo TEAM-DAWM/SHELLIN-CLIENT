@@ -41,6 +41,7 @@ function DeadlineBox({
 	const [isAllday, setIsAllday] = useState(isAllDay);
 
 	const containerRef = useRef(null);
+	const isProgressPeriod = label === '진행 기간';
 
 	const handlePlusBtnClick = () => {
 		handleDueDateModalTime(endTime);
@@ -120,7 +121,7 @@ function DeadlineBox({
 							onStartTimeChange={onStartTimeChange}
 							onEndTimeChange={onEndTimeChange}
 						/>
-						{isClicked && (
+						{isClicked && isProgressPeriod && (
 							<CheckButton label="하루종일" size="small" checked={isAllday} onClick={handleCheckBtnClick} />
 						)}
 					</>
