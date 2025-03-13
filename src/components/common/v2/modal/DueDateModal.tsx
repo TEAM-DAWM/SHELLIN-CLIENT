@@ -8,7 +8,7 @@ import { getRoundedFormattedCurrTime } from '@/utils/time';
 
 interface DueDateModalType {
 	todoTime: string;
-	todoDate?: Date;
+	todoDate: Date | null;
 	handleTodoTime: (selectedTodoTime: string) => void;
 	handleTodoDate: (selectedTodoDate: Date | null) => void;
 	handleSettingModal: () => void;

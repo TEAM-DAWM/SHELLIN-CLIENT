@@ -114,7 +114,7 @@ function DumpingAreaBtn() {
 				<DueDateModal
 					handleTodoTime={handleTodoTime}
 					handleTodoDate={handleTodoDate}
-					todoDate={todoDate ? new Date(todoDate) : new Date()}
+					todoDate={todoDate ? new Date(todoDate) : null}
 					todoTime={todoTime}
 					handleSettingModal={handleSettingModal}
 					onClose={handleSettingModal}
