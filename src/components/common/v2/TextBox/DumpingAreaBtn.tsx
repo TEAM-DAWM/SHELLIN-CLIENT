@@ -59,7 +59,7 @@ function DumpingAreaBtn() {
 			name: todoTitle,
 			deadLine: {
 				date: todoDate ? formatDatetoLocalDate(todoDate) : null,
-				time: todoTime || null,
+				time: todoTime.slice(0, 5) || null,
 			},
 		});
 		resetInputs();
