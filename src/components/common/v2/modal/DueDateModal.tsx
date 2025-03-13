@@ -12,8 +12,16 @@ interface DueDateModalType {
 	handleTodoTime: (selectedTodoTime: string) => void;
 	handleTodoDate: (selectedTodoDate: Date | null) => void;
 	handleSettingModal: () => void;
+	onClose: () => void;
 }
-function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, handleSettingModal }: DueDateModalType) {
+function DueDateModal({
+	todoTime,
+	todoDate,
+	handleTodoDate,
+	handleTodoTime,
+	handleSettingModal,
+	onClose,
+}: DueDateModalType) {
 	// 모달 내부 state들, Button 누를시 상위 컴포넌트 state로 들어감
 	const defaultDate = new Date();
 
@@ -41,7 +49,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 			<DueDateModalHeadLayout>
 				<ModalTopButtonBox>
 					<ButtonBox>
-						<IconButton iconName="IcnX" type="normal" size="small" disabled />
+						<IconButton iconName="IcnX" type="normal" size="small" onClick={onClose} />
 					</ButtonBox>
 				</ModalTopButtonBox>
 			</DueDateModalHeadLayout>

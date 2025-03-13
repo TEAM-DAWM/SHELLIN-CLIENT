@@ -110,6 +110,7 @@ function DumpingAreaBtn() {
 					todoDate={todoDate ? new Date(todoDate) : new Date()}
 					todoTime={todoTime}
 					handleSettingModal={handleSettingModal}
+					onClose={handleSettingModal}
 				/>
 			)}
 			{settingModalOpen && <ModalBackdrop onClick={handleSettingModal} />}
