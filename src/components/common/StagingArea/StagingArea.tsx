@@ -51,6 +51,7 @@ const StagingAreaLayout = styled.div<{ isOpen: boolean }>`
 
 	display: flex;
 	flex-direction: column;
+	flex-shrink: 0;
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: ${({ isOpen }) => (isOpen ? '44.8rem' : '0')};
