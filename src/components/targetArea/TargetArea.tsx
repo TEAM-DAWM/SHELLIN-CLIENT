@@ -61,6 +61,7 @@ function TargetArea(props: TargetAreaProps) {
 	);
 }
 const TargetAreaLayout = styled.section`
+	z-index: 2;
 	display: flex;
 	flex-direction: column;
 	flex-shrink: 0;

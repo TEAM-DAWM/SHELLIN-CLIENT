@@ -55,7 +55,6 @@ const StagingAreaLayout = styled.div<{ isOpen: boolean }>`
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: ${({ isOpen }) => (isOpen ? '44.8rem' : '0')};
-	overflow: hidden;
 
 	background-color: ${({ theme }) => theme.color.Grey.White};
 	border-right: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
