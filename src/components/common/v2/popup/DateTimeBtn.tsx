@@ -37,7 +37,7 @@ function DateTimeBtn({
 
 	const updateEndTime = (newTime: string) => {
 		onEndTimeChange(`${formatDatetoLocalDate(date)}T${newTime.slice(0, 5)}`);
-		handleDueDateModalTime(newTime.slice(0, 5));
+		handleDueDateModalTime(newTime);
 	};
 
 	const updateDate = (newDate: Date) => {
