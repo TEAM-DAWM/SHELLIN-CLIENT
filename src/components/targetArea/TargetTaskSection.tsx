@@ -75,7 +75,6 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 									}}
 								>
 									<Todo
-										location="target"
 										key={task.id}
 										title={task.name}
 										deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
@@ -84,12 +83,6 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 										targetDate={targetDate}
 										onClick={() => handleSelectedTarget(task)}
 										status={task.status}
-
-										// handleSelectedTarget={handleSelectedTarget}
-										// selectedTarget={selectedTarget}
-										// isDragging={snapshot.isDragging}
-										// targetDate={targetDate}
-										// dashBoardInprogress={false}
 									/>
 								</TodoSizedWrapper>
 							)}

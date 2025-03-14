@@ -20,11 +20,11 @@ function TimeDropdown({ handleSelectTime, selectedTime }: TimeDropdownProps) {
 		if (selectedTimeRef.current) {
 			selectedTimeRef.current.scrollIntoView({
 				behavior: 'instant',
-				block: 'start',
+				block: 'nearest',
 			});
 
 			if (containerRef.current) {
-				containerRef.current.scrollTop -= 10;
+				containerRef.current.scrollTop += 200;
 			}
 		}
 	}, []);

@@ -470,8 +470,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			{isMainModalOpen && selectedTaskId !== null && selectedTimeBlockId !== null && (
 				<MainSettingModal
 					isOpen={isMainModalOpen}
-					top={top}
-					left={left}
 					onClose={closeMainModal}
 					status={selectedStatus}
 					taskId={selectedTaskId}
