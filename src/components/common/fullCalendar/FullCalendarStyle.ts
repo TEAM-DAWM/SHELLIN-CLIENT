@@ -173,7 +173,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc .fc-col-header-cell {
 		height: 2.4rem;
-		padding: 2rem 0.8rem 0;
+		padding: 1.6rem 0.8rem 0;
 
 		border-right: none;
 		border-left: none;

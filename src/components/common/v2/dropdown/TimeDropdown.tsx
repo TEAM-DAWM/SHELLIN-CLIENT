@@ -1,21 +1,60 @@
+import { css, useTheme, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useEffect, useRef } from 'react';
 
 import Button from '@/components/common/v2/button/Button';
+import formatToHHMM from '@/utils/formatTime';
 import quarterTimes from '@/utils/generateQuarterTimes';
 
 interface TimeDropdownProps {
 	handleSelectTime: (time: string) => void;
+	selectedTime: string;
 }
 
-function TimeDropdown({ handleSelectTime }: TimeDropdownProps) {
+function TimeDropdown({ handleSelectTime, selectedTime }: TimeDropdownProps) {
+	const theme = useTheme();
+	const selectedTimeRef = useRef<HTMLDivElement | null>(null);
+	const containerRef = useRef<HTMLDivElement | null>(null);
+
+	useEffect(() => {
+		if (selectedTimeRef.current) {
+			selectedTimeRef.current.scrollIntoView({
+				behavior: 'instant',
+				block: 'start',
+			});
+
+			if (containerRef.current) {
+				containerRef.current.scrollTop -= 10;
+			}
+		}
+	}, []);
+
+	const formattedSelectedTime = formatToHHMM(selectedTime);
+
 	return (
-		<TimeDropdownContainer>
-			{quarterTimes.map((time) => (
-				<Button key={time} label={time} onClick={() => handleSelectTime(time)} size="large" type="text-assistive" />
-			))}
+		<TimeDropdownContainer ref={containerRef}>
+			{quarterTimes.map((time) => {
+				const isSelected = time.startsWith(formattedSelectedTime);
+
+				return (
+					<div key={time} ref={isSelected ? selectedTimeRef : null}>
+						<Button
+							label={time}
+							onClick={() => handleSelectTime(time)}
+							size="large"
+							type="text-assistive"
+							additionalCss={btnCustomWidth(isSelected, theme)}
+						/>
+					</div>
+				);
+			})}
 		</TimeDropdownContainer>
 	);
 }
+
+const btnCustomWidth = (isSelected: boolean, theme: Theme) => css`
+	background-color: ${isSelected ? theme.color.Grey.Grey3 : 'transparent'};
+`;
 
 const TimeDropdownContainer = styled.div`
 	box-sizing: border-box;

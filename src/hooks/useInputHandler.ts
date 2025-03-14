@@ -2,16 +2,18 @@ import { useState } from 'react';
 
 import { INPUT_STATE, InputState } from '@/types/inputStateType.ts';
 
+type InputElement = HTMLInputElement | HTMLTextAreaElement;
+
 function useInputHandler() {
 	const [state, setState] = useState<InputState>(INPUT_STATE.DEFAULT);
 
-	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+	const handleFocus = (e: React.FocusEvent<InputElement>) => {
 		if (!e.target.value) {
 			setState(INPUT_STATE.PLACEHOLDER);
 		}
 	};
 
-	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+	const handleBlur = (e: React.FocusEvent<InputElement>) => {
 		if (e.target.value) {
 			setState(INPUT_STATE.FIELD);
 		} else {
@@ -19,7 +21,7 @@ function useInputHandler() {
 		}
 	};
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (e: React.ChangeEvent<InputElement>) => {
 		if (e.target.value) {
 			setState(INPUT_STATE.TYPING);
 		} else {

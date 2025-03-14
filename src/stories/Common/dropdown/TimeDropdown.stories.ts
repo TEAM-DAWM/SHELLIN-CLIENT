@@ -17,6 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
+		selectedTime: '12:00',
 		handleSelectTime: () => {},
 	},
 };

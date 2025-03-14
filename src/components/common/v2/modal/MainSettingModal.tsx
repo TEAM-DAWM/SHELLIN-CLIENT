@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import useDeleteTask from '@/apis/tasks/deleteTask/query';
 import usePatchTaskDescription from '@/apis/tasks/editTask/query';
 import useTaskDescription from '@/apis/tasks/taskDescription/query';
+import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import useUpdateTimeBlock from '@/apis/timeBlocks/updateTimeBlock/query';
 import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import Button from '@/components/common/v2/button/Button';
@@ -11,10 +12,12 @@ import DropdownButton from '@/components/common/v2/control/DropdownButton';
 import IconButton from '@/components/common/v2/IconButton';
 import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
 import PopUp from '@/components/common/v2/TextBox/PopUp';
+import { useToast } from '@/components/toast/ToastContext';
 import useInput from '@/hooks/useInput';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { StatusType } from '@/types/tasks/taskType';
 import { formatDatetoLocalDate } from '@/utils/formatDateTime';
+import formatTimeWithAmPm from '@/utils/formatTimeWithAmPm';
 import { getRoundedFormattedCurrTime } from '@/utils/time';
 
 interface MainSettingModalProps {
@@ -24,7 +27,6 @@ interface MainSettingModalProps {
 	taskId: number;
 	onClose: () => void;
 	status: StatusType;
-	handleStatusEdit: (newStatus: StatusType) => void;
 	targetDate: string;
 	timeBlockId?: number;
 	isAllTime?: boolean;
@@ -37,40 +39,62 @@ function MainSettingModal({
 	taskId,
 	onClose,
 	status,
-	handleStatusEdit,
 	targetDate,
 	timeBlockId,
 	isAllTime = false,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
-	const { mutate: editMutate } = usePatchTaskDescription();
+	const { mutateAsync: editMutate } = usePatchTaskDescription();
 	const { mutate: updateTimeBlockMutate } = useUpdateTimeBlock();
+	const {
+		data: taskDetailData,
+		isFetched: isTaskDetailFetched,
+		refetch,
+	} = useTaskDescription({ taskId, targetDate, isOpen });
+	const { mutate: updateStateMutate } = useUpdateTaskStatus(null);
+
 	const [taskStatus, setTaskStatus] = useState(status);
 	const [isAllDay, setIsAllDay] = useState(isAllTime);
+	const [shouldOpenModal, setShouldOpenModal] = useState(false);
 
 	// === useInput ===
-	const { content: titleContent, onChange: onTitleChange, handleContent: handleTitle } = useInput('');
-	const { content: descriptionContent, onChange: onDescriptionChange, handleContent: handleDesc } = useInput('');
+	const {
+		content: titleContent,
+		onChange: onTitleChange,
+		handleContent: handleTitle,
+	} = useInput(taskDetailData?.name || '');
+	const {
+		content: descriptionContent,
+		onChange: onDescriptionChange,
+		handleContent: handleDesc,
+	} = useInput(taskDetailData?.description || '');
 	const { content: deadlineTime, handleContent: handleDeadlineTime } = useInput('');
 	const { content: startTime, handleContent: handleStartTime } = useInput('');
 	const { content: endTime, handleContent: handleEndTime } = useInput('');
-	const [deadlineDate, setDeadlineDate] = useState<Date | null>(null);
+
+	const [deadlineDate, setDeadlineDate] = useState<Date | null>(
+		taskDetailData?.deadLine?.date ? new Date(taskDetailData.deadLine.date) : null
+	);
 	const [timeBlockDate, setTimeBlockDate] = useState<Date | null>(new Date(targetDate));
-
-	const {
-		data: taskDetailData,
-		isLoading: isTaskDetailLoading,
-		isFetched: isTaskDetailFetched,
-	} = useTaskDescription({ taskId, targetDate, isOpen });
-
-	const [shouldOpenModal, setShouldOpenModal] = useState(false);
+	const [isTimeBlockSelected, setIsTimeBlockSelected] = useState(!!timeBlockId);
 
 	useEffect(() => {
-		// 데이터를 다 불러온 후에 모달을 띄움
-		if (!isTaskDetailLoading && isTaskDetailFetched) {
+		if (isTaskDetailFetched && taskDetailData) {
+			handleTitle(taskDetailData.name || '');
+			handleDesc(taskDetailData.description || '');
+			handleDeadlineTime(taskDetailData?.deadLine?.time || '');
+			handleStartTime(taskDetailData?.timeBlock?.startTime || '');
+			handleEndTime(taskDetailData?.timeBlock?.endTime || '');
+
+			setDeadlineDate(taskDetailData?.deadLine?.date ? new Date(taskDetailData.deadLine.date) : null);
 			setShouldOpenModal(true);
+			setIsTimeBlockSelected(!!taskDetailData?.timeBlock);
 		}
-	}, [isTaskDetailLoading, isTaskDetailFetched]);
+	}, [taskDetailData, isTaskDetailFetched, isOpen]);
+
+	useEffect(() => {
+		setTaskStatus(status);
+	}, [status]);
 
 	if (isTaskDetailFetched) {
 		if (!timeBlockId) {
@@ -78,18 +102,6 @@ function MainSettingModal({
 			timeBlockId = taskDetailData?.timeBlock?.id;
 		}
 	}
-
-	useEffect(() => {
-		if (isTaskDetailFetched) {
-			handleTitle(taskDetailData?.name || '');
-			handleDesc(taskDetailData?.description || '');
-			handleDeadlineDate(taskDetailData?.deadLine.date ? new Date(taskDetailData?.deadLine.date) : null);
-			handleDeadlineTime(taskDetailData?.deadLine.time || '');
-			handleStartTime(taskDetailData?.timeBlock?.startTime || '');
-			handleEndTime(taskDetailData?.timeBlock?.endTime || '');
-			setIsAllDay(isAllDay || false);
-		}
-	}, [isTaskDetailFetched, isOpen]);
 
 	const modalRef = useOutsideClick<HTMLDivElement>({ onClose });
 
@@ -109,7 +121,21 @@ function MainSettingModal({
 		}
 	};
 
+	const { addToast } = useToast();
+
+	const isvalidTimeRange = (start: string, end: string) => {
+		const startDate = new Date(start);
+		const endDate = new Date(end);
+		return startDate <= endDate;
+	};
+
 	const handleConfirm = () => {
+		if (isTimeBlockSelected && !isvalidTimeRange(startTime, endTime)) {
+			addToast('시작 시간은 종료 시간 이전이어야 합니다.', 'error');
+			onClose();
+			return;
+		}
+
 		handleEdit();
 		handleTimeBlockUpdate();
 		onClose();
@@ -122,48 +148,31 @@ function MainSettingModal({
 		onClose();
 	};
 
+	const handleStatusEdit = (newStatus: StatusType) => {
+		updateStateMutate({ taskId, targetDate, status: newStatus });
+	};
+
 	const handleEdit = async () => {
-		await new Promise((resolve) => {
-			editMutate(
-				{
-					taskId,
-					name: titleContent,
-					description: descriptionContent,
-					deadLine: {
-						date: formatDatetoLocalDate(deadlineDate) || null,
-						time: deadlineTime || null,
-					},
+		try {
+			await editMutate({
+				taskId,
+				name: titleContent,
+				description: descriptionContent,
+				deadLine: {
+					date: formatDatetoLocalDate(deadlineDate) || null,
+					time: deadlineTime.slice(0, 5) || null,
 				},
-				{
-					onSuccess: resolve,
-				}
-			);
-		});
-		handleStatusEdit(taskStatus); // task 상세 수정 완료 후 상태 변경 실행
+			});
+
+			handleStatusEdit(taskStatus);
+			refetch();
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const handleTaskStatusChange = (newStatus: StatusType) => {
 		setTaskStatus(newStatus);
-	};
-
-	/**
-	 *
-	 * @param time (yyyy-mm-ddThh:mm)
-	 * @returns (hh:mm am/pm)
-	 */
-	const formatTimeWithAmPm = (time: string) => {
-		if (/^\d{1,2}:\d{2} (am|pm)$/i.test(time)) {
-			return time; // 이미 포맷된 값이므로 바로 반환
-		}
-
-		if (time) {
-			const onlyTime = time.split('T')[1];
-			const [hour, minute] = onlyTime.split(':').map(Number);
-			const period = hour >= 12 ? 'pm' : 'am';
-			return `${hour}:${minute.toString().padStart(2, '0')} ${period}`;
-		}
-		// 임시 리턴
-		return '06:00pm';
 	};
 
 	// 수정 이벤트 핸들러
@@ -196,7 +205,6 @@ function MainSettingModal({
 
 	if (!shouldOpenModal) return null;
 	if (!isOpen) return null;
-	if (isTaskDetailLoading) return <div />;
 
 	return (
 		<>
@@ -229,13 +237,13 @@ function MainSettingModal({
 					<PopUpTitleBox>
 						<PopUp type="description" defaultValue={descriptionContent} onChange={onDescriptionChange} />
 					</PopUpTitleBox>
-					{timeBlockId && (
+					{isTimeBlockSelected && (
 						<DeadlineBox
 							date={timeBlockDate || new Date(targetDate)}
 							startTime={formatTimeWithAmPm(startTime) || '23:59'}
 							endTime={formatTimeWithAmPm(endTime) || '23:59'}
 							label="진행 기간"
-							isDueDate={!!timeBlockId}
+							isDueDate={!!isTimeBlockSelected}
 							isAllDay={isAllDay}
 							onAllDayToggle={handleAllDayToggle}
 							onStartTimeChange={handleStartTime}
@@ -255,9 +263,12 @@ function MainSettingModal({
 }
 
 const MainSettingModalLayout = styled.article<{ top: number; left: number }>`
-	position: fixed;
+	/* position: fixed;
 	top: ${({ top }) => top}px;
-	left: ${({ left }) => left}px;
+	left: ${({ left }) => left}px; */
+	position: fixed;
+	top: 50%;
+	left: 50%;
 	z-index: 5;
 	display: flex;
 	flex-direction: column;
@@ -271,6 +282,7 @@ const MainSettingModalLayout = styled.article<{ top: number; left: number }>`
 	box-shadow:
 		4px 4px 40px 20px #717e9833,
 		-4px -4px 40px 0 #717e9833;
+	transform: translate(-50%, -50%);
 	border-radius: 20px;
 `;
 

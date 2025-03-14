@@ -13,14 +13,14 @@ const TYPE = {
 type PopUpProps = {
 	type: (typeof TYPE)[keyof typeof TYPE];
 	defaultValue?: string;
-	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 function PopUp({ type, defaultValue, onChange = () => {} }: PopUpProps) {
 	const { state, handleFocus, handleBlur, handleChange } = useInputHandler();
 	const placeholder = type === TYPE.TITLE ? '제목을 입력하세요' : '설명을 추가하세요';
 
-	const handlePopUpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handlePopUpChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		onChange(e);
 		handleChange(e);
 	};
@@ -37,6 +37,7 @@ function PopUp({ type, defaultValue, onChange = () => {} }: PopUpProps) {
 					handlePopUpChange(e);
 				}}
 				defaultValue={defaultValue}
+				maxLength={100}
 			/>
 		</PopUpContainer>
 	);
@@ -49,9 +50,11 @@ const PopUpContainer = styled.div`
 	flex-direction: row;
 	gap: 8px;
 	align-items: center;
+	width: 100%;
 `;
 
-const StyledInput = styled.input<{ type: PopUpProps['type']; state: InputState }>`
+const StyledInput = styled.textarea<{ type: PopUpProps['type']; state: InputState }>`
+	width: 100%;
 	${({ type, theme }) => (type === TYPE.TITLE ? theme.font.title02 : theme.font.body03)};
 	caret-color: ${({ theme }) => theme.color.Blue.Blue7};
 
@@ -71,6 +74,8 @@ const StyledInput = styled.input<{ type: PopUpProps['type']; state: InputState }
 
 	outline: none;
 	border-width: 0;
+
+	resize: none;
 
 	&::placeholder {
 		color: ${({ state, theme }) => (state === INPUT_STATE.DEFAULT ? theme.color.Grey.Grey6 : theme.color.Grey.Grey4)};

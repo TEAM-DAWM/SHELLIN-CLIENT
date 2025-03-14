@@ -33,8 +33,8 @@ export const getRoundedFormattedCurrTime = (date: Date) => {
 		hours = (hours + 1) % 24;
 	}
 
-	const formatted12Hours = (hours % 12 || 12).toString().padStart(2, '0');
+	const formatted12Hours = hours.toString().padStart(2, '0');
 	const formattedRoundedMinutes = minutes.toString().padStart(2, '0');
 	const period = hours >= 12 ? 'pm' : 'am';
-	return `${formatted12Hours}:${formattedRoundedMinutes}${period}`;
+	return `${formatted12Hours}:${formattedRoundedMinutes} ${period}`;
 };
