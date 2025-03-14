@@ -18,6 +18,7 @@ import useOutsideClick from '@/hooks/useOutsideClick';
 import { StatusType } from '@/types/tasks/taskType';
 import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 import formatTimeWithAmPm from '@/utils/formatTimeWithAmPm';
+import { getRoundedFormattedCurrTime } from '@/utils/time';
 
 interface MainSettingModalProps {
 	isOpen: boolean;
@@ -226,7 +227,7 @@ function MainSettingModal({
 				<MainSettingModalBodyLayout>
 					<DeadlineBox
 						date={deadlineDate || new Date()}
-						endTime={deadlineTime || '23:59'}
+						endTime={deadlineTime || getRoundedFormattedCurrTime(new Date())}
 						handleDueDateModalDate={handleDeadlineDate}
 						handleDueDateModalTime={handleDeadlineTime}
 						label="마감 기간"

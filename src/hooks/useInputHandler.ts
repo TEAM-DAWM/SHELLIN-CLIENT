@@ -41,6 +41,10 @@ function useInputHandler() {
 		}
 	};
 
+	const handleEventDefault = () => {
+		setState(INPUT_STATE.DEFAULT);
+	};
+
 	return {
 		state,
 		handleFocus,
@@ -48,6 +52,7 @@ function useInputHandler() {
 		handleChange,
 		handleMouseEnter,
 		handleMouseLeave,
+		handleEventDefault,
 	};
 }
 

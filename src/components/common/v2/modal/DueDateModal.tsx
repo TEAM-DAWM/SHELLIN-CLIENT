@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Button from '@/components/common/v2/button/Button';
 import IconButton from '@/components/common/v2/IconButton';
 import DeadlineBox from '@/components/common/v2/popup/DeadlineBox';
-import { getDisplayCurrTime, getFormattedCurrTime } from '@/utils/time';
+import { getRoundedFormattedCurrTime } from '@/utils/time';
 
 interface DueDateModalType {
 	todoTime: string;
-	todoDate?: Date;
+	todoDate: Date | null;
 	handleTodoTime: (selectedTodoTime: string) => void;
 	handleTodoDate: (selectedTodoDate: Date | null) => void;
 	handleSettingModal: () => void;
@@ -20,7 +20,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 	const dateAfter14Days = defaultDate;
 	dateAfter14Days.setDate(defaultDate.getDate() + 14);
 
-	const [dueDateTime, setDueDateTime] = useState(todoTime || getFormattedCurrTime(defaultDate));
+	const [dueDateTime, setDueDateTime] = useState(todoTime || getRoundedFormattedCurrTime(defaultDate));
 	const [dueDateDate, setDueDateDate] = useState<Date | null>(todoDate || dateAfter14Days);
 
 	const onDueDateSubmit = () => {
@@ -41,7 +41,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 			<DueDateModalHeadLayout>
 				<ModalTopButtonBox>
 					<ButtonBox>
-						<IconButton iconName="IcnX" type="normal" size="small" disabled />
+						<IconButton iconName="IcnX" type="normal" size="small" onClick={handleSettingModal} />
 					</ButtonBox>
 				</ModalTopButtonBox>
 			</DueDateModalHeadLayout>
@@ -49,7 +49,7 @@ function DueDateModal({ todoTime, todoDate, handleTodoDate, handleTodoTime, hand
 			<DueDateModalBodyLayout>
 				<DeadlineBox
 					date={dueDateDate || new Date()}
-					endTime={getDisplayCurrTime(defaultDate)}
+					endTime={dueDateTime}
 					label="마감 기간"
 					isDueDate
 					handleDueDateModalTime={handleDueDateModalTime}
