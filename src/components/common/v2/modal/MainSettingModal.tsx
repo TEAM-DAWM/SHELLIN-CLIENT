@@ -131,7 +131,7 @@ function MainSettingModal({
 
 	const handleConfirm = () => {
 		if (isTimeBlockSelected && !isvalidTimeRange(startTime, endTime)) {
-			addToast('시작 시간이 종료 시간보다 클 수 없어요.', 'error');
+			addToast('시작 시간은 종료 시간 이전이어야 합니다.', 'error');
 			onClose();
 			return;
 		}
