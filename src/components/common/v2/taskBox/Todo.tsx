@@ -126,6 +126,7 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: 100%;
+	min-width: 43.2rem;
 
 	background-color: ${theme.colorToken.Component.normal};
 	border-radius: 12px;

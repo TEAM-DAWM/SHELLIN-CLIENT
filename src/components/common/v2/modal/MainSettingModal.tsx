@@ -160,7 +160,7 @@ function MainSettingModal({
 				description: descriptionContent,
 				deadLine: {
 					date: formatDatetoLocalDate(deadlineDate) || null,
-					time: deadlineTime || null,
+					time: deadlineTime.slice(0, 5) || null,
 				},
 			});
 
@@ -263,9 +263,12 @@ function MainSettingModal({
 }
 
 const MainSettingModalLayout = styled.article<{ top: number; left: number }>`
-	position: fixed;
+	/* position: fixed;
 	top: ${({ top }) => top}px;
-	left: ${({ left }) => left}px;
+	left: ${({ left }) => left}px; */
+	position: fixed;
+	top: 50%;
+	left: 50%;
 	z-index: 5;
 	display: flex;
 	flex-direction: column;
@@ -279,6 +282,7 @@ const MainSettingModalLayout = styled.article<{ top: number; left: number }>`
 	box-shadow:
 		4px 4px 40px 20px #717e9833,
 		-4px -4px 40px 0 #717e9833;
+	transform: translate(-50%, -50%);
 	border-radius: 20px;
 `;
 
