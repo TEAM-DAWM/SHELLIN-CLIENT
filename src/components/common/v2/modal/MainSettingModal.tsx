@@ -129,7 +129,7 @@ function MainSettingModal({
 	};
 
 	const handleConfirm = () => {
-		if (!isvalidTimeRange(startTime, endTime)) {
+		if (isTimeBlockSelected && !isvalidTimeRange(startTime, endTime)) {
 			addToast('시작 시간이 종료 시간보다 클 수 없어요.', 'error');
 			onClose();
 			return;
