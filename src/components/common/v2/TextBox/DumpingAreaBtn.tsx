@@ -107,7 +107,7 @@ function DumpingAreaBtn() {
 					disabled={false}
 					label={timeDateChipLabel()}
 					leftIcon={!todoDate && todoTime ? 'IcnPlus' : 'IcnModify'}
-					onClick={handleSettingModal}
+					onMouseDown={handleSettingModal}
 				/>
 			)}
 			{settingModalOpen && (
