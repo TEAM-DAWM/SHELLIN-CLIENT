@@ -1,0 +1,28 @@
+name: Deploy to Test Link
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy_test_link:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source repository (팀 레포)
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Push changes to test repository
+        env:
+          GIT_USER: 'github-actions[bot]'
+          GIT_EMAIL: 'github-actions[bot]@users.noreply.github.com'
+          TEST_REPO: ${{ secrets.TEST_REPO_URL }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          git config --global user.name "$GIT_USER"
+          git config --global user.email "$GIT_EMAIL"
+          git remote add test "$TEST_REPO"
+          git fetch test
+          git push --force test develop
