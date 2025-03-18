@@ -6,14 +6,12 @@ import DropdownButton from '../control/DropdownButton';
 
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
-import MODAL from '@/constants/modalLocation';
 import { STATUS } from '@/types/tasks/taskType';
 import { formatTimeToDueTime } from '@/utils/formatDateTime';
 
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
 type TodoProps = {
-	location: 'target' | 'staging';
 	title: string;
 	deadlineDate?: string;
 	deadlineTime?: string;
@@ -26,7 +24,6 @@ type TodoProps = {
 };
 
 function Todo({
-	location,
 	title,
 	deadlineDate,
 	status: initStatus,
@@ -42,9 +39,6 @@ function Todo({
 
 	const [isModalOpen, setModalOpen] = useState(false);
 
-	const [top, setTop] = useState(0);
-	const [left, setLeft] = useState(0);
-
 	useEffect(() => {
 		setStatus(initStatus);
 	}, [initStatus]);
@@ -54,16 +48,7 @@ function Todo({
 			e.preventDefault();
 			return;
 		}
-		const rect = e.currentTarget.getBoundingClientRect();
-		const calculatedTop = rect.top;
-		const adjustedTop = Math.min(calculatedTop, MODAL.SCREEN_HEIGHT - MODAL.TASK_MODAL_HEIGHT);
-		if (location === 'staging') {
-			setTop(adjustedTop);
-			setLeft(rect.width + 20);
-		} else {
-			setTop(adjustedTop);
-			setLeft(rect.right + 12);
-		}
+
 		setModalOpen((prev) => !prev);
 	};
 
@@ -107,8 +92,6 @@ function Todo({
 			</div>
 			<MainSettingModal
 				isOpen={isModalOpen}
-				top={top}
-				left={left}
 				onClose={handleCloseModal}
 				taskId={taskId}
 				status={status}

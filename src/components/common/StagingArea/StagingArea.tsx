@@ -1,4 +1,3 @@
-import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Droppable } from 'react-beautiful-dnd';
 
@@ -46,40 +45,22 @@ export default StagingArea;
 const SizedWrapper = styled.div`
 	width: 100%;
 `;
-const slideIn = keyframes`
-  from {
-    transform: translateX(-100%);
-	display: none;
-  }
-  to {
-    transform: translateX(0);
-  }
-`;
-
-const slideOut = keyframes`
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-	display: none;
-  }
-`;
 
 const StagingAreaLayout = styled.div<{ isOpen: boolean }>`
 	position: relative;
-	z-index: 1;
-	display: inline-flex;
+
+	display: flex;
 	flex-direction: column;
-	align-items: center;
+	flex-shrink: 0;
+	align-items: flex-start;
 	box-sizing: border-box;
-	width: 44.8rem;
+	width: ${({ isOpen }) => (isOpen ? '44.8rem' : '0')};
 
 	background-color: ${({ theme }) => theme.color.Grey.White};
 	border-right: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};
 	border-radius: 0 40px 40px 0;
 
-	animation: ${({ isOpen }) => (isOpen ? slideIn : slideOut)} 0.6s ease forwards;
+	transition: width 0.5s ease-in-out;
 `;
 
 const UpperContainer = styled.div`

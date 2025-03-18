@@ -22,8 +22,6 @@ import { getRoundedFormattedCurrTime } from '@/utils/time';
 
 interface MainSettingModalProps {
 	isOpen: boolean;
-	top: number;
-	left: number;
 	taskId: number;
 	onClose: () => void;
 	status: StatusType;
@@ -34,8 +32,6 @@ interface MainSettingModalProps {
 
 function MainSettingModal({
 	isOpen,
-	top,
-	left,
 	taskId,
 	onClose,
 	status,
@@ -208,7 +204,7 @@ function MainSettingModal({
 
 	return (
 		<>
-			<MainSettingModalLayout ref={modalRef} top={top} left={left} onClick={(e) => e.stopPropagation()}>
+			<MainSettingModalLayout ref={modalRef} onClick={(e) => e.stopPropagation()}>
 				<MainSettingModalHeadLayout>
 					<ModalTopButtonBox>
 						<DropdownButton
@@ -262,10 +258,7 @@ function MainSettingModal({
 	);
 }
 
-const MainSettingModalLayout = styled.article<{ top: number; left: number }>`
-	/* position: fixed;
-	top: ${({ top }) => top}px;
-	left: ${({ left }) => left}px; */
+const MainSettingModalLayout = styled.article`
 	position: fixed;
 	top: 50%;
 	left: 50%;

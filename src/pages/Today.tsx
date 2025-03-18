@@ -198,9 +198,9 @@ const TodayLayout = styled.div`
 const CalendarWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
+	flex-grow: 1;
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: fit-content;
-	width: 100%;
 	margin: 1rem 0.8rem 1rem 0;
 `;

@@ -61,12 +61,13 @@ function TargetArea(props: TargetAreaProps) {
 	);
 }
 const TargetAreaLayout = styled.section`
+	z-index: 2;
 	display: flex;
 	flex-direction: column;
 	flex-shrink: 0;
 	align-items: flex-start;
 	width: 47.2rem;
-	margin: 0.8rem;
+	margin: 0.8rem 0.7rem;
 
 	background-color: ${({ theme }) => theme.colorToken.Neutral.normal};
 	border: 1px solid ${({ theme }) => theme.palette.Grey.Grey3};

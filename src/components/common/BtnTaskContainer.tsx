@@ -13,8 +13,7 @@ const BtnTaskContainer = styled.div<{ type: string }>`
 	height: 90%;
 	max-height: 82rem;
 	padding-left: 0.8rem;
-	overflow: auto;
-	overflow-y: scroll;
+	overflow: hidden scroll;
 
 	::-webkit-scrollbar {
 		width: 0.6rem;
