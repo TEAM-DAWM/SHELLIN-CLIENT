@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import Button from '../button/Button';
 
+import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import StatusDropdown from '@/components/common/v2/dropdown/StatusDropdown';
 
 // 추후 type 로 빼기
@@ -76,6 +77,7 @@ function DropdownButton({ status, handleStatusChange, handleStatusEdit, isModalO
 				onClick={handleOpen}
 			/>
 			{isOpen && <StatusDropdown currentStatus={status} handleStatusChange={handleStatus} />}
+			{isOpen && <ModalBackdrop onClick={handleOpen} />}
 		</DropdownWrapper>
 	);
 }

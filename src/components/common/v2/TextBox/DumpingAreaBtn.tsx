@@ -13,20 +13,21 @@ import { INPUT_STATE, InputState } from '@/types/inputStateType';
 import { formatDatetoLocalDate, formatDateWithDay } from '@/utils/formatDateTime';
 
 function DumpingAreaBtn() {
-	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave } = useInputHandler();
+	const { state, handleFocus, handleBlur, handleChange, handleMouseEnter, handleMouseLeave, handleEventDefault } =
+		useInputHandler();
 	const [todoTitle, setTodoTitle] = useState('');
 	const [settingModalOpen, setSettingModalOpen] = useState(false);
 	// 날짜를 별도로 설정하지 않을 경우,
 	//   마감기간/시간은 접속 날짜 기준
 	//   14일 후의 동일 시간으로 자동 지정.
 
-	const [todoDate, setTodoDate] = useState<Date>();
+	const [todoDate, setTodoDate] = useState<Date | null>();
 	const [todoTime, setTodoTime] = useState('');
 	const { mutate: createTaskMutate } = useCreateTask();
 	const createTask = (taskData: CreateTaskType) => {
 		createTaskMutate(taskData);
 	};
-	const handleTodoDate = (selectedTodoDate: Date) => {
+	const handleTodoDate = (selectedTodoDate: Date | null) => {
 		setTodoDate(selectedTodoDate);
 	};
 	const handleTodoTime = (selectedTodoTime: string) => {
@@ -44,6 +45,11 @@ function DumpingAreaBtn() {
 	const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter' && todoTitle.trim() !== '' && !e.nativeEvent.isComposing) {
 			onCreateTask();
+			resetInputs(); // 입력 필드 초기화
+			e.currentTarget.blur(); // 입력 필드에서 포커스 제거
+
+			// 모든 상태를 DEFAULT로 재설정하기 위해 상태를 업데이트
+			handleEventDefault();
 		}
 	};
 
@@ -53,10 +59,11 @@ function DumpingAreaBtn() {
 			name: todoTitle,
 			deadLine: {
 				date: todoDate ? formatDatetoLocalDate(todoDate) : null,
-				time: todoTime || null,
+				time: todoTime.slice(0, 5) || null,
 			},
 		});
 		resetInputs();
+		handleEventDefault();
 	};
 
 	const resetInputs = () => {
@@ -100,14 +107,14 @@ function DumpingAreaBtn() {
 					disabled={false}
 					label={timeDateChipLabel()}
 					leftIcon={!todoDate && todoTime ? 'IcnPlus' : 'IcnModify'}
-					onClick={handleSettingModal}
+					onMouseDown={handleSettingModal}
 				/>
 			)}
 			{settingModalOpen && (
 				<DueDateModal
 					handleTodoTime={handleTodoTime}
 					handleTodoDate={handleTodoDate}
-					todoDate={todoDate}
+					todoDate={todoDate ? new Date(todoDate) : null}
 					todoTime={todoTime}
 					handleSettingModal={handleSettingModal}
 				/>
@@ -123,7 +130,7 @@ const DumpingAreaContainer = styled.div`
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 0.8rem;
 	align-items: flex-start;
 `;
 
@@ -164,7 +171,7 @@ const DumpingAreaWrapper = styled.div<{ state: InputState }>`
 
 const IconTouchArea = styled.div`
 	display: flex;
-	gap: 8px;
+	gap: 0.8rem;
 	align-items: center;
 	padding: 8px 8px 8px 16px;
 

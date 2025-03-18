@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const useInput = (defaultValue?: string) => {
 	const [content, setContent] = useState<string>(defaultValue || '');
-	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		if (e.target.value) {
 			setContent(e.target.value);
 		}

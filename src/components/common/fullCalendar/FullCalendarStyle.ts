@@ -4,9 +4,9 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	position: relative;
 
 	box-sizing: border-box;
-	width: ${({ size }) => (size === 'big' ? '132rem' : '88.8rem')};
-	height: 106.4rem;
-	padding: 0 10px 8px;
+	width: 100%;
+	height: 100%;
+	padding: 0 0.8rem 0.8rem;
 	overflow: hidden;
 
 	background-color: ${({ theme }) => theme.color.Grey.White};
@@ -16,6 +16,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	.fc .fc-toolbar.fc-header-toolbar {
 		display: flex;
 		align-items: flex-start;
+		height: 6.4rem;
 		margin: 2.4rem 0 0;
 	}
 
@@ -47,6 +48,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		position: absolute;
 		top: 0;
 		left: 50%;
+		height: 3.2rem;
 		overflow: hidden;
 
 		background: ${({ theme }) => theme.color.Grey.White};
@@ -90,15 +92,15 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-toolbar-chunk {
 		display: flex;
-		gap: 8px;
+		gap: 0.8rem;
 		align-items: center;
-		margin-right: 7.2rem;
+		margin-right: 6rem;
 	}
 
 	/* 오늘 버튼 */
 	.fc-toolbar-chunk .fc-today-button {
 		display: flex;
-		gap: 8px;
+		gap: 0.8rem;
 		align-items: center;
 		justify-content: center;
 		margin: 3.4rem 0 0;
@@ -147,6 +149,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc-daygrid-body {
 		width: 100% !important;
+		height: 100%;
 		overflow: hidden;
 
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong};
@@ -154,10 +157,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 		${({ currentView }) =>
 			currentView === 'timeGridWeekCustom' &&
-			`
-    border-left: none;
-		border-radius: 0
-  	`}
+			`border-left: none;
+			border-radius: 0;
+			border-right: none;
+			`}
 	}
 
 	.fc-event-allday {
@@ -170,19 +173,15 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	.fc .fc-col-header-cell {
 		height: 2.4rem;
-		padding: 2.4rem 0.8rem 0.5rem;
+		padding: 1.6rem 0.8rem 0;
 
 		border-right: none;
 		border-left: none;
 	}
 
-	.fc-scrollgrid-sync-table {
-		width: 100% !important;
-	}
-
 	/* 종일  - 타임그리드 셀 크기 고정 */
 	.fc-scrollgrid-sync-table > colgroup > col {
-		width: 3rem !important;
+		width: 4rem !important;
 	}
 
 	.fc-timegrid-axis .fc-scrollgrid-shrink {
@@ -190,7 +189,16 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.fc-timegrid-body .fc-timegrid-slots > colgroup > col {
-		width: 3rem;
+		width: 4rem;
+	}
+
+	/* 쏟아내기에 따라서 타임 그리드 width 유동적을 변하도록 설정  */
+	.fc-timegrid-body {
+		width: 100% !important;
+	}
+
+	.fc-scrollgrid-section-body table {
+		width: 100% !important;
 	}
 
 	/* 전체 캘린더(주간) */
@@ -210,7 +218,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* fc-daygrid-day-events: 종일 행(개별) */
 	.fc-daygrid-day-frame .fc-scrollgrid-sync-inner,
 	.fc-daygrid-day-events {
-		width: ${({ size }) => (size === 'big' ? '17.6rem' : '16.8rem')};
+		width: 100%;
 		min-height: 4.4rem;
 	}
 
@@ -334,7 +342,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 종일 이벤트 테두리 */
 	.fc .fc-daygrid-day-frame .fc-event-main {
 		display: flex;
-		align-items: center;
+		align-items: baseline;
 		justify-content: center;
 		box-sizing: border-box;
 		height: 2.1rem;
@@ -439,13 +447,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		margin: 0;
 	}
 
-	/* 월간뷰 border 위아래 짤림 커버용 */
-	.month-view .fc-scroller.fc-scroller-liquid-absolute {
-		border-top: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
-		border-bottom: 1px solid ${({ theme }) => theme.colorToken.Outline.neutralStrong} !important;
-		border-radius: 12px;
-	}
-
 	/* 월간뷰 스크롤 제거 */
 	.month-view .fc-scroller {
 		overflow: hidden !important;
@@ -470,7 +471,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 
 	/** .fc-daygrid-day: 각 날짜 별 박스 */
 	.fc-daygrid-day {
-		width: ${({ size }) => (size === 'big' ? '13.2rem' : '12.4rem')};
+		width: 100%;
 		height: ${({ currentView }) => (currentView === 'timeGridWeekCustom' ? '0' : '15.2rem')};
 	}
 
@@ -556,7 +557,6 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		display: flex;
 		gap: 4px;
 		align-items: center;
-		width: ${({ size }) => (size === 'big' ? '18rem' : '12rem')};
 		height: 2rem;
 		padding: 0 4px 0 8px;
 
@@ -585,7 +585,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 		background-color: ${({ theme }) => theme.colorToken.Neutral.heavy};
 	}
 
+	/* TimeGrid(주간) all-day-event(종일) 컨테이너 */
 	.fc .fc-h-event {
+		width: 100%;
+
 		border: none;
 	}
 
@@ -596,14 +599,13 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	}
 
 	.month-view .fc-all-day-event {
-		width: 72%;
+		width: 99%;
 	}
 
 	/* Month view 중 이벤트 초과 안내 */
 	.fc-daygrid-more-link {
 		display: flex;
 		align-items: center;
-		width: ${({ size }) => (size === 'big' ? '18rem' : '12rem')};
 		height: 2rem;
 		padding: 0 4px 0 8px;
 
@@ -649,7 +651,7 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 	/* 스크롤 커스텀 */
 
 	.fc-scrollgrid-liquid::-webkit-scrollbar {
-		width: 0.6rem;
+		width: 0.4rem;
 	}
 
 	.fc-scrollgrid-liquid::-webkit-scrollbar-thumb {

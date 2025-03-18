@@ -8,7 +8,7 @@ interface DateTimeBtnProps {
 	date: Date;
 	startTime?: string;
 	endTime: string;
-	isSetDate: boolean;
+	isEditMode: boolean;
 	isAllday?: boolean;
 	onClick: () => void;
 	handleDueDateModalDate?: (date: Date) => void;
@@ -22,7 +22,7 @@ function DateTimeBtn({
 	date,
 	startTime,
 	endTime,
-	isSetDate,
+	isEditMode,
 	isAllday = false,
 	onClick,
 	handleDueDateModalDate = () => {},
@@ -37,20 +37,19 @@ function DateTimeBtn({
 
 	const updateEndTime = (newTime: string) => {
 		onEndTimeChange(`${formatDatetoLocalDate(date)}T${newTime.slice(0, 5)}`);
-		handleDueDateModalTime(newTime.slice(0, 5));
+		handleDueDateModalTime(newTime);
 	};
 
 	const updateDate = (newDate: Date) => {
-		// setDate(newDate);
 		handleDueDateModalDate(newDate);
 		handleTimeBlockDate(newDate);
 	};
 
-	return isSetDate ? (
+	return !isEditMode ? (
 		<DateTimeBtnContainer onClick={onClick}>
 			<DateBtn
 				isAllday={isAllday}
-				isSetDate={isSetDate}
+				isEditMode={isEditMode}
 				startTime={startTime}
 				endTime={endTime}
 				date={date}
@@ -61,7 +60,7 @@ function DateTimeBtn({
 		<DateTimeBtnContainer isSingle={!startTime}>
 			<DateBtn
 				isAllday={isAllday}
-				isSetDate={isSetDate}
+				isEditMode={isEditMode}
 				startTime={startTime}
 				endTime={endTime}
 				date={date}

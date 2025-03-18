@@ -58,11 +58,11 @@ function Todo({
 		const calculatedTop = rect.top;
 		const adjustedTop = Math.min(calculatedTop, MODAL.SCREEN_HEIGHT - MODAL.TASK_MODAL_HEIGHT);
 		if (location === 'staging') {
-			setTop(adjustedTop - 190);
-			setLeft(rect.width + 12);
+			setTop(adjustedTop);
+			setLeft(rect.width + 20);
 		} else {
 			setTop(adjustedTop);
-			setLeft(rect.right + 6);
+			setLeft(rect.right + 12);
 		}
 		setModalOpen((prev) => !prev);
 	};
@@ -112,7 +112,6 @@ function Todo({
 				onClose={handleCloseModal}
 				taskId={taskId}
 				status={status}
-				handleStatusEdit={handleStatusEdit}
 				targetDate={targetDate}
 			/>
 		</>
@@ -127,6 +126,7 @@ const baseStyles = ({ theme }: { theme: Theme }) => css`
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: 100%;
+	min-width: 43.2rem;
 
 	background-color: ${theme.colorToken.Component.normal};
 	border-radius: 12px;
@@ -162,8 +162,7 @@ const TodoContainer = styled.div<{ isCompleted: boolean }>`
 		isCompleted ? theme.colorToken.Outline.neutralNormal : theme.colorToken.Outline.neutralStrong};
 
 	&:hover {
-		border: ${({ isCompleted }) => (isCompleted ? '1px' : '2px')} solid
-			${({ theme }) => theme.colorToken.Outline.primaryStrong};
+		border: 1px solid ${({ theme }) => theme.colorToken.Outline.primaryStrong};
 	}
 
 	&:active {
@@ -176,7 +175,7 @@ const TodoWrapper = styled.div`
 	display: flex;
 	flex: 1 0 0;
 	flex-direction: column;
-	gap: 4px;
+	gap: 0.4rem;
 	align-items: flex-start;
 	padding: 1rem 2.4rem 1.4rem;
 `;
@@ -184,10 +183,10 @@ const TodoWrapper = styled.div`
 const DropdownWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 0.8rem;
 	align-items: center;
 	justify-content: center;
 	box-sizing: border-box;
 	height: 6.4rem;
-	padding: 8px 8px 24px 0;
+	padding: 0.8rem 0.8rem 2.4rem 0;
 `;

@@ -33,7 +33,7 @@ const StatusDropdownContainer = styled.div`
 	position: absolute;
 	top: calc(100% + 4px);
 	left: 0;
-	z-index: 2;
+	z-index: 4;
 	display: flex;
 	flex-direction: column;
 	gap: 0.6rem;

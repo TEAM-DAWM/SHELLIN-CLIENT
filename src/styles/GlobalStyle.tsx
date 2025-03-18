@@ -150,6 +150,12 @@ const style = css`
 		font-size: 62.5%;
 	}
 
+	@media (width <= 1440px) {
+		html {
+			font-size: 50%;
+		}
+	}
+
 	:root {
 		--fc-highlight-color: #dfe9ff;
 		--fc-event-border-color: #ffff;

@@ -9,6 +9,7 @@ import Button from '../v2/button/Button';
 import CorrectionCustomHeader from './CorrectionCustomHeader';
 import CalendarStyle from './DatePickerStyle';
 
+import ModalBackdrop from '@/components/common/modal/ModalBackdrop';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { formatDatetoString } from '@/utils/formatDateTime';
 import { blurRef } from '@/utils/refStatus';
@@ -69,27 +70,30 @@ function DateCorrectionModal({ top = 0, left, right, date, onClick, handleCurren
 	}, [top]);
 
 	return (
-		<DateCorrectionModalLayout
-			ref={modalRef}
-			top={top}
-			left={left}
-			right={right}
-			isOutOfBounds={isOutOfBounds}
-			onClick={(e) => e.stopPropagation()}
-		>
-			<DatePicker
-				locale={ko}
-				selected={currentDate}
-				onChange={onChange}
-				inline
-				calendarContainer={CalendarStyle}
-				renderCustomHeader={(props) => <CorrectionCustomHeader {...props} onChange={onChange} onClose={onClose} />}
+		<>
+			<DateCorrectionModalLayout
+				ref={modalRef}
+				top={top}
+				left={left}
+				right={right}
+				isOutOfBounds={isOutOfBounds}
+				onClick={(e) => e.stopPropagation()}
 			>
-				<BottomBtnWrapper>
-					<Button label="확인" disabled={false} size="medium" type="solid" onClick={onSave} />
-				</BottomBtnWrapper>
-			</DatePicker>
-		</DateCorrectionModalLayout>
+				<DatePicker
+					locale={ko}
+					selected={currentDate}
+					onChange={onChange}
+					inline
+					calendarContainer={CalendarStyle}
+					renderCustomHeader={(props) => <CorrectionCustomHeader {...props} onChange={onChange} onClose={onClose} />}
+				>
+					<BottomBtnWrapper>
+						<Button label="확인" disabled={false} size="medium" type="solid" onClick={onSave} />
+					</BottomBtnWrapper>
+				</DatePicker>
+			</DateCorrectionModalLayout>
+			<ModalBackdrop onClick={onClose} />
+		</>
 	);
 }
 
