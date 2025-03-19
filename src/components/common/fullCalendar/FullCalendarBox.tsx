@@ -180,7 +180,19 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		 * */
 	};
 
-	const removeTimezone = (str: string) => str.replace(/:\d{2}[+-]\d{2}:\d{2}$/, '');
+	const removeTimezone = (str: string, isAlltime: boolean = false) => {
+		const dateWithoutTimezone = str.replace(/:\d{2}[+-]\d{2}:\d{2}$/, '');
+		const dateOnly = dateWithoutTimezone.split('T')[0]; // YYYY-MM-DD 부분만 추출
+
+		return isAlltime ? `${dateOnly}T00:00` : dateWithoutTimezone;
+	};
+
+	// 문자열을 Date 객체로 변환 후, 하루 빼기
+	const subtractOneDay = (dateStr: string) => {
+		const newDate = new Date(dateStr);
+		newDate.setDate(newDate.getDate() - 1);
+		return newDate.toISOString().split('T')[0];
+	};
 
 	const addEventWhenDragged = (selectInfo: DateSelectArg) => {
 		if (calendarRef.current && selectedTarget && selectedTarget.id !== -1) {
@@ -196,6 +208,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			const start = new Date(selectInfo.startStr);
 			const end = new Date(selectInfo.endStr);
 			const diffInMinutes = (end.getTime() - start.getTime()) / (1000 * 60);
+
+			// allDay이면 end 날짜 하루 빼기
+			let adjustedEndStr = selectInfo.endStr;
+			if (selectInfo.allDay) {
+				adjustedEndStr = subtractOneDay(selectInfo.endStr);
+			}
 
 			if (diffInMinutes < 30) {
 				// (클릭 시 실수로 이벤트 생성되는 것 방지)
@@ -215,10 +233,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				},
 			});
 
-			const startStr = removeTimezone(selectInfo.startStr);
-			const endStr = removeTimezone(selectInfo.endStr);
+			const startStr = removeTimezone(selectInfo.startStr, selectInfo.allDay);
+			const endStr = removeTimezone(adjustedEndStr, selectInfo.allDay);
 
-			createMutate({ taskId: selectedTarget.id, startTime: startStr, endTime: endStr, isAllTime: false });
+			createMutate({ taskId: selectedTarget.id, startTime: startStr, endTime: endStr, isAllTime: selectInfo.allDay });
 		}
 	};
 
@@ -237,11 +255,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		const { event } = info;
 		const { taskId, timeBlockId } = event.extendedProps;
 		if (taskId && taskId !== -1) {
-			let startStr = removeTimezone(event.startStr);
-			let endStr = removeTimezone(event.endStr);
+			const startStr = removeTimezone(event.startStr, event.allDay);
+			let endStr = removeTimezone(event.endStr, event.allDay);
 
 			if (info.event.allDay) {
-				startStr += 'T00:00';
 				endStr = startStr;
 			}
 
@@ -319,9 +336,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 		setTop(adjustedTop);
 		setLeft(adjustedLeft);
-
 		createMutate(
-			{ taskId: Number(info.event.id), startTime: start, endTime: end, isAllTime: false },
+			{ taskId: Number(info.event.id), startTime: start, endTime: end, isAllTime: info.event.allDay },
 			{
 				onSuccess: () => {
 					if (clickedEvent) {
