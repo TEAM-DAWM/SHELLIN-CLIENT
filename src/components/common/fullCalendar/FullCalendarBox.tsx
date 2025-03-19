@@ -506,6 +506,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					targetDate={selectdTimeBlockDate ? formatDatetoLocalDate(selectdTimeBlockDate) : formatDatetoLocalDate(today)}
 					timeBlockId={selectedTimeBlockId}
 					isAllTime={calendarEvents.find((event) => event.extendedProps.taskId === selectedTaskId)?.allDay || false}
+					isTimeblock={true}
 				/>
 			)}
 		</FullCalendarLayout>

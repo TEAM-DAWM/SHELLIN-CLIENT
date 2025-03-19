@@ -28,6 +28,7 @@ interface MainSettingModalProps {
 	targetDate: string;
 	timeBlockId?: number;
 	isAllTime?: boolean;
+	isTimeblock?: boolean;
 }
 
 function MainSettingModal({
@@ -38,6 +39,7 @@ function MainSettingModal({
 	targetDate,
 	timeBlockId,
 	isAllTime = false,
+	isTimeblock = false,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutateAsync: editMutate } = usePatchTaskDescription();
@@ -247,7 +249,7 @@ function MainSettingModal({
 					<PopUpTitleBox>
 						<PopUp type="description" defaultValue={descriptionContent} onChange={onDescriptionChange} />
 					</PopUpTitleBox>
-					{isTimeBlockSelected && (
+					{isTimeblock && (
 						<DeadlineBox
 							date={timeBlockDate || new Date(targetDate)}
 							startTime={formatTimeWithAmPm(startTime) || '23:59'}

@@ -77,7 +77,7 @@ function Modal({ isOpen, sizeType, top, left, onClose, taskId, targetDate, locat
 
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutate: editMutate } = usePatchTaskDescription();
-	const { mutate: createMutate } = usePostTimeBlock();
+	const { mutateAsync: createMutate } = usePostTimeBlock();
 
 	// editMutate({ name, description, deadLine: { date, time } });
 
