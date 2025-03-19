@@ -69,8 +69,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const calendarRef = useRef<FullCalendar>(null);
 
 	const { data: timeBlockData } = useGetTimeBlock({ startDate, range });
-	const { mutate: createMutate } = usePostTimeBlock();
-	const { mutate: updateMutate } = useUpdateTimeBlock();
+	const { mutateAsync: createMutate } = usePostTimeBlock();
+	const { mutateAsync: updateMutate } = useUpdateTimeBlock();
 	const { mutate: deleteMutate } = useDeleteTimeBlock();
 
 	// 추후 전역상태로 처리 예정
@@ -194,7 +194,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		return newDate.toISOString().split('T')[0];
 	};
 
-	const addEventWhenDragged = (selectInfo: DateSelectArg) => {
+	const addEventWhenDragged = async (selectInfo: DateSelectArg) => {
 		if (calendarRef.current && selectedTarget && selectedTarget.id !== -1) {
 			const calendarApi = calendarRef.current.getApi();
 
@@ -236,7 +236,18 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			const startStr = removeTimezone(selectInfo.startStr, selectInfo.allDay);
 			const endStr = removeTimezone(adjustedEndStr, selectInfo.allDay);
 
-			createMutate({ taskId: selectedTarget.id, startTime: startStr, endTime: endStr, isAllTime: selectInfo.allDay });
+			try {
+				await createMutate({
+					taskId: selectedTarget.id,
+					startTime: startStr,
+					endTime: endStr,
+					isAllTime: selectInfo.allDay,
+				});
+			} catch (error) {
+				console.error('addEventWhenDragged error:', error);
+				// conflict 에러 발생 시 복구
+				calendarApi.getEventById(selectedTarget.id.toString())?.remove();
+			}
 		}
 	};
 
@@ -251,24 +262,27 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		}
 	};
 
-	const updateEvent = (info: EventDropArg | EventResizeDoneArg) => {
+	const updateEvent = async (info: EventDropArg | EventResizeDoneArg) => {
 		const { event } = info;
 		const { taskId, timeBlockId } = event.extendedProps;
+
 		if (taskId && taskId !== -1) {
 			const startStr = removeTimezone(event.startStr, event.allDay);
-			let endStr = removeTimezone(event.endStr, event.allDay);
+			const endStr = removeTimezone(event.endStr, event.allDay);
 
-			if (info.event.allDay) {
-				endStr = startStr;
+			const prevEvents = [...calendarEvents]; // 기존 상태 저장
+
+			try {
+				setCalendarEvents((prev) =>
+					prev.map((e) => (e.extendedProps.timeBlockId === timeBlockId ? { ...e, start: startStr, end: endStr } : e))
+				);
+
+				await updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: info.event.allDay });
+			} catch (error) {
+				console.error('updateEvent error:', error);
+				info.revert(); // conflict 에러 발생 시 복구
+				setCalendarEvents(prevEvents);
 			}
-
-			setCalendarEvents((prevEvents) =>
-				prevEvents.map((e) =>
-					e.extendedProps.timeBlockId === timeBlockId ? { ...e, start: startStr, end: endStr } : e
-				)
-			);
-
-			updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: info.event.allDay });
 		}
 	};
 
