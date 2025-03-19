@@ -336,7 +336,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	};
 
 	// 드래그해서 timeblock 추가
-	const handleEventReceive = (info: EventReceiveArg) => {
+	const handleEventReceive = async (info: EventReceiveArg) => {
 		if (!info.event.start) {
 			throw new Error('Invalid event start time');
 		}
@@ -358,20 +358,25 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 		setTop(adjustedTop);
 		setLeft(adjustedLeft);
-		createMutate(
-			{ taskId: Number(info.event.id), startTime: start, endTime: end, isAllTime: info.event.allDay },
-			{
-				onSuccess: () => {
-					if (clickedEvent) {
-						setSelectedTaskId(Number(info.event.id));
-						setSelectedTimeBlockId(clickedEvent.timeBlockId);
-						setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
-						setMainModalOpen(true);
-					}
-				},
-				onError: () => closeMainModal(),
+
+		try {
+			await createMutate({
+				taskId: Number(info.event.id),
+				startTime: start,
+				endTime: end,
+				isAllTime: info.event.allDay,
+			});
+
+			if (clickedEvent) {
+				setSelectedTaskId(Number(info.event.id));
+				setSelectedTimeBlockId(clickedEvent.timeBlockId);
+				setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
+				setMainModalOpen(true);
 			}
-		);
+		} catch (error) {
+			console.error('handleEventReceive error:', error);
+			info.event.remove(); // 추가된 이벤트 제거
+		}
 	};
 
 	// CalendarSettingDropdown handler
