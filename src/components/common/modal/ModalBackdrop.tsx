@@ -8,6 +8,9 @@ const ModalBackdrop = styled.div`
 	z-index: 3;
 	width: 100vw;
 	height: 100vh;
+
+	background-color: ${({ theme }) => theme.color.Grey.Grey8};
+	opacity: 0.2;
 `;
 
 export default ModalBackdrop;
