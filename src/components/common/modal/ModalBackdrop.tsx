@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const ModalBackdrop = styled.div`
+const ModalBackdropStyle = styled.div<{ isBackgroundColor: boolean }>`
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -9,8 +9,17 @@ const ModalBackdrop = styled.div`
 	width: 100vw;
 	height: 100vh;
 
-	background-color: ${({ theme }) => theme.color.Grey.Grey8};
-	opacity: 0.2;
+	background-color: ${({ theme, isBackgroundColor }) => (isBackgroundColor ? theme.color.Grey.Grey8 : 'transparent')};
+	opacity: ${({ isBackgroundColor }) => (isBackgroundColor ? 0.2 : 0)};
 `;
+
+interface ModalBackdropProps {
+	isBackgroundColor?: boolean;
+	onClick: () => void;
+}
+
+function ModalBackdrop({ isBackgroundColor = false, onClick }: ModalBackdropProps) {
+	return <ModalBackdropStyle isBackgroundColor={isBackgroundColor} onClick={onClick} />;
+}
 
 export default ModalBackdrop;

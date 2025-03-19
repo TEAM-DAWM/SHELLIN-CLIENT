@@ -265,7 +265,7 @@ function MainSettingModal({
 					<Button type="solid" size="medium" label="확인" onClick={handleConfirm} />
 				</MainSettingModalButtonLayout>
 			</MainSettingModalLayout>
-			<ModalBackdrop onClick={onClose} />
+			<ModalBackdrop isBackgroundColor onClick={onClose} />
 		</>
 	);
 }
