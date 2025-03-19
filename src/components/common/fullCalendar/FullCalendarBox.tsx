@@ -268,13 +268,21 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 		if (taskId && taskId !== -1) {
 			const startStr = removeTimezone(event.startStr, event.allDay);
-			const endStr = removeTimezone(event.endStr, event.allDay);
+			let endStr = removeTimezone(event.endStr, event.allDay);
+
+			if (info.event.allDay) {
+				endStr = startStr;
+			}
 
 			const prevEvents = [...calendarEvents]; // 기존 상태 저장
 
 			try {
 				setCalendarEvents((prev) =>
-					prev.map((e) => (e.extendedProps.timeBlockId === timeBlockId ? { ...e, start: startStr, end: endStr } : e))
+					prev.map((e) =>
+						e.extendedProps.timeBlockId === timeBlockId
+							? { ...e, start: startStr, end: endStr, allDay: info.event.allDay }
+							: e
+					)
 				);
 
 				await updateMutate({ taskId, timeBlockId, startTime: startStr, endTime: endStr, isAllTime: info.event.allDay });
