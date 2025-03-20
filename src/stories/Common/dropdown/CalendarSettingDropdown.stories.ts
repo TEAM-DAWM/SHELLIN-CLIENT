@@ -21,5 +21,6 @@ export const Default: Story = {
 		right: 0,
 		selectedStatuses: ['미완료', '진행중'],
 		handleStatusChange: () => {},
+		handleFilterPopup: () => {},
 	},
 };
