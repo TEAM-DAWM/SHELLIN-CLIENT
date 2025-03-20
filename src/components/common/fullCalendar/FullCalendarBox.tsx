@@ -387,6 +387,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 			return updatedStatuses;
 		});
+		setFilterPopupOpen(false);
 	};
 
 	// 완료 task 스타일링 위한 클래스명 추가 (주간)
@@ -504,6 +505,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 					right={0.8}
 					selectedStatuses={selectedStatuses}
 					handleStatusChange={handleStatusChange}
+					handleFilterPopup={handleFilterPopup}
 				/>
 			)}
 			{isDeleteModalOpen && selectedTaskId !== null && selectedTimeBlockId !== null && (
