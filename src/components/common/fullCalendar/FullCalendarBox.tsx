@@ -473,7 +473,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				)}
 				viewDidMount={handleViewChange}
 				datesSet={handleDatesSet}
-				dateClick={(arg) => handleChangeDate(arg.date)}
 				dayCellContent={(arg) => (
 					<CustomDayCellContent arg={arg} today={today.toDateString()} selectDate={selectDate?.toString()} />
 				)}
