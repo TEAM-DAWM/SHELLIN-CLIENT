@@ -61,6 +61,7 @@ const ToastMessage = styled.div<{ code: string }>`
 			case 'success':
 				return theme.colorToken.Primary.normal;
 			case 'error':
+			case 'conflict':
 				return theme.color.Orange.Orange5;
 			case 'info':
 				return theme.color.Grey.Grey7;

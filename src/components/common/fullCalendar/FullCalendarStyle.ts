@@ -163,6 +163,10 @@ const FullCalendarLayout = styled.div<{ size: string; currentView: string }>`
 			`}
 	}
 
+	.fc-timegrid .fc-daygrid-body {
+		z-index: 0;
+	}
+
 	.fc-event-allday {
 		height: 2rem;
 	}
