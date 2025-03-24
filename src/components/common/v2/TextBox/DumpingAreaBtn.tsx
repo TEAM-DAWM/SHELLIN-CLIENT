@@ -93,6 +93,7 @@ function DumpingAreaBtn() {
 					onChange={onChange}
 					value={todoTitle}
 					onKeyDown={handleEnter}
+					maxLength={255}
 				/>
 				<IconTouchArea onClick={onCreateTask}>
 					<div className="icon-background">
