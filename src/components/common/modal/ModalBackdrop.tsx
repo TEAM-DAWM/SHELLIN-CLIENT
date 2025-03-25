@@ -15,11 +15,16 @@ const ModalBackdropStyle = styled.div<{ isBackgroundColor: boolean }>`
 
 interface ModalBackdropProps {
 	isBackgroundColor?: boolean;
-	onClick: () => void;
+	onClick: React.MouseEventHandler<HTMLElement>;
+	children?: React.ReactNode;
 }
 
-function ModalBackdrop({ isBackgroundColor = false, onClick }: ModalBackdropProps) {
-	return <ModalBackdropStyle isBackgroundColor={isBackgroundColor} onClick={onClick} />;
+function ModalBackdrop({ isBackgroundColor = false, onClick, children }: ModalBackdropProps) {
+	return (
+		<ModalBackdropStyle isBackgroundColor={isBackgroundColor} onClick={onClick}>
+			{children}
+		</ModalBackdropStyle>
+	);
 }
 
 export default ModalBackdrop;
