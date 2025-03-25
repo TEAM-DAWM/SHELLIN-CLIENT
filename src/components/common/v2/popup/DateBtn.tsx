@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import DateCorrectionModal from '@/components/common/datePicker/DateCorrectionModal';
 import Icon from '@/components/common/Icon';
@@ -16,6 +16,14 @@ interface DateBtnProps {
 
 function DateBtn({ isAllday, isEditMode, startTime, endTime, date, handleDate }: DateBtnProps) {
 	const [isOpen, setIsOpen] = useState(false);
+	const [btnWidth, setBtnWidth] = useState<number>(0);
+	const btnRef = useRef<HTMLButtonElement>(null);
+
+	useEffect(() => {
+		if (btnRef.current) {
+			setBtnWidth(btnRef.current.offsetWidth);
+		}
+	}, [isOpen]);
 
 	const renderTimeText = () => {
 		if (isAllday) return null;
@@ -49,7 +57,7 @@ function DateBtn({ isAllday, isEditMode, startTime, endTime, date, handleDate }:
 
 	return (
 		<DateWrapper onBlur={handleBlur} tabIndex={-1}>
-			<DateBtnLayout onClick={onClickDateBtn} isActive={isOpen}>
+			<DateBtnLayout onClick={onClickDateBtn} isActive={isOpen} ref={btnRef}>
 				<Icon name={isEditMode ? 'IcnCalendar' : 'IcnModify'} size="tiny" color="nomal" />
 				<TextBox>
 					{formatDateWithDay(date)} {!isEditMode && renderTimeText()}
@@ -61,7 +69,8 @@ function DateBtn({ isAllday, isEditMode, startTime, endTime, date, handleDate }:
 						date={formatDateWithDay(date)}
 						onClick={handleModalClose}
 						handleCurrentDate={handleCurrentDate}
-						top={0.8}
+						isTopCenter
+						left={(btnWidth + 8) / 10}
 					/>
 				</DropdownStyle>
 			)}

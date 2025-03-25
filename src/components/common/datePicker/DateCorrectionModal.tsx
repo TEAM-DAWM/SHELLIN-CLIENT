@@ -18,12 +18,21 @@ interface DateCorrectionModalProps {
 	top?: number;
 	left?: number;
 	right?: number;
+	isTopCenter?: boolean;
 	date: string | null;
 	onClick: () => void;
 	handleCurrentDate?: (newDate: Date) => void;
 }
 
-function DateCorrectionModal({ top = 0, left, right, date, onClick, handleCurrentDate }: DateCorrectionModalProps) {
+function DateCorrectionModal({
+	top = 0,
+	left,
+	right,
+	isTopCenter = false,
+	date,
+	onClick,
+	handleCurrentDate,
+}: DateCorrectionModalProps) {
 	const prevDate = date ? new Date(date) : null;
 	const [currentDate, setCurrentDate] = useState<Date | null>(prevDate);
 	const [isOutOfBounds, setIsOutOfBounds] = useState(false);
@@ -76,6 +85,7 @@ function DateCorrectionModal({ top = 0, left, right, date, onClick, handleCurren
 				top={top}
 				left={left}
 				right={right}
+				isTopCenter={isTopCenter}
 				isOutOfBounds={isOutOfBounds}
 				onClick={(e) => e.stopPropagation()}
 			>
@@ -101,12 +111,19 @@ const DateCorrectionModalLayout = styled.div<{
 	top: number;
 	left?: number;
 	right?: number;
+	isTopCenter: boolean;
 	isOutOfBounds: boolean;
 }>`
 	position: absolute;
-	top: ${({ isOutOfBounds, top }) => (isOutOfBounds ? 'unset' : `${top}rem`)};
+	top: ${({ isTopCenter, isOutOfBounds, top }) => {
+		if (isTopCenter) return '50%';
+		if (isOutOfBounds) return 'unset';
+		return `${top}rem`;
+	}};
 	bottom: ${({ isOutOfBounds }) => (isOutOfBounds ? '0rem' : 'unset')};
 	z-index: 4;
+
+	transform: ${({ isTopCenter }) => (isTopCenter ? 'translateY(-50%)' : 'none')};
 
 	${({ left, right }) => {
 		if (left !== undefined) {
