@@ -23,7 +23,8 @@ function Today() {
 	const [stagingSortOrder, setStagingSortOrder] = useState<SortOrderType>(storedStagingSortOrder || 'CUSTOM_ORDER');
 	const [targetSortOrder, setTargetSortOrder] = useState<SortOrderType>(storedTargetSortOrder || 'CUSTOM_ORDER');
 
-	const [selectedDate, setTargetDate] = useState(new Date());
+	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [calenderSelectedDate, setCalenderSelectedDate] = useState(new Date());
 	const targetDate = formatDatetoLocalDate(selectedDate);
 	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
 
@@ -53,21 +54,24 @@ function Today() {
 	const handlePrevBtn = () => {
 		const newDate = new Date(selectedDate);
 		newDate.setDate(newDate.getDate() - 1);
-		setTargetDate(newDate);
+		setSelectedDate(newDate);
 	};
 
 	const handleNextBtn = () => {
 		const newDate = new Date(selectedDate);
 		newDate.setDate(newDate.getDate() + 1);
-		setTargetDate(newDate);
+		setSelectedDate(newDate);
 	};
 
 	const handleTodayBtn = () => {
-		setTargetDate(new Date());
+		setSelectedDate(new Date());
 	};
 
 	const handleChangeDate = (target: Date) => {
-		setTargetDate(target);
+		setSelectedDate(target);
+	};
+	const handleChangeCalenderDate = (target: Date) => {
+		setCalenderSelectedDate(target);
 	};
 
 	const handleDragEnd = (result: DropResult) => {
@@ -179,8 +183,8 @@ function Today() {
 				<FullCalendarBox
 					size={isDumpAreaOpen ? 'small' : 'big'}
 					selectedTarget={selectedTarget}
-					selectDate={selectedDate}
-					handleChangeDate={handleChangeDate}
+					selectDate={calenderSelectedDate}
+					handleChangeDate={handleChangeCalenderDate}
 				/>
 			</CalendarWrapper>
 		</TodayLayout>
