@@ -134,7 +134,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const updateRange = (viewType: string, size: string) => {
 		switch (viewType) {
 			case 'dayGridMonth':
-				setRange(30);
+				setRange(42);
 				break;
 			case 'timeGridWeekCustom':
 				setRange(size === 'big' ? 7 : 5);
@@ -158,7 +158,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			setSelectedTaskId(clickedEvent.extendedProps.taskId);
 			setSelectedTimeBlockId(clickedEvent.extendedProps.timeBlockId);
 			setSelectedStatus(clickedEvent.extendedProps.status);
-			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
+			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr));
 			setMainModalOpen(true);
 		}
 	};
@@ -322,7 +322,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		if (clickedEvent) {
 			setSelectedTaskId(clickedEvent.extendedProps.taskId);
 			setSelectedTimeBlockId(clickedEvent.extendedProps.timeBlockId);
-			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
+			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr));
 			setDeleteModalOpen(true);
 		}
 	};
@@ -370,7 +370,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			if (clickedEvent) {
 				setSelectedTaskId(Number(info.event.id));
 				setSelectedTimeBlockId(clickedEvent.timeBlockId);
-				setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr.split('T')[0]));
+				setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr));
 				setMainModalOpen(true);
 			}
 		} catch (error) {
