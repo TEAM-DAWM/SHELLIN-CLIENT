@@ -112,7 +112,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		const newStartDate = new Date(dateInfo.start);
 		const endDate = new Date(dateInfo.end);
 		const centerDate = new Date((newStartDate.getTime() + endDate.getTime()) / 2);
-		const formattedStartDate = newStartDate.toISOString().split('T')[0];
+		const formattedStartDate = newStartDate.toLocaleDateString('sv-SE');
 
 		setCurrentView(dateInfo.view.type);
 		setStartDate(formattedStartDate);
@@ -367,11 +367,10 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				isAllTime: info.event.allDay,
 			});
 
-			if (clickedEvent) {
+			if (clickedEvent && Object.keys(clickedEvent).length) {
 				setSelectedTaskId(Number(info.event.id));
 				setSelectedTimeBlockId(clickedEvent.timeBlockId);
 				setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr));
-				setMainModalOpen(true);
 			}
 		} catch (error) {
 			console.error('handleEventReceive error:', error);
