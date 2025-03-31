@@ -16,7 +16,7 @@ import { useToast } from '@/components/toast/ToastContext';
 import useInput from '@/hooks/useInput';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { StatusType } from '@/types/tasks/taskType';
-import { formatDatetoLocalDate } from '@/utils/formatDateTime';
+import { formatDatetoLocalDate, formatTimeByAllDay } from '@/utils/formatDateTime';
 import formatTimeWithAmPm from '@/utils/formatTimeWithAmPm';
 import { getRoundedFormattedCurrTime } from '@/utils/time';
 
@@ -190,12 +190,8 @@ function MainSettingModal({
 		}
 
 		try {
-			const formattedStartTime = isAllDay
-				? `${timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : startTime.split('T')[0]}T00:00`
-				: startTime;
-			const formattedEndTime = isAllDay
-				? `${timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : endTime.split('T')[0]}T00:00`
-				: endTime;
+			const formattedStartTime = formatTimeByAllDay(startTime, isAllDay, timeBlockDate);
+			const formattedEndTime = formatTimeByAllDay(endTime, isAllDay, timeBlockDate);
 
 			await updateTimeBlockMutate({
 				taskId,
