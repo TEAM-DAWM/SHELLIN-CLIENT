@@ -16,8 +16,8 @@ jobs:
 
       - name: Push changes to test repository
         env:
-          GIT_USER: 'github-actions[bot]'
-          GIT_EMAIL: 'github-actions[bot]@users.noreply.github.com'
+          GIT_USER: 'Kjiw0n'
+          GIT_EMAIL: 'rwd0904@naver.com'
           TEST_REPO: ${{ secrets.TEST_REPO_URL }}
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
