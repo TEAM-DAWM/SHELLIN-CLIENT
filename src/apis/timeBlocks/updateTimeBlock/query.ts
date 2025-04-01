@@ -23,7 +23,7 @@ const usePatchTimeBlock = () => {
 			const response = await PatchTimeBlock({ taskId, timeBlockId, startTime, endTime, isAllTime });
 			if (response && response.code === 'conflict') {
 				addToast(response.message, response.code);
-				throw new Error('error');
+				throw new Error('conflict');
 			}
 			return response;
 		},
@@ -35,7 +35,7 @@ const usePatchTimeBlock = () => {
 		},
 	});
 
-	return { mutate: mutation.mutate };
+	return { mutateAsync: mutation.mutateAsync };
 };
 
 export default usePatchTimeBlock;

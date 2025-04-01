@@ -121,3 +121,15 @@ export const formatDateToLocal = (inputDate: Date): string => {
 	const adjustedDate = new Date(inputDate.getTime() - inputDate.getTimezoneOffset() * 60000);
 	return adjustedDate.toISOString().slice(0, 16);
 };
+
+/**
+ * allDay 이벤트일 경우, timeBlockDate 또는 time 값을 기반으로 날짜만 추출해 T00:00을 붙입니다.
+ * allDay가 아닌 경우 원래 time을 그대로 반환합니다.
+ */
+export const formatTimeByAllDay = (time: string, isAllDay: boolean, timeBlockDate?: Date | null): string => {
+	if (!isAllDay) return time;
+
+	const dateStr = timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : time.split('T')[0];
+
+	return `${dateStr}T00:00`;
+};
