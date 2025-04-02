@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import DateCorrectionModal from '@/components/common/datePicker/DateCorrectionModal';
 import Icon from '@/components/common/Icon';
@@ -16,14 +16,7 @@ interface DateBtnProps {
 
 function DateBtn({ isAllday, isEditMode, startTime, endTime, date, handleDate }: DateBtnProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [btnWidth, setBtnWidth] = useState<number>(0);
 	const btnRef = useRef<HTMLButtonElement>(null);
-
-	useEffect(() => {
-		if (btnRef.current) {
-			setBtnWidth(btnRef.current.offsetWidth);
-		}
-	}, [isOpen]);
 
 	const renderTimeText = () => {
 		if (isAllday) return null;
@@ -70,7 +63,7 @@ function DateBtn({ isAllday, isEditMode, startTime, endTime, date, handleDate }:
 						onClick={handleModalClose}
 						handleCurrentDate={handleCurrentDate}
 						isTopCenter
-						left={(btnWidth + 8) / 10}
+						left={19.2}
 					/>
 				</DropdownStyle>
 			)}
