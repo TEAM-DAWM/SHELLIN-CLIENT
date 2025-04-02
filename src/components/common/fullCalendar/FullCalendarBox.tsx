@@ -144,23 +144,25 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		}
 	};
 
+	let lastClickTime = 0;
+
 	const handleEventClick = (info: EventClickArg) => {
-		const rect = info.el.getBoundingClientRect();
-		const calculatedTop = rect.top;
-		const screenHeight = window.innerHeight;
-		const adjustedTop = Math.min(calculatedTop, screenHeight - MODAL.TASK_MODAL_HEIGHT);
-		setTop(adjustedTop);
-		setLeft(rect.left - MODAL.TASK_MODAL_WIDTH - 50);
+		const now = Date.now();
 
-		const clickedEvent = info.event;
+		// 0.3초 내에 클릭 시 더블클릭으로 간주
+		if (now - lastClickTime < 300) {
+			const clickedEvent = info.event;
 
-		if (clickedEvent) {
-			setSelectedTaskId(clickedEvent.extendedProps.taskId);
-			setSelectedTimeBlockId(clickedEvent.extendedProps.timeBlockId);
-			setSelectedStatus(clickedEvent.extendedProps.status);
-			setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr));
-			setMainModalOpen(true);
+			if (clickedEvent) {
+				setSelectedTaskId(clickedEvent.extendedProps.taskId);
+				setSelectedTimeBlockId(clickedEvent.extendedProps.timeBlockId);
+				setSelectedStatus(clickedEvent.extendedProps.status);
+				setSelectdTimeBlockDate(removeTimezone(clickedEvent.startStr));
+				setMainModalOpen(true);
+			}
 		}
+
+		lastClickTime = now;
 	};
 
 	const closeDeleteModal = () => {
