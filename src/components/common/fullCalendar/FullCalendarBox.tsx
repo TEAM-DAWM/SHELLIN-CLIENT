@@ -34,7 +34,7 @@ interface FullCalendarBoxProps {
 }
 
 function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBoxProps) {
-	const { selectedTask } = useTodoSelectionStore();
+	const { selectedTask, clearSelectedTask } = useTodoSelectionStore();
 
 	const today = useMemo(() => new Date(), []);
 	const todayDate = today.toISOString().split('T')[0];
@@ -251,6 +251,8 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 				// conflict 에러 발생 시 복구
 				calendarApi.getEventById(selectedTask.id.toString())?.remove();
 			}
+
+			clearSelectedTask();
 		}
 	};
 
@@ -379,6 +381,8 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 			console.error('handleEventReceive error:', error);
 			info.event.remove(); // 추가된 이벤트 제거
 		}
+
+		clearSelectedTask();
 	};
 
 	// CalendarSettingDropdown handler
