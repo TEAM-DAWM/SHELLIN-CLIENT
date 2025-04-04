@@ -492,7 +492,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			/>
 			{isCalendarPopupOpen && (
 				<DateCorrectionModal
-					date={new Date().toISOString()}
+					date={startDate}
 					onClick={handleCalendarPopup}
 					top={9.8}
 					right={0.8}

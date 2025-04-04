@@ -9,6 +9,8 @@ interface CustomHeaderProps {
 	date: Date;
 	decreaseMonth: () => void;
 	increaseMonth: () => void;
+	changeMonth: (month: number) => void;
+	changeYear: (year: number) => void;
 	prevMonthButtonDisabled: boolean;
 	nextMonthButtonDisabled: boolean;
 	onChange: (date: Date | null) => void;
@@ -19,6 +21,8 @@ function CorrectionCustomHeader({
 	date,
 	decreaseMonth,
 	increaseMonth,
+	changeMonth,
+	changeYear,
 	prevMonthButtonDisabled,
 	nextMonthButtonDisabled,
 	onChange,
@@ -34,6 +38,13 @@ function CorrectionCustomHeader({
 	const IconButtonColorCss = css`
 		color: ${color.Grey.Grey4};
 	`;
+
+	const changeDateToToday = () => {
+		onChange(today);
+		changeYear(today.getUTCFullYear());
+		changeMonth(today.getUTCMonth());
+	};
+
 	return (
 		<HeaderLayout className="react-datepicker__header-custom">
 			<IconButton
@@ -55,7 +66,7 @@ function CorrectionCustomHeader({
 						label="오늘"
 						size="medium"
 						type="outlined-assistive"
-						onClick={() => onChange(today)}
+						onClick={changeDateToToday}
 						additionalCss={ButtonColorCss}
 					/>
 					<IconButton
