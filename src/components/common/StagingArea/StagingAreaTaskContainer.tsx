@@ -17,7 +17,7 @@ interface StagingAreaTaskContainerProps {
 }
 
 function StagingAreaTaskContainer({ tasks }: StagingAreaTaskContainerProps) {
-	const { selectedTask, setSelectedTask } = useTodoSelectionStore();
+	const { selectedTask } = useTodoSelectionStore();
 
 	useEffect(() => {
 		const container = document.getElementById('dumping-task-container');
@@ -84,8 +84,8 @@ function StagingAreaTaskContainer({ tasks }: StagingAreaTaskContainerProps) {
 												deadlineTime={task.deadLine?.time || undefined}
 												isStatusVisible={false}
 												taskId={task.id}
+												task={task}
 												targetDate=""
-												onClick={() => setSelectedTask(task)}
 											/>
 										</div>
 									)}

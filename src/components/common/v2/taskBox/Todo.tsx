@@ -7,7 +7,7 @@ import DropdownButton from '../control/DropdownButton';
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
 import useTaskSelectionStore from '@/store/useTaskSelectionStore';
-import { STATUS } from '@/types/tasks/taskType';
+import { STATUS, TaskType } from '@/types/tasks/taskType';
 import { formatTimeToDueTime } from '@/utils/formatDateTime';
 
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
@@ -18,9 +18,9 @@ type TodoProps = {
 	deadlineTime?: string;
 	status: StatusType;
 	isStatusVisible?: boolean;
-	onClick: () => void;
 	preventDoubleClick?: boolean;
 	taskId: number;
+	task: TaskType;
 	targetDate: string;
 };
 
@@ -30,22 +30,29 @@ function Todo({
 	status: initStatus,
 	isStatusVisible = true,
 	deadlineTime,
-	onClick,
 	taskId,
+	task,
 	preventDoubleClick,
 	targetDate,
 }: TodoProps) {
 	const [status, setStatus] = useState<StatusType>(initStatus);
 	const isCompleted = status === STATUS.COMPLETE;
-	const { selectedTask } = useTaskSelectionStore();
+	const { selectedTask, setSelectedTask, clearSelectedTask } = useTaskSelectionStore();
 	const isSelected = selectedTask?.id === taskId;
-	console.log(isSelected, selectedTask?.id);
 
 	const [isModalOpen, setModalOpen] = useState(false);
 
 	useEffect(() => {
 		setStatus(initStatus);
 	}, [initStatus]);
+
+	const handleTaskClick = () => {
+		if (selectedTask && selectedTask.id === task.id) {
+			clearSelectedTask();
+		} else {
+			setSelectedTask(task);
+		}
+	};
 
 	/** 모달 띄우기 */
 	const handleDoubleClick = (e: React.MouseEvent) => {
@@ -79,7 +86,7 @@ function Todo({
 					isSelected={isSelected}
 					onDoubleClick={handleDoubleClick}
 					draggable
-					onClick={onClick}
+					onClick={() => handleTaskClick()}
 				>
 					<TodoWrapper>
 						<span className="todo-title">{title}</span>

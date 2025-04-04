@@ -16,7 +16,7 @@ interface TargetTaskSectionProps {
 	targetDate: string;
 }
 function TargetTaskSection({ tasks, targetDate }: TargetTaskSectionProps) {
-	const { selectedTask, setSelectedTask } = useTodoSelectionStore();
+	const { selectedTask } = useTodoSelectionStore();
 
 	useEffect(() => {
 		const container = document.getElementById('todolist-task-container');
@@ -81,8 +81,8 @@ function TargetTaskSection({ tasks, targetDate }: TargetTaskSectionProps) {
 										deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
 										deadlineTime={task.deadLine?.time || undefined}
 										taskId={task.id}
+										task={task}
 										targetDate={targetDate}
-										onClick={() => setSelectedTask(task)}
 										status={task.status}
 									/>
 								</TodoSizedWrapper>
