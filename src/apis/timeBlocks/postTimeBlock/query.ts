@@ -12,10 +12,10 @@ const usePostTimeBlock = () => {
 	const mutation = useMutation({
 		mutationFn: async ({ taskId, startTime, endTime, isAllTime }: PostTimeBlokType) => {
 			const response = await CreateTimeBlock({ taskId, startTime, endTime, isAllTime });
-			/** response.code가 'conflict'일 때 타임블록 에러 토스트 출력 */
-			if (response && response.code === 'conflict') {
+			/** response.code가 'info'일 때 타임블록 에러 토스트 출력 */
+			if (response && response.code === 'info') {
 				addToast(response.message, response.code);
-				throw new Error('conflict');
+				throw new Error('info');
 			}
 			return response;
 		},

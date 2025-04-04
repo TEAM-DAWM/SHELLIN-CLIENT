@@ -140,7 +140,7 @@ function MainSettingModal({
 		} catch (error) {
 			console.error('handleConfirm error:', error);
 
-			if (error === 'conflict') {
+			if (error === 'info') {
 				return; // handleTimeBlockUpdate conflict나면 종료
 			}
 		} finally {
@@ -202,7 +202,7 @@ function MainSettingModal({
 			});
 		} catch (error) {
 			console.error('handleTimeBlockUpdate error:', error);
-			throw new Error('conflict');
+			throw new Error('info');
 		}
 	};
 
