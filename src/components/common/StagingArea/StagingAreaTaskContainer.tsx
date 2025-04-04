@@ -7,17 +7,18 @@ import BtnTaskContainer from '../BtnTaskContainer';
 import Todo from '../v2/taskBox/Todo';
 
 import EmptyViewStaging from '@/components/common/EmptyViewStaging';
+import useTodoSelectionStore from '@/store/useTaskSelectionStore';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
 import { formatDatetoStringKor } from '@/utils/formatDateTime';
 
 interface StagingAreaTaskContainerProps {
-	handleSelectedTarget: (task: TaskType | null) => void;
-	selectedTarget: TaskType | null;
 	tasks: TaskType[];
 	targetDate?: string;
 }
 
-function StagingAreaTaskContainer({ handleSelectedTarget, selectedTarget, tasks }: StagingAreaTaskContainerProps) {
+function StagingAreaTaskContainer({ tasks }: StagingAreaTaskContainerProps) {
+	const { selectedTask, setSelectedTask } = useTodoSelectionStore();
+
 	useEffect(() => {
 		const container = document.getElementById('dumping-task-container');
 
@@ -25,7 +26,7 @@ function StagingAreaTaskContainer({ handleSelectedTarget, selectedTarget, tasks 
 			const draggable = new FullCalendarDraggable(container, {
 				itemSelector: '.todo-item', // 드래그 가능한 요소
 				eventData: () => {
-					if (selectedTarget) {
+					if (selectedTask) {
 						setTimeout(() => {
 							const mirrorElement = document.querySelector('.fc-event-dragging');
 							if (mirrorElement) {
@@ -34,8 +35,8 @@ function StagingAreaTaskContainer({ handleSelectedTarget, selectedTarget, tasks 
 							}
 						}, 0);
 						return {
-							id: selectedTarget.id.toString(),
-							title: selectedTarget.name,
+							id: selectedTask.id.toString(),
+							title: selectedTask.name,
 						};
 					}
 					return null;
@@ -49,7 +50,7 @@ function StagingAreaTaskContainer({ handleSelectedTarget, selectedTarget, tasks 
 		}
 
 		return undefined;
-	}, [selectedTarget]);
+	}, [selectedTask]);
 
 	return (
 		<StagingAreaTaskContainerLayout>
@@ -84,7 +85,7 @@ function StagingAreaTaskContainer({ handleSelectedTarget, selectedTarget, tasks 
 												isStatusVisible={false}
 												taskId={task.id}
 												targetDate=""
-												onClick={() => handleSelectedTarget(task)}
+												onClick={() => setSelectedTask(task)}
 											/>
 										</div>
 									)}

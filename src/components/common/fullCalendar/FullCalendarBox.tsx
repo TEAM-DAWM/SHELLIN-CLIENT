@@ -24,17 +24,18 @@ import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarSty
 import customSlotLabelContent from '@/components/common/fullCalendar/fullCalendarUtils';
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
-import { TaskType } from '@/types/tasks/taskType';
+import useTodoSelectionStore from '@/store/useTaskSelectionStore';
 import { formatDateToLocal, formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface FullCalendarBoxProps {
 	size: 'small' | 'big';
 	selectDate?: Date | null;
-	selectedTarget?: TaskType | null;
 	handleChangeDate: (target: Date) => void;
 }
 
-function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }: FullCalendarBoxProps) {
+function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBoxProps) {
+	const { selectedTask } = useTodoSelectionStore();
+
 	const today = useMemo(() => new Date(), []);
 	const todayDate = today.toISOString().split('T')[0];
 	const [currentView, setCurrentView] = useState('timeGridWeek');
@@ -197,12 +198,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	};
 
 	const addEventWhenDragged = async (selectInfo: DateSelectArg) => {
-		if (calendarRef.current && selectedTarget && selectedTarget.id !== -1) {
+		if (calendarRef.current && selectedTask && selectedTask.id !== -1) {
 			const calendarApi = calendarRef.current.getApi();
 
 			const existingEvents = calendarApi.getEvents();
 			existingEvents.forEach((event) => {
-				if (event.id === selectedTarget.id.toString()) {
+				if (event.id === selectedTask.id.toString()) {
 					event.remove();
 				}
 			});
@@ -223,14 +224,14 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			}
 
 			calendarApi.addEvent({
-				id: selectedTarget.id.toString(),
-				title: selectedTarget.name,
+				id: selectedTask.id.toString(),
+				title: selectedTask.name,
 				start: selectInfo.startStr,
 				end: selectInfo.endStr,
 				allDay: selectInfo.allDay,
 				classNames: 'tasks',
 				extendedProps: {
-					taskId: selectedTarget.id,
+					taskId: selectedTask.id,
 					timeBlockId: null,
 				},
 			});
@@ -240,7 +241,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 			try {
 				await createMutate({
-					taskId: selectedTarget.id,
+					taskId: selectedTask.id,
 					startTime: startStr,
 					endTime: endStr,
 					isAllTime: selectInfo.allDay,
@@ -248,7 +249,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			} catch (error) {
 				console.error('addEventWhenDragged error:', error);
 				// conflict 에러 발생 시 복구
-				calendarApi.getEventById(selectedTarget.id.toString())?.remove();
+				calendarApi.getEventById(selectedTask.id.toString())?.remove();
 			}
 		}
 	};
@@ -259,7 +260,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			calendarApi.unselect();
 		}
 
-		if (selectedTarget && selectedTarget.id !== -1) {
+		if (selectedTask && selectedTask.id !== -1) {
 			addEventWhenDragged(selectInfo);
 		}
 	};
@@ -296,7 +297,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		}
 	};
 
-	const isSelectable = !!selectedTarget;
+	const isSelectable = !!selectedTask;
 
 	const handleDelete = () => {
 		if (selectedTaskId && selectedTimeBlockId) {

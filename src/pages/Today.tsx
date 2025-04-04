@@ -15,8 +15,6 @@ import { TaskType } from '@/types/tasks/taskType';
 import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 function Today() {
-	const [selectedTarget, setSelectedTarget] = useState<TaskType | null>(null);
-
 	const storedStagingSortOrder = localStorage.getItem('stagingSortOrder') as SortOrderType | null;
 	const storedTargetSortOrder = localStorage.getItem('targetSortOrder') as SortOrderType | null;
 
@@ -47,9 +45,12 @@ function Today() {
 		}
 	};
 
-	const handleSelectedTarget = (task: TaskType | null) => {
-		setSelectedTarget(task);
-	};
+	/**
+	 * TODO: 얘를 전역으로 전환해줘야함
+	   const handleSelectedTarget = (task: TaskType | null) => {
+	   setSelectedTarget(task);
+	   };
+	 */
 
 	const handlePrevBtn = () => {
 		const newDate = new Date(selectedDate);
@@ -153,8 +154,6 @@ function Today() {
 			<NavBar isOpen={isDumpAreaOpen} handleSideBar={handleSidebar} />
 			<DragDropContext onDragEnd={handleDragEnd}>
 				<StagingArea
-					handleSelectedTarget={(task) => handleSelectedTarget(task)}
-					selectedTarget={selectedTarget}
 					tasks={stagingData}
 					targetDate={targetDate}
 					isStagingOpen={isDumpAreaOpen}
@@ -166,8 +165,6 @@ function Today() {
 					<BtnTaskContainer type="target" />
 				) : (
 					<TargetArea
-						handleSelectedTarget={(task) => handleSelectedTarget(task)}
-						selectedTarget={selectedTarget}
 						tasks={targetData}
 						onClickPrevDate={handlePrevBtn}
 						onClickNextDate={handleNextBtn}
@@ -182,7 +179,6 @@ function Today() {
 			<CalendarWrapper>
 				<FullCalendarBox
 					size={isDumpAreaOpen ? 'small' : 'big'}
-					selectedTarget={selectedTarget}
 					selectDate={calenderSelectedDate}
 					handleChangeDate={handleChangeCalenderDate}
 				/>
