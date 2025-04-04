@@ -6,6 +6,7 @@ import DropdownButton from '../control/DropdownButton';
 
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { STATUS } from '@/types/tasks/taskType';
 import { formatTimeToDueTime } from '@/utils/formatDateTime';
 
@@ -36,12 +37,16 @@ function Todo({
 }: TodoProps) {
 	const [status, setStatus] = useState<StatusType>(initStatus);
 	const isCompleted = status === STATUS.COMPLETE;
+	const { selectedTask } = useTaskSelectionStore();
+	const isSelected = selectedTask?.id === taskId;
+	console.log(isSelected, selectedTask?.id);
 
 	const [isModalOpen, setModalOpen] = useState(false);
 
 	useEffect(() => {
 		setStatus(initStatus);
 	}, [initStatus]);
+
 	/** 모달 띄우기 */
 	const handleDoubleClick = (e: React.MouseEvent) => {
 		if (preventDoubleClick) {
@@ -69,7 +74,13 @@ function Todo({
 	return (
 		<>
 			<div className="todo-item">
-				<TodoContainer isCompleted={isCompleted} onDoubleClick={handleDoubleClick} draggable onClick={onClick}>
+				<TodoContainer
+					isCompleted={isCompleted}
+					isSelected={isSelected}
+					onDoubleClick={handleDoubleClick}
+					draggable
+					onClick={onClick}
+				>
 					<TodoWrapper>
 						<span className="todo-title">{title}</span>
 						{deadlineDate && (
@@ -137,7 +148,7 @@ const textStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boolean
 	}
 `;
 
-const TodoContainer = styled.div<{ isCompleted: boolean }>`
+const TodoContainer = styled.div<{ isCompleted: boolean; isSelected: boolean }>`
 	${({ theme }) => baseStyles({ theme })}
 	${({ theme, isCompleted }) => textStyles({ theme, isCompleted })}
 	border: 1px solid
@@ -152,6 +163,13 @@ const TodoContainer = styled.div<{ isCompleted: boolean }>`
 		background-color: ${({ theme }) => theme.colorToken.Component.strong};
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.primaryStrong};
 	}
+
+	${({ isSelected, theme }) =>
+		isSelected &&
+		`
+        background-color: ${theme.colorToken.Component.strong};
+        border: 1px solid ${theme.colorToken.Outline.primaryStrong};
+    `}
 `;
 
 const TodoWrapper = styled.div`
