@@ -11,6 +11,7 @@ import NavBar from '@/components/common/NavBar';
 import StagingArea from '@/components/common/StagingArea/StagingArea';
 import TargetArea from '@/components/targetArea/TargetArea';
 import { SortOrderType } from '@/constants/sortType';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { TaskType } from '@/types/tasks/taskType';
 import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
@@ -25,6 +26,8 @@ function Today() {
 	const [calenderSelectedDate, setCalenderSelectedDate] = useState(new Date());
 	const targetDate = formatDatetoLocalDate(selectedDate);
 	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
+
+	const { clearSelectedTask } = useTaskSelectionStore();
 
 	// Task 목록 Get
 	const { data: stagingData } = useGetTasks({ sortOrder: stagingSortOrder });
@@ -147,6 +150,7 @@ function Today() {
 				taskList: newOrder,
 			});
 		}
+		clearSelectedTask();
 	};
 
 	return (
