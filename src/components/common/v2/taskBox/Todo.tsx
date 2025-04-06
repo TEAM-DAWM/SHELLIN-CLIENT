@@ -6,6 +6,7 @@ import DropdownButton from '../control/DropdownButton';
 
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
+import useOutsideTaskClick from '@/hooks/useOutsideTaskClick';
 import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { STATUS, TaskType } from '@/types/tasks/taskType';
 import { formatTimeToDueTime } from '@/utils/formatDateTime';
@@ -39,6 +40,7 @@ function Todo({
 	const isCompleted = status === STATUS.COMPLETE;
 	const { selectedTask, setSelectedTask, clearSelectedTask } = useTaskSelectionStore();
 	const isSelected = selectedTask?.id === taskId;
+	const outsideClickRef = useOutsideTaskClick();
 
 	const [isModalOpen, setModalOpen] = useState(false);
 
@@ -82,6 +84,7 @@ function Todo({
 		<>
 			<div className="todo-item">
 				<TodoContainer
+					ref={outsideClickRef}
 					isCompleted={isCompleted}
 					isSelected={isSelected}
 					onDoubleClick={handleDoubleClick}

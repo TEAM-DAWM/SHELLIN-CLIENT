@@ -34,7 +34,7 @@ interface FullCalendarBoxProps {
 }
 
 function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBoxProps) {
-	const { selectedTask, clearSelectedTask } = useTodoSelectionStore();
+	const { selectedTask, clearSelectedTask, setIsDragging } = useTodoSelectionStore();
 
 	const today = useMemo(() => new Date(), []);
 	const todayDate = today.toISOString().split('T')[0];
@@ -176,11 +176,6 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 		setMainModalOpen(false);
 		setSelectedTaskId(null);
 		setSelectedTimeBlockId(null);
-
-		/** TODO:
-		 * 닫힐 때 이벤트 생성하기
-		 * createMutate({ taskId: Number(info.event.id), startTime: start, endTime: end });
-		 * */
 	};
 
 	const removeTimezone = (str: string, isAlltime: boolean = false) => {
@@ -250,6 +245,8 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 				console.error('addEventWhenDragged error:', error);
 				// conflict 에러 발생 시 복구
 				calendarApi.getEventById(selectedTask.id.toString())?.remove();
+			} finally {
+				setIsDragging(false);
 			}
 
 			clearSelectedTask();
@@ -257,6 +254,7 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 	};
 
 	const handleSelect = (selectInfo: DateSelectArg) => {
+		setIsDragging(true);
 		if (calendarRef.current) {
 			const calendarApi = calendarRef.current.getApi();
 			calendarApi.unselect();
@@ -494,6 +492,12 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 				eventDrop={updateEvent} // 기존 이벤트 드래그 수정 핸들러
 				eventResize={updateEvent} // 기존 이벤트 리사이즈 수정 핸들러
 				eventReceive={(info) => handleEventReceive(info)}
+				eventDragStart={() => {
+					setIsDragging(true);
+				}}
+				eventDragStop={() => {
+					setIsDragging(false);
+				}}
 			/>
 			{isCalendarPopupOpen && (
 				<DateCorrectionModal

@@ -48,13 +48,6 @@ function Today() {
 		}
 	};
 
-	/**
-	 * TODO: 얘를 전역으로 전환해줘야함
-	   const handleSelectedTarget = (task: TaskType | null) => {
-	   setSelectedTarget(task);
-	   };
-	 */
-
 	const handlePrevBtn = () => {
 		const newDate = new Date(selectedDate);
 		newDate.setDate(newDate.getDate() - 1);
