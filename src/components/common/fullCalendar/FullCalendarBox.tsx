@@ -25,7 +25,7 @@ import customSlotLabelContent from '@/components/common/fullCalendar/fullCalenda
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
 import useOutsideTaskClick from '@/hooks/useOutsideTaskClick';
-import useTodoSelectionStore from '@/store/useTaskSelectionStore';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { formatDateToLocal, formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface FullCalendarBoxProps {
@@ -35,7 +35,7 @@ interface FullCalendarBoxProps {
 }
 
 function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBoxProps) {
-	const { selectedTask, clearSelectedTask, setIsDragging } = useTodoSelectionStore();
+	const { selectedTask, clearSelectedTask, setIsDragging } = useTaskSelectionStore();
 
 	const today = useMemo(() => new Date(), []);
 	const todayDate = today.toISOString().split('T')[0];

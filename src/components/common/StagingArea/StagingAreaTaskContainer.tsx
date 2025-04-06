@@ -7,7 +7,7 @@ import BtnTaskContainer from '../BtnTaskContainer';
 import Todo from '../v2/taskBox/Todo';
 
 import EmptyViewStaging from '@/components/common/EmptyViewStaging';
-import useTodoSelectionStore from '@/store/useTaskSelectionStore';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { StatusType, TaskType } from '@/types/tasks/taskType';
 import { formatDatetoStringKor } from '@/utils/formatDateTime';
 
@@ -17,7 +17,7 @@ interface StagingAreaTaskContainerProps {
 }
 
 function StagingAreaTaskContainer({ tasks }: StagingAreaTaskContainerProps) {
-	const { selectedTask } = useTodoSelectionStore();
+	const { selectedTask } = useTaskSelectionStore();
 
 	useEffect(() => {
 		const container = document.getElementById('dumping-task-container');

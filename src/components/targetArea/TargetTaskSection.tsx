@@ -7,7 +7,7 @@ import BtnTaskContainer from '../common/BtnTaskContainer';
 
 import EmptyViewToday from '@/components/common/EmptyViewToday';
 import Todo from '@/components/common/v2/taskBox/Todo';
-import useTodoSelectionStore from '@/store/useTaskSelectionStore';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { TaskType } from '@/types/tasks/taskType';
 import { formatDatetoStringKor } from '@/utils/formatDateTime';
 
@@ -16,7 +16,7 @@ interface TargetTaskSectionProps {
 	targetDate: string;
 }
 function TargetTaskSection({ tasks, targetDate }: TargetTaskSectionProps) {
-	const { selectedTask } = useTodoSelectionStore();
+	const { selectedTask } = useTaskSelectionStore();
 
 	useEffect(() => {
 		const container = document.getElementById('todolist-task-container');
