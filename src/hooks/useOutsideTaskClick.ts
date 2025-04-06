@@ -1,14 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, RefObject } from 'react';
 
 import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 
-const useOutsideTaskClick = () => {
-	const ref = useRef<HTMLDivElement>(null);
-	const { clearSelectedTask, selectedTask, isDragging } = useTaskSelectionStore();
+const useOutsideTaskClick = (calendarRef: RefObject<HTMLElement>) => {
+	const { clearSelectedTask, selectedTask } = useTaskSelectionStore();
 
 	useEffect(() => {
-		const handleMouseDown = (event: MouseEvent): void => {
-			if (selectedTask && !isDragging && ref.current && !ref.current.contains(event.target as Node)) {
+		const handleMouseDown = (event: MouseEvent) => {
+			if (calendarRef.current && calendarRef.current.contains(event.target as Node)) {
+				return;
+			}
+			if (selectedTask) {
 				clearSelectedTask();
 			}
 		};
@@ -18,9 +20,7 @@ const useOutsideTaskClick = () => {
 		return () => {
 			document.removeEventListener('mousedown', handleMouseDown);
 		};
-	}, [clearSelectedTask, selectedTask, isDragging]);
-
-	return ref;
+	}, [calendarRef, clearSelectedTask, selectedTask]);
 };
 
 export default useOutsideTaskClick;
