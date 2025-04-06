@@ -34,6 +34,10 @@ export const Default: Story = {
 		isStatusVisible: true,
 		taskId: 1,
 		targetDate: '2024년 12월 31일',
-		onClick: () => {},
+		task: {
+			id: 1,
+			name: 'Sample Task',
+			status: '미완료',
+		},
 	},
 };
