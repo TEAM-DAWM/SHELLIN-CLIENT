@@ -21,9 +21,9 @@ const usePatchTimeBlock = () => {
 			}
 
 			const response = await PatchTimeBlock({ taskId, timeBlockId, startTime, endTime, isAllTime });
-			if (response && response.code === 'conflict') {
+			if (response && response.code === 'info') {
 				addToast(response.message, response.code);
-				throw new Error('conflict');
+				throw new Error('info');
 			}
 			return response;
 		},

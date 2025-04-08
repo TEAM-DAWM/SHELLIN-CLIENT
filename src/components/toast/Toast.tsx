@@ -11,7 +11,7 @@ const toastIcon: Record<ToastType, { icon: JSX.Element }> = {
 	error: {
 		icon: <Icon name="IcnDelete" />,
 	},
-	conflict: {
+	info: {
 		icon: <Icon name="IcnAlert" />,
 	},
 };
@@ -63,7 +63,6 @@ const ToastMessage = styled.div<{ code: string }>`
 			case 'error':
 				return theme.color.Orange.Orange5;
 			case 'info':
-			case 'conflict':
 				return theme.color.Grey.Grey7;
 			default:
 				return theme.colorToken.Primary.normal;
