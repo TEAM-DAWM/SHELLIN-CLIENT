@@ -7,16 +7,17 @@ import BtnTaskContainer from '../common/BtnTaskContainer';
 
 import EmptyViewToday from '@/components/common/EmptyViewToday';
 import Todo from '@/components/common/v2/taskBox/Todo';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { TaskType } from '@/types/tasks/taskType';
 import { formatDatetoStringKor } from '@/utils/formatDateTime';
 
 interface TargetTaskSectionProps {
-	handleSelectedTarget: (task: TaskType | null) => void;
-	selectedTarget: TaskType | null;
 	tasks: TaskType[];
 	targetDate: string;
 }
-function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, targetDate }: TargetTaskSectionProps) {
+function TargetTaskSection({ tasks, targetDate }: TargetTaskSectionProps) {
+	const { selectedTask } = useTaskSelectionStore();
+
 	useEffect(() => {
 		const container = document.getElementById('todolist-task-container');
 		// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -25,7 +26,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 			const draggable = new FullCalendarDraggable(container, {
 				itemSelector: '.todo-item',
 				eventData: () => {
-					if (selectedTarget) {
+					if (selectedTask) {
 						setTimeout(() => {
 							const mirrorElement = document.querySelector('.fc-event-dragging');
 							if (mirrorElement) {
@@ -34,8 +35,8 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 							}
 						}, 0);
 						return {
-							id: selectedTarget.id.toString(),
-							title: selectedTarget.name,
+							id: selectedTask.id.toString(),
+							title: selectedTask.name,
 						};
 					}
 					return null;
@@ -49,7 +50,7 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 		}
 
 		return undefined;
-	}, [selectedTarget]);
+	}, [selectedTask]);
 
 	return (
 		<BtnTaskContainer id="todolist-task-container" type="target">
@@ -80,8 +81,8 @@ function TargetTaskSection({ handleSelectedTarget, selectedTarget, tasks, target
 										deadlineDate={formatDatetoStringKor(task.deadLine?.date)}
 										deadlineTime={task.deadLine?.time || undefined}
 										taskId={task.id}
+										task={task}
 										targetDate={targetDate}
-										onClick={() => handleSelectedTarget(task)}
 										status={task.status}
 									/>
 								</TodoSizedWrapper>

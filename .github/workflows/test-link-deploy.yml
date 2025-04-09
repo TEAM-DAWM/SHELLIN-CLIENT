@@ -22,5 +22,9 @@ jobs:
         run: |
           git config user.name "Kjiw0n"
           git config user.email "rwd0904@naver.com"
+          git reset $(git rev-list --max-parents=0 HEAD)
+          git add .
+          git reset -- .github/
+          git commit -m "chore: deploy on $(date +'%Y-%m-%d %H:%M')"
           git remote add test "$TEST_DEPLOY_REPO"
           git push --force test develop

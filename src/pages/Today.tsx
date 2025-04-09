@@ -11,12 +11,11 @@ import NavBar from '@/components/common/NavBar';
 import StagingArea from '@/components/common/StagingArea/StagingArea';
 import TargetArea from '@/components/targetArea/TargetArea';
 import { SortOrderType } from '@/constants/sortType';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { TaskType } from '@/types/tasks/taskType';
 import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 function Today() {
-	const [selectedTarget, setSelectedTarget] = useState<TaskType | null>(null);
-
 	const storedStagingSortOrder = localStorage.getItem('stagingSortOrder') as SortOrderType | null;
 	const storedTargetSortOrder = localStorage.getItem('targetSortOrder') as SortOrderType | null;
 
@@ -27,6 +26,8 @@ function Today() {
 	const [calenderSelectedDate, setCalenderSelectedDate] = useState(new Date());
 	const targetDate = formatDatetoLocalDate(selectedDate);
 	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
+
+	const { isDragging, clearSelectedTask } = useTaskSelectionStore();
 
 	// Task 목록 Get
 	const { data: stagingData } = useGetTasks({ sortOrder: stagingSortOrder });
@@ -45,10 +46,6 @@ function Today() {
 			setTargetSortOrder(order);
 			localStorage.setItem('targetSortOrder', order);
 		}
-	};
-
-	const handleSelectedTarget = (task: TaskType | null) => {
-		setSelectedTarget(task);
 	};
 
 	const handlePrevBtn = () => {
@@ -146,15 +143,23 @@ function Today() {
 				taskList: newOrder,
 			});
 		}
+		clearSelectedTask();
+	};
+
+	const handleClickOutside = (e: React.MouseEvent) => {
+		const target = e.target as HTMLElement;
+
+		if (!target.closest('.todo-item') && !target.closest('.fc-view-harness fc-view-harness-active') && !isDragging) {
+			// 클릭된 요소가 todo-item 또는 fc-view-harness(캘린더 이벤트 추가 영역) 내부가 아닐 경우
+			clearSelectedTask();
+		}
 	};
 
 	return (
-		<TodayLayout>
+		<TodayLayout onClick={handleClickOutside}>
 			<NavBar isOpen={isDumpAreaOpen} handleSideBar={handleSidebar} />
 			<DragDropContext onDragEnd={handleDragEnd}>
 				<StagingArea
-					handleSelectedTarget={(task) => handleSelectedTarget(task)}
-					selectedTarget={selectedTarget}
 					tasks={stagingData}
 					targetDate={targetDate}
 					isStagingOpen={isDumpAreaOpen}
@@ -166,8 +171,6 @@ function Today() {
 					<BtnTaskContainer type="target" />
 				) : (
 					<TargetArea
-						handleSelectedTarget={(task) => handleSelectedTarget(task)}
-						selectedTarget={selectedTarget}
 						tasks={targetData}
 						onClickPrevDate={handlePrevBtn}
 						onClickNextDate={handleNextBtn}
@@ -182,7 +185,6 @@ function Today() {
 			<CalendarWrapper>
 				<FullCalendarBox
 					size={isDumpAreaOpen ? 'small' : 'big'}
-					selectedTarget={selectedTarget}
 					selectDate={calenderSelectedDate}
 					handleChangeDate={handleChangeCalenderDate}
 				/>

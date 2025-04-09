@@ -24,17 +24,18 @@ import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarSty
 import customSlotLabelContent from '@/components/common/fullCalendar/fullCalendarUtils';
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
-import { TaskType } from '@/types/tasks/taskType';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { formatDateToLocal, formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 interface FullCalendarBoxProps {
 	size: 'small' | 'big';
 	selectDate?: Date | null;
-	selectedTarget?: TaskType | null;
 	handleChangeDate: (target: Date) => void;
 }
 
-function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }: FullCalendarBoxProps) {
+function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBoxProps) {
+	const { selectedTask, clearSelectedTask, setIsDragging } = useTaskSelectionStore();
+
 	const today = useMemo(() => new Date(), []);
 	const todayDate = today.toISOString().split('T')[0];
 	const [currentView, setCurrentView] = useState('timeGridWeek');
@@ -73,7 +74,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	const { mutateAsync: updateMutate } = useUpdateTimeBlock();
 	const { mutate: deleteMutate } = useDeleteTimeBlock();
 
-	// 추후 전역상태로 처리 예정
 	interface EventData {
 		title: string;
 		start: string;
@@ -104,7 +104,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 	const handleViewChange = (view: ViewMountArg) => {
 		setCurrentView(view.view.type);
-		// updateRange(view.view.type);
 	};
 
 	const handleDatesSet = (dateInfo: DatesSetArg) => {
@@ -148,6 +147,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 	const handleEventClick = (info: EventClickArg) => {
 		const now = Date.now();
+		info.jsEvent.stopPropagation();
 
 		// 0.3초 내에 클릭 시 더블클릭으로 간주
 		if (now - lastClickTime < 300) {
@@ -175,11 +175,6 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		setMainModalOpen(false);
 		setSelectedTaskId(null);
 		setSelectedTimeBlockId(null);
-
-		/** TODO:
-		 * 닫힐 때 이벤트 생성하기
-		 * createMutate({ taskId: Number(info.event.id), startTime: start, endTime: end });
-		 * */
 	};
 
 	const removeTimezone = (str: string, isAlltime: boolean = false) => {
@@ -197,12 +192,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 	};
 
 	const addEventWhenDragged = async (selectInfo: DateSelectArg) => {
-		if (calendarRef.current && selectedTarget && selectedTarget.id !== -1) {
+		if (calendarRef.current && selectedTask && selectedTask.id !== -1) {
 			const calendarApi = calendarRef.current.getApi();
 
 			const existingEvents = calendarApi.getEvents();
 			existingEvents.forEach((event) => {
-				if (event.id === selectedTarget.id.toString()) {
+				if (event.id === selectedTask.id.toString()) {
 					event.remove();
 				}
 			});
@@ -223,14 +218,14 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			}
 
 			calendarApi.addEvent({
-				id: selectedTarget.id.toString(),
-				title: selectedTarget.name,
+				id: selectedTask.id.toString(),
+				title: selectedTask.name,
 				start: selectInfo.startStr,
 				end: selectInfo.endStr,
 				allDay: selectInfo.allDay,
 				classNames: 'tasks',
 				extendedProps: {
-					taskId: selectedTarget.id,
+					taskId: selectedTask.id,
 					timeBlockId: null,
 				},
 			});
@@ -240,7 +235,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 
 			try {
 				await createMutate({
-					taskId: selectedTarget.id,
+					taskId: selectedTask.id,
 					startTime: startStr,
 					endTime: endStr,
 					isAllTime: selectInfo.allDay,
@@ -248,8 +243,9 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			} catch (error) {
 				console.error('addEventWhenDragged error:', error);
 				// conflict 에러 발생 시 복구
-				calendarApi.getEventById(selectedTarget.id.toString())?.remove();
+				calendarApi.getEventById(selectedTask.id.toString())?.remove();
 			}
+			clearSelectedTask();
 		}
 	};
 
@@ -259,7 +255,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			calendarApi.unselect();
 		}
 
-		if (selectedTarget && selectedTarget.id !== -1) {
+		if (selectedTask && selectedTask.id !== -1) {
 			addEventWhenDragged(selectInfo);
 		}
 	};
@@ -296,7 +292,7 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 		}
 	};
 
-	const isSelectable = !!selectedTarget;
+	const isSelectable = !!selectedTask;
 
 	const handleDelete = () => {
 		if (selectedTaskId && selectedTimeBlockId) {
@@ -378,6 +374,8 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 			console.error('handleEventReceive error:', error);
 			info.event.remove(); // 추가된 이벤트 제거
 		}
+
+		clearSelectedTask();
 	};
 
 	// CalendarSettingDropdown handler
@@ -489,6 +487,12 @@ function FullCalendarBox({ size, selectDate, selectedTarget, handleChangeDate }:
 				eventDrop={updateEvent} // 기존 이벤트 드래그 수정 핸들러
 				eventResize={updateEvent} // 기존 이벤트 리사이즈 수정 핸들러
 				eventReceive={(info) => handleEventReceive(info)}
+				eventDragStart={() => {
+					setIsDragging(true);
+				}}
+				eventDragStop={() => {
+					setIsDragging(false);
+				}}
 			/>
 			{isCalendarPopupOpen && (
 				<DateCorrectionModal

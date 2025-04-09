@@ -9,7 +9,7 @@ import FilterSection from '@/components/targetArea/FilterSection';
 import { StagingAreaProps } from '@/types/area/taskAreaType';
 
 function StagingArea(props: StagingAreaProps) {
-	const { handleSelectedTarget, selectedTarget, tasks, sortOrder, handleSortOrder, targetDate, isStagingOpen } = props;
+	const { tasks, sortOrder, handleSortOrder, targetDate, isStagingOpen } = props;
 
 	return (
 		<StagingAreaLayout isOpen={isStagingOpen}>
@@ -25,12 +25,7 @@ function StagingArea(props: StagingAreaProps) {
 				<Droppable droppableId="staging">
 					{(provided) => (
 						<SizedWrapper ref={provided.innerRef} {...provided.droppableProps} style={{ height: '100%' }}>
-							<StagingAreaTaskContainer
-								handleSelectedTarget={handleSelectedTarget}
-								selectedTarget={selectedTarget}
-								tasks={tasks}
-								targetDate={targetDate}
-							/>
+							<StagingAreaTaskContainer tasks={tasks} targetDate={targetDate} />
 							{provided.placeholder}
 						</SizedWrapper>
 					)}

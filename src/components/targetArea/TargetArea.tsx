@@ -11,8 +11,6 @@ import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 function TargetArea(props: TargetAreaProps) {
 	const {
-		handleSelectedTarget,
-		selectedTarget,
 		tasks,
 		onClickPrevDate,
 		onClickNextDate,
@@ -47,12 +45,7 @@ function TargetArea(props: TargetAreaProps) {
 			<Droppable droppableId="target">
 				{(provided) => (
 					<DroppableWrapper ref={provided.innerRef} {...provided.droppableProps} style={{ height: '100%' }}>
-						<TargetTaskSection
-							handleSelectedTarget={handleSelectedTarget}
-							selectedTarget={selectedTarget}
-							tasks={tasks}
-							targetDate={formatDatetoLocalDate(targetDate)}
-						/>
+						<TargetTaskSection tasks={tasks} targetDate={formatDatetoLocalDate(targetDate)} />
 						{provided.placeholder}
 					</DroppableWrapper>
 				)}
