@@ -27,7 +27,7 @@ function Today() {
 	const targetDate = formatDatetoLocalDate(selectedDate);
 	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
 
-	const { clearSelectedTask } = useTaskSelectionStore();
+	const { isDragging, clearSelectedTask } = useTaskSelectionStore();
 
 	// Task 목록 Get
 	const { data: stagingData } = useGetTasks({ sortOrder: stagingSortOrder });
@@ -149,7 +149,7 @@ function Today() {
 	const handleClickOutside = (e: React.MouseEvent) => {
 		const target = e.target as HTMLElement;
 
-		if (!target.closest('.todo-item') && !target.closest('.fc-view-harness fc-view-harness-active')) {
+		if (!target.closest('.todo-item') && !target.closest('.fc-view-harness fc-view-harness-active') && !isDragging) {
 			// 클릭된 요소가 todo-item 또는 fc-view-harness(캘린더 이벤트 추가 영역) 내부가 아닐 경우
 			clearSelectedTask();
 		}

@@ -147,6 +147,7 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 
 	const handleEventClick = (info: EventClickArg) => {
 		const now = Date.now();
+		info.jsEvent.stopPropagation();
 
 		// 0.3초 내에 클릭 시 더블클릭으로 간주
 		if (now - lastClickTime < 300) {
@@ -243,16 +244,12 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 				console.error('addEventWhenDragged error:', error);
 				// conflict 에러 발생 시 복구
 				calendarApi.getEventById(selectedTask.id.toString())?.remove();
-			} finally {
-				setIsDragging(false);
 			}
-
 			clearSelectedTask();
 		}
 	};
 
 	const handleSelect = (selectInfo: DateSelectArg) => {
-		setIsDragging(true);
 		if (calendarRef.current) {
 			const calendarApi = calendarRef.current.getApi();
 			calendarApi.unselect();
