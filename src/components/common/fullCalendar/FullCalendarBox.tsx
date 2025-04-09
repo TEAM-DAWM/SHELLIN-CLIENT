@@ -24,7 +24,6 @@ import FullCalendarLayout from '@/components/common/fullCalendar/FullCalendarSty
 import customSlotLabelContent from '@/components/common/fullCalendar/fullCalendarUtils';
 import MODAL from '@/constants/modalLocation';
 import { STATUSES } from '@/constants/statuses';
-import useOutsideTaskClick from '@/hooks/useOutsideTaskClick';
 import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { formatDateToLocal, formatDatetoLocalDate } from '@/utils/formatDateTime';
 
@@ -69,8 +68,6 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 	}, []);
 
 	const calendarRef = useRef<FullCalendar>(null);
-	const calendarContainerRef = useRef<HTMLDivElement>(null);
-	useOutsideTaskClick(calendarContainerRef);
 
 	const { data: timeBlockData } = useGetTimeBlock({ startDate, range });
 	const { mutateAsync: createMutate } = usePostTimeBlock();
@@ -426,82 +423,80 @@ function FullCalendarBox({ size, selectDate, handleChangeDate }: FullCalendarBox
 				handleFilterPopup={handleFilterPopup}
 				isFilterPopupDot={isFilterPopupDot}
 			/>
-			<div ref={calendarContainerRef} style={{ height: '100%', position: 'relative' }}>
-				<FullCalendar
-					height="100%"
-					ref={calendarRef}
-					initialView="timeGridWeekCustom"
-					plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
-					views={{
-						timeGridWeekCustom: {
-							type: 'timeGrid',
-							duration: { days: size === 'big' ? 7 : 5 },
-						},
-					}}
-					headerToolbar={{
-						left: '',
-						center: 'timeGridWeekCustom,dayGridMonth',
-						right: 'today prev next',
-					}}
-					editable
-					selectable={isSelectable}
-					nowIndicator
-					dayMaxEvents
-					events={calendarEvents}
-					eventDidMount={(arg) => handleEventDidMount(arg)}
-					buttonText={{
-						month: '월',
-						timeGridWeekCustom: '주',
-						today: '오늘',
-					}}
-					allDayText="종일"
-					locale="ko"
-					slotDuration="00:15:00"
-					slotLabelInterval="01:00:00"
-					slotLabelFormat={{
-						hour: 'numeric',
-						minute: '2-digit',
-						meridiem: 'short',
-						hour12: true,
-					}}
-					slotLabelContent={customSlotLabelContent}
-					scrollTime={scrollTime}
-					scrollTimeReset={false}
-					/* eslint-disable */
-					dayHeaderContent={(arg) => (
-						<DayHeaderContent
-							arg={arg}
-							currentView={currentView}
-							today={today.toDateString()}
-							selectDate={selectDate?.toString()}
-							handleChangeDate={handleChangeDate}
-						/>
-					)}
-					viewDidMount={handleViewChange}
-					datesSet={handleDatesSet}
-					dayCellContent={(arg) => (
-						<CustomDayCellContent arg={arg} today={today.toDateString()} selectDate={selectDate?.toString()} />
-					)}
-					moreLinkContent={(arg) => `${arg.num}개 일정 더보기 +`}
-					eventTimeFormat={{
-						hour: 'numeric',
-						minute: '2-digit',
-						hour12: false,
-					}}
-					droppable
-					eventClick={handleEventClick}
-					select={handleSelect} // 선택된 날짜가 변경될 때마다 호출
-					eventDrop={updateEvent} // 기존 이벤트 드래그 수정 핸들러
-					eventResize={updateEvent} // 기존 이벤트 리사이즈 수정 핸들러
-					eventReceive={(info) => handleEventReceive(info)}
-					eventDragStart={() => {
-						setIsDragging(true);
-					}}
-					eventDragStop={() => {
-						setIsDragging(false);
-					}}
-				/>
-			</div>
+			<FullCalendar
+				height="100%"
+				ref={calendarRef}
+				initialView="timeGridWeekCustom"
+				plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
+				views={{
+					timeGridWeekCustom: {
+						type: 'timeGrid',
+						duration: { days: size === 'big' ? 7 : 5 },
+					},
+				}}
+				headerToolbar={{
+					left: '',
+					center: 'timeGridWeekCustom,dayGridMonth',
+					right: 'today prev next',
+				}}
+				editable
+				selectable={isSelectable}
+				nowIndicator
+				dayMaxEvents
+				events={calendarEvents}
+				eventDidMount={(arg) => handleEventDidMount(arg)}
+				buttonText={{
+					month: '월',
+					timeGridWeekCustom: '주',
+					today: '오늘',
+				}}
+				allDayText="종일"
+				locale="ko"
+				slotDuration="00:15:00"
+				slotLabelInterval="01:00:00"
+				slotLabelFormat={{
+					hour: 'numeric',
+					minute: '2-digit',
+					meridiem: 'short',
+					hour12: true,
+				}}
+				slotLabelContent={customSlotLabelContent}
+				scrollTime={scrollTime}
+				scrollTimeReset={false}
+				/* eslint-disable */
+				dayHeaderContent={(arg) => (
+					<DayHeaderContent
+						arg={arg}
+						currentView={currentView}
+						today={today.toDateString()}
+						selectDate={selectDate?.toString()}
+						handleChangeDate={handleChangeDate}
+					/>
+				)}
+				viewDidMount={handleViewChange}
+				datesSet={handleDatesSet}
+				dayCellContent={(arg) => (
+					<CustomDayCellContent arg={arg} today={today.toDateString()} selectDate={selectDate?.toString()} />
+				)}
+				moreLinkContent={(arg) => `${arg.num}개 일정 더보기 +`}
+				eventTimeFormat={{
+					hour: 'numeric',
+					minute: '2-digit',
+					hour12: false,
+				}}
+				droppable
+				eventClick={handleEventClick}
+				select={handleSelect} // 선택된 날짜가 변경될 때마다 호출
+				eventDrop={updateEvent} // 기존 이벤트 드래그 수정 핸들러
+				eventResize={updateEvent} // 기존 이벤트 리사이즈 수정 핸들러
+				eventReceive={(info) => handleEventReceive(info)}
+				eventDragStart={() => {
+					setIsDragging(true);
+				}}
+				eventDragStop={() => {
+					setIsDragging(false);
+				}}
+			/>
 			{isCalendarPopupOpen && (
 				<DateCorrectionModal
 					date={startDate}
