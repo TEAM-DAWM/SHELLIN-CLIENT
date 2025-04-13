@@ -11,7 +11,7 @@ const toastIcon: Record<ToastType, { icon: JSX.Element }> = {
 	error: {
 		icon: <Icon name="IcnDelete" />,
 	},
-	conflict: {
+	info: {
 		icon: <Icon name="IcnAlert" />,
 	},
 };
@@ -38,8 +38,8 @@ function Toast({ message, onClose, code, onRevert }: ToastProps) {
 				{message}
 			</TextLayout>
 			<RevertBox>
-				<RevertText onClick={onRevert}>되돌리기</RevertText>
-				<Icon name="IcnX" />
+				{onRevert && <RevertText onClick={onRevert}>되돌리기</RevertText>}
+				<Icon name="IcnX" onClick={onClose} />
 			</RevertBox>
 		</ToastMessage>
 	);

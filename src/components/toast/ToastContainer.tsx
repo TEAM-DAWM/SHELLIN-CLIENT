@@ -4,18 +4,12 @@ import Toast from '@/components/toast/Toast';
 import { useToast } from '@/components/toast/ToastContext';
 
 function ToastContainer() {
-	const { toasts, removeToast, revertToast } = useToast();
+	const { toasts, removeToast } = useToast();
 
 	return (
 		<Container>
-			{toasts.map(({ id, message, code }) => (
-				<Toast
-					key={id}
-					message={message}
-					code={code}
-					onClose={() => removeToast(id)}
-					onRevert={() => revertToast(id)}
-				/>
+			{toasts.map(({ id, message, code, revert }) => (
+				<Toast key={id} message={message} code={code} onClose={() => removeToast(id)} onRevert={revert} />
 			))}
 		</Container>
 	);

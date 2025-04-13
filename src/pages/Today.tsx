@@ -11,21 +11,23 @@ import NavBar from '@/components/common/NavBar';
 import StagingArea from '@/components/common/StagingArea/StagingArea';
 import TargetArea from '@/components/targetArea/TargetArea';
 import { SortOrderType } from '@/constants/sortType';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
 import { TaskType } from '@/types/tasks/taskType';
 import { formatDatetoLocalDate } from '@/utils/formatDateTime';
 
 function Today() {
-	const [selectedTarget, setSelectedTarget] = useState<TaskType | null>(null);
-
 	const storedStagingSortOrder = localStorage.getItem('stagingSortOrder') as SortOrderType | null;
 	const storedTargetSortOrder = localStorage.getItem('targetSortOrder') as SortOrderType | null;
 
 	const [stagingSortOrder, setStagingSortOrder] = useState<SortOrderType>(storedStagingSortOrder || 'CUSTOM_ORDER');
 	const [targetSortOrder, setTargetSortOrder] = useState<SortOrderType>(storedTargetSortOrder || 'CUSTOM_ORDER');
 
-	const [selectedDate, setTargetDate] = useState(new Date());
+	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [calenderSelectedDate, setCalenderSelectedDate] = useState(new Date());
 	const targetDate = formatDatetoLocalDate(selectedDate);
 	const [isDumpAreaOpen, setDumpAreaOpen] = useState(true);
+
+	const { isDragging, clearSelectedTask } = useTaskSelectionStore();
 
 	// Task 목록 Get
 	const { data: stagingData } = useGetTasks({ sortOrder: stagingSortOrder });
@@ -46,28 +48,27 @@ function Today() {
 		}
 	};
 
-	const handleSelectedTarget = (task: TaskType | null) => {
-		setSelectedTarget(task);
-	};
-
 	const handlePrevBtn = () => {
 		const newDate = new Date(selectedDate);
 		newDate.setDate(newDate.getDate() - 1);
-		setTargetDate(newDate);
+		setSelectedDate(newDate);
 	};
 
 	const handleNextBtn = () => {
 		const newDate = new Date(selectedDate);
 		newDate.setDate(newDate.getDate() + 1);
-		setTargetDate(newDate);
+		setSelectedDate(newDate);
 	};
 
 	const handleTodayBtn = () => {
-		setTargetDate(new Date());
+		setSelectedDate(new Date());
 	};
 
 	const handleChangeDate = (target: Date) => {
-		setTargetDate(target);
+		setSelectedDate(target);
+	};
+	const handleChangeCalenderDate = (target: Date) => {
+		setCalenderSelectedDate(target);
 	};
 
 	const handleDragEnd = (result: DropResult) => {
@@ -142,15 +143,23 @@ function Today() {
 				taskList: newOrder,
 			});
 		}
+		clearSelectedTask();
+	};
+
+	const handleClickOutside = (e: React.MouseEvent) => {
+		const target = e.target as HTMLElement;
+
+		if (!target.closest('.todo-item') && !target.closest('.fc-view-harness fc-view-harness-active') && !isDragging) {
+			// 클릭된 요소가 todo-item 또는 fc-view-harness(캘린더 이벤트 추가 영역) 내부가 아닐 경우
+			clearSelectedTask();
+		}
 	};
 
 	return (
-		<TodayLayout>
+		<TodayLayout onClick={handleClickOutside}>
 			<NavBar isOpen={isDumpAreaOpen} handleSideBar={handleSidebar} />
 			<DragDropContext onDragEnd={handleDragEnd}>
 				<StagingArea
-					handleSelectedTarget={(task) => handleSelectedTarget(task)}
-					selectedTarget={selectedTarget}
 					tasks={stagingData}
 					targetDate={targetDate}
 					isStagingOpen={isDumpAreaOpen}
@@ -162,8 +171,6 @@ function Today() {
 					<BtnTaskContainer type="target" />
 				) : (
 					<TargetArea
-						handleSelectedTarget={(task) => handleSelectedTarget(task)}
-						selectedTarget={selectedTarget}
 						tasks={targetData}
 						onClickPrevDate={handlePrevBtn}
 						onClickNextDate={handleNextBtn}
@@ -178,9 +185,8 @@ function Today() {
 			<CalendarWrapper>
 				<FullCalendarBox
 					size={isDumpAreaOpen ? 'small' : 'big'}
-					selectedTarget={selectedTarget}
-					selectDate={selectedDate}
-					handleChangeDate={handleChangeDate}
+					selectDate={calenderSelectedDate}
+					handleChangeDate={handleChangeCalenderDate}
 				/>
 			</CalendarWrapper>
 		</TodayLayout>
@@ -198,9 +204,9 @@ const TodayLayout = styled.div`
 const CalendarWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
+	flex-grow: 1;
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: fit-content;
-	width: 100%;
 	margin: 1rem 0.8rem 1rem 0;
 `;

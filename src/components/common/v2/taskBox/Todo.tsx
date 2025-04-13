@@ -6,64 +6,61 @@ import DropdownButton from '../control/DropdownButton';
 
 import useUpdateTaskStatus from '@/apis/tasks/updateTaskStatus/query';
 import MainSettingModal from '@/components/common/v2/modal/MainSettingModal';
-import MODAL from '@/constants/modalLocation';
-import { STATUS } from '@/types/tasks/taskType';
+import useTaskSelectionStore from '@/store/useTaskSelectionStore';
+import { STATUS, TaskType } from '@/types/tasks/taskType';
 import { formatTimeToDueTime } from '@/utils/formatDateTime';
 
 type StatusType = (typeof STATUS)[keyof typeof STATUS];
 
 type TodoProps = {
-	location: 'target' | 'staging';
 	title: string;
 	deadlineDate?: string;
 	deadlineTime?: string;
 	status: StatusType;
 	isStatusVisible?: boolean;
-	onClick: () => void;
 	preventDoubleClick?: boolean;
 	taskId: number;
+	task: TaskType;
 	targetDate: string;
 };
 
 function Todo({
-	location,
 	title,
 	deadlineDate,
 	status: initStatus,
 	isStatusVisible = true,
 	deadlineTime,
-	onClick,
 	taskId,
+	task,
 	preventDoubleClick,
 	targetDate,
 }: TodoProps) {
 	const [status, setStatus] = useState<StatusType>(initStatus);
 	const isCompleted = status === STATUS.COMPLETE;
+	const { selectedTask, setSelectedTask, clearSelectedTask } = useTaskSelectionStore();
+	const isSelected = selectedTask?.id === taskId;
 
 	const [isModalOpen, setModalOpen] = useState(false);
-
-	const [top, setTop] = useState(0);
-	const [left, setLeft] = useState(0);
 
 	useEffect(() => {
 		setStatus(initStatus);
 	}, [initStatus]);
+
+	const handleTaskClick = () => {
+		if (selectedTask && selectedTask.id === task.id) {
+			clearSelectedTask();
+		} else {
+			setSelectedTask(task);
+		}
+	};
+
 	/** 모달 띄우기 */
 	const handleDoubleClick = (e: React.MouseEvent) => {
 		if (preventDoubleClick) {
 			e.preventDefault();
 			return;
 		}
-		const rect = e.currentTarget.getBoundingClientRect();
-		const calculatedTop = rect.top;
-		const adjustedTop = Math.min(calculatedTop, MODAL.SCREEN_HEIGHT - MODAL.TASK_MODAL_HEIGHT);
-		if (location === 'staging') {
-			setTop(adjustedTop);
-			setLeft(rect.width + 20);
-		} else {
-			setTop(adjustedTop);
-			setLeft(rect.right + 12);
-		}
+
 		setModalOpen((prev) => !prev);
 	};
 
@@ -84,7 +81,13 @@ function Todo({
 	return (
 		<>
 			<div className="todo-item">
-				<TodoContainer isCompleted={isCompleted} onDoubleClick={handleDoubleClick} draggable onClick={onClick}>
+				<TodoContainer
+					isCompleted={isCompleted}
+					isSelected={isSelected}
+					onDoubleClick={handleDoubleClick}
+					draggable
+					onClick={() => handleTaskClick()}
+				>
 					<TodoWrapper>
 						<span className="todo-title">{title}</span>
 						{deadlineDate && (
@@ -107,8 +110,6 @@ function Todo({
 			</div>
 			<MainSettingModal
 				isOpen={isModalOpen}
-				top={top}
-				left={left}
 				onClose={handleCloseModal}
 				taskId={taskId}
 				status={status}
@@ -154,7 +155,7 @@ const textStyles = ({ theme, isCompleted }: { theme: Theme; isCompleted: boolean
 	}
 `;
 
-const TodoContainer = styled.div<{ isCompleted: boolean }>`
+const TodoContainer = styled.div<{ isCompleted: boolean; isSelected: boolean }>`
 	${({ theme }) => baseStyles({ theme })}
 	${({ theme, isCompleted }) => textStyles({ theme, isCompleted })}
 	border: 1px solid
@@ -169,6 +170,13 @@ const TodoContainer = styled.div<{ isCompleted: boolean }>`
 		background-color: ${({ theme }) => theme.colorToken.Component.strong};
 		border: 1px solid ${({ theme }) => theme.colorToken.Outline.primaryStrong};
 	}
+
+	${({ isSelected, theme }) =>
+		isSelected &&
+		`
+        background-color: ${theme.colorToken.Component.strong};
+        border: 1px solid ${theme.colorToken.Outline.primaryStrong};
+    `}
 `;
 
 const TodoWrapper = styled.div`

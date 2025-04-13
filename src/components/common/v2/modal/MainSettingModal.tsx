@@ -16,36 +16,34 @@ import { useToast } from '@/components/toast/ToastContext';
 import useInput from '@/hooks/useInput';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { StatusType } from '@/types/tasks/taskType';
-import { formatDatetoLocalDate } from '@/utils/formatDateTime';
+import { formatDatetoLocalDate, formatTimeByAllDay } from '@/utils/formatDateTime';
 import formatTimeWithAmPm from '@/utils/formatTimeWithAmPm';
 import { getRoundedFormattedCurrTime } from '@/utils/time';
 
 interface MainSettingModalProps {
 	isOpen: boolean;
-	top: number;
-	left: number;
 	taskId: number;
 	onClose: () => void;
 	status: StatusType;
 	targetDate: string;
 	timeBlockId?: number;
 	isAllTime?: boolean;
+	isTimeblock?: boolean;
 }
 
 function MainSettingModal({
 	isOpen,
-	top,
-	left,
 	taskId,
 	onClose,
 	status,
 	targetDate,
 	timeBlockId,
 	isAllTime = false,
+	isTimeblock = false,
 }: MainSettingModalProps) {
 	const { mutate: deleteMutate } = useDeleteTask();
 	const { mutateAsync: editMutate } = usePatchTaskDescription();
-	const { mutate: updateTimeBlockMutate } = useUpdateTimeBlock();
+	const { mutateAsync: updateTimeBlockMutate } = useUpdateTimeBlock();
 	const {
 		data: taskDetailData,
 		isFetched: isTaskDetailFetched,
@@ -129,16 +127,25 @@ function MainSettingModal({
 		return startDate <= endDate;
 	};
 
-	const handleConfirm = () => {
+	const handleConfirm = async () => {
 		if (isTimeBlockSelected && !isvalidTimeRange(startTime, endTime)) {
 			addToast('시작 시간은 종료 시간 이전이어야 합니다.', 'error');
 			onClose();
 			return;
 		}
 
-		handleEdit();
-		handleTimeBlockUpdate();
-		onClose();
+		try {
+			await handleTimeBlockUpdate();
+			await handleEdit();
+		} catch (error) {
+			console.error('handleConfirm error:', error);
+
+			if (error === 'info') {
+				return; // handleTimeBlockUpdate conflict나면 종료
+			}
+		} finally {
+			onClose();
+		}
 	};
 
 	const handleDelete = () => {
@@ -176,26 +183,27 @@ function MainSettingModal({
 	};
 
 	// 수정 이벤트 핸들러
-	const handleTimeBlockUpdate = () => {
+	const handleTimeBlockUpdate = async () => {
 		if (!timeBlockId) {
 			console.log('타임블록 아이디없어서 리턴');
 			return;
 		}
 
-		const formattedStartTime = isAllDay
-			? `${timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : startTime.split('T')[0]}T00:00`
-			: startTime;
-		const formattedEndTime = isAllDay
-			? `${timeBlockDate ? new Date(timeBlockDate).toISOString().split('T')[0] : endTime.split('T')[0]}T00:00`
-			: endTime;
+		try {
+			const formattedStartTime = formatTimeByAllDay(startTime, isAllDay, timeBlockDate);
+			const formattedEndTime = formatTimeByAllDay(endTime, isAllDay, timeBlockDate);
 
-		updateTimeBlockMutate({
-			taskId,
-			timeBlockId,
-			startTime: formattedStartTime,
-			endTime: formattedEndTime,
-			isAllTime: isAllDay,
-		});
+			await updateTimeBlockMutate({
+				taskId,
+				timeBlockId,
+				startTime: formattedStartTime,
+				endTime: formattedEndTime,
+				isAllTime: isAllDay,
+			});
+		} catch (error) {
+			console.error('handleTimeBlockUpdate error:', error);
+			throw new Error('info');
+		}
 	};
 
 	// 하루종일 버튼 상태 변경 핸들러
@@ -208,7 +216,7 @@ function MainSettingModal({
 
 	return (
 		<>
-			<MainSettingModalLayout ref={modalRef} top={top} left={left} onClick={(e) => e.stopPropagation()}>
+			<MainSettingModalLayout ref={modalRef} onClick={(e) => e.stopPropagation()}>
 				<MainSettingModalHeadLayout>
 					<ModalTopButtonBox>
 						<DropdownButton
@@ -237,7 +245,7 @@ function MainSettingModal({
 					<PopUpTitleBox>
 						<PopUp type="description" defaultValue={descriptionContent} onChange={onDescriptionChange} />
 					</PopUpTitleBox>
-					{isTimeBlockSelected && (
+					{isTimeblock && (
 						<DeadlineBox
 							date={timeBlockDate || new Date(targetDate)}
 							startTime={formatTimeWithAmPm(startTime) || '23:59'}
@@ -257,15 +265,12 @@ function MainSettingModal({
 					<Button type="solid" size="medium" label="확인" onClick={handleConfirm} />
 				</MainSettingModalButtonLayout>
 			</MainSettingModalLayout>
-			<ModalBackdrop onClick={onClose} />
+			<ModalBackdrop isBackgroundColor onClick={onClose} />
 		</>
 	);
 }
 
-const MainSettingModalLayout = styled.article<{ top: number; left: number }>`
-	/* position: fixed;
-	top: ${({ top }) => top}px;
-	left: ${({ left }) => left}px; */
+const MainSettingModalLayout = styled.article`
 	position: fixed;
 	top: 50%;
 	left: 50%;

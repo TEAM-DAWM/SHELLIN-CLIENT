@@ -54,7 +54,8 @@ const useUpdateTaskStatus = (handleIconMouseLeave: (() => void) | null) => {
 				}
 			};
 
-			addToast('변경사항이 적용되었어요', 'success', revert);
+			const needRevert = updateData.status && updateData.status !== context.originalData.status;
+			addToast('변경사항이 적용되었어요', 'success', needRevert ? revert : undefined);
 
 			// staging과 today중 해당 task가 속한 영역만 쿼리키 무효화
 			const cachedTask = queryClient.getQueryData(QUERY_KEYS.taskDescription(updateData.taskId));

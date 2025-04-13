@@ -27,7 +27,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		location: 'target',
 		title: '할 일 제목',
 		deadlineDate: '2024년 12월 31일',
 		deadlineTime: '오후 6시 40분 까지',
@@ -35,6 +34,10 @@ export const Default: Story = {
 		isStatusVisible: true,
 		taskId: 1,
 		targetDate: '2024년 12월 31일',
-		onClick: () => {},
+		task: {
+			id: 1,
+			name: 'Sample Task',
+			status: '미완료',
+		},
 	},
 };

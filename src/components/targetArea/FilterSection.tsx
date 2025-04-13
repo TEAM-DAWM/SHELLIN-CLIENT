@@ -50,6 +50,7 @@ const IconContainer = styled.div`
 	justify-content: flex-end;
 	box-sizing: border-box;
 	width: 100%;
+	min-width: 45rem;
 	height: 4.8rem;
 	padding: 0.8rem 1.6rem;
 `;
